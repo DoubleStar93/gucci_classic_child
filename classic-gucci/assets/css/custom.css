@@ -1,0 +1,551 @@
+/**
+ * Classic Gucci — design minimalista di lusso
+ * Font: Playfair Display (titoli) + Montserrat (menu/UI)
+ */
+
+/* ==========================================================================
+   Tipografia globale
+   ========================================================================== */
+
+body,
+#page,
+#wrapper,
+.main {
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  color: #111111;
+  background-color: #ffffff !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Titoli — serif elegante */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6,
+.page-title,
+.page-header h1,
+#products .h1,
+.product-title a,
+.gucci-product-miniature .product-title {
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif !important;
+  font-weight: 400;
+  color: #000000;
+  letter-spacing: 0.02em;
+}
+
+/* Menu, link secondari, footer — sans leggero uppercase */
+#header a,
+#header .top-menu a,
+.nav a,
+.footer-container a,
+.footer-container .h3,
+.gucci-footer a,
+.gucci-footer .gucci-footer-col-title,
+.header-nav a,
+#_desktop_user_info a,
+#_desktop_cart a,
+.block-contact a,
+.account-list a,
+.breadcrumb a,
+#footer a {
+  font-family: "Montserrat", sans-serif !important;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #111111 !important;
+}
+
+/* Elimina link blu PrestaShop / Bootstrap */
+a,
+a:link,
+a:visited,
+.page-content a,
+#content a,
+.text-primary,
+.product-price,
+.price {
+  color: #111111;
+}
+
+a:hover,
+a:focus {
+  color: #000000;
+  opacity: 0.55;
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   Reset stile Classic — niente ombre, bordi, bottoni colorati
+   ========================================================================== */
+
+.card,
+.product-miniature,
+.thumbnail-container,
+.block,
+.box,
+.panel,
+.modal-content,
+#products .product-miniature .thumbnail-container,
+.featured-products .thumbnail-container {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-touch,
+button[type="submit"],
+input[type="submit"] {
+  background: #111111 !important;
+  border: 1px solid #111111 !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.btn:hover,
+.btn-primary:hover {
+  background: #333333 !important;
+  border-color: #333333 !important;
+  opacity: 0.9;
+}
+
+/* ==========================================================================
+   Barra superiore grigia / banner promozionali — azzerati
+   ========================================================================== */
+
+#header,
+#header .header-top,
+.gucci-header-bar {
+  background: #ffffff !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+#header .header-banner,
+#header .header-nav,
+.header-nav,
+#nav-top,
+.nav-full-width,
+.displayNavFullWidth,
+.hook-display-banner {
+  display: none !important;
+}
+
+/* Banner slider / blocchi blu home */
+#carousel,
+.carousel,
+.ps_banner,
+.blockreassurance,
+.alert-info {
+  background: #ffffff !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ==========================================================================
+   Header — una riga Flexbox: menu | logo | servizi
+   ========================================================================== */
+
+.gucci-header-bar {
+  padding: 1.5rem 0;
+}
+
+.gucci-header-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  min-height: 80px;
+  width: 100%;
+}
+
+.gucci-header-col--left {
+  flex: 1 1 33%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.gucci-header-col--center {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.gucci-header-col--center .logo,
+.gucci-header-col--center h1 {
+  margin: 0;
+  line-height: 1;
+}
+
+.gucci-header-col--center .logo img {
+  max-height: 64px;
+  width: auto;
+  height: auto;
+}
+
+.gucci-header-col--right {
+  flex: 1 1 33%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 1.75rem;
+}
+
+/* Solo icone a destra — niente etichette "Vuoto" / testi ridondanti */
+.gucci-header-col--right .hidden-sm-down,
+#_desktop_cart .hidden-sm-down,
+#_desktop_user_info .hidden-sm-down,
+.blockcart .hidden-sm-down {
+  display: none !important;
+}
+
+.gucci-header-col--right .cart-products-count {
+  font-size: 10px;
+  letter-spacing: 0.05em;
+}
+
+.gucci-header-col--right .material-icons {
+  font-size: 22px;
+  color: #000000;
+}
+
+#_desktop_cart .blockcart.inactive .header a {
+  pointer-events: auto;
+}
+
+.ps_currencyselector,
+.ps_languageselector {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ps_currencyselector .btn-unstyle,
+.ps_languageselector .btn-unstyle {
+  color: #111111;
+  font-size: 10px;
+}
+
+/* Search minimal */
+#search_widget form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#search_widget input[type="text"] {
+  border: none;
+  border-bottom: 1px solid #111111;
+  border-radius: 0;
+  background: transparent;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.25rem 0;
+  max-width: 140px;
+}
+
+#search_widget input[type="text"]:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+#search_widget button {
+  background: transparent !important;
+  border: none !important;
+  color: #111111 !important;
+  padding: 0;
+}
+
+/* ==========================================================================
+   Menu principale ps_mainmenu — stile Gucci
+   ========================================================================== */
+
+#header .top-menu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.25rem 2rem;
+}
+
+#header .top-menu > li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#header .top-menu > li > a {
+  padding: 0.75rem 0;
+  border: none;
+  background: transparent;
+  white-space: nowrap;
+}
+
+#header .top-menu > li > a:hover {
+  opacity: 0.5;
+  text-decoration: none;
+  background: transparent;
+}
+
+/* Sottomenu pulito — niente mega-menu caotico */
+#header .top-menu .sub-menu,
+#header .top-menu .popover.sub-menu {
+  position: absolute;
+  min-width: 220px;
+  max-width: 320px;
+  margin-top: 0;
+  padding: 1rem 1.25rem;
+  background: #ffffff;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+#header .top-menu .sub-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#header .top-menu .sub-menu a {
+  font-size: 11px;
+  padding: 0.5rem 0;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+#header .top-menu .sub-menu a:hover {
+  opacity: 0.5;
+  background: transparent;
+}
+
+#header .top-menu .collapse-icons,
+#header .top-menu .float-xs-right.hidden-md-up {
+  display: none;
+}
+
+/* ==========================================================================
+   Footer Gucci
+   ========================================================================== */
+
+.gucci-footer {
+  background: #ffffff;
+  border-top: 1px solid #eeeeee;
+  padding: 3.5rem 0 2rem;
+  margin-top: 4rem;
+}
+
+.gucci-footer-before {
+  background: #ffffff;
+  padding: 2rem 0;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.gucci-footer-columns {
+  margin-bottom: 3rem;
+}
+
+.gucci-footer-columns > .row {
+  width: 100%;
+  margin: 0;
+}
+
+.gucci-footer-col {
+  margin-bottom: 2rem;
+}
+
+.gucci-footer .links .wrapper,
+.gucci-footer .links > .col-md-6,
+.gucci-footer .col-md-6.links .wrapper {
+  padding: 0 1rem 0 0;
+}
+
+.gucci-footer-col-title,
+.gucci-footer .links .h3,
+.gucci-footer .links p.h3,
+.footer-container .links .h3 {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #111111 !important;
+  margin-bottom: 1.25rem;
+  line-height: 1.4;
+}
+
+.gucci-footer .links ul,
+.footer-container .links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.gucci-footer .links ul li a,
+.footer-container .links ul li a {
+  font-size: 11px !important;
+  font-weight: 300;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  color: #666666 !important;
+  line-height: 2;
+  display: inline-block;
+}
+
+.gucci-footer .links ul li a:hover {
+  color: #111111 !important;
+  opacity: 1;
+}
+
+.gucci-footer-copyright {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid #eeeeee;
+}
+
+.gucci-footer-copyright p {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #666666;
+}
+
+/* Nascondi link PrestaShop e blocchi rumorosi */
+.footer-container a[href*="prestashop"],
+.gucci-footer a[href*="prestashop"] {
+  display: none !important;
+}
+
+#footer .block-social,
+.ps-social-follow {
+  margin-top: 1rem;
+}
+
+#footer .block-contact,
+#footer .account-list,
+#footer .block-contact-title {
+  font-size: 11px;
+  color: #666666;
+  line-height: 2;
+}
+
+#footer .block-contact-title,
+#footer .account-list h4,
+#footer .account-list .h3 {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #111111 !important;
+}
+
+/* ==========================================================================
+   Miniature prodotto (griglia catalogo)
+   ========================================================================== */
+
+.gucci-product-miniature .product-miniature,
+.gucci-product-miniature .thumbnail-container,
+.js-product.product .product-miniature {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.gucci-product-miniature .thumbnail-container:hover,
+.js-product.product .product-miniature:hover {
+  box-shadow: none;
+}
+
+.gucci-product-miniature .discount-percentage,
+.gucci-product-miniature .discount-amount,
+.gucci-product-miniature .discount-product,
+.gucci-product-miniature .product-flags,
+.gucci-product-miniature .regular-price {
+  display: none !important;
+}
+
+.gucci-product-miniature .product-title {
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  margin: 0.75rem 0 0.25rem;
+  line-height: 1.4;
+}
+
+.gucci-product-miniature .product-title a {
+  color: #111111;
+  text-decoration: none;
+}
+
+.gucci-product-miniature .product-title a:hover {
+  opacity: 0.5;
+}
+
+.gucci-product-miniature .gucci-price {
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: #666666;
+  letter-spacing: 0.04em;
+}
+
+.gucci-product-miniature .product-price-and-shipping {
+  margin-top: 0;
+  padding: 0;
+}
+
+.gucci-product-miniature .product-thumbnail img,
+.gucci-product-miniature .thumbnail-top {
+  border: none;
+  box-shadow: none;
+}
+
+/* ==========================================================================
+   Mobile header
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .gucci-header-mobile-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+  }
+
+  .gucci-header-mobile-logo {
+    flex: 1;
+    text-align: center;
+  }
+
+  .gucci-header-mobile-icons {
+    display: flex;
+    gap: 1rem;
+  }
+}

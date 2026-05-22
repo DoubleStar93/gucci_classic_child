@@ -1,0 +1,58 @@
+parent: classic
+name: classic-gucci
+display_name: Classic Gucci Style
+version: 1.0.0
+author:
+  name: "Anton"
+  email: ""
+  url: ""
+
+meta:
+  compatibility:
+    from: 9.0.0
+    to: ~
+  framework: 'bootstrap-v4.0.0-alpha.5'
+
+  available_layouts:
+    layout-full-width:
+      name: Full Width
+      description: No side columns, ideal for distraction-free pages such as product pages.
+    layout-both-columns:
+      name: Three Columns
+      description: One large central column and 2 side columns.
+    layout-left-column:
+      name: Two Columns, small left column
+      description: Two columns with a small left column
+    layout-right-column:
+      name: Two Columns, small right column
+      description: Two columns with a small right column
+
+assets:
+  use_parent_assets: true
+  css:
+    all:
+      - id: custom-style
+        path: assets/css/custom.css
+        media: all
+        priority: 1000
+
+global_settings:
+  hooks:
+    modules_to_hook:
+      displayTop:
+        - ps_mainmenu
+      displayNav2:
+        - ps_searchbar
+        - ps_languageselector
+        - ps_currencyselector
+        - ps_customersignin
+        - ps_shoppingcart
+
+theme_settings:
+  default_layout: layout-full-width
+  layouts:
+    category: layout-left-column
+    best-sales: layout-left-column
+    new-products: layout-left-column
+    prices-drop: layout-left-column
+    contact: layout-left-column

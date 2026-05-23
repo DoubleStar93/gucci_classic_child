@@ -1,0 +1,110 @@
+---
+description: Contesto progetto — tema child PrestaShop classic-gucci verso stile Gucci.com
+alwaysApply: true
+---
+
+# Tema child Classic Gucci (PrestaShop)
+
+## Obiettivo
+
+Trasformare lo shop PrestaShop in un'esperienza **minimalista luxury** ispirata a [Gucci Italia](https://www.gucci.com/it/it/), tramite il tema child **`classic-gucci`** (padre: **`classic`**).
+
+## Sito da guardare (staging attuale)
+
+**URL base:** https://chocolate-ferret-940937.hostingersite.com/
+
+Prima di proporre modifiche o chiudere un task, verifica il risultato su questo sito (header, home, listing, scheda prodotto, footer).
+
+**Esempio scheda prodotto:**
+https://chocolate-ferret-940937.hostingersite.com/index.php?id_product=1&id_product_attribute=1&rewrite=hummingbird-printed-t-shirt&controller=product&id_lang=1
+
+Stato attuale tipico: tema Classic/child con elementi PrestaShop ancora visibili (barre grigie, badge sconto, blocchi reassurance, slider, link blu, layout a due righe in header).
+
+## Riferimento visivo (target)
+
+**Benchmark:** https://www.gucci.com/it/it/
+
+| Aspetto | Target Gucci |
+|--------|----------------|
+| Header | Logo **sinistra**, icone **destra** (carrello, account, cerca, hamburger); menu nel **drawer** — vedi `docs/GUCCI-DESIGN-REFERENCE.md` |
+| Tipografia | Serif (Playfair Display) per titoli; Sans leggero (Montserrat) per menu/footer |
+| Colori | Bianco `#ffffff`, nero `#000` / `#111`, grigi sobri `#666` — niente blu/teal PrestaShop |
+| UI | Niente ombre pesanti, bordi grigi default, badge invadenti, banner promozionali caotici |
+| Menu | 11px uppercase, `letter-spacing: 0.15em`, hover discreto, sottomenu pulito |
+| Prodotti | Nome in evidenza, prezzo piccolo sotto, griglia ariosa |
+| Footer | 4–5 colonne editoriali, copyright minimale, no link "Powered by PrestaShop" |
+
+## Struttura repository
+
+```
+gucci_classic_child/
+└── classic-gucci/          ← tema child da modificare
+    ├── config/theme.yml    ← parent: classic, layout, hook moduli
+    ├── assets/css/custom.css
+    ├── templates/_partials/  ← header.tpl, footer.tpl, head.tpl
+    ├── templates/catalog/...
+    └── modules/              ← override ps_mainmenu, ps_shoppingcart, ecc.
+```
+
+Tema padre **`classic`** è in workspace separato (`Downloads/classic` o `themes/classic/` sul server).
+
+## Quando deployare (obbligatorio per vedere le modifiche)
+
+Le modifiche in `classic-gucci/` **non sono visibili** su Hostinger finché non le carichi sul server. L'AI deve **dirlo esplicitamente** a fine task quando ha toccato file del tema.
+
+### Deploy ora se hai modificato uno o più di questi file
+
+- `config/theme.yml`
+- `assets/css/custom.css`
+- `templates/**/*.tpl`
+- `modules/**/*.tpl`
+- `preview.png`
+
+### Procedura deploy (Hostinger)
+
+1. Carica/sovrascrivi la cartella `classic-gucci/` in `themes/classic-gucci/` sul server (FTP o File Manager).
+2. Verifica che esista anche `themes/classic/` (tema padre).
+3. Back office → **Design → Tema e logo** → tema **Classic Gucci Style** attivo.
+4. **Svuota cache:** Parametri avanzati → Prestazioni → Svuota cache (e cache Smarty se presente).
+5. Se header/menu sono sfalsati: **Design → Posizioni** → conferma `ps_mainmenu` in **displayTop** e `ps_searchbar` + carrello/account in **displayNav2** (oppure riattiva il tema child).
+6. Controlla in incognito: https://chocolate-ferret-940937.hostingersite.com/
+
+### Quando NON serve deploy
+
+- Solo modifiche a `.cursor/rules/`, README, note locali.
+- Solo analisi o pianificazione senza cambi ai file in `classic-gucci/`.
+
+### Messaggio standard per l'utente (usare a fine modifica)
+
+> **Deploy necessario:** carica `classic-gucci/` su Hostinger, svuota cache, poi apri lo staging per verificare. Senza questo passaggio il sito live resta invariato.
+
+## Regole di implementazione
+
+1. **Solo override necessari** nel child; non modificare il tema padre `classic`.
+2. **Preferire** `custom.css` + override `.tpl` in `classic-gucci/`; usare `{extends file='parent:...'}` quando basta.
+3. **Hook:** menu in `displayTop`, ricerca/account/carrello in `displayNav2` (vedi `config/theme.yml`).
+4. **Dopo ogni deploy:** svuotare cache PrestaShop e controllare lo staging Hostinger.
+5. **Non reintrodurre** stile Classic default (bottoni colorati, `#24b9d7`, box-shadow, `header-nav` grigia).
+
+## Documentazione design
+
+Leggere sempre `docs/GUCCI-DESIGN-REFERENCE.md` e screenshot in `docs/reference-screenshots/` prima di modifiche UI importanti.
+
+## Roadmap (ordine consigliato)
+
+| Step | Stato | Cosa fare |
+|------|--------|-----------|
+| 1 | Fatto in locale | Struttura child, `theme.yml`, CSS globale, header/footer, miniature prodotto |
+| 2 | **Adesso** | **Deploy + cache + verifica hook** sullo staging |
+| 3 | In corso | Scheda prodotto (`product.tpl`, `product-prices.tpl`, CSS) |
+| 4 | Da fare | Home: slider/banner/reassurance minimal o nascosti |
+| 5 | Da fare | Listing categorie + filtri sobri |
+| 6 | Da fare | Override `ps_searchbar` (solo icona lente) |
+| 7 | Da fare | Footer: blocchi Link List in BO (titoli colonne Gucci) |
+
+## Checklist rapida prima di considerare un task completato
+
+- [ ] Confronto visivo con gucci.com/it/it (header, tipografia, spaziature)
+- [ ] Verifica su chocolate-ferret-940937.hostingersite.com
+- [ ] Mobile: menu hamburger e logo leggibili
+- [ ] Nessuna regressione su `theme.yml` (`meta.available_layouts` presente)

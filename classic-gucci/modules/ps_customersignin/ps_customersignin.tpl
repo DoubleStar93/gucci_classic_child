@@ -1,5 +1,5 @@
 {**
- * Classic Gucci — account icona minimal
+ * Classic Gucci — account solo icona
  *}
 <div id="_desktop_user_info" class="gucci-account">
   <div class="user-info">

@@ -1,7 +1,7 @@
 parent: classic
 name: classic-gucci
 display_name: Classic Gucci Style
-version: 1.0.0
+version: 1.1.0
 author:
   name: "Anton"
   email: ""
@@ -50,6 +50,17 @@ global_settings:
       displayNav2:
         - ps_shoppingcart
         - ps_customersignin
+      displayHome:
+        - ps_banner
+      displayFooterBefore:
+        - ps_emailsubscription
+      displayFooter:
+        - ps_linklist
+      displayFooterAfter: []
+      displayLeftColumn: []
+      displayReassurance: []
+      displayWrapperTop: []
+      displayWrapperBottom: []
 
 theme_settings:
   default_layout: layout-full-width

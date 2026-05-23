@@ -115,11 +115,13 @@
       </div>
     </div>
 
-    <div id="mobile_top_menu_wrapper" class="gucci-nav-drawer gucci-side-drawer" style="display:none;" aria-hidden="true">
-      <div class="gucci-drawer-header">
+    <div id="gucci-nav-backdrop" class="gucci-nav-backdrop" aria-hidden="true" hidden></div>
+
+    <div id="mobile_top_menu_wrapper" class="gucci-nav-drawer gucci-side-drawer" hidden aria-hidden="true">
+      <div class="gucci-nav-drawer-header">
         <button
           type="button"
-          class="gucci-drawer-close btn-unstyle"
+          class="gucci-drawer-close-circle btn-unstyle"
           aria-label="{l s='Close' d='Shop.Theme.Global'}"
           data-gucci-drawer-close
         >
@@ -127,12 +129,14 @@
         </button>
       </div>
 
-      <div class="gucci-drawer-body">
-        <div class="js-top-menu mobile" id="_mobile_top_menu">
-          {hook h='displayTop'}
-        </div>
+      <div class="gucci-drawer-body gucci-nav-drawer-body">
+        <nav class="gucci-nav-drawer-nav" aria-label="{l s='Menu' d='Shop.Theme.Global'}">
+          <div class="js-top-menu mobile" id="_mobile_top_menu">
+            {hook h='displayTop'}
+          </div>
+        </nav>
 
-        <div class="js-top-menu-bottom gucci-drawer-footer">
+        <div class="js-top-menu-bottom gucci-drawer-footer gucci-nav-drawer-footer">
           <button
             type="button"
             class="gucci-drawer-link gucci-contact-toggle btn-unstyle"
@@ -143,19 +147,22 @@
           {if !$customer.is_logged}
             <a
               href="{$urls.pages.authentication}?back={$urls.current_url|urlencode}"
-              class="gucci-drawer-link"
+              class="gucci-drawer-link gucci-drawer-link--underline"
               rel="nofollow"
             >
-              {l s='Sign in' d='Shop.Theme.Actions'}
+              {if $language.iso_code == 'it'}Effettua il login{else}{l s='Sign in' d='Shop.Theme.Actions'}{/if}
             </a>
           {else}
             <a href="{$urls.pages.my_account}" class="gucci-drawer-link" rel="nofollow">
-              {l s='My account' d='Shop.Theme.Customeraccount'}
+              {if $language.iso_code == 'it'}Il mio account{else}{l s='My account' d='Shop.Theme.Customeraccount'}{/if}
+            </a>
+            <a href="{$urls.pages.history}" class="gucci-drawer-link" rel="nofollow">
+              {if $language.iso_code == 'it'}I miei ordini{else}{l s='Order history and details' d='Shop.Theme.Customeraccount'}{/if}
             </a>
           {/if}
-          <div id="_mobile_currency_selector"></div>
-          <div id="_mobile_language_selector"></div>
-          <div id="_mobile_contact_link"></div>
+          <div id="_mobile_currency_selector" class="gucci-nav-drawer-utilities"></div>
+          <div id="_mobile_language_selector" class="gucci-nav-drawer-utilities"></div>
+          <div id="_mobile_contact_link" class="gucci-nav-drawer-utilities"></div>
         </div>
       </div>
     </div>

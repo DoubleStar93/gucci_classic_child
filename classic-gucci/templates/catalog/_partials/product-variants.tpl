@@ -1,5 +1,5 @@
 {**
- * Classic Gucci — varianti prodotto (taglia/colore allineate)
+ * Classic Gucci — varianti prodotto (taglia/colore chip)
  *}
 <div class="product-variants js-product-variants gucci-product-variants">
   {foreach from=$groups key=id_attribute_group item=group}
@@ -8,17 +8,24 @@
         <span class="control-label gucci-variant-label">{$group.name}</span>
 
         {if $group.group_type == 'select'}
-          <select
-            class="form-control form-control-select gucci-variant-select"
-            id="group_{$id_attribute_group}"
-            aria-label="{$group.name}"
-            data-product-attribute="{$id_attribute_group}"
-            name="group[{$id_attribute_group}]"
-          >
+          <ul id="group_{$id_attribute_group}" class="gucci-variant-radios gucci-variant-sizes">
             {foreach from=$group.attributes key=id_attribute item=group_attribute}
-              <option value="{$id_attribute}" title="{$group_attribute.name}"{if $group_attribute.selected} selected="selected"{/if}>{$group_attribute.name}</option>
+              <li class="input-container gucci-variant-radio-item">
+                <label>
+                  <input
+                    class="input-radio gucci-variant-size-input"
+                    type="radio"
+                    data-product-attribute="{$id_attribute_group}"
+                    name="group[{$id_attribute_group}]"
+                    value="{$id_attribute}"
+                    title="{$group_attribute.name}"
+                    {if $group_attribute.selected} checked="checked"{/if}
+                  >
+                  <span class="radio-label gucci-variant-radio-label gucci-variant-size-label">{$group_attribute.name}</span>
+                </label>
+              </li>
             {/foreach}
-          </select>
+          </ul>
         {elseif $group.group_type == 'color'}
           <ul id="group_{$id_attribute_group}" class="gucci-variant-colors">
             {foreach from=$group.attributes key=id_attribute item=group_attribute}

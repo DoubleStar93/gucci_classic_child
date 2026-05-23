@@ -17,7 +17,7 @@
       {/block}
 
       {if !empty($listing.rendered_facets)}
-        <div class="gucci-plp-filter hidden-md-up">
+        <div class="gucci-plp-filter">
           <button id="search_filter_toggler" class="gucci-plp-filter-btn btn-unstyle js-search-toggler" type="button">
             {if $language.iso_code == 'it'}Filtra{else}{l s='Filter' d='Shop.Theme.Actions'}{/if}
           </button>

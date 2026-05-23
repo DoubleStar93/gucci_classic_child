@@ -11,8 +11,6 @@
       <meta itemprop="sku" content="{$product.reference_to_display}">
     {/if}
 
-    {include file='catalog/_partials/gucci-product-gallery.tpl' galleryMode='hero'}
-
     <form
       action="{$urls.pages.cart}"
       method="post"
@@ -24,42 +22,40 @@
       <input type="hidden" name="id_customization" value="{$product.id_customization}" id="product_customization_id" class="js-product-customization-id">
 
       <div class="gucci-pdp-gallery-col">
-        {include file='catalog/_partials/gucci-product-gallery.tpl' galleryMode='rest'}
+        {include file='catalog/_partials/gucci-product-gallery.tpl' galleryMode='all'}
       </div>
 
-      <div class="gucci-pdp-summary product-information">
-        {block name='page_header_container'}
-          {block name='page_header'}
-            <h1 class="h1 gucci-product-page-title" itemprop="name">{block name='page_title'}{$product.name}{/block}</h1>
-          {/block}
-        {/block}
-
-        <p class="gucci-pdp-variant-note js-gucci-variant-note" {if empty($product.attributes)}hidden{/if}>
-          {if $language.iso_code == 'it'}Variante{else}{l s='Variant' d='Shop.Theme.Catalog'}{/if}
-          {if !empty($product.attributes)}
-            {foreach from=$product.attributes item=attribute name=gucciAttrs}
-              {if !$smarty.foreach.gucciAttrs.first} {/if}{$attribute.name}
-            {/foreach}
-          {/if}
-        </p>
-
-        {block name='product_prices'}
-          {include file='catalog/_partials/product-prices.tpl'}
-        {/block}
-
-        {if $product.is_customizable && count($product.customizations.fields)}
-          {block name='product_customization'}
-            {include file="catalog/_partials/product-customization.tpl" customizations=$product.customizations}
-          {/block}
-        {/if}
-
-        {block name='product_variants'}
-          {include file='catalog/_partials/product-variants.tpl'}
-        {/block}
-      </div>
-
-      <div class="gucci-pdp-buybox-col">
+      <div class="gucci-pdp-buybox-col product-information">
         <div class="gucci-pdp-buybox product-actions js-product-actions">
+          {block name='page_header_container'}
+            {block name='page_header'}
+              <h1 class="h1 gucci-product-page-title" itemprop="name">{block name='page_title'}{$product.name}{/block}</h1>
+            {/block}
+          {/block}
+
+          <p class="gucci-pdp-variant-note js-gucci-variant-note" {if empty($product.attributes)}hidden{/if}>
+            {if $language.iso_code == 'it'}Variante{else}{l s='Variant' d='Shop.Theme.Catalog'}{/if}
+            {if !empty($product.attributes)}
+              {foreach from=$product.attributes item=attribute name=gucciAttrs}
+                {if !$smarty.foreach.gucciAttrs.first} {/if}{$attribute.name}
+              {/foreach}
+            {/if}
+          </p>
+
+          {block name='product_prices'}
+            {include file='catalog/_partials/product-prices.tpl'}
+          {/block}
+
+          {if $product.is_customizable && count($product.customizations.fields)}
+            {block name='product_customization'}
+              {include file="catalog/_partials/product-customization.tpl" customizations=$product.customizations}
+            {/block}
+          {/if}
+
+          {block name='product_variants'}
+            {include file='catalog/_partials/product-variants.tpl'}
+          {/block}
+
           {block name='product_buy'}
             {block name='product_pack'}{/block}
             {block name='product_discounts'}{/block}
@@ -169,4 +165,3 @@
 {/block}
 
 {block name='hook_display_reassurance'}{/block}
-

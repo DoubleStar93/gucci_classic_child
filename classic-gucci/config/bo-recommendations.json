@@ -1,0 +1,44 @@
+{
+  "version": "1.1.0",
+  "after_theme_apply": [
+    "BO → Design → Tema → Classic Gucci → Ri-applica tema",
+    "BO → Parametri avanzati → Prestazioni → Svuota cache"
+  ],
+  "shop_branding": {
+    "logo": "Preferenze → Negozio → logo monocromatico (SVG/PNG nero)",
+    "default_language": "Italiano",
+    "default_currency": "EUR"
+  },
+  "disable_modules": [
+    "ps_imageslider",
+    "ps_customtext",
+    "ps_specials",
+    "ps_newproducts",
+    "ps_bestsellers",
+    "blockreassurance",
+    "blockwishlist"
+  ],
+  "keep_modules": [
+    "ps_banner",
+    "ps_featuredproducts",
+    "ps_emailsubscription",
+    "ps_linklist",
+    "ps_mainmenu",
+    "ps_contactinfo"
+  ],
+  "footer_linklist_columns_it": [
+    "Possiamo aiutarti?",
+    "Informazioni aziendali",
+    "Note legali",
+    "Servizi esclusivi"
+  ],
+  "products": {
+    "min_images_per_pdp": 6,
+    "accessories": "Collegare prodotti correlati per sezione Potrebbe piacerti anche"
+  },
+  "contactinfo": {
+    "phone": "Numero reale in ps_contactinfo",
+    "email": "Email reale",
+    "whatsapp": "Link WhatsApp nel pannello contatti"
+  }
+}

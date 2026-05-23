@@ -1,27 +1,67 @@
 /**
  * Classic Gucci — design minimalista di lusso
- * Font: Montserrat ovunque (come gucci.com)
+ * Token semantici + scale Gucci (menu 11px, tracking 0.15em)
  */
 
 /* ==========================================================================
-   Tipografia globale — Montserrat
+   Design tokens — un punto per colori e font
    ========================================================================== */
 
 :root {
-  --gucci-font-sans: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Semantici (facili da leggere / allineare al brief) */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9f9f9;
+  --text-color: #111111;
+  --text-muted: #666666;
+  --border-color: #e5e5e5;
+  --color-black: #000000;
+  /* Sans UI/menu — Montserrat ≈ gucci.com (uppercase, tracking) */
+  --font-sans: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Serif titoli editoriali — Playfair ≈ logo/titoli PDP */
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  /* Per provare Cormorant + Inter: aggiorna head.tpl e sostitu qui i valori */
+
+  /* Alias legacy (--gucci-*) usati nel resto del foglio */
+  --gucci-font-sans: var(--font-sans);
+  --gucci-font-serif: var(--font-serif);
   --gucci-text-xs: 11px;
   --gucci-text-sm: 12px;
   --gucci-text-base: 13px;
   --gucci-text-md: 14px;
   --gucci-ls-wide: 0.12em;
   --gucci-ls-wider: 0.15em;
-  --gucci-color-black: #000000;
-  --gucci-color-text: #111111;
-  --gucci-color-muted: #666666;
-  --gucci-color-border: #e5e5e5;
+  --gucci-color-black: var(--color-black);
+  --gucci-color-text: var(--text-color);
+  --gucci-color-muted: var(--text-muted);
+  --gucci-color-border: var(--border-color);
   --gucci-fw-regular: 400;
   --gucci-fw-medium: 500;
-  --gucci-font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+
+  /* Drawer menu + contatti — stessa scala tipografica */
+  --gucci-drawer-text: 15px;
+  --gucci-drawer-text-sm: 13px;
+  --gucci-drawer-line-height: 1.5;
+  --gucci-drawer-letter-spacing: 0.01em;
+  --gucci-drawer-padding-x: 1.5rem;
+  --gucci-drawer-duration: 0.55s;
+  --gucci-drawer-backdrop-duration: 0.5s;
+  --gucci-drawer-submenu-duration: 0.5s;
+  --gucci-drawer-ease: linear;
+
+  /* Catalogo PDP / PLP — scala unificata gucci.com */
+  --gucci-type-base: 14px;
+  --gucci-type-secondary: 13px;
+  --gucci-type-caption: 12px;
+  --gucci-type-ui: 11px;
+  --gucci-type-leading: 1.55;
+  --gucci-type-leading-loose: 1.75;
+  --gucci-type-letter: 0.01em;
+  --gucci-type-plp-title: 15px;
+  --gucci-type-card-title: 14px;
+  --gucci-type-card-price: 13px;
+  --gucci-type-price: 15px;
+  --gucci-type-pdp-title-min: 1.375rem;
+  --gucci-type-pdp-title-max: 1.75rem;
 }
 
 body,
@@ -77,8 +117,8 @@ body,
 .main {
   font-size: var(--gucci-text-sm);
   font-weight: var(--gucci-fw-regular);
-  color: var(--gucci-color-text);
-  background-color: #ffffff !important;
+  color: var(--text-color);
+  background-color: var(--bg-primary) !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -95,6 +135,14 @@ h1, h2, h3, h4, h5, h6,
   letter-spacing: 0.08em;
 }
 
+/* Titoli catalogo — no tracking “header” globale */
+#product .gucci-product-page-title,
+.gucci-plp-title,
+#category .gucci-plp-title,
+#search .gucci-plp-title {
+  letter-spacing: var(--gucci-type-letter);
+}
+
 /* Icone Material — non ereditare Montserrat */
 .material-icons,
 .material-icons-outlined,
@@ -109,17 +157,14 @@ h1, h2, h3, h4, h5, h6,
 #header a,
 #header .top-menu a,
 .nav a,
-.footer-container a,
-.footer-container .h3,
-.gucci-footer a,
-.gucci-footer .gucci-footer-col-title,
+.footer-container:not(.gucci-footer) a,
+.footer-container:not(.gucci-footer) .h3,
 .header-nav a,
 #_desktop_user_info a,
 #_desktop_cart a,
 .block-contact a,
 .account-list a,
-.breadcrumb a,
-#footer a {
+.breadcrumb a {
   font-family: var(--gucci-font-sans) !important;
   font-size: var(--gucci-text-sm);
   font-weight: var(--gucci-fw-regular);
@@ -346,20 +391,53 @@ section.carousel {
   overflow: hidden;
 }
 
-.gucci-nav-drawer {
-  right: 0;
-  width: 100%;
-  max-width: 100%;
-}
-
-.gucci-contact-drawer {
-  left: auto;
-  right: 0;
-  width: min(480px, 100%);
+/* Menu — pannello destro stile gucci.com (drawer hamburger) */
+#mobile_top_menu_wrapper.gucci-nav-drawer {
+  left: auto !important;
+  right: 0 !important;
+  width: min(480px, 100%) !important;
+  max-width: min(480px, 100%) !important;
   box-shadow: -4px 0 24px rgba(0, 0, 0, 0.08);
   z-index: 10075;
   transform: translateX(100%);
-  transition: transform 0.3s ease;
+  transition: transform var(--gucci-drawer-duration) var(--gucci-drawer-ease);
+  font-size: var(--gucci-drawer-text);
+  line-height: var(--gucci-drawer-line-height);
+}
+
+#mobile_top_menu_wrapper.gucci-nav-drawer.is-open {
+  transform: translateX(0);
+}
+
+.gucci-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10070;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--gucci-drawer-backdrop-duration) var(--gucci-drawer-ease),
+    visibility var(--gucci-drawer-backdrop-duration) var(--gucci-drawer-ease);
+}
+
+.gucci-nav-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Contatti — pannello sinistro (stessa larghezza del menu) */
+.gucci-contact-drawer {
+  left: 0;
+  right: auto;
+  width: min(480px, 100%) !important;
+  max-width: min(480px, 100%) !important;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
+  z-index: 10075;
+  transform: translateX(-100%);
+  transition: transform var(--gucci-drawer-duration) var(--gucci-drawer-ease);
+  font-size: var(--gucci-drawer-text);
+  line-height: var(--gucci-drawer-line-height);
 }
 
 .gucci-contact-drawer.is-open {
@@ -372,21 +450,22 @@ section.carousel {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  min-height: 4.5rem;
-  padding: 1.5rem 1.75rem 1rem;
+  min-height: 0;
+  padding: 1.25rem var(--gucci-drawer-padding-x) 0.75rem;
   border-bottom: none;
 }
 
 .gucci-contact-drawer-title {
   margin: 0;
-  font-size: var(--gucci-text-sm);
-  font-weight: var(--gucci-fw-medium);
-  letter-spacing: var(--gucci-ls-wider);
-  text-transform: uppercase;
+  font-size: var(--gucci-drawer-text) !important;
+  font-weight: var(--gucci-fw-medium) !important;
+  letter-spacing: var(--gucci-drawer-letter-spacing) !important;
+  text-transform: none;
   color: var(--gucci-color-black);
-  line-height: 1.2;
+  line-height: var(--gucci-drawer-line-height) !important;
 }
 
+.gucci-drawer-close-circle,
 .gucci-contact-close-circle {
   display: inline-flex;
   align-items: center;
@@ -402,17 +481,19 @@ section.carousel {
   padding: 0;
 }
 
+.gucci-drawer-close-circle .material-icons,
 .gucci-contact-close-circle .material-icons {
   font-size: 1.125rem;
   color: #ffffff !important;
 }
 
+.gucci-drawer-close-circle:hover,
 .gucci-contact-close-circle:hover {
   opacity: 0.75;
 }
 
 .gucci-contact-drawer-body {
-  padding: 0 1.75rem 2.5rem;
+  padding: 0 var(--gucci-drawer-padding-x) 2rem;
 }
 
 .gucci-contact-panel {
@@ -430,15 +511,19 @@ section.carousel {
   color: var(--gucci-color-black) !important;
   text-decoration: none !important;
   text-transform: none !important;
-  letter-spacing: 0.02em !important;
-  font-size: var(--gucci-text-sm) !important;
-  font-weight: var(--gucci-fw-regular) !important;
+  letter-spacing: var(--gucci-drawer-letter-spacing) !important;
+  font-size: var(--gucci-drawer-text) !important;
+  font-weight: var(--gucci-fw-medium) !important;
+  line-height: var(--gucci-drawer-line-height) !important;
 }
 
 .gucci-contact-channel-text {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
+  line-height: inherit !important;
   text-decoration: underline;
   text-underline-offset: 3px;
-  line-height: 1.5;
 }
 
 .gucci-contact-channel-link:hover .gucci-contact-channel-text {
@@ -470,11 +555,11 @@ section.carousel {
 
 .gucci-contact-channel-hours {
   margin: 0.75rem 0 0 1.75rem;
-  font-size: var(--gucci-text-xs);
-  font-weight: var(--gucci-fw-regular);
-  line-height: 1.6;
+  font-size: var(--gucci-drawer-text-sm) !important;
+  font-weight: var(--gucci-fw-regular) !important;
+  line-height: var(--gucci-drawer-line-height) !important;
   color: var(--gucci-color-muted);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--gucci-drawer-letter-spacing) !important;
   text-transform: none;
 }
 
@@ -485,18 +570,19 @@ section.carousel {
 
 .gucci-contact-assistance-title {
   margin: 0 0 0.75rem;
-  font-size: var(--gucci-text-sm);
-  font-weight: var(--gucci-fw-medium);
-  letter-spacing: 0.02em;
+  font-size: var(--gucci-drawer-text) !important;
+  font-weight: var(--gucci-fw-medium) !important;
+  letter-spacing: var(--gucci-drawer-letter-spacing) !important;
   text-transform: none;
   color: var(--gucci-color-black);
-  line-height: 1.5;
+  line-height: var(--gucci-drawer-line-height) !important;
 }
 
 .gucci-contact-assistance-link {
-  font-size: var(--gucci-text-sm) !important;
-  font-weight: var(--gucci-fw-regular) !important;
-  letter-spacing: 0.02em !important;
+  font-size: var(--gucci-drawer-text) !important;
+  font-weight: var(--gucci-fw-medium) !important;
+  letter-spacing: var(--gucci-drawer-letter-spacing) !important;
+  line-height: var(--gucci-drawer-line-height) !important;
   text-transform: none !important;
   color: var(--gucci-color-black) !important;
   text-decoration: underline !important;
@@ -508,8 +594,8 @@ section.carousel {
 }
 
 .gucci-contact-channel-text--caps {
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  text-transform: none;
+  letter-spacing: var(--gucci-drawer-letter-spacing);
 }
 
 .gucci-contact-backdrop {
@@ -519,7 +605,9 @@ section.carousel {
   background: rgba(0, 0, 0, 0.35);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
+  transition:
+    opacity var(--gucci-drawer-backdrop-duration) var(--gucci-drawer-ease),
+    visibility var(--gucci-drawer-backdrop-duration) var(--gucci-drawer-ease);
 }
 
 .gucci-contact-backdrop.is-open {
@@ -536,18 +624,36 @@ body.gucci-contact-open {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  min-height: 4rem;
-  padding: 1.25rem 2.5rem 0.75rem;
-  border-bottom: 1px solid var(--gucci-color-border);
+  min-height: 4.5rem;
+  padding: 1.5rem 1.75rem 1rem;
+  border-bottom: none;
+}
+
+/* Header menu drawer — X in cerchio nero in alto a destra */
+.gucci-nav-drawer-header {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 1.25rem var(--gucci-drawer-padding-x) 0.75rem;
+  min-height: 0;
 }
 
 .gucci-drawer-body {
   flex: 1 1 auto;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 0 2.5rem 2rem;
+  padding: 0 1.75rem 2.5rem;
   display: flex;
   flex-direction: column;
+}
+
+.gucci-nav-drawer-body {
+  padding: 0 var(--gucci-drawer-padding-x) 2rem;
+}
+
+.gucci-nav-drawer-nav {
+  flex: 0 1 auto;
 }
 
 .gucci-drawer-close {
@@ -585,17 +691,11 @@ body.gucci-contact-open {
   visibility: visible !important;
   opacity: 1 !important;
   height: auto !important;
-  overflow: visible !important;
+  overflow: hidden !important;
 }
 
 body.gucci-menu-open {
   overflow: hidden;
-}
-
-body.gucci-menu-open #wrapper,
-body.gucci-menu-open #notifications,
-body.gucci-menu-open #footer {
-  display: none !important;
 }
 
 .gucci-drawer-close {
@@ -610,29 +710,80 @@ body.gucci-menu-open #footer {
   color: #000000;
 }
 
-.gucci-nav-drawer .gucci-drawer-close .material-icons {
-  font-size: 22px;
-}
-
 .gucci-drawer-footer {
   margin-top: auto;
   padding-top: 2rem;
+  padding-bottom: 0;
+  border-top: none;
+}
+
+.gucci-nav-drawer-footer {
+  margin-top: 3.5rem;
+  padding-top: 0;
   padding-bottom: 1rem;
-  border-top: 1px solid #eeeeee;
 }
 
 .gucci-drawer-link {
   display: block;
   font-size: var(--gucci-text-sm);
   font-weight: var(--gucci-fw-regular);
-  letter-spacing: var(--gucci-ls-wider);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 1.25rem;
-  color: var(--gucci-color-text) !important;
+  color: var(--gucci-color-black) !important;
+  text-decoration: none !important;
 }
 
 .gucci-drawer-link:last-child {
   margin-bottom: 0;
+}
+
+.gucci-nav-drawer .gucci-drawer-link,
+.gucci-nav-drawer-footer .gucci-drawer-link {
+  font-size: var(--gucci-drawer-text) !important;
+  font-weight: var(--gucci-fw-medium) !important;
+  letter-spacing: var(--gucci-drawer-letter-spacing) !important;
+  text-transform: none !important;
+  line-height: var(--gucci-drawer-line-height) !important;
+  margin-bottom: 0.875rem;
+  padding: 0.35rem 0;
+  text-align: left;
+  width: 100%;
+}
+
+.gucci-nav-drawer .gucci-drawer-link:hover,
+.gucci-nav-drawer-footer .gucci-drawer-link:hover {
+  opacity: 0.55;
+}
+
+.gucci-nav-drawer .gucci-drawer-link--underline,
+.gucci-nav-drawer-footer .gucci-drawer-link--underline {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+
+.gucci-nav-drawer-utilities {
+  display: none !important;
+}
+
+/* Override regole globali #header (12px uppercase) nei drawer */
+#header .gucci-nav-drawer .gucci-menu-link,
+#header .gucci-nav-drawer .gucci-drawer-link,
+#header .gucci-contact-drawer .gucci-contact-channel-link,
+#header .gucci-contact-drawer .gucci-contact-assistance-link,
+#header .gucci-contact-drawer .gucci-contact-assistance-title,
+#header .gucci-contact-drawer .gucci-contact-drawer-title {
+  font-size: var(--gucci-drawer-text) !important;
+  font-weight: var(--gucci-fw-medium) !important;
+  letter-spacing: var(--gucci-drawer-letter-spacing) !important;
+  line-height: var(--gucci-drawer-line-height) !important;
+  text-transform: none !important;
+}
+
+#header .gucci-nav-drawer .gucci-sub-menu .gucci-menu-link,
+#header .gucci-contact-drawer .gucci-contact-channel-hours {
+  font-size: var(--gucci-drawer-text-sm) !important;
+  font-weight: var(--gucci-fw-regular) !important;
 }
 
 .gucci-nav-drawer .gucci-top-menu,
@@ -643,36 +794,76 @@ body.gucci-menu-open #footer {
   padding: 0;
 }
 
-.gucci-nav-drawer .gucci-menu-item {
+/* Menu drawer — lista verticale gucci.com */
+.gucci-nav-drawer .gucci-top-menu[data-depth="0"] > .gucci-menu-item {
   display: block;
   width: 100%;
-  border-bottom: 1px solid #eeeeee;
+  margin: 0;
+  padding: 0;
+  border-bottom: none;
+}
+
+.gucci-nav-drawer .gucci-menu-item,
+.gucci-nav-drawer .top-menu li {
+  display: block;
+  width: 100%;
+  border: none !important;
+  border-bottom: none !important;
 }
 
 .gucci-nav-drawer .gucci-menu-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  min-height: 3.25rem;
-  padding-right: 0;
+  gap: 0.5rem;
+  min-height: 0;
+  padding: 0;
+}
+
+.gucci-nav-drawer .gucci-top-menu[data-depth="0"] > .gucci-menu-item > .gucci-menu-row {
+  padding: 0.6875rem 0;
 }
 
 .gucci-nav-drawer .gucci-menu-link {
   flex: 1 1 auto;
   display: block !important;
   padding: 0 !important;
-  font-size: var(--gucci-text-sm) !important;
+  font-size: var(--gucci-drawer-text) !important;
   font-weight: var(--gucci-fw-medium) !important;
-  letter-spacing: var(--gucci-ls-wider);
-  text-transform: uppercase;
-  line-height: 1.4 !important;
-  color: var(--gucci-color-text) !important;
+  letter-spacing: var(--gucci-drawer-letter-spacing) !important;
+  text-transform: none !important;
+  line-height: var(--gucci-drawer-line-height) !important;
+  color: var(--gucci-color-black) !important;
   text-decoration: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
 }
 
 .gucci-nav-drawer .gucci-menu-link:hover {
   opacity: 0.55;
+}
+
+.gucci-nav-drawer .gucci-menu-link:focus,
+.gucci-nav-drawer .gucci-menu-link:active,
+.gucci-nav-drawer .gucci-menu-link:focus-visible,
+.gucci-nav-drawer .gucci-menu-expand:focus,
+.gucci-nav-drawer .gucci-menu-expand:focus-visible,
+.gucci-nav-drawer .gucci-menu-expand:active,
+.gucci-nav-drawer .dropdown-item:focus,
+.gucci-nav-drawer .dropdown-item.active {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+  opacity: 1;
+}
+
+.gucci-nav-drawer .gucci-menu-item.current > .gucci-menu-row .gucci-menu-link,
+.gucci-nav-drawer .gucci-menu-item.current .gucci-menu-link {
+  font-weight: var(--gucci-fw-medium) !important;
+  opacity: 1;
 }
 
 .gucci-nav-drawer .gucci-menu-expand {
@@ -680,41 +871,80 @@ body.gucci-menu-open #footer {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   padding: 0;
+  margin: 0;
+  margin-left: 0.25rem;
   cursor: pointer;
-  color: #111111;
+  color: var(--gucci-color-black);
+  opacity: 0.45;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
 }
 
 .gucci-nav-drawer .gucci-menu-expand .material-icons {
-  font-size: 1.25rem;
-  transition: transform 0.2s ease;
+  font-size: 1rem;
+  transition: transform var(--gucci-drawer-submenu-duration) var(--gucci-drawer-ease);
+}
+
+.gucci-nav-drawer .gucci-menu-expand:hover {
+  opacity: 0.85;
 }
 
 .gucci-nav-drawer .gucci-menu-expand[aria-expanded="true"] .material-icons {
   transform: rotate(90deg);
 }
 
-/* Sottomenu accordion — chiusi di default (Bootstrap 4 alpha + 4.x) */
-.gucci-nav-drawer .gucci-sub-menu.collapse:not(.show):not(.in) {
-  display: none !important;
-}
-
-.gucci-nav-drawer .gucci-sub-menu.collapse.show,
-.gucci-nav-drawer .gucci-sub-menu.collapse.in {
+/* Sottomenu — chiusi di default, apertura lineare */
+.gucci-nav-drawer .gucci-sub-menu,
+.gucci-nav-drawer .sub-menu.js-sub-menu {
   display: block !important;
-}
-
-.gucci-nav-drawer .gucci-sub-menu {
   position: static !important;
-  visibility: visible !important;
-  opacity: 1 !important;
+  max-height: 0;
   box-shadow: none !important;
   border: none !important;
   margin: 0 !important;
-  padding: 0 0 0.75rem 0 !important;
+  padding: 0 !important;
   background: transparent !important;
+  overflow: hidden !important;
+  opacity: 1;
+  visibility: visible;
+  transition: max-height var(--gucci-drawer-submenu-duration) var(--gucci-drawer-ease);
+}
+
+.gucci-nav-drawer .gucci-sub-menu[hidden],
+.gucci-nav-drawer .sub-menu.js-sub-menu[hidden] {
+  display: none !important;
+  max-height: 0 !important;
+}
+
+.gucci-nav-drawer .gucci-sub-menu.is-open,
+.gucci-nav-drawer .sub-menu.js-sub-menu.is-open {
+  max-height: 32rem;
+  padding-bottom: 0.25rem !important;
+}
+
+.gucci-nav-drawer .gucci-sub-menu.collapse.show:not(.is-open),
+.gucci-nav-drawer .gucci-sub-menu.collapse.in:not(.is-open),
+.gucci-nav-drawer .sub-menu.collapse.show:not(.is-open),
+.gucci-nav-drawer .sub-menu.collapse.in:not(.is-open) {
+  display: none !important;
+  max-height: 0 !important;
+}
+
+.gucci-nav-drawer .gucci-menu-link,
+.gucci-nav-drawer .gucci-menu-expand {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gucci-nav-drawer .gucci-sub-menu > .gucci-top-menu,
+.gucci-nav-drawer .sub-menu > .gucci-top-menu,
+.gucci-nav-drawer .sub-menu > .top-menu {
+  margin: 0;
+  padding: 0;
 }
 
 .gucci-nav-drawer .gucci-sub-menu .gucci-menu-item {
@@ -722,15 +952,21 @@ body.gucci-menu-open #footer {
 }
 
 .gucci-nav-drawer .gucci-sub-menu .gucci-menu-row {
-  min-height: 2.5rem;
-  padding-left: 0.5rem;
+  padding: 0.5rem 0 0.5rem 0.75rem;
 }
 
 .gucci-nav-drawer .gucci-sub-menu .gucci-menu-link {
-  font-size: var(--gucci-text-sm) !important;
+  font-size: var(--gucci-drawer-text-sm) !important;
   font-weight: var(--gucci-fw-regular) !important;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--gucci-drawer-letter-spacing) !important;
   text-transform: none !important;
+  color: var(--gucci-color-black) !important;
+  line-height: var(--gucci-drawer-line-height) !important;
+}
+
+.gucci-nav-drawer .gucci-sub-menu .gucci-menu-link:hover {
+  opacity: 0.55;
+  text-decoration: none !important;
 }
 
 /* Ricerca — overlay bianco full-screen stile gucci.com */
@@ -1058,11 +1294,6 @@ body#search .gucci-price {
   padding: 0 1.5rem;
 }
 
-.gucci-footer-top {
-  padding: 2rem 0 2.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-}
-
 .gucci-footer-heading {
   font-size: var(--gucci-text-sm);
   font-weight: var(--gucci-fw-medium);
@@ -1072,7 +1303,6 @@ body#search .gucci-price {
   margin: 0 0 1.25rem;
 }
 
-.gucci-footer-store-form,
 .gucci-footer-newsletter-row {
   display: flex;
   align-items: flex-end;
@@ -1277,12 +1507,12 @@ body#search .gucci-price {
 }
 
 .gucci-product-miniature .product-title {
-  font-size: var(--gucci-text-base);
-  font-weight: var(--gucci-fw-regular);
-  letter-spacing: 0.02em;
+  font-size: var(--gucci-type-card-title);
+  font-weight: var(--gucci-fw-medium);
+  letter-spacing: var(--gucci-type-letter);
   text-transform: none;
-  margin: 0.75rem 0 0.25rem;
-  line-height: 1.4;
+  margin: 1rem 0 0.35rem;
+  line-height: var(--gucci-type-leading);
 }
 
 .gucci-product-miniature .product-title a {
@@ -1295,10 +1525,10 @@ body#search .gucci-price {
 }
 
 .gucci-product-miniature .gucci-price {
-  font-size: var(--gucci-text-sm);
+  font-size: var(--gucci-type-card-price);
   font-weight: var(--gucci-fw-regular);
   color: var(--gucci-color-muted);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--gucci-type-letter);
 }
 
 .gucci-product-miniature .product-price-and-shipping {
@@ -1329,19 +1559,20 @@ body#search .gucci-price {
    ========================================================================== */
 
 #product .gucci-product-page-title {
-  font-size: 16px;
+  font-family: var(--gucci-font-serif) !important;
+  font-size: clamp(var(--gucci-type-pdp-title-min), 2.2vw, var(--gucci-type-pdp-title-max)) !important;
   font-weight: 400;
-  letter-spacing: -0.02em;
-  text-transform: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--gucci-color-black);
-  margin: 0 0 0.5rem;
-  line-height: 1.5;
+  margin: 0 0 0.75rem;
+  line-height: 1.35;
 }
 
 #product .gucci-product-prices .gucci-price-current {
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 0;
+  font-size: var(--gucci-type-price);
+  font-weight: var(--gucci-fw-regular);
+  letter-spacing: var(--gucci-type-letter);
   color: var(--gucci-color-black);
   margin-bottom: 1.25rem;
 }
@@ -1358,11 +1589,11 @@ body#search .gucci-price {
 
 #product .product-description,
 #product .product-description-short {
-  font-size: var(--gucci-text-sm);
+  font-size: var(--gucci-type-base);
   font-weight: var(--gucci-fw-regular);
-  line-height: 1.8;
+  line-height: var(--gucci-type-leading-loose);
   color: var(--gucci-color-muted);
-  max-width: 420px;
+  max-width: 36rem;
 }
 
 #product .product-actions .add-to-cart,
@@ -1438,7 +1669,7 @@ body#search .gucci-price {
   padding-top: 2rem;
 }
 
-/* Homepage — una sola griglia, niente blocchi demo Classic */
+/* Homepage — nascondi blocchi demo duplicati, mantieni banner + 1 griglia */
 #index #custom-text,
 #index .ps_customtext,
 #index .special-products,
@@ -1446,6 +1677,10 @@ body#search .gucci-price {
 #index .product-accessories,
 #index .featured-products-footer,
 #index .all-product-link {
+  display: none !important;
+}
+
+#index .gucci-home-modules > .featured-products ~ .featured-products {
   display: none !important;
 }
 
@@ -1617,25 +1852,8 @@ body#search .gucci-price {
   flex: 0 0 100% !important;
 }
 
-#products .page-header h1,
-#category h1 {
-  font-size: 1.5rem;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  margin: 2rem 0 3rem;
-  font-weight: 400;
-}
-
 #products .products {
   justify-content: flex-start;
-}
-
-#products .product-title a {
-  font-size: var(--gucci-text-base);
-  font-weight: var(--gucci-fw-regular);
-  text-transform: none;
-  letter-spacing: 0.02em;
 }
 
 /* Filtri e ordinamento sobri */
@@ -1750,9 +1968,6 @@ body#product .gucci-pdp-gallery--rest {
 
 body#product .gucci-pdp-gallery-col:empty {
   display: none;
-  margin: 0;
-  width: 0;
-  max-width: 0;
 }
 
 body#product .gucci-pdp-gallery-slide--hero {
@@ -1788,7 +2003,6 @@ body#product .gucci-pdp-gallery-slide--hero .gucci-pdp-gallery-image {
   grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
     "gallery"
-    "summary"
     "buybox"
     "details";
   gap: 0;
@@ -1798,25 +2012,16 @@ body#product .gucci-pdp-gallery-slide--hero .gucci-pdp-gallery-image {
   padding: 0;
 }
 
-#product .gucci-pdp-hero {
-  position: relative;
-  background: #f4f4f4;
-}
-
 #product .gucci-pdp-gallery-col {
   grid-area: gallery;
   position: relative;
   width: 100%;
 }
 
-#product .gucci-pdp-summary {
-  grid-area: summary;
-  padding: 1.75rem 1.5rem 0;
-}
-
 #product .gucci-pdp-buybox-col {
   grid-area: buybox;
   width: 100%;
+  padding: 1.75rem 1.5rem 0;
 }
 
 #product .gucci-pdp-details-col {
@@ -1832,7 +2037,7 @@ body#product .gucci-pdp-gallery-slide--hero .gucci-pdp-gallery-image {
 #product .gucci-pdp-gallery-slide {
   margin: 0;
   width: 100%;
-  background: #f4f4f4;
+  background: #ffffff;
 }
 
 #product .gucci-pdp-gallery-slide + .gucci-pdp-gallery-slide {
@@ -2121,14 +2326,9 @@ body#product .gucci-pdp-gallery-slide--hero .gucci-pdp-gallery-image {
   #product .gucci-pdp-layout {
     grid-template-columns: minmax(0, 1fr) min(420px, 38vw);
     grid-template-areas:
-      "summary buybox"
-      "details buybox"
-      "gallery buybox";
+      "gallery buybox"
+      "details buybox";
     align-items: start;
-  }
-
-  #product .gucci-pdp-summary {
-    padding: 2rem 2.5rem 0;
   }
 
   #product .gucci-pdp-details-col {
@@ -2159,7 +2359,6 @@ body#product .gucci-pdp-gallery-slide--hero .gucci-pdp-gallery-image {
     grid-template-columns: minmax(0, 1fr) 480px;
   }
 
-  #product .gucci-pdp-summary,
   #product .gucci-pdp-details-col {
     max-width: 785px;
   }
@@ -2342,12 +2541,9 @@ body#product .gucci-pdp-gallery-slide--hero .gucci-pdp-gallery-image {
   letter-spacing: 0.05em;
 }
 
-.gucci-nav-drawer .gucci-menu-item {
-  border-bottom-color: var(--gucci-color-border);
-}
-
-.gucci-drawer-footer {
-  border-top-color: var(--gucci-color-border);
+.gucci-nav-drawer hr,
+.gucci-nav-drawer .separator {
+  display: none !important;
 }
 
 #footer .container,
@@ -2418,7 +2614,7 @@ body#product #footer .container {
 #index .product-miniature .product-thumbnail img,
 #products .product-miniature .product-thumbnail img {
   object-fit: contain;
-  background: #f8f8f8;
+  background: #ffffff;
 }
 
 .btn,
@@ -2544,28 +2740,13 @@ body#product #footer .container {
   width: 100%;
 }
 
-/* PLP */
-.gucci-plp-header {
-  padding: 2.5rem 1.5rem 1rem;
-  text-align: center;
-}
-
-.gucci-plp-title {
-  font-size: 1.25rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin: 0 0 1rem;
-}
-
+/* PLP — vedi sezione “Catalogo — tipografia” in fondo al file */
 .gucci-plp-description {
-  max-width: 640px;
+  max-width: 40rem;
   margin: 0 auto;
+  font-size: var(--gucci-type-base);
   color: var(--gucci-color-muted);
-  line-height: 1.8;
-}
-
-.gucci-plp-toolbar {
-  padding: 0 1.5rem 2rem;
+  line-height: var(--gucci-type-leading-loose);
 }
 
 .gucci-plp-toolbar-inner {
@@ -2575,31 +2756,17 @@ body#product #footer .container {
   gap: 1rem;
 }
 
-.gucci-plp-count p {
-  margin: 0;
-  font-size: var(--gucci-text-xs);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gucci-color-muted);
-}
-
-.gucci-plp-filter-btn {
-  font-size: var(--gucci-text-xs);
-  letter-spacing: var(--gucci-ls-wide);
-  text-transform: uppercase;
-  border-bottom: 1px solid var(--gucci-color-black);
-  padding-bottom: 2px;
-}
-
 .gucci-plp-showing {
   margin-top: 1rem;
-  font-size: var(--gucci-text-xs);
   color: var(--gucci-color-muted);
   text-align: center;
 }
 
 #products {
-  padding: 0 0.5rem 4rem;
+  padding: 0 1.5rem 5rem;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Account drawer */
@@ -2617,7 +2784,7 @@ body#product #footer .container {
   background: rgba(0, 0, 0, 0.35);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  transition: opacity var(--gucci-drawer-backdrop-duration) var(--gucci-drawer-ease);
 }
 
 .gucci-account-backdrop.is-open {
@@ -2630,7 +2797,7 @@ body#product #footer .container {
   height: 100vh;
   background: #ffffff;
   transform: translateX(100%);
-  transition: transform 0.3s ease;
+  transition: transform var(--gucci-drawer-duration) var(--gucci-drawer-ease);
   box-shadow: -8px 0 24px rgba(0, 0, 0, 0.08);
 }
 
@@ -2851,6 +3018,587 @@ body#registration .btn-primary {
     display: block !important;
   }
 
+  .gucci-plp-header,
+  .gucci-plp-toolbar,
+  #products {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/* ==========================================================================
+   Sprint 2 — Home: banner full-bleed + 1 griglia prodotti
+   ========================================================================== */
+
+#index .gucci-home-modules {
+  width: 100%;
+}
+
+#index .gucci-home-modules .banner,
+#index .gucci-home-modules .block_banner,
+#index .gucci-home-modules a.banner {
+  display: block !important;
+  width: 100%;
+  margin: 0;
+}
+
+#index .gucci-home-modules .banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#index .gucci-home-modules > .featured-products {
+  display: block !important;
+  padding: 3rem 1.5rem 4rem;
+}
+
+#index .gucci-home-modules > .featured-products ~ .featured-products,
+#index .special-products,
+#index .new-products,
+#index .bestsellers-products,
+#index #custom-text,
+#index .ps_customtext,
+#index .product-accessories,
+#index .featured-products-footer,
+#index .all-product-link,
+#index [id^="blockEmailSubscription"] {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Sprint 3 — PLP filtri drawer + subcategories
+   ========================================================================== */
+
+#category #subcategories,
+#search #subcategories,
+.gucci-plp-description {
+  display: none !important;
+}
+
+#category #search_filters_wrapper,
+#search #search_filters_wrapper,
+.gucci-filters-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 10040;
+  width: min(100%, 420px);
+  height: 100vh;
+  background: #ffffff;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  padding: 1.5rem;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.08);
+}
+
+#category #search_filters_wrapper.is-open,
+#search #search_filters_wrapper.is-open,
+.gucci-filters-drawer.is-open {
+  transform: translateX(0);
+}
+
+.gucci-facets-title,
+.gucci-plp-active-filters-title {
+  font-size: var(--gucci-text-sm);
+  letter-spacing: var(--gucci-ls-wide);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.gucci-facets-clear-btn {
+  font-size: var(--gucci-text-xs);
+  letter-spacing: var(--gucci-ls-wide);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--gucci-color-black);
+  margin-bottom: 1.5rem;
+}
+
+#search_filters .facet-title,
+#search_filters .h6 {
+  font-size: var(--gucci-text-xs) !important;
+  letter-spacing: var(--gucci-ls-wide);
+  text-transform: uppercase;
+}
+
+#search_filters .custom-checkbox input[type="checkbox"]:checked + span {
+  background: var(--gucci-color-black) !important;
+  border-color: var(--gucci-color-black) !important;
+}
+
+.gucci-plp-active-filters {
+  padding: 0 1.5rem 1rem;
+}
+
+/* ==========================================================================
+   Sprint 4 — Newsletter solo nel footer nero
+   ========================================================================== */
+
+.gucci-footer-before,
+body:not(#index) .gucci-footer-before {
+  display: none !important;
+}
+
+body #wrapper > [id^="blockEmailSubscription"],
+#content-wrapper [id^="blockEmailSubscription"],
+.page-home [id^="blockEmailSubscription"],
+#products ~ [id^="blockEmailSubscription"] {
+  display: none !important;
+}
+
+.gucci-footer-newsletter-wrap {
+  padding: 2rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.gucci-footer-newsletter-wrap .block_newsletter,
+.gucci-footer-newsletter-wrap #blockEmailSubscription {
+  display: block !important;
+}
+
+/* ==========================================================================
+   Sprint 5 — Cart / checkout / account
+   ========================================================================== */
+
+body#cart .blockreassurance,
+body#checkout .blockreassurance,
+body#cart #block-reassurance,
+body#checkout #block-reassurance,
+body#cart .hook-reassurance,
+body#checkout .hook-reassurance {
+  display: none !important;
+}
+
+.gucci-cart-page,
+.gucci-checkout-page,
+.gucci-auth-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.gucci-cart-title,
+.gucci-checkout-title,
+.gucci-auth-page .page-title {
+  text-align: center;
+  font-size: 1.25rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 2.5rem;
+}
+
+.gucci-cart-container,
+.gucci-cart-summary,
+.gucci-checkout-summary {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.gucci-cart-continue,
+.gucci-auth-alt a {
+  font-size: var(--gucci-text-xs);
+  letter-spacing: var(--gucci-ls-wide);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--gucci-color-black);
+}
+
+.gucci-cart-empty {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.gucci-account-links {
+  display: grid;
+  gap: 0;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.gucci-account-link {
+  display: block;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--gucci-color-border);
+  font-size: var(--gucci-text-sm);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gucci-color-text) !important;
+}
+
+.gucci-account-logout {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.gucci-account-logout a {
+  font-size: var(--gucci-text-xs);
+  letter-spacing: var(--gucci-ls-wide);
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Sprint 6 — Variant chips, token color, overflow, cart modal
+   ========================================================================== */
+
+.gucci-variant-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+}
+
+.gucci-variant-size-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--gucci-color-border);
+  font-size: var(--gucci-text-xs);
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.gucci-variant-size-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gucci-variant-size-input:checked + .gucci-variant-size-label,
+.gucci-variant-size-input:focus-visible + .gucci-variant-size-label {
+  border-color: var(--gucci-color-black);
+  outline: 1px solid var(--gucci-color-black);
+  outline-offset: 1px;
+}
+
+.gucci-variant-select {
+  display: none !important;
+}
+
+a:not(.gucci-footer a):not(#footer .gucci-footer a),
+.page-link,
+.text-primary {
+  color: #111111 !important;
+}
+
+a:not(.gucci-footer a):not(#footer .gucci-footer a):hover {
+  color: #666666 !important;
+}
+
+.blockwishlist,
+.wishlist-button,
+.wishlist-modal,
+#blockcart-modal + .modal-backdrop {
+  /* wishlist hidden; cart modal backdrop enhanced via JS class */
+}
+
+.blockwishlist,
+.wishlist-button-add,
+.wishlist-list {
+  display: none !important;
+}
+
+body.gucci-cart-modal-open {
+  overflow: hidden;
+}
+
+.gucci-cart-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 10060;
+}
+
+.gucci-cart-modal.show,
+.gucci-cart-modal.in {
+  background: transparent;
+}
+
+html,
+body,
+#page,
+#wrapper,
+.gucci-page-container {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+#index .gucci-page-container,
+#index #wrapper {
+  overflow-x: clip;
+}
+
+/* ==========================================================================
+   Footer — testi bianchi su nero (gucci.com)
+   ========================================================================== */
+
+.gucci-footer,
+.gucci-footer-inner,
+#footer.gucci-footer,
+#footer .gucci-footer {
+  color: #ffffff;
+}
+
+.gucci-footer a,
+.gucci-footer .gucci-footer-links a,
+.gucci-footer .links a,
+.gucci-footer .links ul li a,
+.gucci-footer .account-list a,
+.gucci-footer .block-contact a,
+.gucci-footer .block-contact-title,
+.gucci-footer .gucci-footer-col-title,
+.gucci-footer .gucci-footer-accordion-trigger,
+.gucci-footer .h3,
+.gucci-footer p,
+.gucci-footer span,
+.gucci-footer label,
+.gucci-footer .gucci-footer-heading,
+.gucci-footer .gucci-footer-submit,
+.gucci-footer .gucci-footer-copyright {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.gucci-footer .gucci-footer-heading,
+.gucci-footer .gucci-footer-accordion-trigger,
+.gucci-footer .gucci-footer-col-title,
+.gucci-footer .links .h3 {
+  color: #ffffff !important;
+}
+
+.gucci-footer a:hover,
+.gucci-footer .gucci-footer-links a:hover,
+.gucci-footer .links ul li a:hover {
+  color: #ffffff !important;
+  opacity: 1;
+}
+
+.gucci-footer .gucci-footer-input {
+  color: #ffffff !important;
+}
+
+.gucci-footer .gucci-footer-input::placeholder {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.gucci-footer .gucci-footer-copyright {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.gucci-footer-newsletter-wrap .gucci-footer-heading,
+.gucci-footer-newsletter-wrap label,
+.gucci-footer-newsletter-wrap p {
+  color: #ffffff !important;
+}
+
+/* ==========================================================================
+   Catalogo — tipografia e layout PDP + PLP unificati (gucci.com)
+   ========================================================================== */
+
+body#product,
+body#category,
+body#search {
+  font-size: var(--gucci-type-base);
+  line-height: var(--gucci-type-leading);
+}
+
+/* —— PLP —— */
+.gucci-plp-header {
+  padding: 2.75rem 1.5rem 1.25rem;
+  text-align: center;
+}
+
+.gucci-plp-title,
+#products .page-header h1,
+#category h1,
+#search h1 {
+  font-family: var(--gucci-font-sans) !important;
+  font-size: var(--gucci-type-plp-title) !important;
+  font-weight: var(--gucci-fw-medium) !important;
+  letter-spacing: var(--gucci-type-letter) !important;
+  text-transform: none !important;
+  line-height: var(--gucci-type-leading) !important;
+  color: var(--gucci-color-black) !important;
+  margin: 0 0 0.75rem !important;
+}
+
+.gucci-plp-toolbar {
+  padding: 0 1.5rem 2.5rem;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.gucci-plp-count p,
+.gucci-plp-showing,
+#products .products-sort-order .select-title,
+.gucci-plp-filter-btn,
+.gucci-facets-title,
+.gucci-facets-clear-btn {
+  font-size: var(--gucci-type-caption) !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: var(--gucci-fw-regular);
+}
+
+.gucci-plp-count p,
+.gucci-plp-showing {
+  color: var(--gucci-color-muted);
+}
+
+.gucci-plp-filter-btn {
+  font-weight: var(--gucci-fw-medium);
+  color: var(--gucci-color-black) !important;
+}
+
+#category .products.row,
+#search .products.row,
+#products .products.row {
+  row-gap: 3.5rem;
+  column-gap: 0;
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+}
+
+#category .gucci-product-miniature,
+#search .gucci-product-miniature,
+#products .gucci-product-miniature {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  margin-bottom: 0;
+}
+
+#category .gucci-product-miniature .product-description,
+#search .gucci-product-miniature .product-description,
+#products .gucci-product-miniature .product-description {
+  padding: 0;
+  text-align: left;
+}
+
+#category .product-title a,
+#search .product-title a,
+#products .product-title a {
+  font-size: var(--gucci-type-card-title) !important;
+  font-weight: var(--gucci-fw-medium) !important;
+  letter-spacing: var(--gucci-type-letter) !important;
+  text-transform: none !important;
+  line-height: var(--gucci-type-leading) !important;
+  color: var(--gucci-color-black) !important;
+}
+
+#category .gucci-price,
+#search .gucci-price,
+#products .gucci-price,
+#category .product-price-and-shipping,
+#search .product-price-and-shipping {
+  font-size: var(--gucci-type-card-price) !important;
+  font-weight: var(--gucci-fw-regular) !important;
+  color: var(--gucci-color-muted) !important;
+}
+
+#category #search_filters_wrapper,
+#search #search_filters_wrapper,
+.gucci-filters-drawer {
+  font-size: var(--gucci-type-base);
+  transition: transform var(--gucci-drawer-duration) var(--gucci-drawer-ease);
+}
+
+.gucci-plp-active-filters,
+.gucci-plp-active-filters-title {
+  font-size: var(--gucci-type-caption);
+  letter-spacing: 0.06em;
+}
+
+/* —— PDP —— */
+#product .gucci-pdp-buybox-col {
+  padding: 1.5rem 1.5rem 0;
+}
+
+#product .gucci-pdp-buybox {
+  padding: 0 0 1.5rem;
+}
+
+#product .gucci-pdp-variant-note,
+#product .gucci-pdp-style-code,
+#product .gucci-pdp-delivery-note,
+#product .gucci-pdp-contact-note,
+#product .gucci-pdp-services-summary,
+#product .gucci-pdp-service-chips li {
+  font-size: var(--gucci-type-secondary);
+  line-height: var(--gucci-type-leading-loose);
+}
+
+#product .gucci-pdp-section-title,
+#product .gucci-variant-label {
+  font-size: var(--gucci-type-caption);
+  letter-spacing: 0.1em;
+}
+
+#product .gucci-pdp-description-text,
+#product .gucci-pdp-accordion-content,
+#product .gucci-pdp-services-list li {
+  font-size: var(--gucci-type-base);
+  line-height: var(--gucci-type-leading-loose);
+}
+
+#product .gucci-pdp-accordion-trigger {
+  font-size: var(--gucci-type-secondary);
+  font-weight: var(--gucci-fw-medium);
+  letter-spacing: var(--gucci-type-letter);
+}
+
+#product .gucci-pdp-store-link {
+  font-size: var(--gucci-type-caption);
+  letter-spacing: 0.08em;
+}
+
+#product .gucci-pdp-secondary-btn,
+#product .product-actions .add-to-cart,
+#product .btn-primary.add-to-cart {
+  font-size: var(--gucci-type-ui);
+  letter-spacing: var(--gucci-ls-wider);
+}
+
+#product .gucci-pdp-accessories-title {
+  font-size: var(--gucci-type-caption);
+  font-weight: var(--gucci-fw-medium);
+  letter-spacing: 0.12em;
+}
+
+#product .gucci-pdp-accessories .gucci-product-miniature .product-title {
+  font-size: var(--gucci-type-card-title);
+}
+
+#product .gucci-pdp-accessories .gucci-price {
+  font-size: var(--gucci-type-card-price);
+}
+
+@media (min-width: 992px) {
+  .gucci-plp-header {
+    padding-top: 3.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .gucci-plp-title,
+  #category h1 {
+    font-size: 16px !important;
+  }
+
+  #product .gucci-product-page-title {
+    font-size: var(--gucci-type-pdp-title-max) !important;
+  }
+
+  #category .products.row,
+  #search .products.row,
+  #products .products.row {
+    row-gap: 4rem;
+  }
+}
+
+@media (min-width: 1200px) {
   .gucci-plp-header,
   .gucci-plp-toolbar,
   #products {

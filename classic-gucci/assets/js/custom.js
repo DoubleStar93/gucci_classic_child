@@ -4,6 +4,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const drawer = document.getElementById('mobile_top_menu_wrapper');
   const menuToggle = document.getElementById('menu-icon');
+  const menuBackdrop = document.getElementById('gucci-nav-backdrop');
   const drawerCloseBtn = document.querySelector('[data-gucci-drawer-close]');
   const searchPanel = document.getElementById('gucci-search-panel');
   const searchToggle = document.getElementById('gucci-search-toggle');
@@ -18,20 +19,70 @@ document.addEventListener('DOMContentLoaded', () => {
   const accountToggle = document.getElementById('gucci-account-toggle');
   const accountCloseBtns = document.querySelectorAll('[data-gucci-account-close]');
 
+  const collapseAllMenuSubmenus = () => {
+    if (!drawer) {
+      return;
+    }
+
+    drawer.querySelectorAll('.gucci-sub-menu, .sub-menu.js-sub-menu').forEach((submenu) => {
+      submenu.classList.remove('is-open', 'show', 'in', 'collapse');
+      submenu.hidden = true;
+    });
+
+    drawer.querySelectorAll('.gucci-menu-expand').forEach((button) => {
+      button.setAttribute('aria-expanded', 'false');
+    });
+  };
+
   const closeMenu = () => {
     if (!drawer || !menuToggle) {
       return;
     }
 
-    if (typeof window.jQuery !== 'undefined' && window.jQuery(drawer).is(':visible')) {
-      window.jQuery(menuToggle).trigger('click');
+    drawer.classList.remove('is-open');
+    drawer.hidden = true;
+    drawer.style.display = '';
+    drawer.setAttribute('aria-hidden', 'true');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('gucci-menu-open');
+
+    if (menuBackdrop) {
+      menuBackdrop.classList.remove('is-open');
+      menuBackdrop.hidden = true;
+      menuBackdrop.setAttribute('aria-hidden', 'true');
+    }
+
+    collapseAllMenuSubmenus();
+  };
+
+  const openMenu = () => {
+    if (!drawer || !menuToggle) {
       return;
     }
 
-    drawer.style.display = 'none';
-    document.body.classList.remove('gucci-menu-open');
-    drawer.setAttribute('aria-hidden', 'true');
-    menuToggle.setAttribute('aria-expanded', 'false');
+    closeSearch();
+    closeContact();
+    closeAccount();
+
+    drawer.hidden = false;
+    drawer.style.display = '';
+    drawer.style.width = '';
+    drawer.style.maxWidth = '';
+    drawer.classList.add('is-open');
+    drawer.setAttribute('aria-hidden', 'false');
+    menuToggle.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('gucci-menu-open');
+
+    if (menuBackdrop) {
+      menuBackdrop.hidden = false;
+      menuBackdrop.classList.add('is-open');
+      menuBackdrop.setAttribute('aria-hidden', 'false');
+    }
+
+    collapseAllMenuSubmenus();
+    [0, 50, 200].forEach((delay) => {
+      window.setTimeout(collapseAllMenuSubmenus, delay);
+    });
   };
 
   const searchResults = document.getElementById('gucci-search-results');
@@ -295,35 +346,32 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   if (drawer && menuToggle) {
-    const setMenuOpen = (open) => {
-      document.body.classList.toggle('gucci-menu-open', open);
-      drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
-      menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    };
+    drawer.style.display = '';
 
-    const syncFromDrawer = () => {
-      const visible = drawer.style.display !== 'none' && getComputedStyle(drawer).display !== 'none';
-      setMenuOpen(visible);
-      if (visible) {
-        closeSearch();
-        closeContact();
-      }
-    };
+    menuToggle.addEventListener(
+      'click',
+      (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
 
-    menuToggle.addEventListener('click', () => {
-      window.setTimeout(syncFromDrawer, 0);
-    });
+        if (drawer.classList.contains('is-open')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      },
+      true
+    );
 
     if (drawerCloseBtn) {
-      drawerCloseBtn.addEventListener('click', () => {
-        if (typeof window.jQuery !== 'undefined' && window.jQuery(drawer).is(':visible')) {
-          window.jQuery(menuToggle).trigger('click');
-          return;
-        }
-
-        drawer.style.display = 'none';
-        setMenuOpen(false);
+      drawerCloseBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        closeMenu();
       });
+    }
+
+    if (menuBackdrop) {
+      menuBackdrop.addEventListener('click', closeMenu);
     }
   }
 
@@ -351,6 +399,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   if (drawer) {
+    const blurMenuControl = (control) => {
+      if (control instanceof HTMLElement) {
+        control.blur();
+      }
+    };
+
     const toggleGucciSubmenu = (button, event) => {
       if (event) {
         event.preventDefault();
@@ -364,21 +418,23 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const syncExpanded = () => {
-        const isOpen = target.classList.contains('show') || target.classList.contains('in');
-        button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      };
+      const isOpen = !target.classList.contains('is-open');
 
-      if (typeof window.jQuery !== 'undefined' && window.jQuery.fn.collapse) {
-        window.jQuery(target).collapse('toggle');
-        window.setTimeout(syncExpanded, 350);
-        return;
+      if (isOpen) {
+        target.hidden = false;
+        target.classList.add('is-open');
+      } else {
+        target.classList.remove('is-open');
+        window.setTimeout(() => {
+          if (!target.classList.contains('is-open')) {
+            target.hidden = true;
+          }
+        }, 520);
       }
 
-      const isOpen = target.classList.contains('show') || target.classList.contains('in');
-      target.classList.toggle('show', !isOpen);
-      target.classList.toggle('in', !isOpen);
-      syncExpanded();
+      button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      blurMenuControl(button);
+      blurMenuControl(button.closest('.gucci-menu-row')?.querySelector('.gucci-menu-link'));
     };
 
     const initGucciMenuAccordion = () => {
@@ -388,6 +444,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         button.dataset.gucciMenuInit = '1';
+
+        const targetSelector = button.getAttribute('data-target');
+        const target = targetSelector ? document.querySelector(targetSelector) : null;
+
+        if (target) {
+          target.classList.remove('collapse', 'show', 'in');
+          if (!target.classList.contains('is-open')) {
+            target.hidden = true;
+          }
+          button.setAttribute('aria-expanded', target.classList.contains('is-open') ? 'true' : 'false');
+        }
+
+        button.removeAttribute('data-toggle');
 
         button.addEventListener('click', (event) => {
           toggleGucciSubmenu(button, event);
@@ -407,11 +476,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     initGucciMenuAccordion();
+    collapseAllMenuSubmenus();
 
     if (menuToggle) {
-      menuToggle.addEventListener('click', () => {
-        window.setTimeout(initGucciMenuAccordion, 100);
-      });
+      menuToggle.addEventListener(
+        'click',
+        () => {
+          window.setTimeout(initGucciMenuAccordion, 0);
+        },
+        false
+      );
     }
   }
 
@@ -476,4 +550,69 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  /* PLP — filtri drawer */
+  const filterToggler = document.getElementById('search_filter_toggler');
+  const filtersWrapper = document.getElementById('search_filters_wrapper');
+
+  const closeFilters = () => {
+    if (filtersWrapper) {
+      filtersWrapper.classList.remove('is-open');
+    }
+  };
+
+  if (filterToggler && filtersWrapper) {
+    filterToggler.addEventListener('click', () => {
+      filtersWrapper.classList.toggle('is-open');
+    });
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) {
+        return;
+      }
+
+      if (
+        filtersWrapper.classList.contains('is-open')
+        && !filtersWrapper.contains(target)
+        && !target.closest('#search_filter_toggler')
+      ) {
+        closeFilters();
+      }
+    });
+  }
+
+  /* Cart modal — backdrop scuro */
+  const cartModal = document.getElementById('blockcart-modal');
+  let cartModalBackdrop = document.querySelector('.gucci-cart-modal-backdrop');
+
+  const ensureCartModalBackdrop = () => {
+    if (!cartModalBackdrop) {
+      cartModalBackdrop = document.createElement('div');
+      cartModalBackdrop.className = 'gucci-cart-modal-backdrop';
+      cartModalBackdrop.hidden = true;
+      document.body.appendChild(cartModalBackdrop);
+      cartModalBackdrop.addEventListener('click', () => {
+        if (typeof window.jQuery !== 'undefined' && cartModal) {
+          window.jQuery(cartModal).modal('hide');
+        }
+      });
+    }
+  };
+
+  const syncCartModalBackdrop = (open) => {
+    ensureCartModalBackdrop();
+    if (!cartModalBackdrop) {
+      return;
+    }
+
+    cartModalBackdrop.hidden = !open;
+    document.body.classList.toggle('gucci-cart-modal-open', open);
+  };
+
+  if (cartModal && typeof window.jQuery !== 'undefined') {
+    window.jQuery(cartModal)
+      .on('show.bs.modal shown.bs.modal', () => syncCartModalBackdrop(true))
+      .on('hide.bs.modal hidden.bs.modal', () => syncCartModalBackdrop(false));
+  }
 });

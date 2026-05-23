@@ -13,6 +13,23 @@
   {/if}
 {/block}
 
+{block name='subcategory_list'}{/block}
+
+{block name='product_list_top'}
+  {$smarty.block.parent}
+  {if !empty($listing.rendered_facets)}
+    <aside id="search_filters_wrapper" class="gucci-filters-drawer">
+      {$listing.rendered_facets nofilter}
+    </aside>
+  {/if}
+{/block}
+
+{block name='product_list_active_filters'}
+  <div class="gucci-plp-active-filters">
+    {$listing.rendered_active_filters nofilter}
+  </div>
+{/block}
+
 {block name='product_list'}
-  {include file='catalog/_partials/products.tpl' listing=$listing productClass='col-6 col-md-4 col-lg-3 gucci-product-miniature'}
+  {include file='catalog/_partials/products.tpl' listing=$listing productClass='col-6 col-lg-4 gucci-product-miniature'}
 {/block}

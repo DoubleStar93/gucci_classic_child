@@ -21,7 +21,6 @@
               <button
                 type="button"
                 class="gucci-menu-expand btn-unstyle"
-                data-toggle="collapse"
                 data-target="#top_sub_menu_{$_expand_id}"
                 aria-expanded="false"
                 aria-controls="top_sub_menu_{$_expand_id}"
@@ -32,7 +31,7 @@
             {/if}
           </div>
           {if $node.children|count}
-            <div class="sub-menu js-sub-menu gucci-sub-menu collapse" id="top_sub_menu_{$_expand_id}">
+            <div class="sub-menu js-sub-menu gucci-sub-menu" id="top_sub_menu_{$_expand_id}" hidden>
               {menu nodes=$node.children depth=$node.depth parent=$node}
             </div>
           {/if}

@@ -1,7 +1,7 @@
 {**
- * Classic Gucci — breadcrumb minimale (nascosto su home e PDP)
+ * Classic Gucci — breadcrumb minimale (nascosto su home, PDP, PLP)
  *}
-{if $page.page_name != 'index' && $page.page_name != 'product'}
+{if $page.page_name != 'index' && $page.page_name != 'product' && $page.page_name != 'category' && $page.page_name != 'search'}
   <nav data-depth="{$breadcrumb.count}" class="breadcrumb gucci-breadcrumb">
     <ol>
       {foreach from=$breadcrumb.links item=path name=breadcrumb}

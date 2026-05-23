@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const contactBackdrop = document.getElementById('gucci-contact-backdrop');
   const contactOpenBtns = document.querySelectorAll('#gucci-contact-toggle, [data-gucci-contact-open]');
   const contactCloseBtns = document.querySelectorAll('[data-gucci-contact-close]');
+  const accountDrawer = document.getElementById('gucci-account-drawer');
+  const accountBackdrop = document.getElementById('gucci-account-backdrop');
+  const accountToggle = document.getElementById('gucci-account-toggle');
+  const accountCloseBtns = document.querySelectorAll('[data-gucci-account-close]');
 
   const closeMenu = () => {
     if (!drawer || !menuToggle) {
@@ -91,6 +95,54 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.remove('gucci-contact-open');
   };
 
+  const closeAccount = () => {
+    if (!accountDrawer) {
+      return;
+    }
+
+    accountDrawer.classList.remove('is-open');
+    accountDrawer.hidden = true;
+    accountDrawer.setAttribute('aria-hidden', 'true');
+
+    if (accountBackdrop) {
+      accountBackdrop.classList.remove('is-open');
+      accountBackdrop.hidden = true;
+      accountBackdrop.setAttribute('aria-hidden', 'true');
+    }
+
+    if (accountToggle) {
+      accountToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    document.body.classList.remove('gucci-account-open');
+  };
+
+  const openAccount = () => {
+    if (!accountDrawer) {
+      return;
+    }
+
+    closeMenu();
+    closeSearch();
+    closeContact();
+
+    accountDrawer.hidden = false;
+    accountDrawer.classList.add('is-open');
+    accountDrawer.setAttribute('aria-hidden', 'false');
+
+    if (accountBackdrop) {
+      accountBackdrop.hidden = false;
+      accountBackdrop.classList.add('is-open');
+      accountBackdrop.setAttribute('aria-hidden', 'false');
+    }
+
+    if (accountToggle) {
+      accountToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    document.body.classList.add('gucci-account-open');
+  };
+
   const openContact = () => {
     if (!contactDrawer) {
       return;
@@ -98,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closeMenu();
     closeSearch();
+    closeAccount();
 
     contactDrawer.hidden = false;
     contactDrawer.classList.add('is-open');
@@ -140,6 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closeMenu();
     closeContact();
+    closeAccount();
     searchPanel.hidden = false;
     searchPanel.classList.add('is-open');
     searchPanel.setAttribute('aria-hidden', 'false');
@@ -188,6 +242,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (contactBackdrop) {
     contactBackdrop.addEventListener('click', closeContact);
+  }
+
+  if (accountToggle && accountDrawer) {
+    accountToggle.addEventListener('click', (event) => {
+      event.preventDefault();
+
+      if (accountDrawer.classList.contains('is-open')) {
+        closeAccount();
+      } else {
+        openAccount();
+      }
+    });
+  }
+
+  accountCloseBtns.forEach((button) => {
+    button.addEventListener('click', closeAccount);
+  });
+
+  if (accountBackdrop) {
+    accountBackdrop.addEventListener('click', closeAccount);
   }
 
   if (searchInput) {
@@ -265,6 +339,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      if (accountDrawer && accountDrawer.classList.contains('is-open')) {
+        closeAccount();
+        return;
+      }
+
       if (document.body.classList.contains('gucci-menu-open')) {
         closeMenu();
       }
@@ -272,7 +351,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   if (drawer) {
-    drawer.querySelectorAll('.gucci-menu-expand[data-target]').forEach((button) => {
+    const toggleGucciSubmenu = (button, event) => {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
       const targetSelector = button.getAttribute('data-target');
       const target = targetSelector ? document.querySelector(targetSelector) : null;
 
@@ -285,25 +369,50 @@ document.addEventListener('DOMContentLoaded', () => {
         button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       };
 
-      button.addEventListener('click', (event) => {
-        if (typeof window.jQuery === 'undefined' || !window.jQuery.fn.collapse) {
-          event.preventDefault();
-          event.stopPropagation();
+      if (typeof window.jQuery !== 'undefined' && window.jQuery.fn.collapse) {
+        window.jQuery(target).collapse('toggle');
+        window.setTimeout(syncExpanded, 350);
+        return;
+      }
 
-          const isOpen = target.classList.contains('show') || target.classList.contains('in');
-          if (isOpen) {
-            target.classList.remove('show', 'in');
-          } else {
-            target.classList.add('show');
-          }
+      const isOpen = target.classList.contains('show') || target.classList.contains('in');
+      target.classList.toggle('show', !isOpen);
+      target.classList.toggle('in', !isOpen);
+      syncExpanded();
+    };
 
-          syncExpanded();
+    const initGucciMenuAccordion = () => {
+      drawer.querySelectorAll('.gucci-menu-expand[data-target]').forEach((button) => {
+        if (button.dataset.gucciMenuInit === '1') {
           return;
         }
 
-        window.setTimeout(syncExpanded, 350);
+        button.dataset.gucciMenuInit = '1';
+
+        button.addEventListener('click', (event) => {
+          toggleGucciSubmenu(button, event);
+        });
+
+        const row = button.closest('.gucci-menu-row');
+        const parentItem = button.closest('.gucci-menu-item--parent');
+        const link = row ? row.querySelector('.gucci-menu-link') : null;
+
+        if (link && parentItem) {
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            toggleGucciSubmenu(button, event);
+          });
+        }
       });
-    });
+    };
+
+    initGucciMenuAccordion();
+
+    if (menuToggle) {
+      menuToggle.addEventListener('click', () => {
+        window.setTimeout(initGucciMenuAccordion, 100);
+      });
+    }
   }
 
   /* Riposiziona autocomplete quando jQuery UI lo apre */

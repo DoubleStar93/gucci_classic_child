@@ -59,3 +59,9 @@ theme_settings:
     new-products: layout-full-width
     prices-drop: layout-full-width
     contact: layout-left-column
+    search: layout-full-width
+    cart: layout-full-width
+    checkout: layout-full-width
+    authentication: layout-full-width
+    registration: layout-full-width
+    my-account: layout-full-width

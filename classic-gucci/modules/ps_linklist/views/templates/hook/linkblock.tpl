@@ -1,20 +1,19 @@
 {**
- * Classic Gucci — una colonna per blocco link (4–5 colonne affiancate)
+ * Classic Gucci — link footer in accordion stile gucci.com
  *}
 {foreach $linkBlocks as $linkBlock}
-  <div class="col-lg-2 col-md-3 col-sm-6 gucci-footer-col links">
-    <div class="wrapper gucci-footer-block">
-      <p class="gucci-footer-col-title hidden-sm-down">{$linkBlock.title}</p>
-      <div class="title clearfix hidden-md-up" data-target="#footer_sub_menu_{$linkBlock.id}" data-toggle="collapse">
-        <span class="gucci-footer-col-title">{$linkBlock.title}</span>
-        <span class="float-xs-right">
-          <span class="navbar-toggler collapse-icons">
-            <i class="material-icons add">&#xE313;</i>
-            <i class="material-icons remove">&#xE316;</i>
-          </span>
-        </span>
-      </div>
-      <ul id="footer_sub_menu_{$linkBlock.id}" class="collapse show">
+  <div class="col-12 gucci-footer-col gucci-footer-accordion">
+    <button
+      type="button"
+      class="gucci-footer-accordion-trigger"
+      aria-expanded="false"
+      aria-controls="gucci-footer-panel-{$linkBlock.id}"
+      data-gucci-accordion-trigger
+    >
+      {$linkBlock.title}
+    </button>
+    <div id="gucci-footer-panel-{$linkBlock.id}" class="gucci-footer-accordion-panel" hidden>
+      <ul class="gucci-footer-links">
         {foreach $linkBlock.links as $link}
           <li>
             <a

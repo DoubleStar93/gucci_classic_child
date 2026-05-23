@@ -179,5 +179,54 @@
         {widget name='ps_contactinfo' template='module:ps_contactinfo/views/templates/hook/gucci-contact-panel.tpl'}
       </div>
     </div>
+
+    <div id="gucci-account-backdrop" class="gucci-account-backdrop" aria-hidden="true" hidden></div>
+
+    <div id="gucci-account-drawer" class="gucci-account-drawer gucci-side-drawer" aria-hidden="true" hidden>
+      <div class="gucci-drawer-header">
+        <h2 class="gucci-drawer-title">
+          {if $language.iso_code == 'it'}Account{else}{l s='My account' d='Shop.Theme.Customeraccount'}{/if}
+        </h2>
+        <button
+          type="button"
+          class="gucci-drawer-close btn-unstyle"
+          aria-label="{l s='Close' d='Shop.Theme.Global'}"
+          data-gucci-account-close
+        >
+          <i class="material-icons" aria-hidden="true">close</i>
+        </button>
+      </div>
+
+      <div class="gucci-drawer-body gucci-account-drawer-body">
+        {if !$customer.is_logged}
+          <a
+            href="{$urls.pages.authentication}?back={$urls.current_url|urlencode}"
+            class="gucci-drawer-link"
+            rel="nofollow"
+          >
+            {if $language.iso_code == 'it'}Accedi{else}{l s='Sign in' d='Shop.Theme.Actions'}{/if}
+          </a>
+          <a href="{$urls.pages.register}" class="gucci-drawer-link" rel="nofollow">
+            {if $language.iso_code == 'it'}Registrati{else}{l s='Create account' d='Shop.Theme.Customeraccount'}{/if}
+          </a>
+        {else}
+          <a href="{$urls.pages.my_account}" class="gucci-drawer-link" rel="nofollow">
+            {if $language.iso_code == 'it'}Il mio account{else}{l s='My account' d='Shop.Theme.Customeraccount'}{/if}
+          </a>
+          <a href="{$urls.pages.history}" class="gucci-drawer-link" rel="nofollow">
+            {if $language.iso_code == 'it'}Ordini{else}{l s='Order history and details' d='Shop.Theme.Customeraccount'}{/if}
+          </a>
+          <a href="{$urls.pages.identity}" class="gucci-drawer-link" rel="nofollow">
+            {if $language.iso_code == 'it'}Informazioni personali{else}{l s='Information' d='Shop.Theme.Customeraccount'}{/if}
+          </a>
+          <a href="{$urls.pages.addresses}" class="gucci-drawer-link" rel="nofollow">
+            {if $language.iso_code == 'it'}Indirizzi{else}{l s='Addresses' d='Shop.Theme.Customeraccount'}{/if}
+          </a>
+          <a href="{$urls.pages.my_account}?mylogout=" class="gucci-drawer-link" rel="nofollow">
+            {if $language.iso_code == 'it'}Esci{else}{l s='Sign out' d='Shop.Theme.Actions'}{/if}
+          </a>
+        {/if}
+      </div>
+    </div>
   </div>
 {/block}

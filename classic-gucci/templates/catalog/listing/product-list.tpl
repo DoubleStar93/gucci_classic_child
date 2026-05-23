@@ -18,7 +18,8 @@
 {block name='product_list_top'}
   {$smarty.block.parent}
   {if !empty($listing.rendered_facets)}
-    <aside id="search_filters_wrapper" class="gucci-filters-drawer">
+    <div id="gucci-filters-backdrop" class="gucci-filters-backdrop" aria-hidden="true" hidden></div>
+    <aside id="search_filters_wrapper" class="gucci-filters-drawer" aria-hidden="true">
       {$listing.rendered_facets nofilter}
     </aside>
   {/if}

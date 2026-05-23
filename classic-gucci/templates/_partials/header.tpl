@@ -1,7 +1,7 @@
 {**
  * Classic Gucci — header stile gucci.com
- * Sinistra: Contattaci | Centro: logo | Destra: carrello, account, cerca, menu
- * Navigazione nel drawer (hook displayTop)
+ * Sinistra: logo | Destra: carrello, account, cerca, menu (drawer)
+ * Contatti nel footer del menu drawer
  *}
 {block name='header_banner'}{/block}
 
@@ -11,34 +11,39 @@
   <div class="gucci-header-bar header-top">
     <div class="container">
       <div class="gucci-header-inner">
-        <div class="gucci-header-col gucci-header-col--left">
-          <button
-            type="button"
-            id="gucci-contact-toggle"
-            class="gucci-header-link gucci-contact-toggle btn-unstyle"
-            aria-label="{l s='Contact us' d='Shop.Theme.Global'}"
-            aria-expanded="false"
-            aria-controls="gucci-contact-drawer"
-          >
-            {l s='Contact us' d='Shop.Theme.Global'}
-          </button>
-        </div>
-
-        <div class="gucci-header-col gucci-header-col--center" id="_desktop_logo">
-          {if $shop.logo_details}
-            {if $page.page_name == 'index'}
-              <h1 class="logo">
-                {renderLogo}
-              </h1>
+        <div class="gucci-header-col gucci-header-col--logo">
+          <div id="_desktop_logo">
+            {if $shop.logo_details}
+              {if $page.page_name == 'index'}
+                <h1 class="logo">
+                  {renderLogo}
+                </h1>
+              {else}
+                <div class="logo">
+                  {renderLogo}
+                </div>
+              {/if}
             {else}
-              <div class="logo">
-                {renderLogo}
-              </div>
+              {if $page.page_name == 'index'}
+                <h1 class="logo gucci-logo-text">
+                  <a href="{$urls.pages.index}" class="gucci-logo-text-link">{$shop.name}</a>
+                </h1>
+              {else}
+                <div class="logo gucci-logo-text">
+                  <a href="{$urls.pages.index}" class="gucci-logo-text-link">{$shop.name}</a>
+                </div>
+              {/if}
             {/if}
-          {/if}
+          </div>
+          <div id="_mobile_logo" class="hidden-md-up"></div>
         </div>
 
         <div class="gucci-header-col gucci-header-col--icons">
+          <div class="gucci-header-mobile-utilities hidden-md-up">
+            <div id="_mobile_cart"></div>
+            <div id="_mobile_user_info"></div>
+          </div>
+
           {hook h='displayNav2'}
 
           <button
@@ -65,12 +70,6 @@
         </div>
       </div>
 
-      <div class="top-logo hidden-md-up" id="_mobile_logo"></div>
-
-      <div class="gucci-header-mobile-utilities hidden-md-up">
-        <div id="_mobile_cart"></div>
-        <div id="_mobile_user_info"></div>
-      </div>
     </div>
 
     <div id="gucci-search-panel" class="gucci-search-panel" aria-hidden="true" hidden>

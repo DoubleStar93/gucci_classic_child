@@ -152,9 +152,7 @@
 
     {block name='product_footer'}{/block}
 
-    {block name='product_images_modal'}
-      {include file='catalog/_partials/product-images-modal.tpl'}
-    {/block}
+    {block name='product_images_modal'}{/block}
 
     {block name='page_footer_container'}
       <footer class="page-footer">

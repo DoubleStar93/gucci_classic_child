@@ -2,6 +2,42 @@
  * Classic Gucci — drawer menu, ricerca, contatti, accordion
  */
 document.addEventListener('DOMContentLoaded', () => {
+  const header = document.getElementById('header');
+  const headerScrollThreshold = 32;
+
+  const updateHeaderOnScroll = () => {
+    if (!header) {
+      return;
+    }
+
+    const forceSolid =
+      document.body.classList.contains('gucci-menu-open')
+      || document.body.classList.contains('gucci-search-open')
+      || document.body.classList.contains('gucci-contact-open')
+      || document.body.classList.contains('gucci-account-open')
+      || document.body.classList.contains('gucci-filters-open');
+
+    const scrolled = forceSolid || window.scrollY > headerScrollThreshold;
+    header.classList.toggle('is-scrolled', scrolled);
+  };
+
+  if (header) {
+    if (document.body.id === 'product') {
+      const syncPdpHeaderState = () => {
+        if (window.scrollY <= headerScrollThreshold) {
+          header.classList.remove('is-scrolled');
+        }
+      };
+
+      syncPdpHeaderState();
+      window.addEventListener('pageshow', syncPdpHeaderState);
+    }
+
+    updateHeaderOnScroll();
+    window.addEventListener('scroll', updateHeaderOnScroll, { passive: true });
+    window.addEventListener('resize', updateHeaderOnScroll, { passive: true });
+  }
+
   const drawer = document.getElementById('mobile_top_menu_wrapper');
   const menuToggle = document.getElementById('menu-icon');
   const menuBackdrop = document.getElementById('gucci-nav-backdrop');
@@ -12,12 +48,47 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.querySelector('#gucci-search-panel .gucci-search-input');
   const contactDrawer = document.getElementById('gucci-contact-drawer');
   const contactBackdrop = document.getElementById('gucci-contact-backdrop');
-  const contactOpenBtns = document.querySelectorAll('#gucci-contact-toggle, [data-gucci-contact-open]');
+  const contactOpenBtns = document.querySelectorAll('[data-gucci-contact-open]');
   const contactCloseBtns = document.querySelectorAll('[data-gucci-contact-close]');
   const accountDrawer = document.getElementById('gucci-account-drawer');
   const accountBackdrop = document.getElementById('gucci-account-backdrop');
   const accountToggle = document.getElementById('gucci-account-toggle');
   const accountCloseBtns = document.querySelectorAll('[data-gucci-account-close]');
+  const filterToggler = document.getElementById('search_filter_toggler');
+  const filtersWrapper = document.getElementById('search_filters_wrapper');
+  const filtersBackdrop = document.getElementById('gucci-filters-backdrop');
+
+  const closeFilters = () => {
+    if (filtersWrapper) {
+      filtersWrapper.classList.remove('is-open');
+      filtersWrapper.setAttribute('aria-hidden', 'true');
+    }
+
+    if (filtersBackdrop) {
+      filtersBackdrop.classList.remove('is-open');
+      filtersBackdrop.hidden = true;
+      filtersBackdrop.setAttribute('aria-hidden', 'true');
+    }
+
+    document.body.classList.remove('gucci-filters-open');
+  };
+
+  const openFilters = () => {
+    if (!filtersWrapper) {
+      return;
+    }
+
+    filtersWrapper.classList.add('is-open');
+    filtersWrapper.setAttribute('aria-hidden', 'false');
+
+    if (filtersBackdrop) {
+      filtersBackdrop.hidden = false;
+      filtersBackdrop.classList.add('is-open');
+      filtersBackdrop.setAttribute('aria-hidden', 'false');
+    }
+
+    document.body.classList.add('gucci-filters-open');
+  };
 
   const collapseAllMenuSubmenus = () => {
     if (!drawer) {
@@ -53,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     collapseAllMenuSubmenus();
+    updateHeaderOnScroll();
   };
 
   const openMenu = () => {
@@ -83,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     [0, 50, 200].forEach((delay) => {
       window.setTimeout(collapseAllMenuSubmenus, delay);
     });
+    updateHeaderOnScroll();
   };
 
   const searchResults = document.getElementById('gucci-search-results');
@@ -117,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchPanel.setAttribute('aria-hidden', 'true');
     searchToggle.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('gucci-search-open');
+    updateHeaderOnScroll();
 
     const autocomplete = document.querySelector('.searchbar-autocomplete.ui-autocomplete');
     if (autocomplete) {
@@ -144,6 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.body.classList.remove('gucci-contact-open');
+    updateHeaderOnScroll();
   };
 
   const closeAccount = () => {
@@ -166,6 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.body.classList.remove('gucci-account-open');
+    updateHeaderOnScroll();
   };
 
   const openAccount = () => {
@@ -192,6 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.body.classList.add('gucci-account-open');
+    updateHeaderOnScroll();
   };
 
   const openContact = () => {
@@ -218,6 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.body.classList.add('gucci-contact-open');
+    updateHeaderOnScroll();
   };
 
   const positionSearchAutocomplete = () => {
@@ -250,6 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchPanel.setAttribute('aria-hidden', 'false');
     searchToggle.setAttribute('aria-expanded', 'true');
     document.body.classList.add('gucci-search-open');
+    updateHeaderOnScroll();
 
     if (searchInput) {
       window.setTimeout(() => searchInput.focus(), 50);
@@ -392,6 +471,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      if (filtersWrapper && filtersWrapper.classList.contains('is-open')) {
+        closeFilters();
+        return;
+      }
+
       if (document.body.classList.contains('gucci-menu-open')) {
         closeMenu();
       }
@@ -498,36 +582,223 @@ document.addEventListener('DOMContentLoaded', () => {
     window.setTimeout(mountSearchAutocomplete, 500);
   }
 
-  /* PDP Gucci — galleria counter + accordion */
-  const pdpHero = document.querySelector('.js-gucci-pdp-gallery');
-  const pdpRestGallery = document.querySelector('.js-gucci-pdp-gallery-rest');
-  const pdpCounterCurrent = document.querySelector('.gucci-pdp-gallery-counter-current');
-  const pdpSlides = [
-    ...(pdpHero ? Array.from(pdpHero.querySelectorAll('.gucci-pdp-gallery-slide')) : []),
-    ...(pdpRestGallery ? Array.from(pdpRestGallery.querySelectorAll('.gucci-pdp-gallery-slide')) : []),
-  ];
+  /* PDP Gucci — slider immagine singola + miniature overlay */
+  const cleanupClassicPdpImages = () => {
+    document
+      .querySelectorAll(
+        '#product .images-container, #product .js-qv-mask, #product #product-modal, #product .product-cover:not(.gucci-pdp-gallery)'
+      )
+      .forEach((node) => {
+        if (node instanceof HTMLElement && !node.closest('.gucci-pdp-gallery')) {
+          node.remove();
+        }
+      });
+  };
 
-  if (pdpSlides.length && pdpCounterCurrent) {
-    const updateGalleryCounter = () => {
-      const viewportMiddle = window.innerHeight * 0.45;
-      let activeIndex = 1;
+  const GUCCI_IMAGE_SIZE_SUFFIX =
+    /-(?:large_default|thickbox_default|home_default|medium_default|small_default|cart_default)(?=\.(?:jpe?g|png|webp|avif))/i;
 
-      pdpSlides.forEach((slide, index) => {
-        const rect = slide.getBoundingClientRect();
-        if (rect.top <= viewportMiddle && rect.bottom >= viewportMiddle) {
-          activeIndex = index + 1;
+  const gucciImagePixelScore = (width, height) => {
+    const w = Number(width) || 0;
+    const h = Number(height) || 0;
+    return w > 0 && h > 0 ? w * h : 0;
+  };
+
+  const stripGucciImageSizeSuffix = (url) => (url ? url.replace(GUCCI_IMAGE_SIZE_SUFFIX, '') : '');
+
+  const getGucciGalleryImageCandidates = (img) => {
+    const fromImg = img ? img.currentSrc || img.src || '' : '';
+    const full = img?.getAttribute('data-image-full-src') || '';
+
+    return [
+      full,
+      stripGucciImageSizeSuffix(full),
+      stripGucciImageSizeSuffix(fromImg),
+      fromImg,
+      img?.getAttribute('data-image-large-src') || '',
+    ].filter((url, index, list) => url && list.indexOf(url) === index);
+  };
+
+  const upgradeGucciGalleryResolution = () => {
+    document.querySelectorAll('.gucci-pdp-gallery-image').forEach((img) => {
+      if (!img || img.dataset.gucciHiRes === '1') {
+        return;
+      }
+
+      const candidates = getGucciGalleryImageCandidates(img);
+      const currentBest = img.currentSrc || img.src || '';
+      const currentScore = gucciImagePixelScore(img.naturalWidth, img.naturalHeight);
+      let candidateIndex = 0;
+      let bestUrl = currentBest;
+      let bestScore = currentScore;
+
+      const finishUpgrade = () => {
+        if (bestUrl && bestUrl !== currentBest) {
+          img.src = bestUrl;
+        }
+        img.dataset.gucciHiRes = '1';
+      };
+
+      const tryNext = () => {
+        if (candidateIndex >= candidates.length) {
+          finishUpgrade();
+          return;
+        }
+
+        const url = candidates[candidateIndex];
+        candidateIndex += 1;
+
+        if (!url || url === currentBest) {
+          tryNext();
+          return;
+        }
+
+        const probe = new Image();
+        probe.onload = () => {
+          const nextScore = gucciImagePixelScore(probe.naturalWidth, probe.naturalHeight);
+          if (nextScore > bestScore) {
+            bestScore = nextScore;
+            bestUrl = url;
+          }
+          tryNext();
+        };
+        probe.onerror = () => tryNext();
+        probe.src = url;
+      };
+
+      tryNext();
+    });
+  };
+
+  const initGucciPdpGallery = () => {
+    cleanupClassicPdpImages();
+    upgradeGucciGalleryResolution();
+
+    const pdpGallery = document.querySelector('.js-gucci-pdp-gallery[data-gucci-gallery-slider]');
+    if (!pdpGallery || pdpGallery.dataset.gucciGalleryReady === '1') {
+      return;
+    }
+
+    pdpGallery.dataset.gucciGalleryReady = '1';
+
+    const pdpViewport = pdpGallery.querySelector('.js-gucci-pdp-gallery-viewport');
+    const pdpSlides = Array.from(pdpGallery.querySelectorAll('.gucci-pdp-gallery-slide'));
+    const pdpThumbs = Array.from(pdpGallery.querySelectorAll('.gucci-pdp-gallery-thumb'));
+    const pdpCounterCurrent = pdpGallery.querySelector('.gucci-pdp-gallery-counter-current');
+    let pdpActiveIndex = 0;
+    let pdpTouchStartX = 0;
+
+    const goToPdpSlide = (index) => {
+      if (!pdpSlides.length) {
+        return;
+      }
+
+      const nextIndex = Math.max(0, Math.min(index, pdpSlides.length - 1));
+      pdpActiveIndex = nextIndex;
+
+      pdpSlides.forEach((slide, slideIndex) => {
+        const isActive = slideIndex === nextIndex;
+        slide.classList.toggle('is-active', isActive);
+        slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+      });
+
+      pdpThumbs.forEach((thumb, thumbIndex) => {
+        const isActive = thumbIndex === nextIndex;
+        thumb.classList.toggle('is-active', isActive);
+        thumb.setAttribute('aria-current', isActive ? 'true' : 'false');
+      });
+
+      if (pdpCounterCurrent) {
+        pdpCounterCurrent.textContent = String(nextIndex + 1);
+      }
+
+      pdpSlides.forEach((slide) => {
+        const img = slide.querySelector('.gucci-pdp-gallery-image');
+        if (img) {
+          img.classList.remove('js-qv-product-cover');
         }
       });
 
-      pdpCounterCurrent.textContent = String(activeIndex);
-      pdpSlides.forEach((slide, index) => {
-        slide.classList.toggle('is-active', index + 1 === activeIndex);
-      });
+      const activeImg = pdpSlides[nextIndex]?.querySelector('.gucci-pdp-gallery-image');
+      if (activeImg) {
+        activeImg.classList.add('js-qv-product-cover');
+      }
+
+      upgradeGucciGalleryResolution();
     };
 
-    updateGalleryCounter();
-    window.addEventListener('scroll', updateGalleryCounter, { passive: true });
-    window.addEventListener('resize', updateGalleryCounter);
+    pdpThumbs.forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        const slideIndex = Number.parseInt(thumb.getAttribute('data-slide-index') || '0', 10);
+        goToPdpSlide(slideIndex);
+      });
+    });
+
+    if (pdpViewport) {
+      pdpViewport.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          goToPdpSlide(pdpActiveIndex + 1);
+        }
+
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          goToPdpSlide(pdpActiveIndex - 1);
+        }
+      });
+
+      pdpViewport.addEventListener(
+        'touchstart',
+        (event) => {
+          pdpTouchStartX = event.changedTouches[0]?.clientX ?? 0;
+        },
+        { passive: true }
+      );
+
+      pdpViewport.addEventListener(
+        'touchend',
+        (event) => {
+          const touchEndX = event.changedTouches[0]?.clientX ?? 0;
+          const deltaX = touchEndX - pdpTouchStartX;
+
+          if (Math.abs(deltaX) < 48) {
+            return;
+          }
+
+          if (deltaX < 0) {
+            goToPdpSlide(pdpActiveIndex + 1);
+          } else {
+            goToPdpSlide(pdpActiveIndex - 1);
+          }
+        },
+        { passive: true }
+      );
+    }
+
+    goToPdpSlide(0);
+  };
+
+  initGucciPdpGallery();
+
+  let gucciGalleryResizeTimer;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(gucciGalleryResizeTimer);
+    gucciGalleryResizeTimer = window.setTimeout(() => {
+      upgradeGucciGalleryResolution();
+    }, 150);
+  });
+
+  if (typeof prestashop !== 'undefined' && prestashop.on) {
+    prestashop.on('updatedProduct', () => {
+      document.querySelectorAll('.js-gucci-pdp-gallery').forEach((gallery) => {
+        delete gallery.dataset.gucciGalleryReady;
+      });
+      document.querySelectorAll('.gucci-pdp-gallery-image').forEach((img) => {
+        delete img.dataset.gucciHiRes;
+      });
+      cleanupClassicPdpImages();
+      initGucciPdpGallery();
+    });
   }
 
   document.querySelectorAll('[data-gucci-accordion-trigger]').forEach((trigger) => {
@@ -551,20 +822,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* PLP — filtri drawer */
-  const filterToggler = document.getElementById('search_filter_toggler');
-  const filtersWrapper = document.getElementById('search_filters_wrapper');
-
-  const closeFilters = () => {
-    if (filtersWrapper) {
-      filtersWrapper.classList.remove('is-open');
-    }
-  };
-
   if (filterToggler && filtersWrapper) {
     filterToggler.addEventListener('click', () => {
-      filtersWrapper.classList.toggle('is-open');
+      if (filtersWrapper.classList.contains('is-open')) {
+        closeFilters();
+      } else {
+        openFilters();
+      }
     });
+
+    if (filtersBackdrop) {
+      filtersBackdrop.addEventListener('click', closeFilters);
+    }
 
     document.addEventListener('click', (event) => {
       const target = event.target;

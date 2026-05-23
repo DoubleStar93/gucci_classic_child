@@ -35,7 +35,7 @@
           disabled
         {/if}
       >
-        {l s='Add to cart' d='Shop.Theme.Actions'}
+        {if $language.iso_code == 'it'}Aggiungi al carrello{else}{l s='Add to cart' d='Shop.Theme.Actions'}{/if}
       </button>
     </div>
   {/if}

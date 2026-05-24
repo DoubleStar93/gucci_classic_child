@@ -1,0 +1,13 @@
+{
+  "name": "gucci-classic-child-deploy",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "deploy": "node scripts/deploy.js",
+    "test:ftp": "node scripts/test-ftp.js"
+  },
+  "devDependencies": {
+    "basic-ftp": "^5.0.5",
+    "dotenv": "^16.4.7"
+  }
+}

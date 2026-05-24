@@ -60,14 +60,14 @@ Le modifiche in `classic-gucci/` **non sono visibili** su Hostinger finché non 
 - `modules/**/*.tpl`
 - `preview.png`
 
-### Procedura deploy (Hostinger)
+### Procedura deploy (automatica)
 
-1. Carica/sovrascrivi la cartella `classic-gucci/` in `themes/classic-gucci/` sul server (FTP o File Manager).
-2. Verifica che esista anche `themes/classic/` (tema padre).
-3. Back office → **Design → Tema e logo** → tema **Classic Gucci Style** attivo.
-4. **Svuota cache:** Parametri avanzati → Prestazioni → Svuota cache (e cache Smarty se presente).
-5. Se header/menu sono sfalsati: **Design → Posizioni** → conferma `ps_mainmenu` in **displayTop** e `ps_searchbar` + carrello/account in **displayNav2** (oppure riattiva il tema child).
-6. Controlla in incognito: https://chocolate-ferret-940937.hostingersite.com/
+Vedi regola `deploy-ftp.mdc`. In sintesi:
+
+1. `npm run deploy` — elimina/ricarica `/themes/classic-gucci/`, svuota `/var/cache` e `/cache` (configurabile in `.env`).
+2. Verifica in incognito: https://chocolate-ferret-940937.hostingersite.com/
+
+Setup una tantum: tema **Classic Gucci Style** attivo, padre `classic` presente, hook corretti (Design → Posizioni).
 
 ### Quando NON serve deploy
 
@@ -76,7 +76,7 @@ Le modifiche in `classic-gucci/` **non sono visibili** su Hostinger finché non 
 
 ### Messaggio standard per l'utente (usare a fine modifica)
 
-> **Deploy necessario:** carica `classic-gucci/` su Hostinger, svuota cache, poi apri lo staging per verificare. Senza questo passaggio il sito live resta invariato.
+> **Deploy necessario:** esegui `npm run deploy` (include svuotamento cache), poi verifica lo staging in incognito.
 
 ## Regole di implementazione
 

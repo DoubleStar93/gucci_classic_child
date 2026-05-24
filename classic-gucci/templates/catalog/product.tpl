@@ -68,15 +68,6 @@
               {block name='product_refresh'}{/block}
             {/block}
 
-            <p class="gucci-pdp-delivery-note">
-              <span class="gucci-pdp-delivery-icon material-icons" aria-hidden="true">local_shipping</span>
-              {if $language.iso_code == 'it'}
-                Spedizione e ritiro in negozio gratuiti
-              {else}
-                {l s='Free shipping and in-store pickup' d='Shop.Theme.Checkout'}
-              {/if}
-            </p>
-
             <button
               type="button"
               class="gucci-pdp-secondary-btn gucci-contact-toggle btn-unstyle"
@@ -84,13 +75,6 @@
             >
               {l s='Contact us' d='Shop.Theme.Global'}
             </button>
-            <p class="gucci-pdp-contact-note">
-              {if $language.iso_code == 'it'}
-                I nostri Client Advisor sono qui per aiutarti.
-              {else}
-                {l s='Our Client Advisors are here to help.' d='Shop.Theme.Global'}
-              {/if}
-            </p>
           </div>
         </div>
 

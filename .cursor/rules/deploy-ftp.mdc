@@ -1,0 +1,60 @@
+---
+description: Deploy automatico tema classic-gucci su Hostinger via FTP
+alwaysApply: true
+---
+
+# Deploy FTP — staging Hostinger
+
+## Cosa fa lo script
+
+`npm run deploy` esegue **sempre** questi passaggi in ordine:
+
+1. **Elimina** l'intera cartella `/themes/classic-gucci/` sul server (`removeDir` dopo svuotamento — niente file orphan)
+2. **Ricarica** l'albero completo da `classic-gucci/` locale (`uploadFromDir` — una operazione di upload)
+3. **Elimina** le cartelle cache configurate in `.env` (default: `/var/cache` e `/cache`)
+
+### Cartelle cache su PrestaShop (non confonderle)
+
+| Percorso | Cosa contiene | Deploy |
+|----------|----------------|--------|
+| `/var/cache/` | Cache **Symfony** (sottocartelle `prod`, `dev`, …) | ✅ default |
+| `/cache/` | Cache **root shop** (Smarty, immagini generate, ecc.) | ✅ default |
+| `/themes/classic-gucci/assets/cache/` | Bundle CSS `theme-*.css` (CCC) | ✅ si resetta con il punto 1 (cancelli tutto il tema) |
+
+**Non** è nel repo locale `gucci_classic_child/` — esiste solo sul server PrestaShop.
+
+## Setup (una tantum)
+
+1. `npm install`
+2. Copia `.env.example` → `.env` (già in `.gitignore`, non committare)
+3. Compila `.env`:
+   - `FTP_HOST=46.202.158.43`
+   - `FTP_USER=u912475611.cursor` (formato Hostinger: `u{ID}.{nome_account}`)
+   - `FTP_PASSWORD=...`
+   - `FTP_REMOTE_PATH=/themes/classic-gucci` — **non** `/public_html/...` (l'FTP punta già alla root PrestaShop)
+   - `FTP_CACHE_PATHS=/var/cache,/cache` (default; cartelle intere separate da virgola)
+
+## Comandi
+
+```powershell
+npm run test:ftp   # test connessione, senza upload
+npm run deploy     # reset tema + upload + svuota cache
+```
+
+## Quando deployare
+
+Deploy obbligatorio se modifichi file in `classic-gucci/` (`theme.yml`, `custom.css`, `*.tpl`, moduli, `preview.png`).
+
+**Non serve deploy** per sole modifiche a `docs/`, `.cursor/rules/`, script di deploy.
+
+## Dopo il deploy (checklist)
+
+1. Verifica in incognito: https://chocolate-ferret-940937.hostingersite.com/
+2. Se header/menu sfalsati: BO → Design → Posizioni (hook `ps_mainmenu` in displayTop, ecc.)
+
+## Comportamento AI
+
+- Dopo modifiche al tema: proporre `npm run deploy`.
+- Messaggio standard a fine task:
+
+> Esegui `npm run deploy` e verifica lo staging in incognito.

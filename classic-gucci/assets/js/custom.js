@@ -22,15 +22,21 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   if (header) {
-    if (document.body.id === 'product') {
-      const syncPdpHeaderState = () => {
-        if (window.scrollY <= headerScrollThreshold) {
+    if (document.body.id === 'product' || document.body.id === 'index') {
+      const syncHeroHeaderState = () => {
+        if (
+          window.scrollY <= headerScrollThreshold
+          && !document.body.classList.contains('gucci-menu-open')
+          && !document.body.classList.contains('gucci-search-open')
+          && !document.body.classList.contains('gucci-contact-open')
+          && !document.body.classList.contains('gucci-account-open')
+        ) {
           header.classList.remove('is-scrolled');
         }
       };
 
-      syncPdpHeaderState();
-      window.addEventListener('pageshow', syncPdpHeaderState);
+      syncHeroHeaderState();
+      window.addEventListener('pageshow', syncHeroHeaderState);
     }
 
     updateHeaderOnScroll();

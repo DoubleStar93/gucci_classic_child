@@ -315,8 +315,31 @@ body:not(#product):not(#index) #wrapper {
   padding-top: var(--gucci-header-height);
 }
 
-body#product #wrapper {
+body#product #wrapper,
+body#index #wrapper {
   padding-top: 0;
+}
+
+/* Home + PDP — header overlay su hero (icone/logo chiari in cima) */
+body#index #header:not(.is-scrolled),
+body#index #header:not(.is-scrolled) .header-top,
+body#index #header:not(.is-scrolled) .gucci-header-bar,
+body#index #header:not(.is-scrolled) .gucci-header-bar .container {
+  background: transparent !important;
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+}
+
+body#index #header:not(.is-scrolled) .gucci-header-col--icons a,
+body#index #header:not(.is-scrolled) .gucci-header-col--icons .material-icons,
+body#index #header:not(.is-scrolled) .gucci-header-col--icons button,
+body#index #header:not(.is-scrolled) .gucci-logo-text-link,
+body#index #header:not(.is-scrolled) .logo {
+  color: #ffffff !important;
+}
+
+body#index #header:not(.is-scrolled) .logo img {
+  filter: brightness(0) invert(1);
 }
 
 #header .header-banner,
@@ -1066,6 +1089,7 @@ body.gucci-menu-open {
 
 .gucci-search-panel.is-open {
   display: block;
+  animation: gucci-fade-in var(--gucci-motion-duration) var(--gucci-motion-ease);
 }
 
 .gucci-search-panel-top {
@@ -3954,11 +3978,17 @@ body#checkout .hook-reassurance {
   pointer-events: none;
 }
 
-.gucci-variant-size-input:checked + .gucci-variant-size-label,
-.gucci-variant-size-input:focus-visible + .gucci-variant-size-label {
+.gucci-variant-size-input:checked + .gucci-variant-size-label {
   border-color: var(--gucci-color-black);
-  outline: 1px solid var(--gucci-color-black);
-  outline-offset: 1px;
+  background: #111111;
+  color: #ffffff;
+  outline: none;
+  box-shadow: none;
+}
+
+.gucci-variant-size-input:focus-visible + .gucci-variant-size-label {
+  outline: none;
+  box-shadow: none;
 }
 
 .gucci-variant-select {
@@ -5005,4 +5035,455 @@ body#my-account #footer {
 .gucci-footer .wishlist-add-to,
 .gucci-footer .wishlist-modal {
   display: none !important;
+}
+
+/* ==========================================================================
+   Gucci Premium Pass v1.2 — allineamento globale (contenuti BO dopo)
+   ========================================================================== */
+
+/* Logo — monocromatico luxury (immagine BO o testo serif) */
+#header .logo img {
+  max-height: 1.625rem;
+  width: auto;
+  object-fit: contain;
+}
+
+#header.is-scrolled .logo img,
+body:not(#index):not(#product) #header .logo img {
+  filter: none;
+}
+
+.gucci-logo-text-link {
+  font-family: var(--gucci-font-serif) !important;
+  font-size: 1.125rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  color: #111111 !important;
+}
+
+/* Home — una sola griglia prodotti + niente Lorem / moduli demo */
+#index .gucci-home-modules > #module-ps_specials,
+#index .gucci-home-modules > #module-ps_newproducts,
+#index .gucci-home-modules > #module-ps_bestsellers,
+#index .gucci-home-modules > #module-ps_customtext,
+#index .gucci-home-modules > [id="module-ps_specials"],
+#index .gucci-home-modules > [id="module-ps_newproducts"],
+#index .gucci-home-modules > [id="module-ps_bestsellers"],
+#index .gucci-home-modules > [id="module-ps_customtext"],
+#index .gucci-home-modules section[data-type="onsale"],
+#index .gucci-home-modules section[data-type="newproducts"],
+#index .gucci-home-modules section[data-type="bestsellers"],
+#index section[data-type="onsale"],
+#index section[data-type="newproducts"],
+#index section[data-type="bestsellers"],
+#index .gucci-home-editorial,
+#index #custom-text,
+#index .ps_customtext,
+#index .block_customtext {
+  display: none !important;
+}
+
+#index .gucci-home-modules > #module-ps_featuredproducts,
+#index .gucci-home-modules section[data-type="popularproducts"],
+#index .gucci-home-modules > .featured-products:first-of-type {
+  display: block !important;
+}
+
+#index .gucci-home-section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+/* Banner home — editoriale full width sotto hero */
+#index .gucci-home-modules > #module-ps_banner {
+  display: block !important;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1.5rem 2rem;
+}
+
+#index .gucci-home-modules > #module-ps_banner .banner,
+#index .gucci-home-modules > #module-ps_banner a {
+  display: block;
+  width: 100%;
+}
+
+#index .gucci-home-modules > #module-ps_banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (min-width: 992px) {
+  #index .gucci-home-modules > #module-ps_banner .row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0;
+  }
+
+  #index .gucci-home-modules > #module-ps_banner .row > [class*="col"] {
+    width: 100%;
+    max-width: none;
+    flex: none;
+    padding: 0;
+  }
+}
+
+/* Wishlist — nascosta ovunque */
+.blockwishlist,
+.modules_blockwishlist,
+.wishlist-button,
+.wishlist-button-add,
+.wishlist-list,
+.wishlist-modal,
+.wishlist-add-to,
+[data-target*="wishlist"],
+#createWishlistModal,
+#wishlistModal,
+.modal.wishlist-modal {
+  display: none !important;
+}
+
+/* Form luxury — underline (auth, contact, checkout, account) */
+.gucci-form .form-control,
+.gucci-auth-page .form-control,
+.gucci-contact-page .form-control,
+.gucci-page-content .form-control,
+body#authentication .form-control,
+body#registration .form-control,
+body#contact .form-control,
+body#checkout .form-control {
+  border: none !important;
+  border-bottom: 1px solid #111111 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0.85rem 0 !important;
+  font-size: var(--gucci-type-base) !important;
+  letter-spacing: var(--gucci-type-letter);
+  color: #111111 !important;
+}
+
+.gucci-form .form-control:focus,
+.gucci-auth-page .form-control:focus,
+.gucci-contact-page .form-control:focus,
+body#authentication .form-control:focus,
+body#registration .form-control:focus,
+body#contact .form-control:focus,
+body#checkout .form-control:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-bottom-color: #111111 !important;
+}
+
+.gucci-form label,
+.gucci-auth-page label,
+.gucci-contact-page label,
+body#authentication label,
+body#registration label,
+body#contact label {
+  font-size: 10px !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  color: #888888 !important;
+  margin-bottom: 0.35rem !important;
+}
+
+body#authentication .btn[data-action="show-password"],
+body#registration .btn[data-action="show-password"] {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid #111111 !important;
+  color: #111111 !important;
+  font-size: 10px !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  box-shadow: none !important;
+}
+
+.gucci-contact-page,
+.gucci-auth-page {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+}
+
+.gucci-contact-page .contact-form,
+.gucci-contact-page .contact-rich {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+body#contact #left-column,
+body#contact #right-column {
+  display: none !important;
+}
+
+body#contact #content-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 0 0 100% !important;
+}
+
+/* Carrello / checkout — minimal luxury */
+body#cart .cart-overview .cart-item,
+body#checkout .cart-summary-line {
+  border-bottom: 1px solid rgba(17, 17, 17, 0.12);
+  padding: 1.25rem 0;
+}
+
+body#cart .cart-overview .cart-item:last-child,
+body#checkout .cart-summary-line:last-child {
+  border-bottom: none;
+}
+
+body#cart .product-line-grid,
+body#cart .media {
+  align-items: center;
+}
+
+body#cart .product-line-grid-right .price,
+body#cart .product-price {
+  font-size: var(--gucci-type-base) !important;
+  color: #111111 !important;
+}
+
+body#checkout .checkout-step {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin-bottom: 0 !important;
+  background: transparent !important;
+}
+
+body#checkout .checkout-step .step-title {
+  font-size: 11px !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  padding: 1.25rem 0 !important;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.15) !important;
+}
+
+body#checkout .checkout-step.-current .step-title {
+  border-bottom-color: #111111 !important;
+  font-weight: 500 !important;
+}
+
+body#checkout .checkout-step .content {
+  padding: 1.5rem 0 2rem !important;
+}
+
+body#checkout .custom-radio input[type="radio"]:checked + span {
+  background: #111111 !important;
+  border-color: #111111 !important;
+}
+
+/* CMS / sitemap — tipografia editoriale */
+body#cms .page-content,
+body#cms.sitemap .page-content {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+  font-size: var(--gucci-type-base);
+  line-height: var(--gucci-type-leading-loose);
+  color: #666666;
+}
+
+body#cms .page-title,
+body#cms.sitemap h1 {
+  font-family: var(--gucci-font-serif) !important;
+  font-size: 1.375rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  text-align: center;
+  margin-bottom: 2.5rem !important;
+}
+
+body#cms.sitemap .page-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2.5rem;
+}
+
+body#cms.sitemap .page-content h2 {
+  font-size: 10px !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  margin: 2rem 0 1rem !important;
+  color: #111111 !important;
+}
+
+body#cms.sitemap .page-content a {
+  display: block;
+  padding: 0.35rem 0;
+  font-size: 12px !important;
+  letter-spacing: 0.06em;
+  color: #666666 !important;
+  text-decoration: none !important;
+}
+
+body#cms.sitemap .page-content a:hover {
+  color: #111111 !important;
+  opacity: 1;
+}
+
+/* Breadcrumb — solo pagine servizio */
+.gucci-breadcrumb {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 0;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.gucci-breadcrumb a,
+.gucci-breadcrumb span {
+  color: #888888 !important;
+}
+
+/* PLP — titolo più Gucci (sans, tracking) */
+.gucci-plp-header {
+  padding: 3.5rem 1.5rem 1.5rem;
+}
+
+.gucci-plp-title {
+  font-family: var(--gucci-font-sans) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+}
+
+/* Color swatch PDP — selezione senza outline invadente */
+#product .product-variants input:checked + .color {
+  outline: 1px solid #111111;
+  outline-offset: 3px;
+  box-shadow: none !important;
+}
+
+/* Filtri drawer — easing Gucci */
+#category #search_filters_wrapper,
+#search #search_filters_wrapper,
+.gucci-filters-drawer {
+  transition: transform var(--gucci-motion-duration) var(--gucci-motion-ease);
+}
+
+.gucci-filters-backdrop {
+  transition:
+    opacity var(--gucci-motion-duration) var(--gucci-motion-ease),
+    visibility var(--gucci-motion-duration) var(--gucci-motion-ease);
+}
+
+@keyframes gucci-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   Gucci Premium Pass v1.3 — home editoriale, PLP, servizi
+   ========================================================================== */
+
+#index .gucci-home-section__header,
+#index .gucci-home-section__footer {
+  display: none !important;
+}
+
+#index .gucci-home-section {
+  padding-top: 2.5rem;
+  padding-bottom: 3rem;
+}
+
+#index .gucci-home-modules .products {
+  row-gap: 2.5rem;
+}
+
+/* PLP — filtri e ordinamento sobri */
+#category #products,
+#search #products {
+  padding-top: 0.5rem;
+}
+
+#category .products-sort-order .select-title,
+#search .products-sort-order .select-title {
+  font-size: 10px !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  border: none !important;
+  border-bottom: 1px solid #111111 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0.5rem 0 !important;
+}
+
+#category .btn-primary,
+#search .btn-primary,
+#category #search_filter_toggler,
+#search #search_filter_toggler {
+  background: transparent !important;
+  color: #111111 !important;
+  border: none !important;
+  border-bottom: 1px solid #111111 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: 10px !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  padding: 0.5rem 0 !important;
+}
+
+#category .btn-primary:hover,
+#search .btn-primary:hover,
+#category #search_filter_toggler:hover,
+#search #search_filter_toggler:hover {
+  opacity: 0.65;
+}
+
+/* Badge sconto / nuovo — nascosti in griglia */
+.product-miniature .product-flags,
+.product-miniature .discount-percentage,
+.product-miniature .on-sale,
+.product-miniature .new {
+  display: none !important;
+}
+
+/* Paginazione PLP */
+.pagination .page-list li a,
+.pagination .page-list li span {
+  font-size: 11px !important;
+  letter-spacing: 0.1em !important;
+  color: #666666 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.pagination .page-list li.current a {
+  color: #111111 !important;
+  font-weight: 500 !important;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Modali wishlist non compilate (modulo BO) */
+.modal[id*="wishlist"],
+.modal[class*="wishlist"],
+#blockwishlist-modal,
+.wishlist-modal {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }

@@ -85,6 +85,7 @@ Le modifiche in `classic-gucci/` **non sono visibili** su Hostinger finché non 
 3. **Hook:** menu in `displayTop`, ricerca/account/carrello in `displayNav2` (vedi `config/theme.yml`).
 4. **Dopo ogni deploy:** svuotare cache PrestaShop e controllare lo staging Hostinger.
 5. **Non reintrodurre** stile Classic default (bottoni colorati, `#24b9d7`, box-shadow, `header-nav` grigia).
+6. **Scope stretto per componente:** se il task riguarda una sola area (es. scheda prodotto, header, home), **non modificare** CSS/JS/template di altre aree (es. footer, menu, listing) salvo richiesta esplicita. In `custom.css` e `custom.js` usare selettori dedicati (`#product`, `#index`, `.gucci-footer`, ecc.) invece di regole globali su classi condivise (`[data-gucci-accordion-trigger]`, `.modal`, ecc.) che impattano più componenti.
 
 ## Documentazione design
 

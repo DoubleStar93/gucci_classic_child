@@ -843,25 +843,104 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  document.querySelectorAll('.gucci-footer [data-gucci-accordion-trigger]').forEach((trigger) => {
+  const PDP_ACCORDION_PANEL_SELECTOR = '#product .gucci-pdp-accordion-panel';
+
+  const setPdpAccordionPanelOpen = (panel, open) => {
+    if (open) {
+      panel.removeAttribute('hidden');
+      panel.classList.add('is-accordion-open');
+      panel.style.maxHeight = '0';
+      requestAnimationFrame(() => {
+        panel.style.maxHeight = `${panel.scrollHeight}px`;
+      });
+
+      const onEnd = (event) => {
+        if (event.propertyName !== 'max-height') {
+          return;
+        }
+        panel.removeEventListener('transitionend', onEnd);
+        if (panel.classList.contains('is-accordion-open')) {
+          panel.style.maxHeight = 'none';
+        }
+      };
+      panel.addEventListener('transitionend', onEnd);
+      return;
+    }
+
+    panel.classList.remove('is-accordion-open');
+    panel.style.maxHeight = `${panel.scrollHeight}px`;
+    requestAnimationFrame(() => {
+      panel.style.maxHeight = '0';
+    });
+
+    const onEnd = (event) => {
+      if (event.propertyName !== 'max-height') {
+        return;
+      }
+      panel.removeEventListener('transitionend', onEnd);
+      if (!panel.classList.contains('is-accordion-open')) {
+        panel.setAttribute('hidden', '');
+        panel.style.maxHeight = '';
+      }
+    };
+    panel.addEventListener('transitionend', onEnd);
+  };
+
+  const initGucciPdpAccordionPanels = () => {
+    document.querySelectorAll(PDP_ACCORDION_PANEL_SELECTOR).forEach((panel) => {
+      const panelId = panel.getAttribute('id');
+      const trigger = panelId
+        ? document.querySelector(`[data-gucci-accordion-trigger][aria-controls="${panelId}"]`)
+        : null;
+      const isOpen = trigger?.getAttribute('aria-expanded') === 'true';
+
+      if (isOpen) {
+        panel.removeAttribute('hidden');
+        panel.classList.add('is-accordion-open');
+        panel.style.maxHeight = 'none';
+      } else if (panel.hasAttribute('hidden')) {
+        panel.classList.remove('is-accordion-open');
+        panel.style.maxHeight = '0';
+      }
+    });
+  };
+
+  initGucciPdpAccordionPanels();
+
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) {
+      return;
+    }
+
+    const trigger = target.closest('[data-gucci-accordion-trigger]');
+    if (!trigger) {
+      return;
+    }
+
     const panelId = trigger.getAttribute('aria-controls');
     const panel = panelId ? document.getElementById(panelId) : null;
-
     if (!panel) {
       return;
     }
 
-    trigger.addEventListener('click', () => {
-      const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+    const isPdpAccordion = panel.classList.contains('gucci-pdp-accordion-panel');
 
-      if (isOpen) {
-        trigger.setAttribute('aria-expanded', 'false');
-        panel.hidden = true;
-      } else {
-        trigger.setAttribute('aria-expanded', 'true');
-        panel.hidden = false;
-      }
-    });
+    if (!isPdpAccordion) {
+      const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      panel.hidden = isOpen;
+      return;
+    }
+
+    if (window.getComputedStyle(trigger).pointerEvents === 'none') {
+      return;
+    }
+
+    const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+    trigger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    setPdpAccordionPanelOpen(panel, !isOpen);
+    trigger.blur();
   });
 
   if (filterToggler && filtersWrapper) {
@@ -917,7 +996,20 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    cartModalBackdrop.hidden = !open;
+    if (open) {
+      cartModalBackdrop.hidden = false;
+      requestAnimationFrame(() => {
+        cartModalBackdrop.classList.add('is-visible');
+      });
+    } else {
+      cartModalBackdrop.classList.remove('is-visible');
+      cartModalBackdrop.addEventListener('transitionend', () => {
+        if (!cartModalBackdrop.classList.contains('is-visible')) {
+          cartModalBackdrop.hidden = true;
+        }
+      }, { once: true });
+    }
+
     document.body.classList.toggle('gucci-cart-modal-open', open);
   };
 

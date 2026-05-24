@@ -112,13 +112,11 @@
           <p class="gucci-pdp-accessories-title">
             {if $language.iso_code == 'it'}Potrebbe piacerti anche{else}{l s='You might also like' d='Shop.Theme.Catalog'}{/if}
           </p>
-          <div class="products row gucci-pdp-accessories-grid">
-            {foreach from=$accessories item="product_accessory" key="position"}
-              {block name='product_miniature'}
-                {include file='catalog/_partials/miniatures/product.tpl' product=$product_accessory position=$position productClasses="col-xs-6 col-sm-4 col-md-3 gucci-pdp-accessory-item"}
-              {/block}
-            {/foreach}
-          </div>
+          {include
+            file='catalog/_partials/productlist.tpl'
+            products=$accessories
+            productClass='gucci-plp-cell gucci-product-miniature'
+          }
         </section>
       {/if}
     {/block}

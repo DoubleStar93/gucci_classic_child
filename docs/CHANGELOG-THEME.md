@@ -1,5 +1,18 @@
 # Changelog tema Classic Gucci
 
+## v1.6.6 (maggio 2026)
+
+- **Griglia prodotti responsive**: 1 col (&lt;576px), 2 col (576–991px), 4 col (≥992px) — home, PLP, correlati PDP
+- **PLP categoria**: stessa griglia full-bleed; un solo prodotto = quadrato a tutta larghezza
+- Fix immagini quadrate (`aspect-ratio` + `object-fit` cover) su listing
+- Layout `layout-left-column` su categoria: content al 100%
+
+## v1.6.5 (maggio 2026)
+
+- **Griglia prodotti unificata** ovunque (home, PLP, ricerca, offerte, PDP correlati): quadrati full-bleed, zero gap
+- **Mobile**: 1 prodotto per riga; tablet 3 col; desktop 4 col (home Selezione 4 col da tablet)
+- **PDP**: «Potrebbe piacerti anche» con stessa griglia in fondo pagina
+
 ## v1.6.3 (maggio 2026)
 
 - **Home Selezione**: griglia 2× mobile / 4× desktop, celle quadrate `aspect-ratio 1:1`, zero gap, full-bleed (niente padding laterale sezione)

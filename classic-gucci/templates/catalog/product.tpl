@@ -73,7 +73,7 @@
               class="gucci-pdp-secondary-btn gucci-contact-toggle btn-unstyle"
               data-gucci-contact-open
             >
-              {l s='Contact us' d='Shop.Theme.Global'}
+              {if $language.iso_code == 'it'}Contattaci{else}{l s='Contact us' d='Shop.Theme.Global'}{/if}
             </button>
           </div>
         </div>

@@ -64,7 +64,7 @@
 
       {if $gucciSlideTotal > 1}
         <div class="gucci-pdp-gallery-controls">
-          <nav class="gucci-pdp-gallery-thumbs" aria-label="{l s='Homepage images' d='Shop.Theme.Global'}">
+          <nav class="gucci-pdp-gallery-thumbs" aria-label="{if $language.iso_code == 'it'}Immagini homepage{else}{l s='Homepage images' d='Shop.Theme.Global'}{/if}">
             {foreach from=$homeslider.slides item=slide name=gucciHomeSliderThumbs}
               {assign var='gucciThumbAlt' value=''}
               {if !empty($slide.legend)}{assign var='gucciThumbAlt' value=$slide.legend}{elseif !empty($slide.title)}{assign var='gucciThumbAlt' value=$slide.title}{/if}
@@ -101,5 +101,9 @@
         </div>
       {/if}
     </div>
+  </section>
+{else}
+  <section class="gucci-home-hero gucci-home-hero--empty" aria-hidden="true">
+    <div class="gucci-home-hero-empty" role="presentation"></div>
   </section>
 {/if}

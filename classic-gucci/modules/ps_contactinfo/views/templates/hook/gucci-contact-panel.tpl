@@ -64,7 +64,7 @@
       {if $language.iso_code == 'it'}Hai bisogno di ulteriore assistenza?{else}{l s='Do you need further assistance?' d='Shop.Theme.Global'}{/if}
     </p>
     <a href="{$urls.pages.contact}" class="gucci-contact-assistance-link">
-      {l s='Contact us' d='Shop.Theme.Global'}
+      {if $language.iso_code == 'it'}Contattaci{else}{l s='Contact us' d='Shop.Theme.Global'}{/if}
     </a>
   </div>
 </div>

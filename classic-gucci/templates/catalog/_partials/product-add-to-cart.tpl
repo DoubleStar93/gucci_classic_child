@@ -3,7 +3,7 @@
  *}
 <div class="product-add-to-cart js-product-add-to-cart gucci-product-add-to-cart">
   {if !$configuration.is_catalog}
-    <span class="control-label">{l s='Quantity' d='Shop.Theme.Catalog'}</span>
+    <span class="control-label">{if $language.iso_code == 'it'}Quantità{else}{l s='Quantity' d='Shop.Theme.Catalog'}{/if}</span>
 
     <div class="product-quantity">
       <div class="qty">
@@ -21,7 +21,7 @@
             min="1"
           {/if}
           class="input-group"
-          aria-label="{l s='Quantity' d='Shop.Theme.Actions'}"
+          aria-label="{if $language.iso_code == 'it'}Quantità{else}{l s='Quantity' d='Shop.Theme.Actions'}{/if}"
         >
       </div>
     </div>

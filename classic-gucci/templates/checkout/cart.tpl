@@ -9,6 +9,16 @@
       <h1 class="gucci-cart-title">
         {if $language.iso_code == 'it'}Carrello{else}{l s='Shopping Cart' d='Shop.Theme.Checkout'}{/if}
       </h1>
+      {if $cart.products_count > 0}
+        <p class="gucci-cart-subtitle">
+          {$cart.products_count}
+          {if $language.iso_code == 'it'}
+            {if $cart.products_count == 1} articolo{else} articoli{/if}
+          {else}
+            {if $cart.products_count == 1} {l s='item' d='Shop.Theme.Checkout'}{else} {l s='items' d='Shop.Theme.Checkout'}{/if}
+          {/if}
+        </p>
+      {/if}
     </header>
 
     <div class="cart-grid row gucci-cart-grid">
@@ -49,6 +59,5 @@
       </div>
     </div>
 
-    {hook h='displayCrossSellingShoppingCart'}
   </section>
 {/block}

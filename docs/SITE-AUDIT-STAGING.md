@@ -1,7 +1,7 @@
 # Audit staging — Mappa sito e allineamento Gucci
 
 **Data audit:** 24 maggio 2026  
-**Ultimo pass tema:** v1.2.0 — Gucci Premium Pass (CSS/JS/theme.yml)  
+**Ultimo pass tema:** v1.6.2 — home ordine editoriale, PLP titoli IT (fix scope Smarty)  
 **Staging:** [chocolate-ferret-940937.hostingersite.com](https://chocolate-ferret-940937.hostingersite.com/index.php)  
 **Benchmark:** [gucci.com/it/it](https://www.gucci.com/it/it/)  
 **Screenshot riferimento:** `docs/reference-screenshots/gucci-*.png`  
@@ -77,16 +77,16 @@ flowchart TB
 
 | Area | URL / controller | Note |
 |------|------------------|------|
-| **Home** | `/index.php` | Hook: slider, featured, banner, customtext, specials, new, bestsellers |
+| **Home** | `/index.php` | Hook: slider → featured (Selezione) → banner → Esplora (tpl) |
 | **Categoria** | `?id_category=3&controller=category` (Clothes) | Sottocategorie: Men, Women |
 | **Categoria** | `id_category` Accessories, Art, Stationery, Home Accessories | Da menu / sitemap |
 | **Prodotto** | `?id_product=1&controller=product` (es. Hummingbird t-shirt) | Varianti size/colore |
 | **Prodotto** | `?id_product=20` (Barbara Alvisi Product) | Prezzo alto, immagini lifestyle |
-| **Ricerca** | `?controller=search` | ⏳ |
-| **Nuovi** | `?controller=new-products` | Listing con filtri |
-| **Best sellers** | `?controller=best-sales` | ⏳ |
-| **Offerte** | `?controller=prices-drop` | ⏳ |
-| **Marchi** | `?controller=manufacturer` | Graphic Corner, Studio Design |
+| **Ricerca** | `?controller=search` | Titolo «Risultati per …» IT |
+| **Nuovi** | `?controller=new-products` | ✅ Titolo IT + griglia Gucci |
+| **Best sellers** | `?controller=best-sales` | ✅ Titolo IT |
+| **Offerte** | `?controller=prices-drop` | ✅ Titolo IT |
+| **Marchi** | `?controller=manufacturer` | ✅ Listing marca + pagina Marchi |
 | **Carrello** | `?controller=cart` | |
 | **Checkout** | `?controller=order` | ⏳ (richiede articoli in carrello) |
 | **Login** | `?controller=authentication` | |
@@ -99,9 +99,11 @@ flowchart TB
 
 ### 1.2 Moduli home attivi (`theme.yml`)
 
-Ordine hook `displayHome`: `ps_imageslider` → `ps_featuredproducts` → `ps_banner` → `ps_customtext` → `ps_specials` → `ps_newproducts` → `ps_bestsellers`.
+Ordine hook `displayHome`: `ps_imageslider` → `ps_featuredproducts` → `ps_banner`. Sezione **Esplora** via `gucci-home-categories.tpl` in `index.tpl`.
 
-**Impatto:** la home non è editoriale Gucci ma una **coda di blocchi demo PrestaShop** (slider Sample + 4 griglie prodotti + Lorem ipsum).
+Override vuoti: `ps_specials`, `ps_newproducts`, `ps_bestsellers`, `ps_customtext` (no output).
+
+**Residuo BO:** 🔧 immagini slider demo; 🔧 cover `cat-3/6/9.jpg` in `assets/img/home/`; banner opzionale.
 
 ---
 
@@ -117,12 +119,12 @@ Ordine hook `displayHome`: `ps_imageslider` → `ps_featuredproducts` → `ps_ba
 | **Pannello ricerca** | ⏳ | — | Gucci: overlay full-screen minimale |
 | **Drawer contatti** | 🟡 | Sinistra (scelta progetto) | Non su gucci.com nella stessa forma |
 | **Footer — sfondo** | ✅ | Nero, testo bianco | ✅ |
-| **Footer — colonne** | 🟡 | Accordion mobile; desktop colonne | Titoli EN “Products / Our company” vs Gucci IT editoriali |
-| **Footer — newsletter** | 🟡 | Modulo in footer | Ref: input underline sottile |
-| **Footer — lingua/paese** | 🟡 | Hook `displayFooterAfter` | Gucci: riga dedicata sopra copyright — ❌ non stilizzata |
-| **Footer — social** | ⏳ | Hook presente in `theme.yml` | Gucci: icone lineari minimal |
+| **Footer — colonne** | ✅ | Accordion mobile; link IT via `linkblock.tpl` | Prodotti / La nostra azienda in IT |
+| **Footer — newsletter** | ✅ | Widget in `footer.tpl` v1.3.8+ | Input underline, IT |
+| **Footer — lingua/paese** | 🟡 | Widget `ps_languageselector` / `ps_currencyselector` in meta row | Visibile se >1 lingua/valuta in BO |
+| **Footer — social** | 🟡 | Widget `ps_socialfollow` | 🔧 configurare link in modulo Social follow |
 | **Modale carrello** | 🟡 | Slide da destra | 🟡 transizione migliorata in codice; da verificare con prodotto in carrello |
-| **Wishlist (modulo)** | ❌ | Testi `((modalTitle))` nel DOM | Modulo non disattivato — rumore e placeholder |
+| **Wishlist (modulo)** | 🟡 | Nascosta via CSS/JS + hook vuoti | 🔧 disattivare `blockwishlist` in BO |
 | **Tipografia globale** | 🟡 | Playfair + Montserrat caricate | Mix pesi/scale tra pagine; body ancora “Classic” su form/CMS |
 | **Colori PrestaShop** | 🟡 | Catalogo pulito | ❌ possibili residui blu su pagine non override (contact, auth) |
 
@@ -134,10 +136,10 @@ Ordine hook `displayHome`: `ps_imageslider` → `ps_featuredproducts` → `ps_ba
 
 | Criterio | Stato | Note |
 |----------|-------|------|
-| Hero full-bleed editoriale | ❌ | Slider **Sample 1/2/3** con thumbs verticali — non hero Gucci (ref. `gucci-home-hero.png`) |
-| Una sola griglia prodotti | ❌ | **4 sezioni**: Popular, On sale, New, Best sellers + titoli “View all” |
-| Blocco editoriale / 2 colonne categorie | ❌ | Assente (ref. `gucci-home-categories.png`) |
-| Custom text Lorem | ❌ | Blocco **“Custom Text Block”** con Lorem ipsum visibile |
+| Hero full-bleed editoriale | 🟡 | Slider Sample — layout hero Gucci ok; 🔧 sostituire immagini BO |
+| Una sola griglia prodotti | ✅ | Solo `ps_featuredproducts` (“Selezione”) in `theme.yml` |
+| Blocco editoriale / 2 colonne categorie | 🟡 | `gucci-home-categories.tpl` — Abbigliamento / Accessori / Arte |
+| Custom text Lorem | ✅ | Modulo `ps_customtext` override vuoto |
 | Card prodotto | 🟡 | Griglia ok; sfondo grigio immagine demo |
 | Margini sezioni | 🟡 | Troppo contenuto verticale; poco respiro tra slider e prima griglia |
 | Header su home | 🟡 | Sovrapposto allo slider; logo/icona leggibilità dipende da slide |
@@ -155,7 +157,7 @@ Ordine hook `displayHome`: `ps_imageslider` → `ps_featuredproducts` → `ps_ba
 |----------|-------|------|
 | Layout full width | ✅ | Griglia 3 prodotti, aria laterale |
 | Titolo categoria | 🟡 | “Clothes” centrato; ref Gucci più discreto / allineato sx |
-| Descrizione categoria | ❌ | Testo lungo demo PrestaShop sotto titolo — non editoriale |
+| Descrizione categoria | ✅ | Nascosta in v1.3.9 (`product_list_footer` vuoto + CSS) |
 | Toolbar (conteggio, filtri, ordina) | 🟡 | “3 products”, Filter, Sort presenti | Gucci: toolbar minimal caption |
 | Filtri | 🟡 | Drawer + filtri in pagina (DOM ricco) | Verificare che sidebar Classic non sporga |
 | Card prodotto | 🟡 | Nome + prezzo ok; immagine lifestyle vs packshot misti |

@@ -5,7 +5,13 @@
   {foreach from=$groups key=id_attribute_group item=group}
     {if !empty($group.attributes)}
       <div class="clearfix product-variants-item gucci-product-variants-item gucci-product-variants-item--{$group.group_type|escape:'html':'UTF-8'}">
-        <span class="control-label gucci-variant-label">{$group.name}</span>
+        {assign var='gucciGroupName' value=$group.name}
+        {if $language.iso_code == 'it'}
+          {if $group.name == 'Size'}{assign var='gucciGroupName' value='Taglia'}{/if}
+          {if $group.name == 'Color'}{assign var='gucciGroupName' value='Colore'}{/if}
+          {if $group.name == 'Dimension'}{assign var='gucciGroupName' value='Dimensione'}{/if}
+        {/if}
+        <span class="control-label gucci-variant-label">{$gucciGroupName}</span>
 
         {if $group.group_type == 'select'}
           <ul id="group_{$id_attribute_group}" class="gucci-variant-radios gucci-variant-sizes">

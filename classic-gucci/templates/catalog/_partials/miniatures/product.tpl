@@ -54,7 +54,7 @@
             <div class="product-price-and-shipping">
               {hook h='displayProductPriceBlock' product=$product type="before_price"}
 
-              <span class="price gucci-price" aria-label="{l s='Price' d='Shop.Theme.Catalog'}">
+              <span class="price gucci-price" aria-label="{if $language.iso_code == 'it'}Prezzo{else}{l s='Price' d='Shop.Theme.Catalog'}{/if}">
                 {capture name='custom_price'}{hook h='displayProductPriceBlock' product=$product type='custom_price' hook_origin='products_list'}{/capture}
                 {if '' !== $smarty.capture.custom_price}
                   {$smarty.capture.custom_price nofilter}

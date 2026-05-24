@@ -14,6 +14,8 @@
   </div>
 {/block}
 
+{block name='continue_shopping'}{/block}
+
 {block name='cart_totals'}{/block}
 {block name='cart_actions'}{/block}
 {block name='hook_shopping_cart_footer'}{/block}

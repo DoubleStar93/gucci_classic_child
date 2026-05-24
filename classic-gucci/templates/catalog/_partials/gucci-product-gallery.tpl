@@ -90,7 +90,7 @@
 
     {if $gucciImageTotal > 1}
       <div class="gucci-pdp-gallery-controls">
-        <nav class="gucci-pdp-gallery-thumbs" aria-label="{l s='Product images' d='Shop.Theme.Catalog'}">
+        <nav class="gucci-pdp-gallery-thumbs" aria-label="{if $language.iso_code == 'it'}Immagini prodotto{else}{l s='Product images' d='Shop.Theme.Catalog'}{/if}">
           {foreach from=$product.images item=image name=gucciGalleryThumbs}
             {assign var='gucciThumbUrl' value=$image.bySize.small_default.url}
             {if empty($gucciThumbUrl)}{assign var='gucciThumbUrl' value=$image.bySize.home_default.url}{/if}

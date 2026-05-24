@@ -7,8 +7,14 @@
   {if isset($category)}
     {include file='catalog/_partials/category-header.tpl' listing=$listing category=$category}
   {else}
+    {if $language.iso_code == 'it'}
+      {include file='_partials/gucci-it-label.tpl' gucciLabelIn=$listing.label scope='parent'}
+      {assign var='gucciListingTitle' value=$gucciLabelOut}
+    {else}
+      {assign var='gucciListingTitle' value=$listing.label}
+    {/if}
     <div id="js-product-list-header" class="gucci-plp-header">
-      <h1 class="gucci-plp-title">{$listing.label}</h1>
+      <h1 class="gucci-plp-title">{$gucciListingTitle|escape:'htmlall':'UTF-8'}</h1>
     </div>
   {/if}
 {/block}
@@ -16,10 +22,23 @@
 {block name='subcategory_list'}{/block}
 
 {block name='product_list_top'}
-  {$smarty.block.parent}
+  {include file='catalog/_partials/products-top.tpl' listing=$listing}
   {if !empty($listing.rendered_facets)}
     <div id="gucci-filters-backdrop" class="gucci-filters-backdrop" aria-hidden="true" hidden></div>
     <aside id="search_filters_wrapper" class="gucci-filters-drawer" aria-hidden="true">
+      <div class="gucci-filters-drawer-header">
+        <p class="gucci-filters-drawer-title">
+          {if $language.iso_code == 'it'}Filtra{else}{l s='Filter' d='Shop.Theme.Actions'}{/if}
+        </p>
+        <button
+          type="button"
+          class="gucci-filters-drawer-close btn-unstyle"
+          data-gucci-filters-close
+          aria-label="{if $language.iso_code == 'it'}Chiudi{else}{l s='Close' d='Shop.Theme.Global'}{/if}"
+        >
+          <i class="material-icons" aria-hidden="true">close</i>
+        </button>
+      </div>
       {$listing.rendered_facets nofilter}
     </aside>
   {/if}
@@ -32,5 +51,5 @@
 {/block}
 
 {block name='product_list'}
-  {include file='catalog/_partials/products.tpl' listing=$listing productClass='col-6 col-lg-4 gucci-product-miniature'}
+  {include file='catalog/_partials/products.tpl' listing=$listing productClass='gucci-plp-cell gucci-product-miniature'}
 {/block}

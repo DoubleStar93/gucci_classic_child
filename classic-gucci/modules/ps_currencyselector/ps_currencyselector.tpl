@@ -1,0 +1,22 @@
+{**
+ * Classic Gucci — selettore valuta footer
+ *}
+{if $currencies|count > 1}
+  <div class="gucci-footer-locale currency-selector" id="_desktop_currency_selector">
+    <span class="gucci-footer-meta-label">
+      {if $language.iso_code == 'it'}Valuta{else}{l s='Currency' d='Shop.Theme.Global'}{/if}
+    </span>
+    <ul class="gucci-footer-locale-list">
+      {foreach from=$currencies item=currency}
+        <li>
+          <a
+            href="{$currency.url}"
+            class="gucci-footer-locale-link{if $currency.id == $current_currency.id} is-active{/if}"
+          >
+            {$currency.iso_code}{if $currency.sign !== $currency.iso_code} {$currency.sign}{/if}
+          </a>
+        </li>
+      {/foreach}
+    </ul>
+  </div>
+{/if}

@@ -33,6 +33,24 @@
       </a>
     {/if}
 
+    {if !$configuration.is_catalog}
+      <a class="gucci-account-link" id="order-slips-link" href="{$urls.pages.order_slip}">
+        {if $language.iso_code == 'it'}Note di credito{else}{l s='Credit slips' d='Shop.Theme.Customeraccount'}{/if}
+      </a>
+    {/if}
+
+    {if $configuration.voucher_enabled && !$configuration.is_catalog}
+      <a class="gucci-account-link" id="discounts-link" href="{$urls.pages.discount}">
+        {if $language.iso_code == 'it'}Buoni sconto{else}{l s='Vouchers' d='Shop.Theme.Customeraccount'}{/if}
+      </a>
+    {/if}
+
+    {if $configuration.return_enabled && !$configuration.is_catalog}
+      <a class="gucci-account-link" id="returns-link" href="{$urls.pages.order_follow}">
+        {if $language.iso_code == 'it'}Resi{else}{l s='Merchandise returns' d='Shop.Theme.Customeraccount'}{/if}
+      </a>
+    {/if}
+
     {block name='display_customer_account'}
       {hook h='displayCustomerAccount'}
     {/block}

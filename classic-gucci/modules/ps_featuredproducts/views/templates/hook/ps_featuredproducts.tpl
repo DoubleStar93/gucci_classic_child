@@ -2,8 +2,13 @@
  * Classic Gucci — prodotti in vetrina
  *}
 {if $products}
-  {l s='Popular Products' d='Shop.Theme.Catalog' assign='gucciSectionTitle'}
-  {l s='View all' d='Shop.Theme.Actions' assign='gucciSectionLinkLabel'}
+  {if $language.iso_code == 'it'}
+    {assign var='gucciSectionTitle' value='Selezione'}
+    {assign var='gucciSectionLinkLabel' value='Vedi tutto'}
+  {else}
+    {l s='Popular Products' d='Shop.Theme.Catalog' assign='gucciSectionTitle'}
+    {l s='View all' d='Shop.Theme.Actions' assign='gucciSectionLinkLabel'}
+  {/if}
   {include
     file='_partials/gucci-home-products-section.tpl'
     products=$products

@@ -11,6 +11,7 @@
       {block name='hook_home'}
         <div class="gucci-home-modules">
           {$HOOK_HOME nofilter}
+          {include file='_partials/gucci-home-categories.tpl'}
         </div>
       {/block}
     {/block}

@@ -70,14 +70,14 @@
       aria-controls="gucci-pdp-panel-commitment"
       data-gucci-accordion-trigger
     >
-      {if $language.iso_code == 'it'}Il Nostro Impegno{else}{l s='Our commitment' d='Shop.Theme.Global'}{/if}
+      {if $language.iso_code == 'it'}Il nostro impegno{else}{l s='Our commitment' d='Shop.Theme.Global'}{/if}
     </button>
     <div id="gucci-pdp-panel-commitment" class="gucci-pdp-accordion-panel" hidden>
       <div class="gucci-pdp-accordion-content">
         {if $language.iso_code == 'it'}
-          <p>Gucci si impegna a promuovere pratiche responsabili lungo l&apos;intera filiera, con attenzione alla qualità artigianale, all&apos;innovazione e al rispetto delle persone e dell&apos;ambiente.</p>
+          <p>{$shop.name|escape:'htmlall':'UTF-8'} si impegna a promuovere pratiche responsabili lungo l&apos;intera filiera, con attenzione alla qualità artigianale, all&apos;innovazione e al rispetto delle persone e dell&apos;ambiente.</p>
         {else}
-          <p>{l s='Gucci is committed to responsible practices across its supply chain, with a focus on craftsmanship, innovation, and respect for people and the environment.' d='Shop.Theme.Global'}</p>
+          <p>{$shop.name|escape:'htmlall':'UTF-8'} is committed to responsible practices across its supply chain, with a focus on craftsmanship, innovation, and respect for people and the environment.</p>
         {/if}
       </div>
     </div>

@@ -7,8 +7,11 @@
   <section id="content" class="gucci-checkout-page">
     <header class="gucci-checkout-header">
       <h1 class="gucci-checkout-title">
-        {if $language.iso_code == 'it'}Checkout{else}{l s='Checkout' d='Shop.Theme.Actions'}{/if}
+        {if $language.iso_code == 'it'}Cassa{else}{l s='Checkout' d='Shop.Theme.Checkout'}{/if}
       </h1>
+      <p class="gucci-checkout-subtitle">
+        {if $language.iso_code == 'it'}Completa il tuo ordine{else}{l s='Complete your order' d='Shop.Theme.Checkout'}{/if}
+      </p>
     </header>
 
     <div class="row gucci-checkout-grid">

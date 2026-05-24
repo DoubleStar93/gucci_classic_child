@@ -933,9 +933,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const isPdpAccordion = panel.classList.contains('gucci-pdp-accordion-panel');
 
     if (!isPdpAccordion) {
+      if (window.matchMedia('(min-width: 992px)').matches) {
+        return;
+      }
+
       const isOpen = trigger.getAttribute('aria-expanded') === 'true';
       trigger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
       panel.hidden = isOpen;
+      panel.classList.toggle('is-user-open', !isOpen);
       return;
     }
 
@@ -961,6 +966,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (filtersBackdrop) {
       filtersBackdrop.addEventListener('click', closeFilters);
     }
+
+    document.querySelectorAll('[data-gucci-filters-close]').forEach((closeBtn) => {
+      closeBtn.addEventListener('click', closeFilters);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && filtersWrapper.classList.contains('is-open')) {
+        closeFilters();
+      }
+    });
 
     document.addEventListener('click', (event) => {
       const target = event.target;
@@ -1023,5 +1038,313 @@ document.addEventListener('DOMContentLoaded', () => {
     window.jQuery(cartModal)
       .on('show.bs.modal shown.bs.modal', () => syncCartModalBackdrop(true))
       .on('hide.bs.modal hidden.bs.modal', () => syncCartModalBackdrop(false));
+  }
+
+  const syncFooterAccordionsLayout = () => {
+    const isDesktop = window.matchMedia('(min-width: 992px)').matches;
+    document.querySelectorAll('.gucci-footer-accordion-panel').forEach((panel) => {
+      if (isDesktop) {
+        panel.hidden = false;
+        panel.classList.add('is-desktop-open');
+      } else if (!panel.classList.contains('is-user-open')) {
+        const trigger = document.querySelector(`[data-gucci-accordion-trigger][aria-controls="${panel.id}"]`);
+        const expanded = trigger?.getAttribute('aria-expanded') === 'true';
+        panel.hidden = !expanded;
+      }
+    });
+  };
+
+  document.querySelectorAll('.gucci-footer-accordion-trigger').forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const panelId = trigger.getAttribute('aria-controls');
+      const panel = panelId ? document.getElementById(panelId) : null;
+      if (panel && window.matchMedia('(max-width: 991px)').matches) {
+        panel.classList.toggle('is-user-open', trigger.getAttribute('aria-expanded') === 'true');
+      }
+    });
+  });
+
+  syncFooterAccordionsLayout();
+  window.addEventListener('resize', syncFooterAccordionsLayout, { passive: true });
+
+  document.querySelectorAll(
+    '.wishlist-add-to, .wishlist-delete, .wishlist-create, .wishlist-login, .wishlist-toast, [class*="wishlist-modal"]'
+  ).forEach((node) => {
+    node.remove();
+  });
+
+  const homeEditorial = document.querySelector('#index .gucci-home-categories');
+  const homeHero = document.querySelector(
+    '#index #module-ps_imageslider, #index .gucci-home-hero, #index .ps_imageslider'
+  );
+
+  if (homeEditorial && homeHero) {
+    homeHero.insertAdjacentElement('afterend', homeEditorial);
+  }
+
+  const isItalian =
+    document.documentElement.lang?.toLowerCase().startsWith('it')
+    || document.body.classList.contains('lang-it');
+
+  if (isItalian) {
+    const itUiLabels = new Map([
+      ['Delivery', 'Spedizioni'],
+      ['Legal Notice', 'Note legali'],
+      ['Terms and conditions of use', 'Termini e condizioni'],
+      ['About us', 'Chi siamo'],
+      ['Secure payment', 'Pagamento sicuro'],
+      ['Contact us', 'Contattaci'],
+      ['Sitemap', 'Mappa del sito'],
+      ['Stores', 'Negozi'],
+      ['New products', 'Nuovi prodotti'],
+      ['Best sellers', 'Più venduti'],
+      ['Prices drop', 'Offerte'],
+      ['Specials', 'Offerte'],
+      ['Sign in', 'Accedi'],
+      ['Create account', 'Crea account'],
+      ['My account', 'Il mio account'],
+      ['Orders', 'I miei ordini'],
+      ['Addresses', 'I miei indirizzi'],
+      ['Personal info', 'Informazioni personali'],
+      ['Order tracking', 'Tracciamento ordine'],
+      ['Show details', 'Mostra dettagli'],
+      ['Hide details', 'Nascondi dettagli'],
+      ['Shipping', 'Spedizione'],
+      ['Total', 'Totale'],
+      ['Subtotal', 'Subtotale'],
+      ['Taxes', 'Tasse'],
+      ['Payment', 'Pagamento'],
+      ['I agree to the [terms of service] and will adhere to them unconditionally.', 'Accetto i termini e condizioni.'],
+      ['All rights reserved.', 'Tutti i diritti riservati.'],
+      ['Availability', 'Disponibilità'],
+      ['Selections', 'Selezioni'],
+      ['Price', 'Prezzo'],
+      ['Categories', 'Categorie'],
+      ['Size', 'Taglia'],
+      ['Color', 'Colore'],
+      ['Composition', 'Composizione'],
+      ['Property', 'Caratteristiche'],
+      ['Weight', 'Peso'],
+      ['Brand', 'Marca'],
+      ['In stock', 'In magazzino'],
+      ['Not available', 'Non disponibile'],
+      ['New product', 'Nuovo prodotto'],
+      ['Discounted', 'Scontato'],
+      ['Long sleeves', 'Maniche lunghe'],
+      ['Short sleeves', 'Maniche corte'],
+      ['Relevance', 'Rilevanza'],
+      ['Price, low to high', 'Prezzo: crescente'],
+      ['Price, high to low', 'Prezzo: decrescente'],
+      ['Name, A to Z', 'Nome: A-Z'],
+      ['Name, Z to A', 'Nome: Z-A'],
+      ['Newest first', 'Più recenti'],
+      ['Back to login', 'Torna al login'],
+      ['Back to Login', 'Torna al login'],
+      ['Back to your account', 'Torna al tuo account'],
+      ['Send reset link', 'Invia link di reset'],
+      ['Change Password', 'Cambia password'],
+      ['Forgot your password?', 'Hai dimenticato la password?'],
+      ['Reset your password', 'Reimposta la password'],
+      ['Continue shopping', 'Continua lo shopping'],
+      ['Details', 'Dettagli'],
+      ['Reorder', 'Riordina'],
+      ['Guest Order Tracking', 'Traccia il tuo ordine'],
+      ['Send', 'Invia'],
+      ['Dimension', 'Dimensione'],
+      ['Paper Type', 'Tipo carta'],
+      ['Manufacturers', 'Marchi'],
+      ['Matt paper', 'Carta opaca'],
+      ['Recycled cardboard', 'Cartone riciclato'],
+      ['Ceramic', 'Ceramica'],
+      ['120 pages', '120 pagine'],
+      ['Removable cover', 'Copertina removibile'],
+      ['Ruled', 'Righe'],
+      ['Plain', 'Bianco'],
+      ['Squared', 'Quadretti'],
+      ['Doted', 'Puntini'],
+      ['Brands', 'Marchi'],
+      ['View products', 'Scopri'],
+      ['%number% products', 'articoli'],
+      ['%number% product', 'articolo'],
+      ['No products', 'Nessun prodotto'],
+      ['Shopping Cart', 'Carrello'],
+      ['Proceed to checkout', 'Procedi al checkout'],
+      ['show details', 'Mostra dettagli'],
+      ['Show details', 'Mostra dettagli'],
+      ['Have a promo code?', 'Hai un codice promozionale?'],
+      ['Promo code', 'Codice promozionale'],
+      ['Gift', 'Omaggio'],
+      ['Product customization', 'Personalizzazione prodotto'],
+      ['Remove', 'Rimuovi'],
+      ['Add', 'Aggiungi'],
+      ['Checkout', 'Cassa'],
+      ['Complete your order', 'Completa il tuo ordine'],
+      ['Newsletter', 'Iscriviti alla newsletter'],
+      ['Your email address', 'Indirizzo e-mail'],
+      ['Subscribe', 'Iscriviti'],
+      ['Previous', 'Precedente'],
+      ['Next', 'Successivo'],
+      ['Quantity', 'Quantità'],
+      ['Grey', 'Grigio'],
+      ['Clothes', 'Abbigliamento'],
+      ['Accessories', 'Accessori'],
+      ['Art', 'Arte'],
+      ['Men', 'Uomo'],
+      ['Women', 'Donna'],
+      ['Stationery', 'Cancelleria'],
+      ['Home Accessories', 'Accessori per la casa'],
+      ['Our company', 'La nostra azienda'],
+      ['Products', 'Prodotti'],
+      ['Your account', 'Il tuo account'],
+      ['Pages', 'Pagine'],
+      ['Offers', 'Offerte'],
+      ['Message', 'Messaggio'],
+      ['Subject', 'Oggetto'],
+      ['Email address', 'Indirizzo e-mail'],
+      ['Send message', 'Invia messaggio'],
+      ['Send', 'Invia messaggio'],
+      ['Contact us', 'Contattaci'],
+      ['How can we help?', 'Come possiamo aiutarti?'],
+      ['your@email.com', 'nome@esempio.it'],
+      ['Select reference', 'Seleziona riferimento'],
+      ['Order reference', 'Riferimento ordine'],
+      ['Attachment', 'Allegato'],
+      ['optional', 'facoltativo'],
+      ['About and Contact', 'Info e contatti'],
+      ['Opening hours', 'Orari'],
+    ]);
+
+    const applyItalianLabels = (selector) => {
+      document.querySelectorAll(selector).forEach((node) => {
+        const text = node.textContent?.trim();
+        if (text && itUiLabels.has(text)) {
+          node.textContent = itUiLabels.get(text);
+        }
+      });
+    };
+
+    applyItalianLabels('.gucci-footer-links a, body#checkout .gucci-checkout-summary a, body#checkout .cart-summary a');
+    applyItalianLabels('#search_filters .facet-title, #search_filters .gucci-facet-title, #search_filters .gucci-facet-list a');
+    applyItalianLabels('.gucci-plp-sort .select-list');
+    applyItalianLabels('.gucci-pagination .page-list a, .gucci-plp-showing');
+    document.querySelectorAll('.gucci-plp-showing, .pagination .col-md-4').forEach((node) => {
+      const text = node.textContent?.trim();
+      if (text && /^Showing \d+/.test(text)) {
+        const match = text.match(/Showing (\d+)-(\d+) of (\d+) item\(s\)/);
+        if (match) {
+          node.textContent = `${match[1]}–${match[2]} di ${match[3]} articoli`;
+        }
+      }
+    });
+    applyItalianLabels('.gucci-footer-copyright');
+    applyItalianLabels('.gucci-account-back-link, .gucci-account-back-links a, .gucci-orders-page a, body#guest-login label');
+    applyItalianLabels('body#cart .cart-summary-line .label, body#cart .promo-code-button, body#cart .block-promo label, body#checkout .js-show-details, body#checkout .promo-code-button, body#checkout .cart-summary-line .label, body#order-confirmation .cart-summary-line .label, body#order-confirmation .order-confirmation-table .label');
+    applyItalianLabels('body#cart .cart-detailed-actions a, body#cart .checkout a, .gucci-cart-modal-actions a, .gucci-cart-modal-actions button');
+    applyItalianLabels('.gucci-breadcrumb a span, .gucci-breadcrumb span, .gucci-menu-link, .gucci-drawer-footer .gucci-drawer-link');
+    applyItalianLabels('.gucci-sitemap-group-title, .gucci-sitemap-col a, body#contact label, body#contact .form-control-label, body#cms label');
+
+    const ariaLabelsIt = new Map([
+      ['Shopping cart', 'Carrello'],
+      ['Sign in', 'Accedi'],
+      ['My account', 'Il mio account'],
+      ['Close', 'Chiudi'],
+      ['Menu', 'Menu'],
+      ['Search', 'Cerca'],
+      ['Subcategories', 'Sottocategorie'],
+      ['Breadcrumb', 'Percorso'],
+    ]);
+    ariaLabelsIt.forEach((it, en) => {
+      document.querySelectorAll(`[aria-label="${en}"]`).forEach((node) => {
+        node.setAttribute('aria-label', it);
+      });
+    });
+
+    document.querySelectorAll('body#password button[type="submit"], body#password .form-control-submit').forEach((btn) => {
+      btn.classList.add('gucci-btn', 'gucci-btn--primary');
+    });
+  }
+
+  if (isItalian) {
+    const attrValueIt = new Map([
+      ['White', 'Bianco'],
+      ['Black', 'Nero'],
+      ['Size', 'Taglia'],
+      ['Color', 'Colore'],
+      ['Dimension', 'Dimensione'],
+    ]);
+    document.querySelectorAll('.gucci-variant-size-label, .gucci-variant-radio-label, .attribute-name').forEach((node) => {
+      const text = node.textContent?.trim();
+      if (text && attrValueIt.has(text)) {
+        node.textContent = attrValueIt.get(text);
+      }
+    });
+    document.querySelectorAll('.gucci-variant-label').forEach((node) => {
+      const text = node.textContent?.trim();
+      if (text && attrValueIt.has(text)) {
+        node.textContent = attrValueIt.get(text);
+      }
+    });
+  }
+
+  if (isItalian && document.body.id === 'cart') {
+    document.querySelectorAll('body#cart .remove-from-cart').forEach((link) => {
+      link.setAttribute('aria-label', 'Rimuovi');
+      link.setAttribute('title', 'Rimuovi');
+      const icon = link.querySelector('.material-icons');
+      if (icon) {
+        icon.textContent = 'close';
+        icon.setAttribute('aria-hidden', 'true');
+      }
+    });
+  }
+
+  if (isItalian && document.body.id === 'checkout') {
+    const checkoutStepTitles = new Map([
+      ['Personal Information', 'Informazioni personali'],
+      ['Addresses', 'Indirizzi'],
+      ['Shipping Method', 'Spedizione'],
+      ['Payment', 'Pagamento'],
+    ]);
+    document.querySelectorAll('body#checkout h1.step-title').forEach((h1) => {
+      h1.childNodes.forEach((node) => {
+        if (node.nodeType !== Node.TEXT_NODE) {
+          return;
+        }
+        const trimmed = node.textContent.trim();
+        if (checkoutStepTitles.has(trimmed)) {
+          node.textContent = ` ${checkoutStepTitles.get(trimmed)} `;
+        }
+      });
+    });
+
+    const checkoutLabels = new Map([
+      ['Continue', 'Continua'],
+      ['Place order', 'Effettua ordine'],
+      ['Save', 'Salva'],
+      ['Cancel', 'Annulla'],
+      ['add new address', 'Aggiungi indirizzo'],
+      ['Show', 'Mostra'],
+      ['Choose', 'Scegli'],
+      ['Selected', 'Selezionato'],
+      ['The selected address will be used as your personal address (for invoice).', 'L\'indirizzo selezionato sarà usato come indirizzo personale (fattura).'],
+      ['The selected address will be used both as your personal address (for invoice) and as your delivery address.', 'L\'indirizzo selezionato sarà usato come indirizzo personale e di consegna.'],
+      ['Billing address differs from shipping address', 'L\'indirizzo di fatturazione è diverso da quello di spedizione'],
+    ]);
+
+    document.querySelectorAll('body#checkout button, body#checkout a.btn, body#checkout label, body#checkout p').forEach((node) => {
+      const text = node.textContent?.trim();
+      if (text && checkoutLabels.has(text)) {
+        node.textContent = checkoutLabels.get(text);
+      }
+    });
+
+    const placeOrderBtn = document.querySelector('#payment-confirmation button');
+    if (placeOrderBtn) {
+      placeOrderBtn.classList.add('gucci-btn', 'gucci-btn--primary');
+    }
+
+    document.querySelectorAll('body#checkout button.continue, body#checkout button[name="confirm-addresses"]').forEach((btn) => {
+      btn.classList.add('gucci-btn', 'gucci-btn--primary');
+    });
   }
 });

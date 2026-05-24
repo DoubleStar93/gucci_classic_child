@@ -1,7 +1,7 @@
 parent: classic
 name: classic-gucci
 display_name: Classic Gucci Style
-version: 1.3.0
+version: 1.6.4
 author:
   name: "Anton"
   email: ""
@@ -73,6 +73,7 @@ theme_settings:
     best-sales: layout-full-width
     new-products: layout-full-width
     prices-drop: layout-full-width
+    manufacturer: layout-full-width
     contact: layout-full-width
     search: layout-full-width
     cart: layout-full-width
@@ -80,3 +81,17 @@ theme_settings:
     authentication: layout-full-width
     registration: layout-full-width
     my-account: layout-full-width
+    cms: layout-full-width
+    order-confirmation: layout-full-width
+    stores: layout-full-width
+    history: layout-full-width
+    order-detail: layout-full-width
+    password: layout-full-width
+    address: layout-full-width
+    guest-tracking: layout-full-width
+    guest-login: layout-full-width
+    discount: layout-full-width
+    order-slip: layout-full-width
+    order-follow: layout-full-width
+    page-not-found: layout-full-width
+    sitemap: layout-full-width

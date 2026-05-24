@@ -1,0 +1,3 @@
+{**
+ * Classic Gucci — wishlist disabilitata
+ *}

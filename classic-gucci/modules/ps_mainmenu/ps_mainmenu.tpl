@@ -9,13 +9,14 @@
             {assign var=_expand_id value=10|mt_rand:100000}
           {/if}
           <div class="gucci-menu-row">
+            {include file='_partials/gucci-it-label.tpl' gucciLabelIn=$node.label scope='parent'}
             <a
               class="gucci-menu-link{if $depth >= 0} dropdown-item{/if}{if $depth === 1} dropdown-submenu{/if}"
               href="{$node.url}"
               data-depth="{$depth}"
               {if $node.open_in_new_window} target="_blank" rel="noopener noreferrer"{/if}
             >
-              {$node.label}
+              {$gucciLabelOut|escape:'htmlall':'UTF-8'}
             </a>
             {if $node.children|count}
               <button
@@ -24,7 +25,7 @@
                 data-target="#top_sub_menu_{$_expand_id}"
                 aria-expanded="false"
                 aria-controls="top_sub_menu_{$_expand_id}"
-                aria-label="{l s='Subcategories' d='Shop.Theme.Global'}"
+                aria-label="{if isset($language) && $language.iso_code == 'it'}Sottocategorie{else}{l s='Subcategories' d='Shop.Theme.Global'}{/if}"
               >
                 <i class="material-icons" aria-hidden="true">chevron_right</i>
               </button>

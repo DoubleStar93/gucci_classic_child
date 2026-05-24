@@ -6,9 +6,9 @@
     <div class="header">
       <a
         rel="nofollow"
-        aria-label="{l s='Shopping cart' d='Shop.Theme.Checkout'}"
+        aria-label="{if $language.iso_code == 'it'}Carrello{else}{l s='Shopping cart' d='Shop.Theme.Checkout'}{/if}"
         href="{$cart_url}"
-        title="{l s='Cart' d='Shop.Theme.Checkout'}"
+        title="{if $language.iso_code == 'it'}Carrello{else}{l s='Cart' d='Shop.Theme.Checkout'}{/if}"
       >
         <i class="material-icons shopping-cart" aria-hidden="true">shopping_bag</i>
         {if $cart.products_count > 0}

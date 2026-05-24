@@ -8,7 +8,7 @@
         <h4 class="gucci-cart-modal-title" id="gucciCartModalLabel">
           {if $language.iso_code == 'it'}Aggiunto al carrello{else}{l s='Product successfully added to your shopping cart' d='Shop.Theme.Checkout'}{/if}
         </h4>
-        <button type="button" class="gucci-cart-modal-close btn-unstyle" data-dismiss="modal" aria-label="{l s='Close' d='Shop.Theme.Global'}">
+        <button type="button" class="gucci-cart-modal-close btn-unstyle" data-dismiss="modal" aria-label="{if $language.iso_code == 'it'}Chiudi{else}{l s='Close' d='Shop.Theme.Global'}{/if}">
           <i class="material-icons" aria-hidden="true">close</i>
         </button>
       </div>

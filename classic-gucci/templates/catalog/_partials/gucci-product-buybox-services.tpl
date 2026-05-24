@@ -10,7 +10,7 @@
       aria-controls="gucci-pdp-panel-buybox-services"
       data-gucci-accordion-trigger
     >
-      {if $language.iso_code == 'it'}Servizi Gucci{else}{l s='Gucci services' d='Shop.Theme.Global'}{/if}
+      {if $language.iso_code == 'it'}Servizi{else}{l s='Services' d='Shop.Theme.Global'}{/if}
     </button>
     <div id="gucci-pdp-panel-buybox-services" class="gucci-pdp-accordion-panel" hidden>
       <ul class="gucci-pdp-services-list">

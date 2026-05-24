@@ -7,7 +7,7 @@
       type="button"
       id="gucci-account-toggle"
       class="gucci-account-toggle btn-unstyle"
-      aria-label="{if $logged}{l s='My account' d='Shop.Theme.Customeraccount'}{else}{l s='Sign in' d='Shop.Theme.Actions'}{/if}"
+      aria-label="{if $logged}{if $language.iso_code == 'it'}Il mio account{else}{l s='My account' d='Shop.Theme.Customeraccount'}{/if}{else}{if $language.iso_code == 'it'}Accedi{else}{l s='Sign in' d='Shop.Theme.Actions'}{/if}{/if}"
       aria-expanded="false"
       aria-controls="gucci-account-drawer"
     >

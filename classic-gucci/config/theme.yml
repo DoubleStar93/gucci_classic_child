@@ -51,12 +51,20 @@ global_settings:
         - ps_shoppingcart
         - ps_customersignin
       displayHome:
+        - ps_imageslider
+        - ps_featuredproducts
         - ps_banner
-      displayFooterBefore:
-        - ps_emailsubscription
+        - ps_customtext
+        - ps_specials
+        - ps_newproducts
+        - ps_bestsellers
+      displayFooterBefore: []
       displayFooter:
         - ps_linklist
-      displayFooterAfter: []
+      displayFooterAfter:
+        - ps_languageselector
+        - ps_currencyselector
+        - ps_socialfollow
       displayLeftColumn: []
       displayReassurance: []
       displayWrapperTop: []

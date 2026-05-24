@@ -16,3 +16,5 @@
     {/block}
   </section>
 {/block}
+
+{block name='page_footer_container'}{/block}

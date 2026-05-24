@@ -154,11 +154,7 @@
 
     {block name='product_images_modal'}{/block}
 
-    {block name='page_footer_container'}
-      <footer class="page-footer">
-        {block name='page_footer'}{/block}
-      </footer>
-    {/block}
+    {block name='page_footer_container'}{/block}
   </section>
 {/block}
 

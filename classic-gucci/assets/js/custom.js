@@ -670,121 +670,163 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  const initGucciPdpGallery = () => {
-    cleanupClassicPdpImages();
-    upgradeGucciGalleryResolution();
-
-    const pdpGallery = document.querySelector('.js-gucci-pdp-gallery[data-gucci-gallery-slider]');
-    if (!pdpGallery || pdpGallery.dataset.gucciGalleryReady === '1') {
+  const syncGucciHomeHeroRatio = (gallery) => {
+    if (!gallery?.classList.contains('gucci-home-hero-slider')) {
       return;
     }
 
-    pdpGallery.dataset.gucciGalleryReady = '1';
+    const activeImg =
+      gallery.querySelector('.gucci-pdp-gallery-slide.is-active .gucci-pdp-gallery-image') ||
+      gallery.querySelector('.gucci-pdp-gallery-image');
 
-    const pdpViewport = pdpGallery.querySelector('.js-gucci-pdp-gallery-viewport');
-    const pdpSlides = Array.from(pdpGallery.querySelectorAll('.gucci-pdp-gallery-slide'));
-    const pdpThumbs = Array.from(pdpGallery.querySelectorAll('.gucci-pdp-gallery-thumb'));
-    const pdpCounterCurrent = pdpGallery.querySelector('.gucci-pdp-gallery-counter-current');
-    let pdpActiveIndex = 0;
-    let pdpTouchStartX = 0;
+    if (!activeImg) {
+      return;
+    }
 
-    const goToPdpSlide = (index) => {
-      if (!pdpSlides.length) {
+    const applyRatio = () => {
+      const width = activeImg.naturalWidth;
+      const height = activeImg.naturalHeight;
+
+      if (width > 0 && height > 0) {
+        gallery.style.setProperty('--gucci-home-hero-ratio', `${width} / ${height}`);
+      }
+    };
+
+    if (activeImg.complete && activeImg.naturalWidth > 0) {
+      applyRatio();
+      return;
+    }
+
+    activeImg.addEventListener('load', applyRatio, { once: true });
+  };
+
+  const initGucciGallery = (gallery) => {
+    if (!gallery || gallery.dataset.gucciGalleryReady === '1') {
+      return;
+    }
+
+    if (!gallery.hasAttribute('data-gucci-gallery-slider')) {
+      return;
+    }
+
+    gallery.dataset.gucciGalleryReady = '1';
+
+    const galleryViewport = gallery.querySelector('.js-gucci-pdp-gallery-viewport');
+    const gallerySlides = Array.from(gallery.querySelectorAll('.gucci-pdp-gallery-slide'));
+    const galleryThumbs = Array.from(gallery.querySelectorAll('.gucci-pdp-gallery-thumb'));
+    const galleryCounterCurrent = gallery.querySelector('.gucci-pdp-gallery-counter-current');
+    let galleryActiveIndex = 0;
+    let galleryTouchStartX = 0;
+
+    const goToGallerySlide = (index) => {
+      if (!gallerySlides.length) {
         return;
       }
 
-      const nextIndex = Math.max(0, Math.min(index, pdpSlides.length - 1));
-      pdpActiveIndex = nextIndex;
+      const nextIndex = Math.max(0, Math.min(index, gallerySlides.length - 1));
+      galleryActiveIndex = nextIndex;
 
-      pdpSlides.forEach((slide, slideIndex) => {
+      gallerySlides.forEach((slide, slideIndex) => {
         const isActive = slideIndex === nextIndex;
         slide.classList.toggle('is-active', isActive);
         slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
       });
 
-      pdpThumbs.forEach((thumb, thumbIndex) => {
+      galleryThumbs.forEach((thumb, thumbIndex) => {
         const isActive = thumbIndex === nextIndex;
         thumb.classList.toggle('is-active', isActive);
         thumb.setAttribute('aria-current', isActive ? 'true' : 'false');
       });
 
-      if (pdpCounterCurrent) {
-        pdpCounterCurrent.textContent = String(nextIndex + 1);
+      if (galleryCounterCurrent) {
+        galleryCounterCurrent.textContent = String(nextIndex + 1);
       }
 
-      pdpSlides.forEach((slide) => {
+      gallerySlides.forEach((slide) => {
         const img = slide.querySelector('.gucci-pdp-gallery-image');
         if (img) {
           img.classList.remove('js-qv-product-cover');
         }
       });
 
-      const activeImg = pdpSlides[nextIndex]?.querySelector('.gucci-pdp-gallery-image');
+      const activeImg = gallerySlides[nextIndex]?.querySelector('.gucci-pdp-gallery-image');
       if (activeImg) {
         activeImg.classList.add('js-qv-product-cover');
       }
 
       upgradeGucciGalleryResolution();
+      syncGucciHomeHeroRatio(gallery);
     };
 
-    pdpThumbs.forEach((thumb) => {
+    galleryThumbs.forEach((thumb) => {
       thumb.addEventListener('click', () => {
         const slideIndex = Number.parseInt(thumb.getAttribute('data-slide-index') || '0', 10);
-        goToPdpSlide(slideIndex);
+        goToGallerySlide(slideIndex);
       });
     });
 
-    if (pdpViewport) {
-      pdpViewport.addEventListener('keydown', (event) => {
+    if (galleryViewport) {
+      galleryViewport.addEventListener('keydown', (event) => {
         if (event.key === 'ArrowRight') {
           event.preventDefault();
-          goToPdpSlide(pdpActiveIndex + 1);
+          goToGallerySlide(galleryActiveIndex + 1);
         }
 
         if (event.key === 'ArrowLeft') {
           event.preventDefault();
-          goToPdpSlide(pdpActiveIndex - 1);
+          goToGallerySlide(galleryActiveIndex - 1);
         }
       });
 
-      pdpViewport.addEventListener(
+      galleryViewport.addEventListener(
         'touchstart',
         (event) => {
-          pdpTouchStartX = event.changedTouches[0]?.clientX ?? 0;
+          galleryTouchStartX = event.changedTouches[0]?.clientX ?? 0;
         },
         { passive: true }
       );
 
-      pdpViewport.addEventListener(
+      galleryViewport.addEventListener(
         'touchend',
         (event) => {
           const touchEndX = event.changedTouches[0]?.clientX ?? 0;
-          const deltaX = touchEndX - pdpTouchStartX;
+          const deltaX = touchEndX - galleryTouchStartX;
 
           if (Math.abs(deltaX) < 48) {
             return;
           }
 
           if (deltaX < 0) {
-            goToPdpSlide(pdpActiveIndex + 1);
+            goToGallerySlide(galleryActiveIndex + 1);
           } else {
-            goToPdpSlide(pdpActiveIndex - 1);
+            goToGallerySlide(galleryActiveIndex - 1);
           }
         },
         { passive: true }
       );
     }
 
-    goToPdpSlide(0);
+    goToGallerySlide(0);
   };
 
-  initGucciPdpGallery();
+  const initGucciGalleries = () => {
+    if (document.body.id === 'product') {
+      cleanupClassicPdpImages();
+    }
+
+    upgradeGucciGalleryResolution();
+    document.querySelectorAll('.js-gucci-pdp-gallery[data-gucci-gallery-slider]').forEach(initGucciGallery);
+    document.querySelectorAll('.gucci-home-hero-slider:not([data-gucci-gallery-slider])').forEach(syncGucciHomeHeroRatio);
+  };
+
+  initGucciGalleries();
 
   let gucciGalleryResizeTimer;
   window.addEventListener('resize', () => {
     window.clearTimeout(gucciGalleryResizeTimer);
     gucciGalleryResizeTimer = window.setTimeout(() => {
       upgradeGucciGalleryResolution();
+      document.querySelectorAll('.gucci-home-hero-slider').forEach(syncGucciHomeHeroRatio);
     }, 150);
   });
 
@@ -797,11 +839,11 @@ document.addEventListener('DOMContentLoaded', () => {
         delete img.dataset.gucciHiRes;
       });
       cleanupClassicPdpImages();
-      initGucciPdpGallery();
+      initGucciGalleries();
     });
   }
 
-  document.querySelectorAll('[data-gucci-accordion-trigger]').forEach((trigger) => {
+  document.querySelectorAll('.gucci-footer [data-gucci-accordion-trigger]').forEach((trigger) => {
     const panelId = trigger.getAttribute('aria-controls');
     const panel = panelId ? document.getElementById(panelId) : null;
 

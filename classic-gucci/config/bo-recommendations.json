@@ -10,22 +10,23 @@
     "default_currency": "EUR"
   },
   "disable_modules": [
-    "ps_imageslider",
-    "ps_customtext",
-    "ps_specials",
-    "ps_newproducts",
-    "ps_bestsellers",
     "blockreassurance",
     "blockwishlist"
   ],
   "keep_modules": [
-    "ps_banner",
+    "ps_imageslider",
     "ps_featuredproducts",
+    "ps_banner",
+    "ps_customtext",
+    "ps_specials",
+    "ps_newproducts",
+    "ps_bestsellers",
     "ps_emailsubscription",
     "ps_linklist",
     "ps_mainmenu",
     "ps_contactinfo"
   ],
+  "displayHome_note": "Tutti i moduli home sono stilizzati Gucci. Disattiva o riordina in Design → Posizioni → displayHome.",
   "footer_linklist_columns_it": [
     "Possiamo aiutarti?",
     "Informazioni aziendali",

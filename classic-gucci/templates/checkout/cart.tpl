@@ -59,5 +59,20 @@
       </div>
     </div>
 
+    {block name='display_crossselling'}
+      {if $language.iso_code == 'it'}
+        {assign var='gucciCartSelectionTitle' value='Selezione'}
+      {else}
+        {l s='Popular Products' d='Shop.Theme.Catalog' assign='gucciCartSelectionTitle'}
+      {/if}
+      {include
+        file='_partials/gucci-featured-products-strip.tpl'
+        wrapperClass='gucci-cart-cross-selling'
+        hookName='displayCrossSellingShoppingCart'
+        widgetHook='displayHome'
+        sectionTitle=$gucciCartSelectionTitle
+      }
+    {/block}
+
   </section>
 {/block}

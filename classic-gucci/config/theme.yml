@@ -1,7 +1,7 @@
 parent: classic
 name: classic-gucci
 display_name: Classic Gucci Style
-version: 1.6.6
+version: 1.8.0
 author:
   name: "Anton"
   email: ""
@@ -54,6 +54,16 @@ global_settings:
         - ps_imageslider
         - ps_featuredproducts
         - ps_banner
+      displayCrossSellingShoppingCart:
+        - ps_featuredproducts
+      displayOrderConfirmation2:
+        - ps_featuredproducts
+      displayCartModalFooter:
+        - ps_featuredproducts
+      displayNotFound:
+        - ps_featuredproducts
+      displayFooterProduct:
+        - ps_categoryproducts
       displayFooterBefore: []
       displayFooter:
         - ps_linklist
@@ -74,6 +84,7 @@ theme_settings:
     new-products: layout-full-width
     prices-drop: layout-full-width
     manufacturer: layout-full-width
+    supplier: layout-full-width
     contact: layout-full-width
     search: layout-full-width
     cart: layout-full-width

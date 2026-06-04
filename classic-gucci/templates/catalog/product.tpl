@@ -106,22 +106,30 @@
       </div>
     </form>
 
-    {block name='product_accessories'}
-      {if $accessories}
-        <section class="product-accessories gucci-pdp-accessories clearfix">
-          <p class="gucci-pdp-accessories-title">
-            {if $language.iso_code == 'it'}Potrebbe piacerti anche{else}{l s='You might also like' d='Shop.Theme.Catalog'}{/if}
-          </p>
+    <div class="gucci-pdp-product-grids">
+      {block name='product_accessories'}
+        {if $accessories}
+          {if $language.iso_code == 'it'}
+            {assign var='gucciAccessoriesTitle' value='Potrebbe piacerti anche'}
+          {else}
+            {l s='You might also like' d='Shop.Theme.Catalog' assign='gucciAccessoriesTitle'}
+          {/if}
           {include
-            file='catalog/_partials/productlist.tpl'
+            file='_partials/gucci-product-grid-section.tpl'
             products=$accessories
-            productClass='gucci-plp-cell gucci-product-miniature'
+            sectionTitle=$gucciAccessoriesTitle
+            sectionClass='product-accessories gucci-pdp-accessories'
+            titleClass='gucci-pdp-accessories-title'
           }
-        </section>
-      {/if}
-    {/block}
+        {/if}
+      {/block}
 
-    {block name='product_footer'}{/block}
+      {block name='product_footer'}
+        <div class="gucci-pdp-footer-grids">
+          {hook h='displayFooterProduct' product=$product category=$category}
+        </div>
+      {/block}
+    </div>
 
     {block name='product_images_modal'}{/block}
 

@@ -53,3 +53,5 @@
 {block name='product_list'}
   {include file='catalog/_partials/products.tpl' listing=$listing productClass='gucci-plp-cell gucci-product-miniature'}
 {/block}
+
+{block name='product_list_bottom'}{/block}

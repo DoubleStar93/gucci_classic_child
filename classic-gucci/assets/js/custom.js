@@ -1347,4 +1347,83 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.classList.add('gucci-btn', 'gucci-btn--primary');
     });
   }
+
+  /** Griglia prodotti come homepage — anche liste legacy (.products.row) e AJAX listing */
+  const gucciProductGridSelectors = [
+    '#products .products',
+    '#product .gucci-pdp-product-grids .products',
+    '#product .gucci-pdp-footer-grids .products',
+    '#product .featured-products .products',
+    '#index .featured-products .products',
+    '#wrapper .featured-products .products',
+    '.gucci-product-grid-hook .products',
+    '.gucci-cart-cross-selling .products',
+    '.gucci-order-confirmation-extra .products',
+    '.gucci-not-found-products .products',
+    '.gucci-cart-modal-cross-selling .products',
+    '.cross-selling .products',
+    '.gucci-product-grid-section .products',
+    '.product-accessories .products',
+  ];
+
+  const isGucciProductGridExcluded = (grid) => Boolean(
+    grid.closest(
+      '.cart-overview, .cart-item, .product-line-grid, .cart-summary, .order-confirmation-table, #cart-summary-product-list, .gucci-cart-container'
+    )
+  );
+
+  const upgradeGucciProductGrids = () => {
+    const grids = new Set();
+
+    gucciProductGridSelectors.forEach((selector) => {
+      document.querySelectorAll(selector).forEach((grid) => grids.add(grid));
+    });
+
+    document.querySelectorAll('#wrapper .products.row, #wrapper .products:not(.gucci-plp-grid)').forEach((grid) => {
+      if (!isGucciProductGridExcluded(grid)) {
+        grids.add(grid);
+      }
+    });
+
+    grids.forEach((grid) => {
+      grid.classList.add('gucci-plp-grid');
+      grid.classList.remove('row');
+      grid.querySelectorAll(':scope > .js-product, :scope > .product').forEach((cell) => {
+        cell.classList.add('gucci-plp-cell', 'gucci-product-miniature');
+      });
+    });
+  };
+
+  upgradeGucciProductGrids();
+
+  if (typeof prestashop !== 'undefined' && prestashop.on) {
+    prestashop.on('updateProductList', upgradeGucciProductGrids);
+    prestashop.on('updatedProductList', upgradeGucciProductGrids);
+  }
+
+  const gridObserverRoots = [
+    document.getElementById('products'),
+    document.getElementById('js-product-list'),
+    document.getElementById('wrapper'),
+    document.querySelector('#product .gucci-pdp-product-grids'),
+    document.querySelector('.gucci-product-grid-hook'),
+  ].filter(Boolean);
+
+  if (gridObserverRoots.length && typeof MutationObserver !== 'undefined') {
+    let gridUpgradeFrame = 0;
+    const scheduleGucciProductGridUpgrade = () => {
+      if (gridUpgradeFrame) {
+        cancelAnimationFrame(gridUpgradeFrame);
+      }
+      gridUpgradeFrame = requestAnimationFrame(() => {
+        gridUpgradeFrame = 0;
+        upgradeGucciProductGrids();
+      });
+    };
+
+    const gridObserver = new MutationObserver(scheduleGucciProductGridUpgrade);
+    gridObserverRoots.forEach((root) => {
+      gridObserver.observe(root, { childList: true, subtree: true });
+    });
+  }
 });

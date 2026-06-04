@@ -67,7 +67,20 @@
         </div>
       </div>
 
-      {hook h='displayCartModalFooter' product=$product}
+      <div class="gucci-cart-modal-cross-selling">
+        {if $language.iso_code == 'it'}
+          {assign var='gucciModalSelectionTitle' value='Selezione'}
+        {else}
+          {l s='Popular Products' d='Shop.Theme.Catalog' assign='gucciModalSelectionTitle'}
+        {/if}
+        {include
+          file='_partials/gucci-featured-products-strip.tpl'
+          wrapperClass='gucci-cart-modal-products'
+          hookName='displayCartModalFooter'
+          widgetHook='displayHome'
+          sectionTitle=$gucciModalSelectionTitle
+        }
+      </div>
     </div>
   </div>
 </div>

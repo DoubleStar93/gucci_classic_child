@@ -42,11 +42,7 @@
 
       <div class="product-description">
         {block name='product_name'}
-          {if $page.page_name == 'index'}
-            <h3 class="h3 product-title"><a href="{$product.url}" content="{$product.url}">{$product.name|truncate:55:'...'}</a></h3>
-          {else}
-            <h2 class="h3 product-title"><a href="{$product.url}" content="{$product.url}">{$product.name|truncate:55:'...'}</a></h2>
-          {/if}
+          <h3 class="h3 product-title"><a href="{$product.url}" content="{$product.url}">{$product.name|truncate:55:'...'}</a></h3>
         {/block}
 
         {block name='product_price_and_shipping'}

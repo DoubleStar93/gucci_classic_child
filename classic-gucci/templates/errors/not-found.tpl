@@ -43,4 +43,17 @@
   </form>
 {/block}
 
-{block name='hook_not_found'}{/block}
+{block name='hook_not_found'}
+  {if $language.iso_code == 'it'}
+    {assign var='gucciNotFoundSelectionTitle' value='Selezione'}
+  {else}
+    {l s='Popular Products' d='Shop.Theme.Catalog' assign='gucciNotFoundSelectionTitle'}
+  {/if}
+  {include
+    file='_partials/gucci-featured-products-strip.tpl'
+    wrapperClass='gucci-not-found-products'
+    hookName='displayNotFound'
+    widgetHook='displayHome'
+    sectionTitle=$gucciNotFoundSelectionTitle
+  }
+{/block}

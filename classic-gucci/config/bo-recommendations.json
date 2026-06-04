@@ -16,6 +16,7 @@
   "keep_modules": [
     "ps_imageslider",
     "ps_featuredproducts",
+    "ps_categoryproducts",
     "ps_banner",
     "ps_customtext",
     "ps_specials",
@@ -26,7 +27,8 @@
     "ps_mainmenu",
     "ps_contactinfo"
   ],
-  "displayHome_note": "Tutti i moduli home sono stilizzati Gucci. Disattiva o riordina in Design → Posizioni → displayHome.",
+  "displayHome_note": "displayHome: solo ps_imageslider + ps_featuredproducts (Selezione, 8 prodotti) + ps_banner. Non agganciare ps_newproducts/ps_specials/ps_bestsellers in home.",
+  "product_grid_note": "Griglia unificata: productlist.tpl (gucci-plp-grid). PLP: products.tpl con #js-product-list. Vedi docs/GUCCI-PRODUCT-GRID.md",
   "footer_linklist_columns_it": [
     "Possiamo aiutarti?",
     "Informazioni aziendali",

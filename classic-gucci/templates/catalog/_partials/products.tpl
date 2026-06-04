@@ -1,8 +1,17 @@
 {**
- * Classic Gucci — solo griglia PLP (toolbar in product_list_top del listing)
+ * Classic Gucci — listing prodotti (griglia homepage + paginazione)
+ * Wrapper #js-product-list richiesto per AJAX filtri/ordinamento
  *}
-<div class="products gucci-plp-grid">
-  {foreach from=$listing.products item="product" key="position"}
-    {include file='catalog/_partials/miniatures/product.tpl' product=$product position=$position productClasses=$productClass}
-  {/foreach}
+<div id="js-product-list" class="gucci-plp-list">
+  {include
+    file='catalog/_partials/productlist.tpl'
+    products=$listing.products
+    productClass=$productClass|default:'gucci-plp-cell gucci-product-miniature'
+  }
+
+  {block name='pagination'}
+    {include file='_partials/pagination.tpl' pagination=$listing.pagination}
+  {/block}
+
+  <div id="js-product-list-bottom" class="gucci-plp-list-bottom"></div>
 </div>

@@ -174,8 +174,10 @@ async function main() {
       }
     }
 
+    const verifyUrl =
+      process.env.STAGING_URL?.trim() || "https://barbaraalvisi.it/";
     console.log("\nDeploy completato.");
-    console.log("Verifica: https://chocolate-ferret-940937.hostingersite.com/");
+    console.log(`Verifica: ${verifyUrl}`);
   } finally {
     client.close();
   }

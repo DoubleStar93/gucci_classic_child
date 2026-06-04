@@ -111,7 +111,18 @@
 
     {block name='hook_order_confirmation_2'}
       <section id="content-hook_order_confirmation_2" class="gucci-order-confirmation-extra">
-        {hook h='displayOrderConfirmation2'}
+        {if $language.iso_code == 'it'}
+          {assign var='gucciOrderSelectionTitle' value='Selezione'}
+        {else}
+          {l s='Popular Products' d='Shop.Theme.Catalog' assign='gucciOrderSelectionTitle'}
+        {/if}
+        {include
+          file='_partials/gucci-featured-products-strip.tpl'
+          wrapperClass='gucci-order-confirmation-products'
+          hookName='displayOrderConfirmation2'
+          widgetHook='displayOrderConfirmation2'
+          sectionTitle=$gucciOrderSelectionTitle
+        }
       </section>
     {/block}
 

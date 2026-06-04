@@ -1,5 +1,80 @@
 # Changelog tema Classic Gucci
 
+## v1.8.0 (maggio 2026)
+
+- Fix PLP/ricerca: griglia duplicata (products-bottom non deve ripetere productlist)
+- `products.tpl`: wrapper `#js-product-list` + paginazione per AJAX listing
+
+## v1.7.9 (maggio 2026)
+
+- Home: una sola griglia «Selezione» (nasconde novità/offerte se agganciati in BO)
+- Moduli home extra: non renderizzano su `index` (griglia Gucci altrove se usati)
+
+## v1.7.8 (maggio 2026)
+
+- CSS griglia anche su `.products` legacy (hook/widget) prima del JS
+- Moduli `ps_newproducts` / `ps_bestsellers` / `ps_specials`: se attivi in BO → griglia Gucci
+- JS: debounce `MutationObserver` griglia prodotti
+
+## v1.7.7 (maggio 2026)
+
+- `productlist.tpl`: parametro `maxProducts` (8 in home/sezioni; PLP senza limite)
+- AJAX listing: `products-bottom.tpl` → stessa griglia homepage
+- Override `productcomments`: footer PDP e stelle in griglia disattivati
+
+## v1.7.6 (maggio 2026)
+
+- PDP footer: nascosti hook non-griglia (es. recensioni tra le sezioni prodotti)
+- `ps_categoryproducts`: max 8 prodotti come homepage
+- JS: `MutationObserver` su `#wrapper` per liste dinamiche
+
+## v1.7.5 (maggio 2026)
+
+- PDP: contenitore `gucci-pdp-product-grids` (correlati + hook footer)
+- Override `ps_crossselling` e `ps_viewedproduct` → `gucci-product-grid-section`
+- CSS/JS: griglia su `#product`, `.featured-products` legacy, observer footer PDP
+
+## v1.7.4 (maggio 2026)
+
+- **Fallback globale** JS: tutte le `.products.row` nel catalogo → `gucci-plp-grid` (esclusi carrello/checkout)
+- **CSS**: griglia anche su `.products.row` legacy; fix regole Classic che spaziavano le miniature fuori griglia
+- **Doc** `docs/GUCCI-PRODUCT-GRID.md` — riferimento pattern unico
+
+## v1.7.3 (maggio 2026)
+
+- **Partial** `gucci-featured-products-strip.tpl`: hook + widget fallback (Selezione ovunque)
+- **Carrello, conferma ordine, 404, modal add-to-cart**: stessa griglia homepage
+- **Listing fornitore** (`supplier.tpl`) + CSS layout full-bleed
+- **JS**: `MutationObserver` su `#products` + evento `updatedProductList`
+
+## v1.7.2 (maggio 2026)
+
+- **Liste prodotti ovunque**: CSS su `#products .products`, carrello, conferma ordine, cross-selling (anche senza classe `gucci-plp-grid`)
+- **JS** `upgradeGucciProductGrids`: normalizza `.products.row` legacy + re-run su `updateProductList` (filtri AJAX)
+- **Carrello / conferma ordine**: fallback widget `ps_featuredproducts` (hook `displayHome` / `displayOrderConfirmation2`) se l’hook è vuoto
+
+## v1.7.1 (maggio 2026)
+
+- **Carrello + conferma ordine**: cross-selling / Selezione con stessa griglia homepage (`displayCrossSellingShoppingCart`, `displayOrderConfirmation2`)
+- **Partial** `gucci-product-grid-section.tpl` per sezioni prodotto riutilizzabili (PDP correlati, hook carrello)
+- CSS miniature/griglia consolidato su `.gucci-plp-grid` (tutte le pagine)
+
+## v1.7.0 (maggio 2026)
+
+- **Griglia prodotti globale** `.gucci-plp-grid`: stessa logica homepage su categorie, ricerca, offerte, nuovi, best seller, marca, correlati PDP
+- **Template unificato**: tutti i listing usano `productlist.tpl` via `products.tpl`
+- **Miniature**: titolo `h3` ovunque; immagini `cover` anche in home (niente `contain` sulla griglia)
+- **Pochi prodotti**: regole `:has()` globali (1→1 col, 2→2 col, 3→3 col)
+
+## v1.6.9 (maggio 2026)
+
+- **Fix correlati PDP / categorie piccole**: regole `:has()` con stessa specificità della griglia 4 col (2 correlati = 2 colonne su desktop, non 4 con metà riga vuota)
+
+## v1.6.8 (maggio 2026)
+
+- **PDP correlati**: griglia full-bleed come home/PLP; 2 correlati = 2 colonne (non 4 con spazio vuoto)
+- Adattamento colonne se pochi prodotti (1–3) in griglia
+
 ## v1.6.6 (maggio 2026)
 
 - **Griglia prodotti responsive**: 1 col (&lt;576px), 2 col (576–991px), 4 col (≥992px) — home, PLP, correlati PDP

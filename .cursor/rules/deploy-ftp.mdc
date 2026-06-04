@@ -1,9 +1,9 @@
 ---
-description: Deploy automatico tema classic-gucci su Hostinger via FTP
+description: Deploy automatico tema classic-gucci su SiteGround via FTP
 alwaysApply: true
 ---
 
-# Deploy FTP — staging Hostinger
+# Deploy FTP — SiteGround
 
 ## Cosa fa lo script
 
@@ -28,11 +28,12 @@ alwaysApply: true
 1. `npm install`
 2. Copia `.env.example` → `.env` (già in `.gitignore`, non committare)
 3. Compila `.env`:
-   - `FTP_HOST=46.202.158.43`
-   - `FTP_USER=u912475611.cursor` (formato Hostinger: `u{ID}.{nome_account}`)
+   - `FTP_HOST=gnldm1110.siteground.biz`
+   - `FTP_USER=` account FTP SiteGround (es. `antonio@barbaraalvisi.it`)
    - `FTP_PASSWORD=...`
-   - `FTP_REMOTE_PATH=/themes/classic-gucci` — **non** `/public_html/...` (l'FTP punta già alla root PrestaShop)
-   - `FTP_CACHE_PATHS=/var/cache,/cache` (default; cartelle intere separate da virgola)
+   - `FTP_REMOTE_PATH=/barbaraalvisi.it/public_html/themes/classic-gucci` (root FTP SiteGround = `/`, non `public_html` diretto)
+   - `FTP_CACHE_PATHS=/barbaraalvisi.it/public_html/var/cache` (su questo server non c’è `/cache` in root)
+   - `STAGING_URL=https://barbaraalvisi.it/` (opzionale, messaggio a fine deploy)
 
 ## Comandi
 
@@ -49,7 +50,7 @@ Deploy obbligatorio se modifichi file in `classic-gucci/` (`theme.yml`, `custom.
 
 ## Dopo il deploy (checklist)
 
-1. Verifica in incognito: https://chocolate-ferret-940937.hostingersite.com/
+1. Verifica in incognito: https://barbaraalvisi.it/ (o `STAGING_URL` in `.env`)
 2. Se header/menu sfalsati: BO → Design → Posizioni (hook `ps_mainmenu` in displayTop, ecc.)
 
 ## Comportamento AI

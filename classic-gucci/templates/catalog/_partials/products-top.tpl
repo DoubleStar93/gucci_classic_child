@@ -8,14 +8,13 @@
         <div class="gucci-plp-filter">
           <button
             id="search_filter_toggler"
-            class="gucci-plp-filter-btn gucci-btn gucci-btn--outline btn-unstyle"
+            class="gucci-plp-action-btn btn-unstyle"
             type="button"
             data-gucci-filters-open
             aria-expanded="false"
             aria-controls="gucci-filters-drawer"
           >
-            <i class="material-icons" aria-hidden="true">tune</i>
-            <span>{if $language.iso_code == 'it'}Filtra{else}{l s='Filter' d='Shop.Theme.Actions'}{/if}</span>
+            {if $language.iso_code == 'it'}Filtra{else}{l s='Filter' d='Shop.Theme.Actions'}{/if}
           </button>
         </div>
       {/if}

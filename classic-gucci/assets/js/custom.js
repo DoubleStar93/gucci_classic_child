@@ -20,7 +20,8 @@ const initClassicGucciTheme = () => {
       || document.body.classList.contains('gucci-search-open')
       || document.body.classList.contains('gucci-contact-open')
       || document.body.classList.contains('gucci-account-open')
-      || document.body.classList.contains('gucci-filters-open');
+      || document.body.classList.contains('gucci-filters-open')
+      || document.body.classList.contains('gucci-sort-open');
 
     const scrolled = forceSolid || window.scrollY > headerScrollThreshold;
     header.classList.toggle('is-scrolled', scrolled);
@@ -67,6 +68,8 @@ const initClassicGucciTheme = () => {
   const accountCloseBtns = document.querySelectorAll('[data-gucci-account-close]');
   const filtersWrapper = document.getElementById('gucci-filters-drawer');
   const filtersBackdrop = document.getElementById('gucci-filters-backdrop');
+  const sortWrapper = document.getElementById('gucci-sort-drawer');
+  const sortBackdrop = document.getElementById('gucci-sort-backdrop');
 
   const GUCCI_DRAWER_MS = 560;
   const GUCCI_BACKDROP_MS = 520;
@@ -248,14 +251,15 @@ const initClassicGucciTheme = () => {
   };
 
   const filterToggleBtn = document.getElementById('search_filter_toggler');
+  const sortToggleBtn = document.getElementById('gucci-sort-toggler');
 
-  const setFilterToggleState = (open) => {
-    if (!filterToggleBtn) {
+  const setDrawerToggleState = (button, open) => {
+    if (!button) {
       return;
     }
 
-    filterToggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    filterToggleBtn.classList.toggle('is-active', open);
+    button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    button.classList.toggle('is-active', open);
   };
 
   const closeFilters = () => {
@@ -263,9 +267,19 @@ const initClassicGucciTheme = () => {
       filtersWrapper.setAttribute('aria-hidden', 'true');
     }
 
-    setFilterToggleState(false);
+    setDrawerToggleState(filterToggleBtn, false);
     document.body.classList.remove('gucci-filters-open');
     hideDrawer(filtersWrapper, filtersBackdrop);
+  };
+
+  const closeSort = () => {
+    if (sortWrapper) {
+      sortWrapper.setAttribute('aria-hidden', 'true');
+    }
+
+    setDrawerToggleState(sortToggleBtn, false);
+    document.body.classList.remove('gucci-sort-open');
+    hideDrawer(sortWrapper, sortBackdrop);
   };
 
   const openFilters = () => {
@@ -273,10 +287,23 @@ const initClassicGucciTheme = () => {
       return;
     }
 
+    closeSort();
     filtersWrapper.setAttribute('aria-hidden', 'false');
-    setFilterToggleState(true);
+    setDrawerToggleState(filterToggleBtn, true);
     document.body.classList.add('gucci-filters-open');
     revealDrawer(filtersWrapper, filtersBackdrop);
+  };
+
+  const openSort = () => {
+    if (!sortWrapper) {
+      return;
+    }
+
+    closeFilters();
+    sortWrapper.setAttribute('aria-hidden', 'false');
+    setDrawerToggleState(sortToggleBtn, true);
+    document.body.classList.add('gucci-sort-open');
+    revealDrawer(sortWrapper, sortBackdrop);
   };
 
   const collapseAllMenuSubmenus = () => {
@@ -1162,10 +1189,56 @@ const initClassicGucciTheme = () => {
     document.querySelectorAll('[data-gucci-filters-close]').forEach((closeBtn) => {
       closeBtn.addEventListener('click', closeFilters);
     });
+  }
 
+  if (sortWrapper) {
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) {
+        return;
+      }
+
+      const openTrigger = target.closest('#gucci-sort-toggler, [data-gucci-sort-open]');
+      if (openTrigger) {
+        event.preventDefault();
+        if (sortWrapper.classList.contains('is-open')) {
+          closeSort();
+        } else {
+          openSort();
+        }
+        return;
+      }
+
+      if (
+        sortWrapper.classList.contains('is-open')
+        && !sortWrapper.contains(target)
+        && !target.closest('[data-gucci-sort-close]')
+      ) {
+        closeSort();
+      }
+    });
+
+    if (sortBackdrop) {
+      sortBackdrop.addEventListener('click', closeSort);
+    }
+
+    document.querySelectorAll('[data-gucci-sort-close]').forEach((closeBtn) => {
+      closeBtn.addEventListener('click', closeSort);
+    });
+  }
+
+  if (filtersWrapper || sortWrapper) {
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && filtersWrapper.classList.contains('is-open')) {
+      if (event.key !== 'Escape') {
+        return;
+      }
+
+      if (filtersWrapper?.classList.contains('is-open')) {
         closeFilters();
+      }
+
+      if (sortWrapper?.classList.contains('is-open')) {
+        closeSort();
       }
     });
   }

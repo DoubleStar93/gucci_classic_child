@@ -6704,10 +6704,11 @@ body#order-confirmation #header .gucci-header-col--icons a {
 
 .gucci-contact-page label,
 .gucci-contact-page .form-control-label {
-  font-size: var(--gucci-type-caption) !important;
-  letter-spacing: 0.14em !important;
+  font-size: 11px !important;
+  letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
-  color: #888888 !important;
+  color: #111111 !important;
+  text-align: left !important;
 }
 
 .gucci-contact-page .btn-primary,
@@ -6899,7 +6900,7 @@ body#cms.sitemap .gucci-cms-page {
 
   .gucci-footer-accordions {
     display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
     gap: 0 3rem;
     align-items: start;
   }
@@ -6928,14 +6929,9 @@ body#cms.sitemap .gucci-cms-page {
 
 @media (min-width: 1200px) {
   .gucci-footer-accordions {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0 2.5rem;
   }
-}
-
-/* Note legali — link esterni Iubenda (stesso stile footer) */
-.gucci-footer .gucci-footer-col--legal .gucci-footer-legal-link {
-  display: inline-block;
 }
 
 body#authentication .gucci-auth-form .input-group,
@@ -8583,33 +8579,121 @@ body#checkout .gucci-checkout-step-title .step-edit {
    Gucci v1.5.8 — contatti, negozi
    ========================================================================== */
 
-.gucci-contact-form .gucci-contact-intro {
-  font-size: 13px;
-  line-height: 1.7;
-  color: #666666;
+body#contact #content.gucci-page-content {
+  padding: 0 !important;
+  max-width: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body#contact .gucci-contact-header {
   text-align: center;
-  margin: 0 0 2rem;
+  padding: 0.75rem 1.5rem 0.25rem;
+  margin: 0 auto 0.5rem;
+}
+
+body#contact .gucci-contact-page {
+  max-width: 36rem !important;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem !important;
+}
+
+.gucci-contact-form .gucci-contact-intro {
+  font-size: var(--gucci-text-base);
+  line-height: 1.65;
+  color: #444444;
+  text-align: left;
+  margin: 0 0 1.75rem;
 }
 
 .gucci-contact-fields .gucci-form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
 }
 
-.gucci-contact-fields .form-control-label {
-  display: block;
-  margin-bottom: 0.5rem;
+body#contact .gucci-contact-form .form-control-label,
+body#contact .gucci-contact-page label,
+body#contact .gucci-contact-page .form-control-label {
+  display: block !important;
+  text-align: left !important;
+  margin-bottom: 0.5rem !important;
+  color: #111111 !important;
+  font-size: 11px !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+}
+
+body#contact .gucci-contact-form .form-control,
+body#contact .gucci-contact-form select.form-control,
+body#contact .gucci-contact-form input.form-control:not([type="file"]),
+body#contact .gucci-contact-form textarea.form-control {
+  width: 100% !important;
+  font-size: var(--gucci-text-base) !important;
+  line-height: 1.5 !important;
+  color: #111111 !important;
+  background: #ffffff !important;
+  border: none !important;
+  border-bottom: 1px solid #111111 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0.75rem 0 !important;
+  min-height: 2.75rem !important;
+}
+
+body#contact .gucci-contact-form select.form-control {
+  appearance: auto;
+  -webkit-appearance: menulist;
+  cursor: pointer;
+  padding-right: 0.25rem !important;
+}
+
+body#contact .gucci-contact-form textarea.form-control {
+  min-height: 9rem !important;
+  padding: 0.85rem 0 !important;
+  border: 1px solid #e5e5e5 !important;
+  border-bottom: 1px solid #111111 !important;
+  resize: vertical;
+}
+
+body#contact .gucci-contact-form input[type="file"].form-control {
+  width: 100% !important;
+  font-size: var(--gucci-text-sm) !important;
+  color: #111111 !important;
+  background: #fafafa !important;
+  border: 1px solid #e5e5e5 !important;
+  border-radius: 0 !important;
+  padding: 0.85rem 1rem !important;
+  min-height: auto !important;
+  cursor: pointer;
+}
+
+body#contact .gucci-contact-form input::placeholder,
+body#contact .gucci-contact-form textarea::placeholder {
+  color: #999999 !important;
+  opacity: 1 !important;
 }
 
 .gucci-form-optional {
-  font-size: var(--gucci-type-caption);
-  letter-spacing: 0.08em;
+  font-size: 11px;
+  letter-spacing: 0.06em;
   text-transform: lowercase;
-  color: #999999;
+  color: #888888;
   margin-left: 0.35rem;
+  font-weight: 400;
 }
 
 .gucci-contact-footer {
-  margin-top: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+body#contact .gucci-contact-footer .gucci-btn,
+body#contact .gucci-contact-footer button[type="submit"] {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--gucci-btn-min-height) !important;
+  margin-top: 0 !important;
 }
 
 .gucci-honeypot {
@@ -8627,11 +8711,20 @@ body#checkout .gucci-checkout-step-title .step-edit {
   border-radius: 0;
   font-size: var(--gucci-text-sm);
   margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  background: #fafafa;
+  color: #111111;
 }
 
-body#contact .gucci-contact-header {
-  text-align: center;
-  padding-top: 2rem;
+.gucci-contact-alert.alert-danger {
+  border-color: rgba(180, 0, 0, 0.25);
+  background: #fff8f8;
+}
+
+.gucci-contact-alert.alert-success {
+  border-color: rgba(17, 17, 17, 0.2);
+  background: #f8f8f8;
 }
 
 .gucci-store-card {
@@ -8810,4 +8903,40 @@ body#contact .gucci-contact-header {
   .product-accessories .products:has(> :nth-child(3):last-child) {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
+}
+
+/* Contatti — override finale (vince su Classic + regole precedenti) */
+body#contact.gucci-body #main .gucci-contact-form label.form-control-label,
+body#contact.gucci-body #main .gucci-contact-page label,
+body#contact.gucci-body #main .gucci-contact-form .form-control-label {
+  display: block !important;
+  text-align: left !important;
+  color: #111111 !important;
+  font-size: 11px !important;
+  letter-spacing: 0.12em !important;
+  margin-bottom: 0.5rem !important;
+}
+
+body#contact.gucci-body #main .gucci-contact-form select#id_contact,
+body#contact.gucci-body #main .gucci-contact-form .form-control-select,
+body#contact.gucci-body #main .gucci-contact-form input.form-control,
+body#contact.gucci-body #main .gucci-contact-form textarea.form-control {
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+  min-height: 2.75rem !important;
+  color: #111111 !important;
+}
+
+body#contact.gucci-body #main .gucci-contact-form textarea#contactform-message {
+  min-height: 9rem !important;
+  border: 1px solid #e5e5e5 !important;
+  border-bottom: 1px solid #111111 !important;
+  padding-top: 0.85rem !important;
+}
+
+body#contact.gucci-body #main .gucci-contact-form input[type="file"]#file-upload {
+  background: #fafafa !important;
+  border: 1px solid #e5e5e5 !important;
+  padding: 0.85rem 1rem !important;
+  font-size: 14px !important;
 }

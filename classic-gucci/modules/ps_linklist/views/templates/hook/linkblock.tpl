@@ -9,6 +9,7 @@
     {if $linkBlock.title == 'My account'}{assign var='gucciFooterTitle' value='Il mio account'}{/if}
     {if $linkBlock.title == 'Information'}{assign var='gucciFooterTitle' value='Informazioni'}{/if}
     {if $linkBlock.title == 'Your account'}{assign var='gucciFooterTitle' value='Il mio account'}{/if}
+    {if $linkBlock.title == 'Legal' || $linkBlock.title == 'Note Legali'}{assign var='gucciFooterTitle' value='Note legali'}{/if}
   {/if}
   <div class="col-12 gucci-footer-col gucci-footer-accordion">
     <button
@@ -43,6 +44,8 @@
             {if $link.title == 'Addresses'}{assign var='gucciLinkTitle' value='I miei indirizzi'}{/if}
             {if $link.title == 'Personal info'}{assign var='gucciLinkTitle' value='Informazioni personali'}{/if}
             {if $link.title == 'Order tracking'}{assign var='gucciLinkTitle' value='Tracciamento ordine'}{/if}
+            {if $link.title == 'Privacy Policy'}{assign var='gucciLinkTitle' value='Informativa privacy'}{/if}
+            {if $link.title == 'Cookie Policy'}{assign var='gucciLinkTitle' value='Cookie policy'}{/if}
           {/if}
           <li>
             <a

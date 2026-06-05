@@ -55,7 +55,5 @@ Deploy obbligatorio se modifichi file in `classic-gucci/` (`theme.yml`, `custom.
 
 ## Comportamento AI
 
-- Dopo modifiche al tema: proporre `npm run deploy`.
-- Messaggio standard a fine task:
-
-> Esegui `npm run deploy` e verifica lo staging in incognito.
+- Dopo modifiche al tema: **eseguire** `npm run deploy` (non solo suggerirlo). Vedi regola `verify-deploy-verify.mdc`.
+- Al termine: verificare `STAGING_URL` in `.env` e confermare il risultato reale prima di chiudere il task.

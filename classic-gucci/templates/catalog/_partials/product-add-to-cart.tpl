@@ -28,7 +28,7 @@
 
     <div class="add">
       <button
-        class="btn btn-primary add-to-cart gucci-add-to-cart"
+        class="btn btn-primary add-to-cart gucci-add-to-cart gucci-btn gucci-btn--primary"
         data-button-action="add-to-cart"
         type="submit"
         {if !$product.add_to_cart_url}

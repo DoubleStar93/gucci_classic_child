@@ -11,12 +11,12 @@ Trasformare lo shop PrestaShop in un'esperienza **minimalista luxury** ispirata 
 
 ## Sito da guardare (staging attuale)
 
-**URL base:** https://chocolate-ferret-940937.hostingersite.com/
+**URL base:** `STAGING_URL` in `.env` (attuale: https://barbaraalvisi.it/)
 
-Prima di proporre modifiche o chiudere un task, verifica il risultato su questo sito (header, home, listing, scheda prodotto, footer).
+Prima di chiudere un task, seguire il ciclo **verifica → deploy → verifica staging** (regola `verify-deploy-verify.mdc`) sul sito live.
 
 **Esempio scheda prodotto:**
-https://chocolate-ferret-940937.hostingersite.com/index.php?id_product=1&id_product_attribute=1&rewrite=hummingbird-printed-t-shirt&controller=product&id_lang=1
+https://barbaraalvisi.it/index.php?id_product=1&id_product_attribute=1&rewrite=hummingbird-printed-t-shirt&controller=product&id_lang=1
 
 Stato attuale tipico: tema Classic/child con elementi PrestaShop ancora visibili (barre grigie, badge sconto, blocchi reassurance, slider, link blu, layout a due righe in header).
 
@@ -50,7 +50,7 @@ Tema padre **`classic`** è in workspace separato (`Downloads/classic` o `themes
 
 ## Quando deployare (obbligatorio per vedere le modifiche)
 
-Le modifiche in `classic-gucci/` **non sono visibili** su Hostinger finché non le carichi sul server. L'AI deve **dirlo esplicitamente** a fine task quando ha toccato file del tema.
+Le modifiche in `classic-gucci/` **non sono visibili** sullo staging finché non vengono deployate. L'AI deve **eseguire il deploy e verificare il risultato** su staging prima di considerare il task completato.
 
 ### Deploy ora se hai modificato uno o più di questi file
 
@@ -64,8 +64,8 @@ Le modifiche in `classic-gucci/` **non sono visibili** su Hostinger finché non 
 
 Vedi regola `deploy-ftp.mdc`. In sintesi:
 
-1. `npm run deploy` — elimina/ricarica `/themes/classic-gucci/`, svuota `/var/cache` e `/cache` (configurabile in `.env`).
-2. Verifica in incognito: https://chocolate-ferret-940937.hostingersite.com/
+1. `npm run deploy` — elimina/ricarica il tema, svuota cache (configurabile in `.env`).
+2. Verifica staging live: `STAGING_URL` in `.env` (attuale: https://barbaraalvisi.it/)
 
 Setup una tantum: tema **Classic Gucci Style** attivo, padre `classic` presente, hook corretti (Design → Posizioni).
 
@@ -73,10 +73,6 @@ Setup una tantum: tema **Classic Gucci Style** attivo, padre `classic` presente,
 
 - Solo modifiche a `.cursor/rules/`, README, note locali.
 - Solo analisi o pianificazione senza cambi ai file in `classic-gucci/`.
-
-### Messaggio standard per l'utente (usare a fine modifica)
-
-> **Deploy necessario:** esegui `npm run deploy` (include svuotamento cache), poi verifica lo staging in incognito.
 
 ## Regole di implementazione
 
@@ -105,7 +101,9 @@ Leggere sempre `docs/GUCCI-DESIGN-REFERENCE.md` e screenshot in `docs/reference-
 
 ## Checklist rapida prima di considerare un task completato
 
+- [ ] **Verifica locale** — file, lint, scope, coerenza con il task
+- [ ] **Deploy eseguito** — `npm run deploy` completato senza errori
+- [ ] **Verifica staging** — pagine pertinenti su `STAGING_URL`, modifica visibile e corretta
 - [ ] Confronto visivo con gucci.com/it/it (header, tipografia, spaziature)
-- [ ] Verifica su chocolate-ferret-940937.hostingersite.com
 - [ ] Mobile: menu hamburger e logo leggibili
 - [ ] Nessuna regressione su `theme.yml` (`meta.available_layouts` presente)

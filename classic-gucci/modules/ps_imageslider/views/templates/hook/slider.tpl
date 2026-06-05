@@ -42,9 +42,6 @@
             aria-label="{$smarty.foreach.gucciHomeSlider.iteration} / {$gucciSlideTotal}"
             {if !$smarty.foreach.gucciHomeSlider.first}aria-hidden="true"{/if}
           >
-            {if !empty($slide.url)}
-              <a href="{$slide.url|escape:'htmlall':'UTF-8'}" class="gucci-home-hero-slide-link" tabindex="-1" aria-hidden="true">
-            {/if}
             <img
               class="gucci-pdp-gallery-image js-gucci-gallery-image"
               src="{$gucciSlideSrc}"
@@ -55,9 +52,6 @@
               data-image-large-src="{$gucciSlideSrc}"
               data-image-full-src="{$gucciSlideSrc}"
             >
-            {if !empty($slide.url)}
-              </a>
-            {/if}
           </figure>
         {/foreach}
       </div>

@@ -1,0 +1,61 @@
+---
+description: Ciclo obbligatorio dopo ogni modifica al tema — verifica locale, deploy, verifica staging
+alwaysApply: true
+---
+
+# Verifica → Deploy → Verifica (obbligatorio)
+
+Dopo **ogni modifica** a file in `classic-gucci/` (o script deploy collegati), l'AI **non può considerare il task completato** senza aver eseguito tutti e tre i passaggi. Non limitarsi a suggerire all'utente: **eseguire e verificare autonomamente**.
+
+## 1. Verifica locale
+
+Prima del deploy, confermare che la modifica sia corretta:
+
+- Rileggere i file toccati e il diff rispetto all'obiettivo del task
+- Controllare errori di lint/sintassi sui file modificati
+- Verificare scope stretto: nessun effetto collaterale su aree non richieste
+- Per UI: confronto mentale con `docs/GUCCI-DESIGN-REFERENCE.md` e benchmark gucci.com
+
+Se la verifica locale fallisce → correggere prima di procedere.
+
+## 2. Deploy
+
+Se sono stati modificati file che richiedono deploy (vedi `deploy-ftp.mdc`):
+
+```powershell
+npm run deploy
+```
+
+- Attendere il completamento; in caso di errore FTP, diagnosticare e ritentare o segnalare il blocco
+- Il deploy include svuotamento cache configurato in `.env`
+
+**Eccezione:** sole modifiche a `docs/`, `.cursor/rules/` o analisi senza cambi al tema → salta passaggi 2 e 3.
+
+## 3. Verifica sul risultato reale
+
+Dopo deploy riuscito, verificare lo **staging live** (non solo i file locali):
+
+- URL: valore `STAGING_URL` in `.env` (fallback: https://barbaraalvisi.it/)
+- Aprire la pagina pertinente al task (home, listing, scheda prodotto, carrello, ecc.)
+- Usare browser MCP o fetch per confermare che la modifica sia **visibile e corretta**
+- Controllare anche mobile/viewport ridotto se il task tocca layout responsive
+- In incognito o con cache bypass se possibile
+
+### Criteri di accettazione
+
+- La modifica richiesta è presente e funziona
+- Nessuna regressione evidente nell'area toccata
+- Stile coerente con target Gucci (no colori/link Classic default)
+
+Se la verifica staging fallisce → tornare al passo 1, correggere, rideployare, riverificare.
+
+## Chiusura task
+
+Riportare all'utente:
+
+1. Cosa è stato verificato in locale
+2. Esito del deploy (ok / errore)
+3. Esito della verifica staging (URL controllati, cosa si vede)
+4. Eventuali problemi residui o azioni manuali (es. hook in BO)
+
+**Non chiudere** con solo «esegui deploy» se il deploy non è stato eseguito e verificato dall'AI.

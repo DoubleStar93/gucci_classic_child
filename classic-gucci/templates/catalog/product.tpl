@@ -70,7 +70,7 @@
 
             <button
               type="button"
-              class="gucci-pdp-secondary-btn gucci-contact-toggle btn-unstyle"
+              class="gucci-pdp-secondary-btn gucci-contact-toggle gucci-btn gucci-btn--outline btn-unstyle"
               data-gucci-contact-open
             >
               {if $language.iso_code == 'it'}Contattaci{else}{l s='Contact us' d='Shop.Theme.Global'}{/if}

@@ -9,6 +9,8 @@ const repoRoot = path.resolve(__dirname, "..");
 dotenv.config({ path: path.join(repoRoot, ".env") });
 
 const STASH_PREFIX = "_stash-";
+const NOOP_EVERY = 75;
+const MAX_RETRIES = 3;
 
 function getConfig() {
   const required = ["FTP_HOST", "FTP_USER", "FTP_PASSWORD", "FTP_REMOTE_PATH"];
@@ -51,92 +53,161 @@ function parseCachePaths() {
   ];
 }
 
-async function listDir(client) {
-  return (await client.list()).filter((entry) => entry.name !== "." && entry.name !== "..");
+function isConnectionError(error) {
+  const msg = error?.message || "";
+  return (
+    msg.includes("closed") ||
+    msg.includes("FIN packet") ||
+    msg.includes("Timeout") ||
+    msg.includes("ECONNRESET") ||
+    msg.includes("EPIPE")
+  );
 }
 
-async function emptyCurrentDirectory(client) {
-  for (const entry of await listDir(client)) {
+class FtpSession {
+  constructor(config) {
+    this.config = config;
+    this.client = this.createClient();
+  }
+
+  createClient() {
+    const client = new Client(900_000);
+    client.ftp.verbose = process.env.FTP_VERBOSE === "true";
+    return client;
+  }
+
+  async connect() {
+    this.client.close();
+    this.client = this.createClient();
+    await this.client.access({
+      host: this.config.host,
+      port: this.config.port,
+      user: this.config.user,
+      password: this.config.password,
+      secure: this.config.secure,
+    });
+  }
+
+  async ensureConnected() {
     try {
-      if (entry.isDirectory) {
-        await client.cd(entry.name);
-        await emptyCurrentDirectory(client);
-        await client.cdup();
-        await client.removeDir(entry.name);
-      } else {
-        await client.remove(entry.name);
-      }
-    } catch (error) {
-      console.warn(`  skip ${entry.name}: ${error.message}`);
+      await this.client.pwd();
+    } catch {
+      console.log("  riconnessione FTP...");
+      await this.connect();
     }
   }
-}
 
-async function removeRemoteFolder(client, folderName, parentDir) {
-  const absolute = path.posix.join(parentDir, folderName);
-  const startDir = await client.pwd();
-
-  try {
-    await client.cd(parentDir);
-  } catch {
-    console.log(`Parent assente (${parentDir}), skip.`);
-    return false;
+  async noop() {
+    await this.ensureConnected();
+    await this.client.send("NOOP");
   }
 
-  const exists = (await listDir(client)).some((entry) => entry.name === folderName);
+  close() {
+    this.client.close();
+  }
+}
+
+async function withRetry(session, label, fn) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt += 1) {
+    try {
+      await session.ensureConnected();
+      return await fn();
+    } catch (error) {
+      lastError = error;
+      if (!isConnectionError(error) || attempt === MAX_RETRIES) {
+        throw error;
+      }
+      console.warn(`  ${label}: tentativo ${attempt}/${MAX_RETRIES} fallito (${error.message})`);
+      await session.connect();
+    }
+  }
+
+  throw lastError;
+}
+
+async function listDir(session, absDir) {
+  return withRetry(session, `list ${absDir}`, async () => {
+    await session.client.cd(absDir);
+    return (await session.client.list()).filter(
+      (entry) => entry.name !== "." && entry.name !== ".."
+    );
+  });
+}
+
+async function emptyDirectory(session, absDir, counter = { files: 0 }) {
+  const entries = await listDir(session, absDir);
+
+  for (const entry of entries) {
+    const entryPath = path.posix.join(absDir, entry.name);
+
+    await withRetry(session, `delete ${entryPath}`, async () => {
+      if (entry.isDirectory) {
+        await emptyDirectory(session, entryPath, counter);
+        await session.client.cd(absDir);
+        await session.client.removeDir(entry.name);
+      } else {
+        await session.client.cd(absDir);
+        await session.client.remove(entry.name);
+        counter.files += 1;
+        if (counter.files % NOOP_EVERY === 0) {
+          await session.noop();
+        }
+      }
+    });
+  }
+}
+
+async function removeRemoteFolder(session, folderName, parentDir) {
+  const absolute = path.posix.join(parentDir, folderName);
+
+  const exists = await withRetry(session, `check ${absolute}`, async () => {
+    const entries = await listDir(session, parentDir);
+    return entries.some((entry) => entry.name === folderName);
+  });
+
   if (!exists) {
     return false;
   }
 
   console.log(`Elimino ${absolute}...`);
-  await client.cd(folderName);
-  await emptyCurrentDirectory(client);
-  await client.cdup();
-  await client.removeDir(folderName);
-  console.log(`  rimosso.`);
-  await client.cd(startDir);
+  await withRetry(session, `remove ${absolute}`, async () => {
+    await emptyDirectory(session, absolute);
+    await session.client.cd(parentDir);
+    await session.client.removeDir(folderName);
+  });
+  console.log("  rimosso.");
   return true;
 }
 
-async function findStashFolders(client, parentDir) {
-  const startDir = await client.pwd();
-
+async function findStashFolders(session, parentDir) {
   try {
-    await client.cd(parentDir);
+    const entries = await listDir(session, parentDir);
+    return entries
+      .filter((entry) => entry.isDirectory && entry.name.startsWith(STASH_PREFIX))
+      .map((entry) => entry.name);
   } catch {
     console.log(`Directory non accessibile: ${parentDir}`);
     return [];
   }
-
-  const stash = (await listDir(client))
-    .filter((entry) => entry.isDirectory && entry.name.startsWith(STASH_PREFIX))
-    .map((entry) => entry.name);
-
-  await client.cd(startDir);
-  return stash;
 }
 
 async function main() {
   const config = getConfig();
-  const client = new Client(600_000);
-  client.ftp.verbose = process.env.FTP_VERBOSE === "true";
+  const session = new FtpSession(config);
 
   console.log(`Pulizia _stash-* → ${config.host}`);
   console.log(`  Directory: ${config.scanDirs.join(", ")}`);
 
   let removed = 0;
+  let failed = 0;
 
   try {
-    await client.access({
-      host: config.host,
-      port: config.port,
-      user: config.user,
-      password: config.password,
-      secure: config.secure,
-    });
+    await session.connect();
 
     for (const parentDir of config.scanDirs) {
-      const stashFolders = await findStashFolders(client, parentDir);
+      const stashFolders = await findStashFolders(session, parentDir);
       if (!stashFolders.length) {
         console.log(`\n${parentDir}: nessuna cartella _stash-*`);
         continue;
@@ -144,15 +215,23 @@ async function main() {
 
       console.log(`\n${parentDir}: ${stashFolders.length} cartella/e _stash-*`);
       for (const name of stashFolders) {
-        if (await removeRemoteFolder(client, name, parentDir)) {
-          removed += 1;
+        try {
+          if (await removeRemoteFolder(session, name, parentDir)) {
+            removed += 1;
+          }
+        } catch (error) {
+          failed += 1;
+          console.warn(`  errore su ${name}: ${error.message}`);
         }
       }
     }
 
-    console.log(`\nPulizia completata: ${removed} cartella/e rimossa/e.`);
+    console.log(`\nPulizia completata: ${removed} rimossa/e, ${failed} fallita/e.`);
+    if (failed > 0) {
+      process.exit(1);
+    }
   } finally {
-    client.close();
+    session.close();
   }
 }
 

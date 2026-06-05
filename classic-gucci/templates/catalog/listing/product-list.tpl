@@ -29,21 +29,23 @@
   {include file='catalog/_partials/products-top.tpl' listing=$listing}
   {if !empty($listing.rendered_facets)}
     <div id="gucci-filters-backdrop" class="gucci-filters-backdrop" aria-hidden="true" hidden></div>
-    <aside id="search_filters_wrapper" class="gucci-filters-drawer" aria-hidden="true">
+    <aside id="gucci-filters-drawer" class="gucci-filters-drawer" aria-hidden="true" aria-labelledby="gucci-filters-drawer-title">
       <div class="gucci-filters-drawer-header">
-        <p class="gucci-filters-drawer-title">
+        <p id="gucci-filters-drawer-title" class="gucci-filters-drawer-title">
           {if $language.iso_code == 'it'}Filtra{else}{l s='Filter' d='Shop.Theme.Actions'}{/if}
         </p>
         <button
           type="button"
-          class="gucci-filters-drawer-close btn-unstyle"
+          class="gucci-filters-drawer-close gucci-drawer-close-circle btn-unstyle"
           data-gucci-filters-close
           aria-label="{if $language.iso_code == 'it'}Chiudi{else}{l s='Close' d='Shop.Theme.Global'}{/if}"
         >
           <i class="material-icons" aria-hidden="true">close</i>
         </button>
       </div>
-      {$listing.rendered_facets nofilter}
+      <div class="gucci-filters-drawer-body">
+        {$listing.rendered_facets nofilter}
+      </div>
     </aside>
   {/if}
 {/block}

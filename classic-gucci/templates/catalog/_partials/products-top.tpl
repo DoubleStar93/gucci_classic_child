@@ -6,24 +6,19 @@
     <div class="gucci-plp-actions">
       {if !empty($listing.rendered_facets)}
         <div class="gucci-plp-filter">
-          <button id="search_filter_toggler" class="gucci-plp-filter-btn btn-unstyle js-search-toggler" type="button">
-            {if $language.iso_code == 'it'}Filtra{else}{l s='Filter' d='Shop.Theme.Actions'}{/if}
+          <button
+            id="search_filter_toggler"
+            class="gucci-plp-filter-btn gucci-btn gucci-btn--outline btn-unstyle"
+            type="button"
+            data-gucci-filters-open
+            aria-expanded="false"
+            aria-controls="gucci-filters-drawer"
+          >
+            <i class="material-icons" aria-hidden="true">tune</i>
+            <span>{if $language.iso_code == 'it'}Filtra{else}{l s='Filter' d='Shop.Theme.Actions'}{/if}</span>
           </button>
         </div>
       {/if}
-
-      <p class="gucci-plp-toolbar-meta">
-        {if $language.iso_code == 'it'}
-          {$listing.pagination.items_shown_from}–{$listing.pagination.items_shown_to} di {$listing.pagination.total_items}
-          {if $listing.pagination.total_items == 1} articolo{else} articoli{/if}
-        {else}
-          {l s='Showing %from%-%to% of %total% item(s)' d='Shop.Theme.Catalog' sprintf=[
-            '%from%' => $listing.pagination.items_shown_from,
-            '%to%' => $listing.pagination.items_shown_to,
-            '%total%' => $listing.pagination.total_items
-          ]}
-        {/if}
-      </p>
 
       {block name='sort_by'}
         <div class="gucci-plp-sort">

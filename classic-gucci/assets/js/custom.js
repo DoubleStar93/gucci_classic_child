@@ -65,8 +65,7 @@ const initClassicGucciTheme = () => {
   const accountBackdrop = document.getElementById('gucci-account-backdrop');
   const accountToggle = document.getElementById('gucci-account-toggle');
   const accountCloseBtns = document.querySelectorAll('[data-gucci-account-close]');
-  const filterToggler = document.getElementById('search_filter_toggler');
-  const filtersWrapper = document.getElementById('search_filters_wrapper');
+  const filtersWrapper = document.getElementById('gucci-filters-drawer');
   const filtersBackdrop = document.getElementById('gucci-filters-backdrop');
 
   const GUCCI_DRAWER_MS = 560;
@@ -248,11 +247,23 @@ const initClassicGucciTheme = () => {
     panel.addEventListener('transitionend', onEnd);
   };
 
+  const filterToggleBtn = document.getElementById('search_filter_toggler');
+
+  const setFilterToggleState = (open) => {
+    if (!filterToggleBtn) {
+      return;
+    }
+
+    filterToggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    filterToggleBtn.classList.toggle('is-active', open);
+  };
+
   const closeFilters = () => {
     if (filtersWrapper) {
       filtersWrapper.setAttribute('aria-hidden', 'true');
     }
 
+    setFilterToggleState(false);
     document.body.classList.remove('gucci-filters-open');
     hideDrawer(filtersWrapper, filtersBackdrop);
   };
@@ -263,6 +274,7 @@ const initClassicGucciTheme = () => {
     }
 
     filtersWrapper.setAttribute('aria-hidden', 'false');
+    setFilterToggleState(true);
     document.body.classList.add('gucci-filters-open');
     revealDrawer(filtersWrapper, filtersBackdrop);
   };
@@ -1116,12 +1128,30 @@ const initClassicGucciTheme = () => {
 
   initGucciAccordions();
 
-  if (filterToggler && filtersWrapper) {
-    filterToggler.addEventListener('click', () => {
-      if (filtersWrapper.classList.contains('is-open')) {
+  if (filtersWrapper) {
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) {
+        return;
+      }
+
+      const openTrigger = target.closest('#search_filter_toggler, [data-gucci-filters-open]');
+      if (openTrigger) {
+        event.preventDefault();
+        if (filtersWrapper.classList.contains('is-open')) {
+          closeFilters();
+        } else {
+          openFilters();
+        }
+        return;
+      }
+
+      if (
+        filtersWrapper.classList.contains('is-open')
+        && !filtersWrapper.contains(target)
+        && !target.closest('[data-gucci-filters-close]')
+      ) {
         closeFilters();
-      } else {
-        openFilters();
       }
     });
 
@@ -1135,21 +1165,6 @@ const initClassicGucciTheme = () => {
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && filtersWrapper.classList.contains('is-open')) {
-        closeFilters();
-      }
-    });
-
-    document.addEventListener('click', (event) => {
-      const target = event.target;
-      if (!(target instanceof Element)) {
-        return;
-      }
-
-      if (
-        filtersWrapper.classList.contains('is-open')
-        && !filtersWrapper.contains(target)
-        && !target.closest('#search_filter_toggler')
-      ) {
         closeFilters();
       }
     });

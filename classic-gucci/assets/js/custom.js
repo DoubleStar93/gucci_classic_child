@@ -1,7 +1,12 @@
 /**
  * Classic Gucci — drawer menu, ricerca, contatti, accordion
  */
-document.addEventListener('DOMContentLoaded', () => {
+const initClassicGucciTheme = () => {
+  if (document.documentElement.dataset.gucciThemeInit === '1') {
+    return;
+  }
+  document.documentElement.dataset.gucciThemeInit = '1';
+
   const header = document.getElementById('header');
   const headerScrollThreshold = 32;
 
@@ -64,19 +69,192 @@ document.addEventListener('DOMContentLoaded', () => {
   const filtersWrapper = document.getElementById('search_filters_wrapper');
   const filtersBackdrop = document.getElementById('gucci-filters-backdrop');
 
+  const GUCCI_DRAWER_MS = 560;
+  const GUCCI_BACKDROP_MS = 520;
+  const GUCCI_OVERLAY_MS = 460;
+
+  const afterTransition = (element, propertyName, fallbackMs) => new Promise((resolve) => {
+    if (!element) {
+      resolve();
+      return;
+    }
+
+    let settled = false;
+    const finish = () => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      element.removeEventListener('transitionend', onEnd);
+      resolve();
+    };
+
+    const onEnd = (event) => {
+      if (event.target === element && event.propertyName === propertyName) {
+        finish();
+      }
+    };
+
+    element.addEventListener('transitionend', onEnd);
+    window.setTimeout(finish, fallbackMs);
+  });
+
+  const revealDrawer = (drawer, backdrop) => {
+    if (drawer) {
+      drawer.hidden = false;
+      drawer.removeAttribute('hidden');
+      drawer.style.display = '';
+      drawer.style.width = '';
+      drawer.style.maxWidth = '';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          drawer.classList.add('is-open');
+        });
+      });
+    }
+
+    if (backdrop) {
+      backdrop.hidden = false;
+      backdrop.removeAttribute('hidden');
+      requestAnimationFrame(() => {
+        backdrop.classList.add('is-open');
+      });
+    }
+  };
+
+  const hideDrawer = (drawer, backdrop, { instant = false } = {}) => {
+    if (!drawer) {
+      return Promise.resolve();
+    }
+
+    const wasOpen = drawer.classList.contains('is-open');
+    drawer.classList.remove('is-open');
+    if (backdrop) {
+      backdrop.classList.remove('is-open');
+    }
+
+    if (instant || !wasOpen) {
+      drawer.hidden = true;
+      drawer.setAttribute('aria-hidden', 'true');
+      if (backdrop) {
+        backdrop.hidden = true;
+        backdrop.setAttribute('aria-hidden', 'true');
+      }
+      return Promise.resolve();
+    }
+
+    return Promise.all([
+      afterTransition(drawer, 'transform', GUCCI_DRAWER_MS),
+      backdrop ? afterTransition(backdrop, 'opacity', GUCCI_BACKDROP_MS) : Promise.resolve(),
+    ]).then(() => {
+      drawer.hidden = true;
+      drawer.setAttribute('aria-hidden', 'true');
+      if (backdrop) {
+        backdrop.hidden = true;
+        backdrop.setAttribute('aria-hidden', 'true');
+      }
+    });
+  };
+
+  const revealOverlay = (overlay) => {
+    if (!overlay) {
+      return;
+    }
+
+    overlay.hidden = false;
+    overlay.removeAttribute('hidden');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        overlay.classList.add('is-open');
+      });
+    });
+  };
+
+  const hideOverlay = (overlay, { instant = false } = {}) => {
+    if (!overlay) {
+      return Promise.resolve();
+    }
+
+    const wasOpen = overlay.classList.contains('is-open');
+    overlay.classList.remove('is-open');
+
+    if (instant || !wasOpen) {
+      overlay.hidden = true;
+      overlay.setAttribute('aria-hidden', 'true');
+      return Promise.resolve();
+    }
+
+    return afterTransition(overlay, 'opacity', GUCCI_OVERLAY_MS).then(() => {
+      overlay.hidden = true;
+      overlay.setAttribute('aria-hidden', 'true');
+    });
+  };
+
+  const setAccordionPanelOpen = (panel, open, { openClass = 'is-accordion-open', instant = false } = {}) => {
+    if (!panel) {
+      return;
+    }
+
+    if (open) {
+      panel.removeAttribute('hidden');
+      panel.classList.add(openClass);
+
+      if (instant) {
+        panel.style.maxHeight = 'none';
+        return;
+      }
+
+      panel.style.maxHeight = '0';
+      requestAnimationFrame(() => {
+        panel.style.maxHeight = `${panel.scrollHeight}px`;
+      });
+
+      const onEnd = (event) => {
+        if (event.propertyName !== 'max-height') {
+          return;
+        }
+        panel.removeEventListener('transitionend', onEnd);
+        if (panel.classList.contains(openClass)) {
+          panel.style.maxHeight = 'none';
+        }
+      };
+      panel.addEventListener('transitionend', onEnd);
+      return;
+    }
+
+    panel.classList.remove(openClass);
+
+    if (instant) {
+      panel.setAttribute('hidden', '');
+      panel.style.maxHeight = '';
+      return;
+    }
+
+    panel.style.maxHeight = `${panel.scrollHeight}px`;
+    requestAnimationFrame(() => {
+      panel.style.maxHeight = '0';
+    });
+
+    const onEnd = (event) => {
+      if (event.propertyName !== 'max-height') {
+        return;
+      }
+      panel.removeEventListener('transitionend', onEnd);
+      if (!panel.classList.contains(openClass)) {
+        panel.setAttribute('hidden', '');
+        panel.style.maxHeight = '';
+      }
+    };
+    panel.addEventListener('transitionend', onEnd);
+  };
+
   const closeFilters = () => {
     if (filtersWrapper) {
-      filtersWrapper.classList.remove('is-open');
       filtersWrapper.setAttribute('aria-hidden', 'true');
     }
 
-    if (filtersBackdrop) {
-      filtersBackdrop.classList.remove('is-open');
-      filtersBackdrop.hidden = true;
-      filtersBackdrop.setAttribute('aria-hidden', 'true');
-    }
-
     document.body.classList.remove('gucci-filters-open');
+    hideDrawer(filtersWrapper, filtersBackdrop);
   };
 
   const openFilters = () => {
@@ -84,16 +262,9 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    filtersWrapper.classList.add('is-open');
     filtersWrapper.setAttribute('aria-hidden', 'false');
-
-    if (filtersBackdrop) {
-      filtersBackdrop.hidden = false;
-      filtersBackdrop.classList.add('is-open');
-      filtersBackdrop.setAttribute('aria-hidden', 'false');
-    }
-
     document.body.classList.add('gucci-filters-open');
+    revealDrawer(filtersWrapper, filtersBackdrop);
   };
 
   const collapseAllMenuSubmenus = () => {
@@ -102,8 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     drawer.querySelectorAll('.gucci-sub-menu, .sub-menu.js-sub-menu').forEach((submenu) => {
-      submenu.classList.remove('is-open', 'show', 'in', 'collapse');
-      submenu.hidden = true;
+      submenu.classList.remove('show', 'in', 'collapse');
+      setAccordionPanelOpen(submenu, false, { openClass: 'is-open', instant: true });
     });
 
     drawer.querySelectorAll('.gucci-menu-expand').forEach((button) => {
@@ -116,21 +287,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    drawer.classList.remove('is-open');
-    drawer.hidden = true;
-    drawer.style.display = '';
-    drawer.setAttribute('aria-hidden', 'true');
     menuToggle.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('gucci-menu-open');
-
-    if (menuBackdrop) {
-      menuBackdrop.classList.remove('is-open');
-      menuBackdrop.hidden = true;
-      menuBackdrop.setAttribute('aria-hidden', 'true');
-    }
-
     collapseAllMenuSubmenus();
     updateHeaderOnScroll();
+    hideDrawer(drawer, menuBackdrop);
   };
 
   const openMenu = () => {
@@ -138,24 +299,21 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    closeSearch();
-    closeContact();
-    closeAccount();
+    hideOverlay(searchPanel, { instant: true });
+    hideDrawer(contactDrawer, contactBackdrop, { instant: true });
+    hideDrawer(accountDrawer, accountBackdrop, { instant: true });
+    if (searchToggle) {
+      searchToggle.setAttribute('aria-expanded', 'false');
+    }
+    if (accountToggle) {
+      accountToggle.setAttribute('aria-expanded', 'false');
+    }
+    document.body.classList.remove('gucci-search-open', 'gucci-contact-open', 'gucci-account-open');
 
-    drawer.hidden = false;
-    drawer.style.display = '';
-    drawer.style.width = '';
-    drawer.style.maxWidth = '';
-    drawer.classList.add('is-open');
     drawer.setAttribute('aria-hidden', 'false');
     menuToggle.setAttribute('aria-expanded', 'true');
     document.body.classList.add('gucci-menu-open');
-
-    if (menuBackdrop) {
-      menuBackdrop.hidden = false;
-      menuBackdrop.classList.add('is-open');
-      menuBackdrop.setAttribute('aria-hidden', 'false');
-    }
+    revealDrawer(drawer, menuBackdrop);
 
     collapseAllMenuSubmenus();
     [0, 50, 200].forEach((delay) => {
@@ -191,9 +349,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    searchPanel.classList.remove('is-open');
-    searchPanel.hidden = true;
-    searchPanel.setAttribute('aria-hidden', 'true');
     searchToggle.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('gucci-search-open');
     updateHeaderOnScroll();
@@ -202,21 +357,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (autocomplete) {
       autocomplete.style.display = 'none';
     }
+
+    searchPanel.setAttribute('aria-hidden', 'true');
+    hideOverlay(searchPanel);
   };
 
   const closeContact = () => {
     if (!contactDrawer) {
       return;
-    }
-
-    contactDrawer.classList.remove('is-open');
-    contactDrawer.hidden = true;
-    contactDrawer.setAttribute('aria-hidden', 'true');
-
-    if (contactBackdrop) {
-      contactBackdrop.classList.remove('is-open');
-      contactBackdrop.hidden = true;
-      contactBackdrop.setAttribute('aria-hidden', 'true');
     }
 
     contactOpenBtns.forEach((button) => {
@@ -225,21 +373,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.body.classList.remove('gucci-contact-open');
     updateHeaderOnScroll();
+    contactDrawer.setAttribute('aria-hidden', 'true');
+    hideDrawer(contactDrawer, contactBackdrop);
   };
 
   const closeAccount = () => {
     if (!accountDrawer) {
       return;
-    }
-
-    accountDrawer.classList.remove('is-open');
-    accountDrawer.hidden = true;
-    accountDrawer.setAttribute('aria-hidden', 'true');
-
-    if (accountBackdrop) {
-      accountBackdrop.classList.remove('is-open');
-      accountBackdrop.hidden = true;
-      accountBackdrop.setAttribute('aria-hidden', 'true');
     }
 
     if (accountToggle) {
@@ -248,6 +388,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.body.classList.remove('gucci-account-open');
     updateHeaderOnScroll();
+    accountDrawer.setAttribute('aria-hidden', 'true');
+    hideDrawer(accountDrawer, accountBackdrop);
   };
 
   const openAccount = () => {
@@ -255,25 +397,23 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    closeMenu();
-    closeSearch();
-    closeContact();
-
-    accountDrawer.hidden = false;
-    accountDrawer.classList.add('is-open');
-    accountDrawer.setAttribute('aria-hidden', 'false');
-
-    if (accountBackdrop) {
-      accountBackdrop.hidden = false;
-      accountBackdrop.classList.add('is-open');
-      accountBackdrop.setAttribute('aria-hidden', 'false');
+    hideDrawer(drawer, menuBackdrop, { instant: true });
+    hideOverlay(searchPanel, { instant: true });
+    hideDrawer(contactDrawer, contactBackdrop, { instant: true });
+    if (menuToggle) {
+      menuToggle.setAttribute('aria-expanded', 'false');
     }
+    if (searchToggle) {
+      searchToggle.setAttribute('aria-expanded', 'false');
+    }
+    document.body.classList.remove('gucci-menu-open', 'gucci-search-open', 'gucci-contact-open');
 
+    accountDrawer.setAttribute('aria-hidden', 'false');
     if (accountToggle) {
       accountToggle.setAttribute('aria-expanded', 'true');
     }
-
     document.body.classList.add('gucci-account-open');
+    revealDrawer(accountDrawer, accountBackdrop);
     updateHeaderOnScroll();
   };
 
@@ -282,25 +422,26 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    closeMenu();
-    closeSearch();
-    closeAccount();
-
-    contactDrawer.hidden = false;
-    contactDrawer.classList.add('is-open');
-    contactDrawer.setAttribute('aria-hidden', 'false');
-
-    if (contactBackdrop) {
-      contactBackdrop.hidden = false;
-      contactBackdrop.classList.add('is-open');
-      contactBackdrop.setAttribute('aria-hidden', 'false');
+    hideDrawer(drawer, menuBackdrop, { instant: true });
+    hideOverlay(searchPanel, { instant: true });
+    hideDrawer(accountDrawer, accountBackdrop, { instant: true });
+    if (menuToggle) {
+      menuToggle.setAttribute('aria-expanded', 'false');
     }
+    if (accountToggle) {
+      accountToggle.setAttribute('aria-expanded', 'false');
+    }
+    if (searchToggle) {
+      searchToggle.setAttribute('aria-expanded', 'false');
+    }
+    document.body.classList.remove('gucci-menu-open', 'gucci-search-open', 'gucci-account-open');
 
+    contactDrawer.setAttribute('aria-hidden', 'false');
     contactOpenBtns.forEach((button) => {
       button.setAttribute('aria-expanded', 'true');
     });
-
     document.body.classList.add('gucci-contact-open');
+    revealDrawer(contactDrawer, contactBackdrop);
     updateHeaderOnScroll();
   };
 
@@ -326,38 +467,71 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    closeMenu();
-    closeContact();
-    closeAccount();
-    searchPanel.hidden = false;
-    searchPanel.classList.add('is-open');
+    hideDrawer(drawer, menuBackdrop, { instant: true });
+    hideDrawer(contactDrawer, contactBackdrop, { instant: true });
+    hideDrawer(accountDrawer, accountBackdrop, { instant: true });
+    if (menuToggle) {
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+    if (accountToggle) {
+      accountToggle.setAttribute('aria-expanded', 'false');
+    }
+    document.body.classList.remove('gucci-menu-open', 'gucci-contact-open', 'gucci-account-open');
+
     searchPanel.setAttribute('aria-hidden', 'false');
     searchToggle.setAttribute('aria-expanded', 'true');
     document.body.classList.add('gucci-search-open');
+    revealOverlay(searchPanel);
     updateHeaderOnScroll();
 
     if (searchInput) {
-      window.setTimeout(() => searchInput.focus(), 50);
+      window.setTimeout(() => searchInput.focus(), 120);
     }
 
     window.setTimeout(() => {
       mountSearchAutocomplete();
       positionSearchAutocomplete();
-    }, 100);
+    }, 160);
   };
-
-  if (searchToggle && searchPanel) {
-    searchToggle.addEventListener('click', () => {
-      if (searchPanel.classList.contains('is-open')) {
-        closeSearch();
-      } else {
-        openSearch();
-      }
-    });
-  }
 
   if (searchCloseBtn) {
     searchCloseBtn.addEventListener('click', closeSearch);
+  }
+
+  if (document.documentElement.dataset.gucciHeaderToggleHandler !== '1') {
+    document.documentElement.dataset.gucciHeaderToggleHandler = '1';
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) {
+        return;
+      }
+
+      const searchBtn = target.closest('#gucci-search-toggle');
+      if (searchBtn && searchPanel) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        if (searchPanel.classList.contains('is-open')) {
+          closeSearch();
+        } else {
+          openSearch();
+        }
+        return;
+      }
+
+      const accountBtn = target.closest('#gucci-account-toggle');
+      if (accountBtn && accountDrawer) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        if (accountDrawer.classList.contains('is-open')) {
+          closeAccount();
+        } else {
+          openAccount();
+        }
+      }
+    }, true);
   }
 
   contactOpenBtns.forEach((button) => {
@@ -378,18 +552,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (contactBackdrop) {
     contactBackdrop.addEventListener('click', closeContact);
-  }
-
-  if (accountToggle && accountDrawer) {
-    accountToggle.addEventListener('click', (event) => {
-      event.preventDefault();
-
-      if (accountDrawer.classList.contains('is-open')) {
-        closeAccount();
-      } else {
-        openAccount();
-      }
-    });
   }
 
   accountCloseBtns.forEach((button) => {
@@ -508,21 +670,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const isOpen = !target.classList.contains('is-open');
+      const willOpen = button.getAttribute('aria-expanded') !== 'true';
 
-      if (isOpen) {
-        target.hidden = false;
-        target.classList.add('is-open');
-      } else {
-        target.classList.remove('is-open');
-        window.setTimeout(() => {
-          if (!target.classList.contains('is-open')) {
-            target.hidden = true;
-          }
-        }, 520);
-      }
-
-      button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      setAccordionPanelOpen(target, willOpen, { openClass: 'is-open' });
+      button.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
       blurMenuControl(button);
       blurMenuControl(button.closest('.gucci-menu-row')?.querySelector('.gucci-menu-link'));
     };
@@ -851,47 +1002,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const PDP_ACCORDION_PANEL_SELECTOR = '#product .gucci-pdp-accordion-panel';
 
-  const setPdpAccordionPanelOpen = (panel, open) => {
-    if (open) {
-      panel.removeAttribute('hidden');
-      panel.classList.add('is-accordion-open');
-      panel.style.maxHeight = '0';
-      requestAnimationFrame(() => {
-        panel.style.maxHeight = `${panel.scrollHeight}px`;
-      });
-
-      const onEnd = (event) => {
-        if (event.propertyName !== 'max-height') {
-          return;
-        }
-        panel.removeEventListener('transitionend', onEnd);
-        if (panel.classList.contains('is-accordion-open')) {
-          panel.style.maxHeight = 'none';
-        }
-      };
-      panel.addEventListener('transitionend', onEnd);
-      return;
-    }
-
-    panel.classList.remove('is-accordion-open');
-    panel.style.maxHeight = `${panel.scrollHeight}px`;
-    requestAnimationFrame(() => {
-      panel.style.maxHeight = '0';
-    });
-
-    const onEnd = (event) => {
-      if (event.propertyName !== 'max-height') {
-        return;
-      }
-      panel.removeEventListener('transitionend', onEnd);
-      if (!panel.classList.contains('is-accordion-open')) {
-        panel.setAttribute('hidden', '');
-        panel.style.maxHeight = '';
-      }
-    };
-    panel.addEventListener('transitionend', onEnd);
-  };
-
   const initGucciPdpAccordionPanels = () => {
     document.querySelectorAll(PDP_ACCORDION_PANEL_SELECTOR).forEach((panel) => {
       const panelId = panel.getAttribute('id');
@@ -911,48 +1021,100 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  initGucciPdpAccordionPanels();
-
-  document.addEventListener('click', (event) => {
-    const target = event.target;
-    if (!(target instanceof Element)) {
+  const initGucciAccordions = () => {
+    if (document.documentElement.dataset.gucciAccordionReady === '1') {
       return;
     }
+    document.documentElement.dataset.gucciAccordionReady = '1';
 
-    const trigger = target.closest('[data-gucci-accordion-trigger]');
-    if (!trigger) {
-      return;
-    }
+    const syncFooterAccordionsLayout = () => {
+      const isDesktop = window.matchMedia('(min-width: 992px)').matches;
+      document.querySelectorAll('.gucci-footer-accordion-panel').forEach((panel) => {
+        const panelId = panel.id;
+        const trigger = panelId
+          ? document.querySelector(`[data-gucci-footer-accordion-trigger][aria-controls="${panelId}"]`)
+          : null;
 
-    const panelId = trigger.getAttribute('aria-controls');
-    const panel = panelId ? document.getElementById(panelId) : null;
-    if (!panel) {
-      return;
-    }
+        if (isDesktop) {
+          panel.hidden = false;
+          panel.classList.add('is-desktop-open');
+          trigger?.setAttribute('aria-expanded', 'false');
+          return;
+        }
 
-    const isPdpAccordion = panel.classList.contains('gucci-pdp-accordion-panel');
+        panel.classList.remove('is-desktop-open');
+        const isOpen = trigger?.getAttribute('aria-expanded') === 'true';
+        if (isOpen) {
+          panel.removeAttribute('hidden');
+          panel.classList.add('is-accordion-open');
+          panel.style.maxHeight = 'none';
+        } else {
+          panel.classList.remove('is-accordion-open');
+          panel.setAttribute('hidden', '');
+          panel.style.maxHeight = '0';
+        }
+      });
+    };
 
-    if (!isPdpAccordion) {
-      if (window.matchMedia('(min-width: 992px)').matches) {
+    initGucciPdpAccordionPanels();
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) {
         return;
       }
 
-      const isOpen = trigger.getAttribute('aria-expanded') === 'true';
-      trigger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-      panel.hidden = isOpen;
-      panel.classList.toggle('is-user-open', !isOpen);
-      return;
-    }
+      const footerTrigger = target.closest('[data-gucci-footer-accordion-trigger]');
+      if (footerTrigger) {
+        if (window.matchMedia('(min-width: 992px)').matches) {
+          return;
+        }
 
-    if (window.getComputedStyle(trigger).pointerEvents === 'none') {
-      return;
-    }
+        event.preventDefault();
+        event.stopImmediatePropagation();
 
-    const isOpen = trigger.getAttribute('aria-expanded') === 'true';
-    trigger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-    setPdpAccordionPanelOpen(panel, !isOpen);
-    trigger.blur();
-  });
+        const footerPanelId = footerTrigger.getAttribute('aria-controls');
+        const footerPanel = footerPanelId ? document.getElementById(footerPanelId) : null;
+        if (!footerPanel) {
+          return;
+        }
+
+        const willOpen = footerTrigger.getAttribute('aria-expanded') !== 'true';
+        footerTrigger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        setAccordionPanelOpen(footerPanel, willOpen);
+        footerTrigger.blur();
+        return;
+      }
+
+      const pdpTrigger = target.closest('[data-gucci-accordion-trigger]');
+      if (!pdpTrigger) {
+        return;
+      }
+
+      const pdpPanelId = pdpTrigger.getAttribute('aria-controls');
+      const pdpPanel = pdpPanelId ? document.getElementById(pdpPanelId) : null;
+      if (!pdpPanel || !pdpPanel.classList.contains('gucci-pdp-accordion-panel')) {
+        return;
+      }
+
+      if (window.getComputedStyle(pdpTrigger).pointerEvents === 'none') {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      const isOpen = pdpTrigger.getAttribute('aria-expanded') === 'true';
+      pdpTrigger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      setAccordionPanelOpen(pdpPanel, !isOpen);
+      pdpTrigger.blur();
+    }, true);
+
+    syncFooterAccordionsLayout();
+    window.addEventListener('resize', syncFooterAccordionsLayout, { passive: true });
+  };
+
+  initGucciAccordions();
 
   if (filterToggler && filtersWrapper) {
     filterToggler.addEventListener('click', () => {
@@ -1039,33 +1201,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .on('show.bs.modal shown.bs.modal', () => syncCartModalBackdrop(true))
       .on('hide.bs.modal hidden.bs.modal', () => syncCartModalBackdrop(false));
   }
-
-  const syncFooterAccordionsLayout = () => {
-    const isDesktop = window.matchMedia('(min-width: 992px)').matches;
-    document.querySelectorAll('.gucci-footer-accordion-panel').forEach((panel) => {
-      if (isDesktop) {
-        panel.hidden = false;
-        panel.classList.add('is-desktop-open');
-      } else if (!panel.classList.contains('is-user-open')) {
-        const trigger = document.querySelector(`[data-gucci-accordion-trigger][aria-controls="${panel.id}"]`);
-        const expanded = trigger?.getAttribute('aria-expanded') === 'true';
-        panel.hidden = !expanded;
-      }
-    });
-  };
-
-  document.querySelectorAll('.gucci-footer-accordion-trigger').forEach((trigger) => {
-    trigger.addEventListener('click', () => {
-      const panelId = trigger.getAttribute('aria-controls');
-      const panel = panelId ? document.getElementById(panelId) : null;
-      if (panel && window.matchMedia('(max-width: 991px)').matches) {
-        panel.classList.toggle('is-user-open', trigger.getAttribute('aria-expanded') === 'true');
-      }
-    });
-  });
-
-  syncFooterAccordionsLayout();
-  window.addEventListener('resize', syncFooterAccordionsLayout, { passive: true });
 
   document.querySelectorAll(
     '.wishlist-add-to, .wishlist-delete, .wishlist-create, .wishlist-login, .wishlist-toast, [class*="wishlist-modal"]'
@@ -1513,4 +1648,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   initGucciFooterNewsletter();
-});
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initClassicGucciTheme);
+} else {
+  initClassicGucciTheme();
+}

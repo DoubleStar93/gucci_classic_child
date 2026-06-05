@@ -108,33 +108,35 @@
         </button>
       </div>
 
-      <div class="container gucci-search-panel-inner">
-        <p class="gucci-search-label">{if $language.iso_code == 'it'}Cerca{else}{l s='Search' d='Shop.Theme.Catalog'}{/if}</p>
-        <div
-          id="search_widget"
-          class="gucci-search search-widget"
-          data-search-controller-url="{$link->getPageLink('search', true)|escape:'html':'UTF-8'}"
-        >
-          <form method="get" action="{$link->getPageLink('search', true)|escape:'html':'UTF-8'}" class="gucci-search-form">
-            <input type="hidden" name="controller" value="search">
-            <input
-              type="text"
-              name="s"
-              value=""
-              placeholder="{if $language.iso_code == 'it'}Cerca nel catalogo{else}{l s='Search our catalog' d='Shop.Theme.Catalog'}{/if}"
-              aria-label="{if $language.iso_code == 'it'}Cerca{else}{l s='Search' d='Shop.Theme.Catalog'}{/if}"
-              class="gucci-search-input"
-              autocomplete="off"
-            >
-            <button type="submit" class="gucci-search-submit visually-hidden" tabindex="-1" aria-hidden="true">
-              {l s='Search' d='Shop.Theme.Catalog'}
-            </button>
-          </form>
+      <div class="gucci-search-panel-body">
+        <div class="gucci-search-panel-inner">
+          <p class="gucci-search-label">{if $language.iso_code == 'it'}Cerca{else}{l s='Search' d='Shop.Theme.Catalog'}{/if}</p>
+          <div
+            id="search_widget"
+            class="gucci-search search-widget"
+            data-search-controller-url="{$link->getPageLink('search', true)|escape:'html':'UTF-8'}"
+          >
+            <form method="get" action="{$link->getPageLink('search', true)|escape:'html':'UTF-8'}" class="gucci-search-form">
+              <input type="hidden" name="controller" value="search">
+              <input
+                type="text"
+                name="s"
+                value=""
+                placeholder="{if $language.iso_code == 'it'}Cerca nel catalogo{else}{l s='Search our catalog' d='Shop.Theme.Catalog'}{/if}"
+                aria-label="{if $language.iso_code == 'it'}Cerca{else}{l s='Search' d='Shop.Theme.Catalog'}{/if}"
+                class="gucci-search-input"
+                autocomplete="off"
+              >
+              <button type="submit" class="gucci-search-submit visually-hidden" tabindex="-1" aria-hidden="true">
+                {l s='Search' d='Shop.Theme.Catalog'}
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
 
-      <div class="container gucci-search-results-wrap">
-        <div id="gucci-search-results" class="gucci-search-results" aria-live="polite"></div>
+        <div class="gucci-search-results-wrap">
+          <div id="gucci-search-results" class="gucci-search-results" aria-live="polite"></div>
+        </div>
       </div>
     </div>
 

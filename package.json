@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "deploy": "node scripts/deploy.js",
-    "test:ftp": "node scripts/test-ftp.js"
+    "test:ftp": "node scripts/test-ftp.js",
+    "make:home-cats": "node scripts/make-home-cat-images.js"
   },
   "devDependencies": {
     "basic-ftp": "^5.0.5",

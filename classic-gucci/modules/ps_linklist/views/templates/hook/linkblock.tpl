@@ -17,7 +17,7 @@
       class="gucci-footer-accordion-trigger"
       aria-expanded="false"
       aria-controls="gucci-footer-panel-{$linkBlock.id}"
-      data-gucci-accordion-trigger
+      data-gucci-footer-accordion-trigger
     >
       {$gucciFooterTitle|escape:'htmlall':'UTF-8'}
     </button>

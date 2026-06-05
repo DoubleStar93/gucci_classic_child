@@ -30,10 +30,9 @@
   "displayHome_note": "displayHome: solo ps_imageslider + ps_featuredproducts (Selezione, 8 prodotti) + ps_banner. Non agganciare ps_newproducts/ps_specials/ps_bestsellers in home.",
   "product_grid_note": "Griglia unificata: productlist.tpl (gucci-plp-grid). PLP: products.tpl con #js-product-list. Vedi docs/GUCCI-PRODUCT-GRID.md",
   "footer_linklist_columns_it": [
-    "Possiamo aiutarti?",
-    "Informazioni aziendali",
-    "Note legali",
-    "Servizi esclusivi"
+    "Prodotti",
+    "La nostra azienda",
+    "Note legali"
   ],
   "products": {
     "min_images_per_pdp": 6,

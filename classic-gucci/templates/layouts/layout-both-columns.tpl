@@ -85,9 +85,15 @@
 
     {block name='javascript_bottom'}
       {include file="_partials/password-policy-template.tpl"}
+      {* ps_productcomments: stub variabili — template modale vuoto, JS resta nel bundle CCC *}
+      <script>
+        var productCommentPostErrorMessage = '{l s='Sorry, your review cannot be posted.' d='Modules.Productcomments.Shop' js=1}';
+        var productCommentMandatoryMessage = '{l s='Please choose a rating for your review.' d='Modules.Productcomments.Shop' js=1}';
+        var ratingChosen = false;
+      </script>
       {include file="_partials/javascript.tpl" javascript=$javascript.bottom}
       {* Dopo il bundle CCC — evita cache JS obsoleta (come custom.css in head.tpl) *}
-      <script src="{$urls.base_url}themes/classic-gucci/assets/js/custom.js?v=2.2.6" defer></script>
+      <script src="{$urls.base_url}themes/classic-gucci/assets/js/custom.js?v=2.3.2" defer></script>
     {/block}
 
     {block name='hook_before_body_closing_tag'}

@@ -319,21 +319,25 @@ input[type="submit"] {
   box-shadow: none !important;
 }
 
+/* Header — block nel flusso pagina (default); overlay fisso solo home + PDP */
+body:not(#index):not(#product) #header {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+}
+
 #header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   z-index: 10070;
   width: 100%;
   max-width: none;
-  background: transparent !important;
+  background: #ffffff !important;
   transition: background-color var(--gucci-drawer-duration) var(--gucci-drawer-ease);
 }
 
 #header .gucci-header-bar {
-  background: transparent !important;
-  border-bottom: 1px solid transparent !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--gucci-color-border) !important;
   transition:
     background-color var(--gucci-drawer-duration) var(--gucci-drawer-ease),
     border-color var(--gucci-drawer-duration) var(--gucci-drawer-ease);
@@ -350,22 +354,27 @@ input[type="submit"] {
 }
 
 #header .header-top {
-  background: transparent !important;
+  background: #ffffff !important;
   padding: 1rem 0;
   transition:
     background-color var(--gucci-drawer-duration) var(--gucci-drawer-ease),
     border-color var(--gucci-drawer-duration) var(--gucci-drawer-ease);
 }
 
-/* PDP — header overlay sulla galleria (trasparente in cima, bianco allo scroll) */
+/* Home + PDP — header overlay su hero (fisso, trasparente in cima) */
+body#index #header,
 body#product #header {
   position: fixed !important;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 10070;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: transparent !important;
 }
 
+body#index #header:not(.is-scrolled),
+body#index #header:not(.is-scrolled) .header-top,
+body#index #header:not(.is-scrolled) .gucci-header-bar,
+body#index #header:not(.is-scrolled) .gucci-header-bar .container,
 body#product #header:not(.is-scrolled),
 body#product #header:not(.is-scrolled) .header-top,
 body#product #header:not(.is-scrolled) .gucci-header-bar,
@@ -375,24 +384,14 @@ body#product #header:not(.is-scrolled) .gucci-header-bar .container {
   box-shadow: none !important;
 }
 
-/* Pagine senza hero full-bleed — spazio sotto header fisso */
-body:not(#product):not(#index) #wrapper {
-  padding-top: var(--gucci-header-height);
-}
-
-body#product #wrapper,
-body#index #wrapper {
+body#index #wrapper,
+body#product #wrapper {
   padding-top: 0;
 }
 
-/* Home + PDP — header overlay su hero (icone/logo chiari in cima) */
-body#index #header:not(.is-scrolled),
-body#index #header:not(.is-scrolled) .header-top,
-body#index #header:not(.is-scrolled) .gucci-header-bar,
-body#index #header:not(.is-scrolled) .gucci-header-bar .container {
-  background: transparent !important;
-  border-bottom-color: transparent !important;
-  box-shadow: none !important;
+/* Header block — niente offset sul wrapper (il padre Classic aggiunge ~72px) */
+body:not(#index):not(#product) #wrapper {
+  padding-top: 0 !important;
 }
 
 body#index #header:not(.is-scrolled) .gucci-header-col--icons a,
@@ -3439,12 +3438,12 @@ body#product #content-wrapper {
 
 .gucci-page-header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1rem;
 }
 
 .gucci-page-title {
-  font-size: 1.25rem;
-  letter-spacing: 0.15em;
+  font-size: clamp(1.75rem, 4.5vw, 2.375rem);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
@@ -5506,7 +5505,7 @@ body#cms .page-content,
 body#cms.sitemap .page-content {
   max-width: 52rem;
   margin: 0 auto;
-  padding: 3rem 1.5rem 5rem;
+  padding: 0 1.5rem 4rem;
   font-size: var(--gucci-type-base);
   line-height: var(--gucci-type-leading-loose);
   color: #666666;
@@ -5515,12 +5514,12 @@ body#cms.sitemap .page-content {
 body#cms .page-title,
 body#cms.sitemap h1 {
   font-family: var(--gucci-font-serif) !important;
-  font-size: 1.375rem !important;
+  font-size: clamp(1.75rem, 4.5vw, 2.375rem) !important;
   font-weight: 400 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
   text-align: center;
-  margin-bottom: 2.5rem !important;
+  margin-bottom: 1rem !important;
 }
 
 body#cms.sitemap .page-content ul {
@@ -6614,20 +6613,21 @@ body#order-confirmation #header .gucci-header-col--icons a {
 .gucci-page-header,
 .gucci-cms-header {
   text-align: center;
-  padding: 2.5rem 1.5rem 1.5rem;
+  padding: 0.75rem 1.5rem 0;
   max-width: 52rem;
-  margin: 0 auto;
+  margin: 0 auto 0.5rem;
 }
 
 .gucci-page-title,
 .gucci-cms-title {
   font-family: var(--gucci-font-serif) !important;
-  font-size: 1.25rem !important;
+  font-size: clamp(1.75rem, 4.5vw, 2.375rem) !important;
   font-weight: 400 !important;
   letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
   margin: 0 !important;
   color: #111111 !important;
+  line-height: 1.15 !important;
 }
 
 .gucci-cms-page-inner,
@@ -7230,10 +7230,10 @@ body#contact .gucci-contact-page > .page-header {
 
 body#contact .gucci-page-title {
   text-align: center;
-  font-size: 1.25rem;
-  letter-spacing: 0.12em;
+  font-size: clamp(1.75rem, 4.5vw, 2.375rem);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 /* ==========================================================================
@@ -7584,11 +7584,18 @@ body#checkout #payment-confirmation button {
 .gucci-cms-page-inner {
   max-width: 40rem;
   margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
+  padding: 0 1.5rem 4rem;
   font-size: 13px;
   line-height: 1.75;
   letter-spacing: 0.02em;
   color: #444444;
+}
+
+.gucci-cms-page-inner > h1:first-child,
+.gucci-cms-page-inner > h2:first-child,
+.gucci-cms-page-inner > h3:first-child,
+.gucci-cms-page-inner > *:first-child {
+  margin-top: 0;
 }
 
 .gucci-cms-page-inner h1,
@@ -7599,7 +7606,7 @@ body#checkout #payment-confirmation button {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #111111;
-  margin: 2rem 0 1rem;
+  margin: 1.5rem 0 0.75rem;
 }
 
 .gucci-cms-page-inner p {
@@ -8281,6 +8288,11 @@ body#cart .product-line-info .value {
 /* ==========================================================================
    Gucci v1.5.5 — breadcrumb/menu IT, home Esplora placeholder
    ========================================================================== */
+
+.breadcrumb,
+.gucci-breadcrumb {
+  display: none !important;
+}
 
 .gucci-breadcrumb {
   padding: 1.25rem 1rem 0;

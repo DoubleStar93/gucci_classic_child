@@ -29,12 +29,7 @@ meta:
 
 assets:
   use_parent_assets: true
-  # custom.css caricato solo da head.tpl (dopo il bundle) — evita duplicato CCC con token obsoleti
-  js:
-    all:
-      - id: custom-script
-        path: assets/js/custom.js
-        priority: 1000
+  # custom.css / custom.js caricati solo da head.tpl + layout (dopo il bundle CCC)
 
 global_settings:
   hooks:

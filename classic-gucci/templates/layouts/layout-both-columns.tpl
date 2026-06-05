@@ -86,6 +86,8 @@
     {block name='javascript_bottom'}
       {include file="_partials/password-policy-template.tpl"}
       {include file="_partials/javascript.tpl" javascript=$javascript.bottom}
+      {* Dopo il bundle CCC — evita cache JS obsoleta (come custom.css in head.tpl) *}
+      <script src="{$urls.base_url}themes/classic-gucci/assets/js/custom.js?v=2.2.6" defer></script>
     {/block}
 
     {block name='hook_before_body_closing_tag'}

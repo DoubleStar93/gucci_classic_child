@@ -1,6 +1,6 @@
 {**
  * Classic Gucci — font Google (Jost + Cormorant Garamond, ≈ Gucci Sans/Serif)
- * custom.css v2.2.0 contact form readability
+ * custom.css v2.2.4 newsletter inline
  *}
 {extends file='parent:_partials/head.tpl'}
 
@@ -45,9 +45,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap">
 {/block}
 
-{* Dopo il bundle CCC — unica sorgente token/tipografia *}
+{* Dopo il bundle CCC — unica sorgente token/tipografia (custom.css) *}
 {block name='stylesheets' append}
-  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.2.1" type="text/css" media="all">
+  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.2.6" type="text/css" media="all">
 {/block}
 
 {* Iubenda — Cookie Solution (banner consenso) *}

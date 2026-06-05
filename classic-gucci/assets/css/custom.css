@@ -1507,28 +1507,36 @@ body#search .gucci-price {
   margin: 0 0 1.25rem;
 }
 
-.gucci-footer-newsletter-row {
-  display: flex;
-  align-items: flex-end;
+.gucci-footer-newsletter-row,
+.gucci-footer .gucci-footer-newsletter-row,
+#blockEmailSubscription.gucci-footer-newsletter .gucci-footer-newsletter-row {
+  display: inline-flex !important;
+  align-items: stretch;
   justify-content: center;
-  gap: 1.5rem;
-  width: 100%;
-  max-width: 520px;
+  gap: 0 !important;
+  width: auto;
+  max-width: calc(100% - 2rem);
   margin-left: auto;
   margin-right: auto;
+  border: 1px solid rgba(255, 255, 255, 0.55);
 }
 
-.gucci-footer-input {
-  flex: 1;
-  width: 100%;
-  border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+.gucci-footer-input,
+.gucci-footer .gucci-footer-input,
+#blockEmailSubscription.gucci-footer-newsletter .gucci-footer-input {
+  flex: 1 1 14rem !important;
+  width: 14rem;
+  min-width: 10rem;
+  max-width: 18rem;
+  border: none !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.35) !important;
+  border-bottom: none !important;
   border-radius: 0;
   background: transparent;
   color: #ffffff;
   font-size: var(--gucci-text-sm);
   letter-spacing: 0.04em;
-  padding: 0.5rem 0;
+  padding: 0.7rem 1rem;
 }
 
 .gucci-footer-input::placeholder {
@@ -1536,14 +1544,21 @@ body#search .gucci-price {
 }
 
 .gucci-footer-submit {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: var(--gucci-text-xs);
   font-weight: var(--gucci-fw-medium);
   letter-spacing: var(--gucci-ls-wide);
   text-transform: uppercase;
-  color: #ffffff;
-  border-bottom: 1px solid #ffffff;
-  padding-bottom: 2px;
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: none !important;
+  border-bottom: none !important;
+  padding: 0.7rem 1.25rem;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .gucci-footer-links-wrap {
@@ -6859,43 +6874,66 @@ body#cms.sitemap .gucci-cms-page {
    Gucci v1.3.7 — footer desktop, newsletter, auth
    ========================================================================== */
 
+.gucci-footer-newsletter-feedback {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0 0 1rem;
+}
+
+.gucci-footer-newsletter-feedback .gucci-footer-newsletter-msg {
+  width: 100%;
+  max-width: 28rem;
+  margin: 0 !important;
+}
+
 .gucci-footer-newsletter-msg--ok,
 #blockEmailSubscription.gucci-footer-newsletter .gucci-footer-newsletter-msg--ok {
-  color: #111111 !important;
-  background: #d4edda !important;
-  border: 1px solid #c3e6cb !important;
-  padding: 0.85rem 1rem !important;
+  color: #ffffff !important;
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  padding: 1rem 1.5rem !important;
   box-shadow: none !important;
+  font-size: var(--gucci-text-base) !important;
+  letter-spacing: 0.04em;
+  line-height: 1.55 !important;
+  text-align: center !important;
 }
 
 .gucci-footer-newsletter-msg--ok .alert,
 .gucci-footer-newsletter-msg--ok .alert-success,
 .gucci-footer-newsletter-msg--ok p,
 .gucci-footer-newsletter-msg--ok * {
-  color: #111111 !important;
+  color: #ffffff !important;
   background: transparent !important;
+  text-align: center !important;
 }
 
 .gucci-footer-newsletter-msg--error,
 #blockEmailSubscription.gucci-footer-newsletter .gucci-footer-newsletter-msg--error {
-  color: #5c1a1a !important;
-  background: #f8d7da !important;
-  border: 1px solid #f5c6cb !important;
-  padding: 0.85rem 1rem !important;
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 160, 160, 0.55) !important;
+  padding: 1rem 1.5rem !important;
   box-shadow: none !important;
+  font-size: var(--gucci-text-base) !important;
+  letter-spacing: 0.04em;
+  line-height: 1.55 !important;
+  text-align: center !important;
 }
 
 .gucci-footer-newsletter-msg--error .alert,
 .gucci-footer-newsletter-msg--error .alert-danger,
 .gucci-footer-newsletter-msg--error p,
 .gucci-footer-newsletter-msg--error * {
-  color: #5c1a1a !important;
+  color: #ffffff !important;
   background: transparent !important;
+  text-align: center !important;
 }
 
 @media (min-width: 992px) {
   .gucci-footer-newsletter-row {
-    max-width: 420px;
+    max-width: min(100%, 28rem);
   }
 
   .gucci-footer-accordions {
@@ -8939,4 +8977,83 @@ body#contact.gucci-body #main .gucci-contact-form input[type="file"]#file-upload
   border: 1px solid #e5e5e5 !important;
   padding: 0.85rem 1rem !important;
   font-size: 14px !important;
+}
+
+/* Newsletter footer — input + pulsante attaccati, gruppo centrato */
+.gucci-footer #blockEmailSubscription.gucci-footer-newsletter form {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+.gucci-footer #blockEmailSubscription .gucci-footer-newsletter-row {
+  display: inline-flex !important;
+  flex-wrap: nowrap !important;
+  gap: 0 !important;
+  width: auto !important;
+  max-width: calc(100% - 2rem) !important;
+}
+
+.gucci-footer #blockEmailSubscription .gucci-footer-input {
+  flex: 1 1 14rem !important;
+  width: 14rem !important;
+  max-width: 18rem !important;
+}
+
+.gucci-footer #blockEmailSubscription .gucci-footer-submit,
+.gucci-footer #blockEmailSubscription.block_newsletter form button[type="submit"] {
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+}
+
+.gucci-footer #blockEmailSubscription .gucci-footer-newsletter-feedback {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  float: none !important;
+}
+
+.gucci-footer #blockEmailSubscription .gucci-footer-newsletter-feedback .gucci-footer-newsletter-msg {
+  width: 100% !important;
+  max-width: 28rem !important;
+  margin: 0 auto !important;
+  float: none !important;
+  text-align: center !important;
+}
+
+/* Fallback se ps_emailsubscription.js inietta .alert dentro il form (AJAX legacy) */
+.gucci-footer #blockEmailSubscription.gucci-footer-newsletter form {
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+.gucci-footer #blockEmailSubscription form > .alert,
+.gucci-footer #blockEmailSubscription form > .alert-success,
+.gucci-footer #blockEmailSubscription form > .alert-danger,
+.gucci-footer #blockEmailSubscription form > .block_newsletter_alert {
+  width: 100% !important;
+  max-width: 28rem !important;
+  margin: 0 auto 1rem !important;
+  float: none !important;
+  color: #ffffff !important;
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: none !important;
+  text-align: center !important;
+  padding: 1rem 1.5rem !important;
+}
+
+.gucci-footer #blockEmailSubscription form > .alert-danger,
+.gucci-footer #blockEmailSubscription form > .block_newsletter_alert.alert-danger {
+  border-color: rgba(255, 160, 160, 0.55) !important;
+}
+
+.gucci-footer #blockEmailSubscription form:has(> .alert-success) .gucci-footer-newsletter-row,
+.gucci-footer #blockEmailSubscription form:has(> .alert-success) .gucci-footer-input,
+.gucci-footer #blockEmailSubscription form:has(> .alert-success) .gucci-footer-submit,
+.gucci-footer #blockEmailSubscription form:has(> .alert-success) button[type="submit"] {
+  display: none !important;
 }

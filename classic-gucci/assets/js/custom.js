@@ -1426,4 +1426,91 @@ document.addEventListener('DOMContentLoaded', () => {
       gridObserver.observe(root, { childList: true, subtree: true });
     });
   }
+
+  /** Footer newsletter — ps_emailsubscription.js prepend l'alert nel form (layout rotto) */
+  const initGucciFooterNewsletter = () => {
+    const block = document.querySelector('.gucci-footer #blockEmailSubscription.gucci-footer-newsletter');
+    if (!block) {
+      return;
+    }
+
+    const form = block.querySelector('form');
+    if (!form || form.dataset.gucciNewsletterBound === '1') {
+      return;
+    }
+
+    form.dataset.gucciNewsletterBound = '1';
+
+    const heading = block.querySelector('.gucci-footer-heading');
+
+    const getSubscriptionUrl = () => (
+      typeof window.psemailsubscription_subscription === 'string'
+        ? window.psemailsubscription_subscription
+        : null
+    );
+
+    const clearNewsletterFeedback = () => {
+      block.querySelectorAll('.gucci-footer-newsletter-feedback').forEach((node) => node.remove());
+      form.querySelectorAll('.alert, .block_newsletter_alert').forEach((node) => node.remove());
+    };
+
+    const showNewsletterFeedback = (message, isError) => {
+      clearNewsletterFeedback();
+
+      const feedback = document.createElement('div');
+      feedback.className = `gucci-footer-newsletter-feedback gucci-footer-newsletter-feedback--${isError ? 'error' : 'ok'}`;
+      feedback.setAttribute('role', isError ? 'alert' : 'status');
+
+      const paragraph = document.createElement('p');
+      paragraph.className = `gucci-footer-newsletter-msg gucci-footer-newsletter-msg--${isError ? 'error' : 'ok'}`;
+      paragraph.textContent = message;
+      feedback.appendChild(paragraph);
+
+      if (isError) {
+        form.style.display = '';
+        form.insertAdjacentElement('beforebegin', feedback);
+        return;
+      }
+
+      form.style.display = 'none';
+      if (heading) {
+        heading.insertAdjacentElement('afterend', feedback);
+      } else {
+        block.prepend(feedback);
+      }
+    };
+
+    form.addEventListener('submit', (event) => {
+      const subscriptionUrl = getSubscriptionUrl();
+      if (!subscriptionUrl) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      fetch(subscriptionUrl, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+          Accept: 'application/json',
+        },
+        credentials: 'same-origin',
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (!data || typeof data.msg !== 'string') {
+            form.submit();
+            return;
+          }
+
+          showNewsletterFeedback(data.msg, Boolean(data.nw_error));
+        })
+        .catch(() => {
+          form.submit();
+        });
+    }, true);
+  };
+
+  initGucciFooterNewsletter();
 });

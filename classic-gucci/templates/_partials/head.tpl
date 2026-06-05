@@ -42,5 +42,5 @@
 
 {* Dopo il bundle CCC — unica sorgente token/tipografia *}
 {block name='stylesheets' append}
-  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.0.5" type="text/css" media="all">
+  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.0.8" type="text/css" media="all">
 {/block}

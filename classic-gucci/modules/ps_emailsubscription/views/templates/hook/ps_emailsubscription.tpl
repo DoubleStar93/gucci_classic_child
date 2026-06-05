@@ -6,6 +6,12 @@
     {if $language.iso_code == 'it'}Iscriviti alla newsletter{else}{l s='Newsletter' d='Shop.Theme.Global'}{/if}
   </p>
 
+  {if $msg}
+    <p class="gucci-footer-newsletter-msg{if $nw_error} gucci-footer-newsletter-msg--error{else} gucci-footer-newsletter-msg--ok{/if}" role="status">
+      {$msg nofilter}
+    </p>
+  {/if}
+
   <form action="{$urls.current_url}" method="post">
     <input type="hidden" name="blockHookName" value="displayFooter">
     <div class="gucci-footer-newsletter-row">
@@ -23,12 +29,6 @@
       </button>
     </div>
   </form>
-
-  {if $msg}
-    <p class="gucci-footer-newsletter-msg{if $nw_error} gucci-footer-newsletter-msg--error{else} gucci-footer-newsletter-msg--ok{/if}">
-      {$msg nofilter}
-    </p>
-  {/if}
 
   {if $conditions}
     <p class="gucci-footer-newsletter-note">{$conditions nofilter}</p>

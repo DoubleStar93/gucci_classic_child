@@ -1422,8 +1422,12 @@ body#search .gucci-price {
 .gucci-footer-newsletter-row {
   display: flex;
   align-items: flex-end;
+  justify-content: center;
   gap: 1.5rem;
+  width: 100%;
   max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .gucci-footer-input {
@@ -1530,17 +1534,64 @@ body#search .gucci-price {
 }
 
 .gucci-footer-newsletter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   padding: 0;
   margin: 0;
   border: none;
   background: transparent !important;
+  text-align: center;
 }
 
-.gucci-footer-newsletter-note,
-.gucci-footer-newsletter-msg {
+.gucci-footer-newsletter .gucci-footer-heading {
+  width: 100%;
+  text-align: center;
+}
+
+.gucci-footer-newsletter form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.gucci-footer-newsletter-note {
+  width: 100%;
+  max-width: 520px;
   margin-top: 1rem;
-  font-size: var(--gucci-text-xs);
-  color: rgba(255, 255, 255, 0.65);
+  margin-left: auto;
+  margin-right: auto;
+  font-size: var(--gucci-text-sm);
+  line-height: var(--gucci-type-leading);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.gucci-footer-newsletter-msg {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto 1.25rem;
+  font-size: var(--gucci-text-sm);
+  line-height: var(--gucci-type-leading);
+  text-align: center;
+  float: none !important;
+  clear: both;
+  align-self: center;
+}
+
+.gucci-footer-newsletter-msg .alert,
+.gucci-footer-newsletter-msg .alert-success,
+.gucci-footer-newsletter-msg .alert-danger,
+.gucci-footer-newsletter-msg .alert-warning,
+.gucci-footer-newsletter-msg p {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  text-align: center !important;
 }
 
 .gucci-footer-meta {
@@ -3919,9 +3970,15 @@ body.gucci-filters-open {
   display: none !important;
 }
 
-.gucci-footer .gucci-footer-newsletter {
-  display: block !important;
-  margin-bottom: 2rem;
+.gucci-footer .gucci-footer-newsletter,
+.gucci-footer #blockEmailSubscription.gucci-footer-newsletter {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 auto 2rem !important;
+  float: none !important;
 }
 
 /* ==========================================================================
@@ -6721,12 +6778,38 @@ body#cms.sitemap .gucci-cms-page {
    Gucci v1.3.7 — footer desktop, newsletter, auth
    ========================================================================== */
 
-.gucci-footer-newsletter-msg--ok {
-  color: rgba(255, 255, 255, 0.75);
+.gucci-footer-newsletter-msg--ok,
+#blockEmailSubscription.gucci-footer-newsletter .gucci-footer-newsletter-msg--ok {
+  color: #111111 !important;
+  background: #d4edda !important;
+  border: 1px solid #c3e6cb !important;
+  padding: 0.85rem 1rem !important;
+  box-shadow: none !important;
 }
 
-.gucci-footer-newsletter-msg--error {
-  color: #ffcccc;
+.gucci-footer-newsletter-msg--ok .alert,
+.gucci-footer-newsletter-msg--ok .alert-success,
+.gucci-footer-newsletter-msg--ok p,
+.gucci-footer-newsletter-msg--ok * {
+  color: #111111 !important;
+  background: transparent !important;
+}
+
+.gucci-footer-newsletter-msg--error,
+#blockEmailSubscription.gucci-footer-newsletter .gucci-footer-newsletter-msg--error {
+  color: #5c1a1a !important;
+  background: #f8d7da !important;
+  border: 1px solid #f5c6cb !important;
+  padding: 0.85rem 1rem !important;
+  box-shadow: none !important;
+}
+
+.gucci-footer-newsletter-msg--error .alert,
+.gucci-footer-newsletter-msg--error .alert-danger,
+.gucci-footer-newsletter-msg--error p,
+.gucci-footer-newsletter-msg--error * {
+  color: #5c1a1a !important;
+  background: transparent !important;
 }
 
 @media (min-width: 992px) {
@@ -6833,7 +6916,12 @@ body#registration .form-group {
 }
 
 .gucci-footer-newsletter-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   margin-bottom: 2rem;
+  text-align: center;
 }
 
 .gucci-footer #block_myaccount_infos,

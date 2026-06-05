@@ -17,7 +17,6 @@
       file='catalog/_partials/productlist.tpl'
       products=$products
       productClass='gucci-plp-cell gucci-product-miniature'
-      cssClass='gucci-home-plp-grid'
       maxProducts=8
     }
 

@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "deploy": "node scripts/deploy.js",
+    "clean:stash": "node scripts/clean-stash.js",
     "test:ftp": "node scripts/test-ftp.js",
     "make:home-cats": "node scripts/make-home-cat-images.js"
   },

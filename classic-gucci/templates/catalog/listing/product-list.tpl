@@ -19,7 +19,11 @@
   {/if}
 {/block}
 
-{block name='subcategory_list'}{/block}
+{block name='subcategory_list'}
+  {if isset($subcategories) && $subcategories|count}
+    {include file='catalog/_partials/subcategories.tpl' subcategories=$subcategories}
+  {/if}
+{/block}
 
 {block name='product_list_top'}
   {include file='catalog/_partials/products-top.tpl' listing=$listing}

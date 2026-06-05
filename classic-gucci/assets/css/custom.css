@@ -4101,7 +4101,10 @@ body#registration .btn-primary {
    ========================================================================== */
 
 #category #subcategories,
-#search #subcategories,
+#search #subcategories {
+  display: block;
+}
+
 .gucci-plp-description {
   display: none !important;
 }
@@ -4558,15 +4561,7 @@ body#search {
 
 /* Griglia PLP Gucci — vedi blocco «gucci-plp-grid» in fondo a custom.css */
 
-#category .gucci-product-miniature .product-description,
-#search .gucci-product-miniature .product-description,
-#products .gucci-product-miniature .product-description {
-  padding: 0;
-  text-align: left;
-}
-
-#category .product-title a,
-#search .product-title a,
+.gucci-plp-grid .product-title a,
 #products .product-title a {
   font-size: var(--gucci-type-card-title) !important;
   font-weight: var(--gucci-fw-medium) !important;
@@ -4574,13 +4569,13 @@ body#search {
   text-transform: none !important;
   line-height: var(--gucci-type-leading) !important;
   color: var(--gucci-color-black) !important;
+  text-decoration: none !important;
 }
 
-#category .gucci-price,
-#search .gucci-price,
+.gucci-plp-grid .gucci-price,
 #products .gucci-price,
-#category .product-price-and-shipping,
-#search .product-price-and-shipping {
+.gucci-plp-grid .product-price-and-shipping,
+#products .product-price-and-shipping {
   font-size: var(--gucci-type-card-price) !important;
   font-weight: var(--gucci-fw-regular) !important;
   color: var(--gucci-color-muted) !important;
@@ -5938,6 +5933,7 @@ body#supplier #products {
 
 @media (min-width: 576px) {
   .gucci-plp-grid,
+  #wrapper #products .products,
   #products .products,
   #wrapper .gucci-product-grid-hook .products:not(.gucci-plp-grid),
   #wrapper .featured-products:not(.gucci-home-section--products) .products:not(.gucci-plp-grid),
@@ -5960,6 +5956,7 @@ body#supplier #products {
 
 @media (min-width: 992px) {
   .gucci-plp-grid,
+  #wrapper #products .products,
   #products .products,
   #wrapper .gucci-product-grid-hook .products:not(.gucci-plp-grid),
   #wrapper .featured-products:not(.gucci-home-section--products) .products:not(.gucci-plp-grid),
@@ -6122,14 +6119,15 @@ body#supplier #products {
 
 .gucci-plp-grid .gucci-plp-cell .product-description,
 .gucci-plp-grid .gucci-product-miniature .product-description {
-  padding: 0.75rem 0.65rem 1.1rem;
+  padding: 0.65rem 0.5rem 0.85rem;
   text-align: center;
   background: #ffffff;
 }
 
 .gucci-plp-grid .gucci-plp-cell .product-title,
 .gucci-plp-grid .gucci-product-miniature .product-title {
-  margin: 0 0 0.2rem !important;
+  margin: 0 0 0.15rem !important;
+  padding: 0 !important;
   font-size: var(--gucci-type-card-title) !important;
   letter-spacing: var(--gucci-type-letter) !important;
   line-height: 1.45 !important;
@@ -8978,64 +8976,64 @@ body#contact .gucci-contact-footer button[type="submit"] {
 }
 
 /* ==========================================================================
-   Gucci v1.7.5 — pochi prodotti: colonne = quantità (override griglia globale)
+   Griglie compatte — colonne adattive solo in drawer/modali (non PLP/home)
    ========================================================================== */
 
-.gucci-plp-grid:has(> :only-child),
-#products .products:has(> :only-child),
-#product .gucci-pdp-product-grids .products:has(> :only-child),
+.gucci-cart-modal-cross-selling .gucci-plp-grid:has(> :only-child),
+.gucci-cart-modal-products .gucci-plp-grid:has(> :only-child),
 .gucci-cart-cross-selling .products:has(> :only-child),
 .gucci-order-confirmation-extra .products:has(> :only-child),
 .cross-selling .products:has(> :only-child),
 .gucci-product-grid-section .products:has(> :only-child),
-.product-accessories .products:has(> :only-child) {
+.product-accessories .products:has(> :only-child),
+#product .gucci-pdp-product-grids .products:has(> :only-child) {
   grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
 }
 
 @media (min-width: 576px) {
-  .gucci-plp-grid:has(> :nth-child(2):last-child),
-  #products .products:has(> :nth-child(2):last-child),
-  #product .gucci-pdp-product-grids .products:has(> :nth-child(2):last-child),
+  .gucci-cart-modal-cross-selling .gucci-plp-grid:has(> :nth-child(2):last-child),
+  .gucci-cart-modal-products .gucci-plp-grid:has(> :nth-child(2):last-child),
   .gucci-cart-cross-selling .products:has(> :nth-child(2):last-child),
   .gucci-order-confirmation-extra .products:has(> :nth-child(2):last-child),
   .cross-selling .products:has(> :nth-child(2):last-child),
   .gucci-product-grid-section .products:has(> :nth-child(2):last-child),
-  .product-accessories .products:has(> :nth-child(2):last-child) {
+  .product-accessories .products:has(> :nth-child(2):last-child),
+  #product .gucci-pdp-product-grids .products:has(> :nth-child(2):last-child) {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 
-  .gucci-plp-grid:has(> :nth-child(3):last-child),
-  #products .products:has(> :nth-child(3):last-child),
-  #product .gucci-pdp-product-grids .products:has(> :nth-child(3):last-child),
+  .gucci-cart-modal-cross-selling .gucci-plp-grid:has(> :nth-child(3):last-child),
+  .gucci-cart-modal-products .gucci-plp-grid:has(> :nth-child(3):last-child),
   .gucci-cart-cross-selling .products:has(> :nth-child(3):last-child),
   .gucci-order-confirmation-extra .products:has(> :nth-child(3):last-child),
   .cross-selling .products:has(> :nth-child(3):last-child),
   .gucci-product-grid-section .products:has(> :nth-child(3):last-child),
-  .product-accessories .products:has(> :nth-child(3):last-child) {
+  .product-accessories .products:has(> :nth-child(3):last-child),
+  #product .gucci-pdp-product-grids .products:has(> :nth-child(3):last-child) {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
 }
 
 @media (min-width: 992px) {
-  .gucci-plp-grid:has(> :nth-child(2):last-child),
-  #products .products:has(> :nth-child(2):last-child),
-  #product .gucci-pdp-product-grids .products:has(> :nth-child(2):last-child),
+  .gucci-cart-modal-cross-selling .gucci-plp-grid:has(> :nth-child(2):last-child),
+  .gucci-cart-modal-products .gucci-plp-grid:has(> :nth-child(2):last-child),
   .gucci-cart-cross-selling .products:has(> :nth-child(2):last-child),
   .gucci-order-confirmation-extra .products:has(> :nth-child(2):last-child),
   .cross-selling .products:has(> :nth-child(2):last-child),
   .gucci-product-grid-section .products:has(> :nth-child(2):last-child),
-  .product-accessories .products:has(> :nth-child(2):last-child) {
+  .product-accessories .products:has(> :nth-child(2):last-child),
+  #product .gucci-pdp-product-grids .products:has(> :nth-child(2):last-child) {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 
-  .gucci-plp-grid:has(> :nth-child(3):last-child),
-  #products .products:has(> :nth-child(3):last-child),
-  #product .gucci-pdp-product-grids .products:has(> :nth-child(3):last-child),
+  .gucci-cart-modal-cross-selling .gucci-plp-grid:has(> :nth-child(3):last-child),
+  .gucci-cart-modal-products .gucci-plp-grid:has(> :nth-child(3):last-child),
   .gucci-cart-cross-selling .products:has(> :nth-child(3):last-child),
   .gucci-order-confirmation-extra .products:has(> :nth-child(3):last-child),
   .cross-selling .products:has(> :nth-child(3):last-child),
   .gucci-product-grid-section .products:has(> :nth-child(3):last-child),
-  .product-accessories .products:has(> :nth-child(3):last-child) {
+  .product-accessories .products:has(> :nth-child(3):last-child),
+  #product .gucci-pdp-product-grids .products:has(> :nth-child(3):last-child) {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
 }
@@ -9160,4 +9158,426 @@ body#contact.gucci-body #main .gucci-contact-form input[type="file"]#file-upload
 .gucci-footer #blockEmailSubscription form:has(> .alert-success) .gucci-footer-submit,
 .gucci-footer #blockEmailSubscription form:has(> .alert-success) button[type="submit"] {
   display: none !important;
+}
+
+/* ==========================================================================
+   PLP editoriale v2 — hero, sottocategorie, toolbar, paginazione
+   ========================================================================== */
+
+body#category #products,
+body#search #products,
+body#prices-drop #products,
+body#new-products #products,
+body#best-sales #products {
+  background: #ffffff;
+}
+
+.gucci-plp-header {
+  padding: 0 !important;
+  margin: 0 !important;
+  text-align: center;
+}
+
+.gucci-plp-header-compact {
+  padding: 2.5rem 1.5rem 0.5rem;
+}
+
+/* Hero categoria */
+.gucci-plp-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: clamp(220px, 42vh, 420px);
+  overflow: hidden;
+  background: linear-gradient(145deg, #f4f4f4 0%, #ececec 50%, #f7f7f7 100%);
+}
+
+.gucci-plp-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.gucci-plp-hero__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1);
+}
+
+.gucci-plp-hero:not(.is-no-image)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.45) 100%);
+  pointer-events: none;
+}
+
+.gucci-plp-hero.is-no-image .gucci-plp-hero__img {
+  display: none;
+}
+
+.gucci-plp-hero__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 2rem;
+  text-align: center;
+}
+
+.gucci-plp-hero__title {
+  margin: 0 !important;
+  font-family: var(--gucci-font-serif, "Cormorant Garamond", serif) !important;
+  font-size: clamp(1.75rem, 4.5vw, 2.75rem) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  line-height: 1.15 !important;
+  color: #111111 !important;
+}
+
+.gucci-plp-hero:not(.is-no-image) .gucci-plp-hero__title {
+  color: #ffffff !important;
+  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
+}
+
+.gucci-plp-hero__description {
+  max-width: 36rem;
+  margin: 1rem auto 0;
+  font-size: 0.8125rem;
+  line-height: 1.85;
+  font-weight: 300;
+  color: #666666;
+}
+
+.gucci-plp-hero:not(.is-no-image) .gucci-plp-hero__description {
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
+}
+
+.gucci-plp-hero__description p {
+  margin: 0;
+}
+
+/* Sottocategorie */
+.gucci-plp-subcategories {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 0.25rem;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.gucci-plp-subcategories__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem 1.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gucci-plp-subcategories__link {
+  display: inline-block;
+  font-size: var(--gucci-type-caption);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #111111 !important;
+  text-decoration: none !important;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.gucci-plp-subcategories__link:hover {
+  opacity: 0.55;
+}
+
+.gucci-plp-subcategories__link.is-current {
+  border-bottom-color: #111111;
+  font-weight: 500;
+}
+
+/* Toolbar */
+.gucci-plp-toolbar {
+  padding: 1rem 1.5rem 1.25rem !important;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.1);
+}
+
+.gucci-plp-toolbar-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.gucci-plp-actions {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.gucci-plp-filter {
+  justify-self: start;
+}
+
+.gucci-plp-sort {
+  justify-self: end;
+}
+
+.gucci-plp-toolbar-meta {
+  margin: 0;
+  justify-self: center;
+  font-size: var(--gucci-type-caption);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #888888;
+  text-align: center;
+}
+
+.gucci-plp-filter-btn,
+.gucci-plp-sort-btn {
+  cursor: pointer;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid #111111 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0.35rem 0 0.5rem !important;
+  font-size: var(--gucci-type-caption) !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: #111111 !important;
+}
+
+.gucci-plp-filter-btn:hover,
+.gucci-plp-sort-btn:hover {
+  opacity: 0.55;
+}
+
+.gucci-plp-sort-btn .material-icons {
+  font-size: 1.125rem;
+  vertical-align: middle;
+  margin-left: 0.15rem;
+}
+
+body#category .products-sort-order .dropdown-menu,
+body#search .products-sort-order .dropdown-menu {
+  min-width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.35rem 0;
+  border: 1px solid rgba(17, 17, 17, 0.12) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: #ffffff !important;
+}
+
+body#category .products-sort-order .select-list,
+body#search .products-sort-order .select-list {
+  display: block;
+  padding: 0.65rem 1rem;
+  font-size: var(--gucci-type-caption) !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: #666666 !important;
+  text-decoration: none !important;
+  background: transparent !important;
+}
+
+body#category .products-sort-order .select-list:hover,
+body#search .products-sort-order .select-list:hover {
+  color: #111111 !important;
+  background: rgba(17, 17, 17, 0.03) !important;
+}
+
+body#category .products-sort-order .select-list.current,
+body#search .products-sort-order .select-list.current {
+  color: #111111 !important;
+  font-weight: 500 !important;
+}
+
+/* Griglia + paginazione */
+body#category .gucci-plp-list,
+body#search .gucci-plp-list {
+  padding-top: 0.25rem;
+}
+
+.gucci-pagination {
+  max-width: 1440px;
+  margin: 2.5rem auto 0;
+  padding: 0 1.5rem 1rem;
+}
+
+.gucci-pagination__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.gucci-pagination__summary {
+  margin: 0;
+  font-size: var(--gucci-type-caption);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #888888;
+  text-align: center;
+}
+
+.gucci-pagination__pages {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gucci-pagination__pages li a,
+.gucci-pagination__pages li span {
+  font-size: var(--gucci-type-caption) !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: #666666 !important;
+  text-decoration: none !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0.25rem 0 !important;
+}
+
+.gucci-pagination__pages li.current a {
+  color: #111111 !important;
+  font-weight: 500 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px;
+}
+
+.gucci-pagination__pages li a.disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.gucci-plp-empty-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--gucci-font-serif, "Cormorant Garamond", serif) !important;
+  font-size: clamp(1.25rem, 3vw, 1.75rem) !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #111111;
+}
+
+.gucci-plp-empty-text {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  text-align: center;
+  color: #666666;
+}
+
+body#category #left-column .block,
+body#search #left-column .block,
+body#category #left-column #search_filters,
+body#search #left-column #search_filters {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .gucci-plp-hero {
+    min-height: clamp(280px, 48vh, 480px);
+  }
+
+  .gucci-plp-hero__content {
+    padding: 3rem 2rem 2.5rem;
+  }
+
+  .gucci-plp-subcategories {
+    padding: 1.5rem 2rem 0.35rem;
+  }
+
+  .gucci-plp-toolbar {
+    padding: 1.15rem 2rem 1.35rem !important;
+  }
+
+  .gucci-pagination__inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .gucci-pagination__summary {
+    text-align: left;
+  }
+
+  .gucci-pagination__pages {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .gucci-plp-actions {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .gucci-plp-toolbar-meta {
+    grid-column: 1 / -1;
+    order: 3;
+    padding-top: 0.35rem;
+  }
+
+  .gucci-plp-filter {
+    justify-self: start;
+  }
+
+  .gucci-plp-sort {
+    justify-self: end;
+  }
+}
+
+/* ==========================================================================
+   Griglia prodotti — override finale (PLP/ricerca = homepage)
+   Vince su theme-*.css (CCC) con regole stale #wrapper / :has / padding:0
+   ========================================================================== */
+
+@media (min-width: 576px) {
+  #wrapper #products .products.gucci-plp-grid,
+  #wrapper #products .products.gucci-product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 992px) {
+  #wrapper #products .products.gucci-plp-grid,
+  #wrapper #products .products.gucci-product-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+#wrapper #products .gucci-plp-grid .gucci-plp-cell .product-description,
+#wrapper #products .gucci-plp-grid .gucci-product-miniature .product-description,
+#wrapper #products .gucci-plp-grid .product-description {
+  padding: 0.65rem 0.5rem 0.85rem !important;
+  text-align: center !important;
+  background: #ffffff !important;
+}
+
+#wrapper #products .gucci-plp-grid .gucci-plp-cell .product-title,
+#wrapper #products .gucci-plp-grid .gucci-product-miniature .product-title,
+#wrapper #products .gucci-plp-grid .product-title {
+  margin: 0 0 0.15rem !important;
+  padding: 0 !important;
+}
+
+#wrapper #products .gucci-plp-grid .product-price-and-shipping {
+  margin: 0 !important;
+  padding: 0 !important;
 }

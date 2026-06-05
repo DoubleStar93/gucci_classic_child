@@ -1,4 +1,5 @@
-import { access } from "node:fs/promises";
+import { randomBytes } from "node:crypto";
+import { access, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import dotenv from "dotenv";
@@ -28,6 +29,14 @@ function getConfig() {
     secure: process.env.FTP_SECURE === "true",
     remotePath: process.env.FTP_REMOTE_PATH.trim().replace(/\/+$/, ""),
     cachePaths: parseCachePaths(),
+    /** stash = rinomina cache (veloce) | delete = svuota ricorsivamente (lento) */
+    cacheMode: (process.env.FTP_CACHE_MODE || "stash").trim().toLowerCase(),
+    /**
+     * stash = rinomina tema + upload completo (veloce, no orphan)
+     * sync  = solo file nuovi/modificati (più veloce, può lasciare orphan)
+     * delete = elimina ricorsivamente + upload completo (lento)
+     */
+    themeMode: (process.env.FTP_THEME_MODE || "stash").trim().toLowerCase(),
   };
 }
 
@@ -114,6 +123,52 @@ async function removeRemoteFolder(client, remotePath, label) {
   await client.cd(startDir);
 }
 
+function buildStashName(folderName) {
+  const stamp = Date.now().toString(36);
+  const rand = randomBytes(4).toString("hex");
+  return `_stash-${folderName}-${stamp}-${rand}`;
+}
+
+/**
+ * Stash istantaneo: rinomina la cartella remota e ne crea una vuota.
+ * Le cartelle _stash-* restano sul server (sporco accumulato, ok in sviluppo).
+ */
+async function stashRemoteFolder(client, remotePath, label) {
+  const { parent, name, absolute } = splitRemotePath(remotePath);
+  const startDir = await client.pwd();
+  const stashName = buildStashName(name);
+
+  try {
+    await client.cd(parent);
+  } catch {
+    console.log(`${label}: parent assente (${parent}), skip.`);
+    return;
+  }
+
+  const exists = (await listDir(client)).some((entry) => entry.name === name);
+  if (!exists) {
+    console.log(`${label}: ${absolute} assente, creo cartella vuota.`);
+    await client.cd(startDir);
+    await ensureRemoteDir(client, absolute);
+    return;
+  }
+
+  console.log(`${label}: stash ${absolute} → ${path.posix.join(parent, stashName)}`);
+  await client.rename(name, stashName);
+  await ensureRemoteDir(client, absolute);
+  console.log(`${label}: nuova cartella vuota ${absolute}`);
+  await client.cd(startDir);
+}
+
+async function clearRemoteCacheFolder(client, remotePath, label, mode) {
+  if (mode === "delete") {
+    await removeRemoteFolder(client, remotePath, label);
+    await ensureRemoteDir(client, remotePath);
+    return;
+  }
+  await stashRemoteFolder(client, remotePath, label);
+}
+
 async function ensureRemoteDir(client, remoteDir) {
   const parts = remoteDir.split("/").filter(Boolean);
   let current = "";
@@ -128,11 +183,79 @@ async function ensureRemoteDir(client, remoteDir) {
   }
 }
 
+async function walkLocalFiles(localDir) {
+  const files = [];
+
+  async function walk(currentDir, relativeDir = "") {
+    for (const entry of await readdir(currentDir, { withFileTypes: true })) {
+      const rel = relativeDir ? `${relativeDir}/${entry.name}` : entry.name;
+      const abs = path.join(currentDir, entry.name);
+      if (entry.isDirectory()) {
+        await walk(abs, rel);
+      } else if (entry.isFile()) {
+        files.push({ local: abs, rel });
+      }
+    }
+  }
+
+  await walk(localDir);
+  return files;
+}
+
+async function getRemoteFileSize(client, remoteFile) {
+  try {
+    return await client.size(remoteFile);
+  } catch {
+    return null;
+  }
+}
+
+/** Carica solo file nuovi o con dimensione diversa (veloce per piccole modifiche). */
+async function syncThemeTree(client, remotePath, localDir) {
+  const files = await walkLocalFiles(localDir);
+  let uploaded = 0;
+  let skipped = 0;
+
+  console.log(`Sync: ${files.length} file locali → ${remotePath}`);
+
+  for (const { local, rel } of files) {
+    const remoteFile = `${remotePath}/${rel}`;
+    const localSize = (await stat(local)).size;
+    const remoteSize = await getRemoteFileSize(client, remoteFile);
+
+    if (remoteSize === localSize) {
+      skipped += 1;
+      continue;
+    }
+
+    await ensureRemoteDir(client, path.posix.dirname(remoteFile));
+    await client.uploadFrom(local, remoteFile);
+    uploaded += 1;
+  }
+
+  console.log(`Sync completato: ${uploaded} caricati, ${skipped} invariati.`);
+}
+
 async function uploadThemeTree(client, remotePath, localDir) {
   await ensureRemoteDir(client, remotePath);
   console.log(`Upload: ${localDir} → ${remotePath}`);
   await client.uploadFromDir(localDir, remotePath);
   console.log("Upload completato.");
+}
+
+async function deployTheme(client, remotePath, localDir, mode) {
+  if (mode === "sync") {
+    await syncThemeTree(client, remotePath, localDir);
+    return;
+  }
+
+  if (mode === "delete") {
+    await removeRemoteFolder(client, remotePath, "Tema");
+  } else {
+    await stashRemoteFolder(client, remotePath, "Tema");
+  }
+
+  await uploadThemeTree(client, remotePath, localDir);
 }
 
 async function main() {
@@ -148,8 +271,8 @@ async function main() {
   client.ftp.verbose = process.env.FTP_VERBOSE === "true";
 
   console.log(`Deploy → ${config.host}`);
-  console.log(`  Tema:  ${config.remotePath}`);
-  console.log(`  Cache: ${config.cachePaths.join(", ")}`);
+  console.log(`  Tema:  ${config.remotePath} (${config.themeMode})`);
+  console.log(`  Cache: ${config.cachePaths.join(", ")} (${config.cacheMode})`);
 
   try {
     await client.access({
@@ -160,13 +283,12 @@ async function main() {
       secure: config.secure,
     });
 
-    await removeRemoteFolder(client, config.remotePath, "Tema");
-    await uploadThemeTree(client, config.remotePath, localThemeDir);
+    await deployTheme(client, config.remotePath, localThemeDir, config.themeMode);
 
     for (const cachePath of config.cachePaths) {
       const label = cachePath === "/cache" ? "Cache root (/cache)" : `Cache (${cachePath})`;
       try {
-        await removeRemoteFolder(client, cachePath, label);
+        await clearRemoteCacheFolder(client, cachePath, label, config.cacheMode);
       } catch (error) {
         console.warn(
           `${label}: ${error.message} — prova BO → Parametri avanzati → Prestazioni → Svuota cache.`

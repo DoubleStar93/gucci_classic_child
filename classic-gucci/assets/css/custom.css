@@ -213,6 +213,56 @@ a:focus {
    Reset stile Classic — niente ombre, bordi, bottoni colorati
    ========================================================================== */
 
+/* Nessun bordo/outline al click o focus — luxury flat */
+a,
+button,
+input,
+select,
+textarea,
+summary,
+[role="button"],
+[tabindex]:not([tabindex="-1"]) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus,
+a:focus-visible,
+a:active,
+button:focus,
+button:focus-visible,
+button:active,
+.btn:focus,
+.btn:focus-visible,
+.btn:active,
+.btn.focus,
+.btn.active.focus,
+input:focus,
+input:focus-visible,
+select:focus,
+select:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+summary:focus,
+summary:focus-visible,
+[role="button"]:focus,
+[role="button"]:focus-visible,
+[role="button"]:active,
+.gucci-footer-accordion-trigger:focus,
+.gucci-footer-accordion-trigger:focus-visible,
+.gucci-footer-accordion-trigger:active,
+.gucci-menu-link:focus,
+.gucci-menu-link:focus-visible,
+.gucci-menu-link:active,
+.gucci-header-col--icons a:focus,
+.gucci-header-col--icons a:focus-visible,
+.gucci-header-col--icons a:active,
+.gucci-header-col--icons button:focus,
+.gucci-header-col--icons button:focus-visible,
+.gucci-header-col--icons button:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 .card,
 .product-miniature,
 .thumbnail-container,
@@ -6849,7 +6899,7 @@ body#cms.sitemap .gucci-cms-page {
 
   .gucci-footer-accordions {
     display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0 3rem;
     align-items: start;
   }
@@ -6878,9 +6928,14 @@ body#cms.sitemap .gucci-cms-page {
 
 @media (min-width: 1200px) {
   .gucci-footer-accordions {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0 2rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 2.5rem;
   }
+}
+
+/* Note legali — link esterni Iubenda (stesso stile footer) */
+.gucci-footer .gucci-footer-col--legal .gucci-footer-legal-link {
+  display: inline-block;
 }
 
 body#authentication .gucci-auth-form .input-group,

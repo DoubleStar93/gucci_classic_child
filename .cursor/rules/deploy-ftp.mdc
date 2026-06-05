@@ -9,9 +9,8 @@ alwaysApply: true
 
 `npm run deploy` esegue **sempre** questi passaggi in ordine:
 
-1. **Elimina** l'intera cartella `/themes/classic-gucci/` sul server (`removeDir` dopo svuotamento — niente file orphan)
-2. **Ricarica** l'albero completo da `classic-gucci/` locale (`uploadFromDir` — una operazione di upload)
-3. **Elimina** le cartelle cache configurate in `.env` (default: `/var/cache` e `/cache`)
+1. **Tema** (`FTP_THEME_MODE`, default `stash`): rinomina `classic-gucci` in `_stash-classic-gucci-<random>` e ricarica l'albero completo (niente delete lento). `sync` = solo file modificati (più rapido, possibili orphan). `delete` = eliminazione ricorsiva (lento).
+2. **Cache** (`FTP_CACHE_MODE`, default `stash`): rinomina `cache` in `_stash-cache-<random>` e crea cartella vuota (istantaneo). `delete` = eliminazione ricorsiva (lento).
 
 ### Cartelle cache su PrestaShop (non confonderle)
 
@@ -33,6 +32,8 @@ alwaysApply: true
    - `FTP_PASSWORD=...`
    - `FTP_REMOTE_PATH=/barbaraalvisi.it/public_html/themes/classic-gucci` (root FTP SiteGround = `/`, non `public_html` diretto)
    - `FTP_CACHE_PATHS=/barbaraalvisi.it/public_html/var/cache` (su questo server non c’è `/cache` in root)
+   - `FTP_THEME_MODE=stash` (default) | `sync` (solo diff) | `delete` (lento)
+   - `FTP_CACHE_MODE=stash` (default) | `delete` (pulizia completa)
    - `STAGING_URL=https://barbaraalvisi.it/` (opzionale, messaggio a fine deploy)
 
 ## Comandi

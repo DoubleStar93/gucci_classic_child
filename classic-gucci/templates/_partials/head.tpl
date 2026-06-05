@@ -35,6 +35,10 @@
 {/block}
 
 {block name='head_icons' prepend}
+  <link rel="icon" type="image/png" sizes="512x512" href="{$urls.base_url}themes/classic-gucci/assets/img/brand/favicon/favicon-512.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="{$urls.base_url}themes/classic-gucci/assets/img/brand/favicon/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{$urls.base_url}themes/classic-gucci/assets/img/brand/favicon/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{$urls.base_url}themes/classic-gucci/assets/img/brand/favicon/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap">
@@ -42,5 +46,5 @@
 
 {* Dopo il bundle CCC — unica sorgente token/tipografia *}
 {block name='stylesheets' append}
-  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.0.8" type="text/css" media="all">
+  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.0.9" type="text/css" media="all">
 {/block}

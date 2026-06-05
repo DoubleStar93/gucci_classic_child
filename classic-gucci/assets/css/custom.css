@@ -347,14 +347,54 @@ body#index #header:not(.is-scrolled) .gucci-header-bar .container {
 
 body#index #header:not(.is-scrolled) .gucci-header-col--icons a,
 body#index #header:not(.is-scrolled) .gucci-header-col--icons .material-icons,
-body#index #header:not(.is-scrolled) .gucci-header-col--icons button,
-body#index #header:not(.is-scrolled) .gucci-logo-text-link,
-body#index #header:not(.is-scrolled) .logo {
+body#index #header:not(.is-scrolled) .gucci-header-col--icons button {
   color: #ffffff !important;
 }
 
-body#index #header:not(.is-scrolled) .logo img {
-  filter: brightness(0) invert(1);
+.gucci-logo-link {
+  display: inline-block;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.gucci-logo {
+  max-height: 28px;
+  width: auto;
+  display: block;
+}
+
+.gucci-logo-wrap .gucci-logo--light {
+  display: none !important;
+}
+
+.gucci-logo-wrap .gucci-logo--dark {
+  display: block !important;
+}
+
+body#index #header:not(.is-scrolled) .gucci-logo-wrap .gucci-logo--dark,
+body#product #header:not(.is-scrolled) .gucci-logo-wrap .gucci-logo--dark {
+  display: none !important;
+}
+
+body#index #header:not(.is-scrolled) .gucci-logo-wrap .gucci-logo--light,
+body#product #header:not(.is-scrolled) .gucci-logo-wrap .gucci-logo--light {
+  display: block !important;
+}
+
+body.gucci-menu-open #header .gucci-logo-wrap .gucci-logo--light,
+body.gucci-search-open #header .gucci-logo-wrap .gucci-logo--light,
+body.gucci-contact-open #header .gucci-logo-wrap .gucci-logo--light,
+body.gucci-account-open #header .gucci-logo-wrap .gucci-logo--light,
+body.gucci-filters-open #header .gucci-logo-wrap .gucci-logo--light {
+  display: none !important;
+}
+
+body.gucci-menu-open #header .gucci-logo-wrap .gucci-logo--dark,
+body.gucci-search-open #header .gucci-logo-wrap .gucci-logo--dark,
+body.gucci-contact-open #header .gucci-logo-wrap .gucci-logo--dark,
+body.gucci-account-open #header .gucci-logo-wrap .gucci-logo--dark,
+body.gucci-filters-open #header .gucci-logo-wrap .gucci-logo--dark {
+  display: block !important;
 }
 
 #header .header-banner,
@@ -433,10 +473,9 @@ section.carousel:not(.gucci-pdp-gallery) {
   color: #000000;
 }
 
-.gucci-header-col--logo .logo img {
+.gucci-header-col--logo .gucci-logo {
   max-height: 28px;
   width: auto;
-  display: block;
 }
 
 .gucci-header-col--logo h1 {
@@ -3237,7 +3276,7 @@ body#product #footer .container {
     letter-spacing: var(--gucci-ls-wide);
   }
 
-  .gucci-header-col--logo .logo img {
+  .gucci-header-col--logo .gucci-logo {
     max-height: 24px;
   }
 
@@ -3267,10 +3306,9 @@ body#product #footer .container {
     display: none;
   }
 
-  #_mobile_logo .logo img {
+  #_mobile_logo .gucci-logo {
     max-height: 24px;
     width: auto;
-    display: block;
   }
 
   #_mobile_cart,
@@ -4533,11 +4571,6 @@ body#index #header:not(.is-scrolled) .gucci-header-col--icons a:hover {
   color: #ffffff !important;
 }
 
-body#product #header:not(.is-scrolled) .gucci-header-col--logo .logo img,
-body#index #header:not(.is-scrolled) .gucci-header-col--logo .logo img {
-  filter: brightness(0) invert(1) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
-}
-
 body#product #header:not(.is-scrolled) .gucci-logo-text-link,
 body#index #header:not(.is-scrolled) .gucci-logo-text-link {
   color: #ffffff !important;
@@ -4590,14 +4623,6 @@ body.gucci-filters-open #header .gucci-header-col--icons a,
 body.gucci-filters-open #header .gucci-header-col--icons .material-icons {
   color: var(--gucci-color-black) !important;
   text-shadow: none;
-}
-
-body.gucci-menu-open #header .gucci-header-col--logo .logo img,
-body.gucci-search-open #header .gucci-header-col--logo .logo img,
-body.gucci-contact-open #header .gucci-header-col--logo .logo img,
-body.gucci-account-open #header .gucci-header-col--logo .logo img,
-body.gucci-filters-open #header .gucci-header-col--logo .logo img {
-  filter: none;
 }
 
 
@@ -5189,16 +5214,11 @@ body#my-account #footer {
    Gucci Premium Pass v1.2 — allineamento globale (contenuti BO dopo)
    ========================================================================== */
 
-/* Logo — monocromatico luxury (immagine BO o testo serif) */
-#header .logo img {
+/* Logo Barbara Alvisi — varianti dark/light in header.tpl */
+#header .gucci-logo {
   max-height: 1.625rem;
   width: auto;
   object-fit: contain;
-}
-
-#header.is-scrolled .logo img,
-body:not(#index):not(#product) #header .logo img {
-  filter: none;
 }
 
 .gucci-logo-text-link {
@@ -5993,9 +6013,14 @@ body#best-sales #header .gucci-header-link {
   color: #111111 !important;
 }
 
-body#category #header .gucci-header-col--logo .logo img,
-body#search #header .gucci-header-col--logo .logo img {
-  filter: none !important;
+body#category #header .gucci-logo--light,
+body#search #header .gucci-logo--light {
+  display: none !important;
+}
+
+body#category #header .gucci-logo--dark,
+body#search #header .gucci-logo--dark {
+  display: block !important;
 }
 
 #category #products .page-header,
@@ -6158,9 +6183,14 @@ body#contact #header .gucci-header-link {
   color: #111111 !important;
 }
 
-body#cart #header .gucci-header-col--logo .logo img,
-body#checkout #header .gucci-header-col--logo .logo img {
-  filter: none !important;
+body#cart #header .gucci-logo--light,
+body#checkout #header .gucci-logo--light {
+  display: none !important;
+}
+
+body#cart #header .gucci-logo--dark,
+body#checkout #header .gucci-logo--dark {
+  display: block !important;
 }
 
 /* Ricerca — overlay centrato, tipografia Gucci */

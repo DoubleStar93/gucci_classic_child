@@ -13,26 +13,50 @@
       <div class="gucci-header-inner">
         <div class="gucci-header-col gucci-header-col--logo">
           <div id="_desktop_logo">
-            {if $shop.logo_details}
-              {if $page.page_name == 'index'}
-                <h1 class="logo">
-                  {renderLogo}
-                </h1>
-              {else}
-                <div class="logo">
-                  {renderLogo}
-                </div>
-              {/if}
+            {if $page.page_name == 'index'}
+              <h1 class="logo gucci-logo-wrap">
+                <a href="{$urls.pages.index}" class="gucci-logo-link" aria-label="{$shop.name|escape:'html':'UTF-8'}">
+                  <img
+                    src="{$urls.base_url}themes/classic-gucci/assets/img/brand/logo-black.png"
+                    alt="{$shop.name|escape:'html':'UTF-8'}"
+                    class="gucci-logo gucci-logo--dark"
+                    width="260"
+                    height="26"
+                    loading="eager"
+                  >
+                  <img
+                    src="{$urls.base_url}themes/classic-gucci/assets/img/brand/logo-white.png"
+                    alt=""
+                    class="gucci-logo gucci-logo--light"
+                    width="260"
+                    height="26"
+                    loading="eager"
+                    aria-hidden="true"
+                  >
+                </a>
+              </h1>
             {else}
-              {if $page.page_name == 'index'}
-                <h1 class="logo gucci-logo-text">
-                  <a href="{$urls.pages.index}" class="gucci-logo-text-link">{$shop.name}</a>
-                </h1>
-              {else}
-                <div class="logo gucci-logo-text">
-                  <a href="{$urls.pages.index}" class="gucci-logo-text-link">{$shop.name}</a>
-                </div>
-              {/if}
+              <div class="logo gucci-logo-wrap">
+                <a href="{$urls.pages.index}" class="gucci-logo-link" aria-label="{$shop.name|escape:'html':'UTF-8'}">
+                  <img
+                    src="{$urls.base_url}themes/classic-gucci/assets/img/brand/logo-black.png"
+                    alt="{$shop.name|escape:'html':'UTF-8'}"
+                    class="gucci-logo gucci-logo--dark"
+                    width="260"
+                    height="26"
+                    loading="eager"
+                  >
+                  <img
+                    src="{$urls.base_url}themes/classic-gucci/assets/img/brand/logo-white.png"
+                    alt=""
+                    class="gucci-logo gucci-logo--light"
+                    width="260"
+                    height="26"
+                    loading="eager"
+                    aria-hidden="true"
+                  >
+                </a>
+              </div>
             {/if}
           </div>
           <div id="_mobile_logo" class="hidden-md-up"></div>

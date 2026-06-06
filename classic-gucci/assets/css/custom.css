@@ -4124,14 +4124,22 @@ body#registration .btn-primary {
   z-index: 10075;
   display: flex;
   flex-direction: column;
-  width: min(100%, 480px);
-  max-width: min(480px, 100%);
+  width: 100%;
+  max-width: 480px;
   height: 100vh;
   height: 100dvh;
   background: #ffffff;
   transition: transform var(--gucci-drawer-duration, 0.55s) var(--gucci-drawer-ease);
   overflow: hidden;
   padding: 0;
+}
+
+/* Classic listing.js aggiunge hidden-sm-down a #content-wrapper su mobile: non nascondere la pagina */
+body.gucci-filters-open #content-wrapper,
+body.gucci-filters-open .js-content-wrapper,
+body.gucci-filters-open #footer,
+body.gucci-filters-open .js-footer {
+  display: block !important;
 }
 
 .gucci-plp-drawer--left,

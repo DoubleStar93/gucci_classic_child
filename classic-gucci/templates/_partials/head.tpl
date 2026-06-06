@@ -47,7 +47,7 @@
 
 {* Dopo il bundle CCC — unica sorgente token/tipografia (custom.css) *}
 {block name='stylesheets' append}
-  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.4.8" type="text/css" media="all">
+  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.4.9" type="text/css" media="all">
 {/block}
 
 {* Iubenda — Cookie Solution (banner consenso) *}

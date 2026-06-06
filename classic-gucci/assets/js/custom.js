@@ -71,6 +71,20 @@ const initClassicGucciTheme = () => {
   const sortWrapper = document.getElementById('gucci-sort-drawer');
   const sortBackdrop = document.getElementById('gucci-sort-backdrop');
 
+  const portalOverlayToBody = (element) => {
+    if (element && element.parentElement !== document.body) {
+      document.body.appendChild(element);
+    }
+  };
+
+  [filtersWrapper, filtersBackdrop, sortWrapper, sortBackdrop].forEach(portalOverlayToBody);
+
+  const clearClassicMobileFilterLayout = () => {
+    document.querySelectorAll('#content-wrapper, .js-content-wrapper, #footer, .js-footer').forEach((node) => {
+      node.classList.remove('hidden-sm-down');
+    });
+  };
+
   const GUCCI_DRAWER_MS = 560;
   const GUCCI_BACKDROP_MS = 520;
   const GUCCI_OVERLAY_MS = 460;
@@ -269,6 +283,7 @@ const initClassicGucciTheme = () => {
 
     setDrawerToggleState(filterToggleBtn, false);
     document.body.classList.remove('gucci-filters-open');
+    clearClassicMobileFilterLayout();
     hideDrawer(filtersWrapper, filtersBackdrop);
   };
 
@@ -288,6 +303,7 @@ const initClassicGucciTheme = () => {
     }
 
     closeSort();
+    clearClassicMobileFilterLayout();
     filtersWrapper.setAttribute('aria-hidden', 'false');
     setDrawerToggleState(filterToggleBtn, true);
     document.body.classList.add('gucci-filters-open');
@@ -1165,6 +1181,7 @@ const initClassicGucciTheme = () => {
       const openTrigger = target.closest('#search_filter_toggler, [data-gucci-filters-open]');
       if (openTrigger) {
         event.preventDefault();
+        event.stopImmediatePropagation();
         if (filtersWrapper.classList.contains('is-open')) {
           closeFilters();
         } else {
@@ -1172,11 +1189,19 @@ const initClassicGucciTheme = () => {
         }
         return;
       }
+    }, true);
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) {
+        return;
+      }
 
       if (
         filtersWrapper.classList.contains('is-open')
         && !filtersWrapper.contains(target)
         && !target.closest('[data-gucci-filters-close]')
+        && !target.closest('#search_filter_toggler, [data-gucci-filters-open]')
       ) {
         closeFilters();
       }

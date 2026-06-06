@@ -4,7 +4,26 @@
 {extends file='parent:errors/not-found.tpl'}
 
 {block name="error_content"}
-  {if isset($errorContent) && $errorContent|trim}
+  {if isset($category)}
+    {if $language.iso_code == 'it'}
+      {assign var='gucciPlpEmptyTitle' value='Nessun articolo in questa categoria'}
+      {assign var='gucciPlpEmptyText' value='Resta in contatto: nuovi articoli verranno aggiunti a breve.'}
+    {else}
+      {l s='No products available yet' d='Shop.Theme.Catalog' assign='gucciPlpEmptyTitle'}
+      {l s='Stay tuned! More products will be shown here as they are added.' d='Shop.Theme.Catalog' assign='gucciPlpEmptyText'}
+    {/if}
+    {include file='catalog/_partials/gucci-plp-empty.tpl'}
+  {elseif isset($page) && $page.page_name == 'search'}
+    {assign var='gucciSearchQuery' value=$smarty.get.s|default:''|strip_tags}
+    {if $language.iso_code == 'it'}
+      {assign var='gucciPlpEmptyTitle' value='Nessun risultato per la tua ricerca'}
+      {assign var='gucciPlpEmptyText' value='Prova con altre parole chiave.'}
+    {else}
+      {l s='No matches were found for your search' d='Shop.Theme.Catalog' assign='gucciPlpEmptyTitle'}
+      {l s='Please try other keywords to describe what you are looking for.' d='Shop.Theme.Catalog' assign='gucciPlpEmptyText'}
+    {/if}
+    {include file='catalog/_partials/gucci-plp-empty.tpl'}
+  {elseif isset($errorContent) && $errorContent|trim}
     {$errorContent nofilter}
   {else}
   <h1 class="gucci-error-title">
@@ -22,6 +41,8 @@
 {/block}
 
 {block name='search'}
+  {if isset($category) || (isset($page) && $page.page_name == 'search')}
+  {else}
   <form class="gucci-error-search" method="get" action="{$link->getPageLink('search', true)|escape:'html':'UTF-8'}">
     <input type="hidden" name="controller" value="search">
     <label class="gucci-error-search__label" for="gucci-error-search-input">
@@ -41,6 +62,7 @@
       </button>
     </div>
   </form>
+  {/if}
 {/block}
 
 {block name='hook_not_found'}

@@ -1627,6 +1627,8 @@ const initClassicGucciTheme = () => {
     '.gucci-cart-cross-selling .products',
     '.gucci-order-confirmation-extra .products',
     '.gucci-not-found-products .products',
+    '.gucci-category-empty-products .products',
+    '.gucci-search-empty-products .products',
     '.gucci-cart-modal-cross-selling .products',
     '.cross-selling .products',
     '.gucci-product-grid-section .products',

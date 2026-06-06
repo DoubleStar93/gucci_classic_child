@@ -94,3 +94,39 @@
 {/block}
 
 {block name='product_list_bottom'}{/block}
+
+{block name='content'}
+  <section id="main">
+    <div id="products">
+      {block name='product_list_header'}{/block}
+
+      {block name='subcategory_list'}{/block}
+
+      {hook h="displayHeaderCategory"}
+
+      {if $listing.products|count}
+        {block name='product_list_top'}{/block}
+
+        {block name='product_list_active_filters'}{/block}
+
+        {block name='product_list'}{/block}
+
+        {block name='product_list_bottom'}{/block}
+      {else}
+        {if isset($category) || (isset($page) && $page.page_name == 'search')}
+          {include file='catalog/_partials/gucci-plp-empty-listing.tpl'}
+        {else}
+          {capture assign="errorContent"}
+            <h4>{l s='No products available yet' d='Shop.Theme.Catalog'}</h4>
+            <p>{l s='Stay tuned! More products will be shown here as they are added.' d='Shop.Theme.Catalog'}</p>
+          {/capture}
+          {include file='errors/not-found.tpl' errorContent=$errorContent}
+        {/if}
+      {/if}
+
+      {block name='product_list_footer'}{/block}
+
+      {hook h="displayFooterCategory"}
+    </div>
+  </section>
+{/block}

@@ -11,6 +11,7 @@
   /* Barbara Alvisi — palette (materials/palette.jpeg + LINEEE_GUIDA_ANTONIO) */
   --ba-panna: #f6f1e8;
   --ba-avorio: #faf6ef;
+  --ba-perla: #fff9f2;
   --ba-sabbia: #e4d9c8;
   --ba-taupe: #9a8b7a;
   --ba-cioccolato: #3d2b22;
@@ -50,7 +51,7 @@
   --gucci-color-gold: var(--ba-oro);
   --gucci-color-bronze: var(--ba-bronzo);
   --gucci-color-surface: var(--ba-panna);
-  --gucci-color-on-dark: var(--ba-avorio);
+  --gucci-color-on-dark: var(--ba-perla);
   --gucci-fw-light: 300;
   --gucci-fw-regular: 400;
   --gucci-fw-medium: 500;
@@ -211,11 +212,11 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* Elimina link blu PrestaShop / Bootstrap */
-a,
-a:link,
-a:visited,
-.page-content a,
-#content a,
+a:not(.gucci-btn),
+a:not(.gucci-btn):link,
+a:not(.gucci-btn):visited,
+.page-content a:not(.gucci-btn),
+#content a:not(.gucci-btn),
 .text-primary,
 .product-price,
 .price {
@@ -243,6 +244,31 @@ summary,
 [role="button"],
 [tabindex]:not([tabindex="-1"]) {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Cursor pointer su tutti i pulsanti interattivi */
+button:not(:disabled),
+.btn:not(:disabled):not(.disabled),
+input[type="button"]:not(:disabled),
+input[type="submit"]:not(:disabled),
+input[type="reset"]:not(:disabled),
+[role="button"]:not(:disabled):not([aria-disabled="true"]),
+.gucci-btn,
+a.gucci-btn,
+.form-control-submit,
+.add-to-cart,
+.quick-view {
+  cursor: pointer !important;
+}
+
+button:disabled,
+.btn:disabled,
+.btn.disabled,
+input[type="button"]:disabled,
+input[type="submit"]:disabled,
+input[type="reset"]:disabled,
+[role="button"][aria-disabled="true"] {
+  cursor: not-allowed !important;
 }
 
 a:focus,
@@ -3845,15 +3871,26 @@ body.gucci-account-open {
   border: 1px solid var(--gucci-color-black);
 }
 
-.gucci-btn--primary {
+.gucci-btn--primary,
+a.gucci-btn.gucci-btn--primary,
+a.gucci-btn.gucci-btn--primary:link,
+a.gucci-btn.gucci-btn--primary:visited,
+button.gucci-btn--primary {
   background: var(--gucci-color-accent);
   border-color: var(--gucci-color-accent);
-  color: var(--gucci-color-on-dark) !important;
+  color: var(--ba-perla) !important;
+  -webkit-text-fill-color: var(--ba-perla) !important;
 }
 
-.gucci-btn--primary:hover {
+.gucci-btn--primary:hover,
+a.gucci-btn.gucci-btn--primary:hover,
+a.gucci-btn.gucci-btn--primary:focus,
+button.gucci-btn--primary:hover {
   background: var(--gucci-color-accent-dark);
   border-color: var(--gucci-color-accent-dark);
+  color: var(--ba-perla) !important;
+  -webkit-text-fill-color: var(--ba-perla) !important;
+  opacity: 1 !important;
 }
 
 .gucci-btn--outline {
@@ -4488,13 +4525,13 @@ body#cart .gucci-cart-page--empty .gucci-cart-empty .gucci-btn {
   display: none !important;
 }
 
-a:not(.gucci-footer a):not(#footer .gucci-footer a),
+a:not(.gucci-footer a):not(#footer .gucci-footer a):not(.gucci-btn),
 .page-link,
 .text-primary {
   color: #111111 !important;
 }
 
-a:not(.gucci-footer a):not(#footer .gucci-footer a):hover {
+a:not(.gucci-footer a):not(#footer .gucci-footer a):not(.gucci-btn):hover {
   color: #666666 !important;
 }
 
@@ -5924,10 +5961,10 @@ body#cms.sitemap .page-content a:hover {
   padding: 0 !important;
 }
 
-/* PLP — filtri e ordinamento sobri */
+/* PLP — hero a filo sotto header (niente gap) */
 #category #products,
 #search #products {
-  padding-top: 0.5rem;
+  padding-top: 0 !important;
 }
 
 #category .products-sort-order .select-title,
@@ -6075,6 +6112,8 @@ body#supplier #products {
 .gucci-cart-cross-selling .products,
 .gucci-order-confirmation-extra .products,
 .gucci-not-found-products .products,
+.gucci-category-empty-products .products,
+.gucci-search-empty-products .products,
 .cross-selling .products,
 .gucci-product-grid-section .products,
 .product-accessories .products,
@@ -6108,6 +6147,8 @@ body#supplier #products {
   .gucci-cart-cross-selling .products,
   .gucci-order-confirmation-extra .products,
   .gucci-not-found-products .products,
+.gucci-category-empty-products .products,
+.gucci-search-empty-products .products,
   .cross-selling .products,
   .gucci-product-grid-section .products,
   .product-accessories .products,
@@ -6131,6 +6172,8 @@ body#supplier #products {
   .gucci-cart-cross-selling .products,
   .gucci-order-confirmation-extra .products,
   .gucci-not-found-products .products,
+.gucci-category-empty-products .products,
+.gucci-search-empty-products .products,
   .cross-selling .products,
   .gucci-product-grid-section .products,
   .product-accessories .products,
@@ -6162,7 +6205,9 @@ body#supplier #products {
   margin-bottom: 1rem;
 }
 
-.gucci-not-found-products {
+.gucci-not-found-products,
+.gucci-category-empty-products,
+.gucci-search-empty-products {
   margin-top: 3rem;
   padding-top: 2.5rem;
   border-top: 1px solid var(--gucci-color-border);
@@ -6342,8 +6387,8 @@ body#new-products #header,
 body#best-sales #header,
 body#manufacturer #header,
 body#supplier #header {
-  background: #ffffff !important;
-  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+  background: var(--ba-panna) !important;
+  border-bottom: none !important;
 }
 
 body#category #header .gucci-header-link,
@@ -7368,9 +7413,9 @@ body#registration .form-group {
 
 body#category .gucci-plp-header {
   text-align: left;
-  padding: 2rem 1.5rem 0.5rem;
-  max-width: 1440px;
-  margin: 0 auto;
+  padding: 0 !important;
+  max-width: none;
+  margin: 0;
 }
 
 body#category .gucci-plp-title {
@@ -8954,7 +8999,8 @@ body#cms .gucci-cms-page-inner {
 #index .gucci-home-modules > #module-ps_featuredproducts,
 body#cart .gucci-cart-cross-selling .gucci-home-section--products,
 body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--products,
-.gucci-not-found-products .gucci-home-section--products {
+.gucci-not-found-products .gucci-home-section--products,
+.gucci-category-empty-products .gucci-home-section--products {
   max-width: none !important;
   width: 100% !important;
   margin: 0 !important;
@@ -8990,7 +9036,13 @@ body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--pro
 body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--products .gucci-plp-grid > .gucci-product-miniature,
 .gucci-not-found-products .gucci-home-section--products .gucci-plp-grid > .js-product,
 .gucci-not-found-products .gucci-home-section--products .gucci-plp-grid > .gucci-plp-cell,
-.gucci-not-found-products .gucci-home-section--products .gucci-plp-grid > .gucci-product-miniature {
+.gucci-not-found-products .gucci-home-section--products .gucci-plp-grid > .gucci-product-miniature,
+.gucci-category-empty-products .gucci-home-section--products .gucci-plp-grid > .js-product,
+.gucci-category-empty-products .gucci-home-section--products .gucci-plp-grid > .gucci-plp-cell,
+.gucci-category-empty-products .gucci-home-section--products .gucci-plp-grid > .gucci-product-miniature,
+.gucci-search-empty-products .gucci-home-section--products .gucci-plp-grid > .js-product,
+.gucci-search-empty-products .gucci-home-section--products .gucci-plp-grid > .gucci-plp-cell,
+.gucci-search-empty-products .gucci-home-section--products .gucci-plp-grid > .gucci-product-miniature {
   width: 100% !important;
   max-width: none !important;
   margin: 0 !important;
@@ -9005,7 +9057,11 @@ body#cart .gucci-cart-cross-selling .gucci-home-section--products .thumbnail-con
 body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--products .product-miniature,
 body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--products .thumbnail-container,
 .gucci-not-found-products .gucci-home-section--products .product-miniature,
-.gucci-not-found-products .gucci-home-section--products .thumbnail-container {
+.gucci-not-found-products .gucci-home-section--products .thumbnail-container,
+.gucci-category-empty-products .gucci-home-section--products .product-miniature,
+.gucci-category-empty-products .gucci-home-section--products .thumbnail-container,
+.gucci-search-empty-products .gucci-home-section--products .product-miniature,
+.gucci-search-empty-products .gucci-home-section--products .thumbnail-container {
   width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
@@ -9014,7 +9070,9 @@ body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--pro
 #index .gucci-home-section--products .thumbnail-top,
 body#cart .gucci-cart-cross-selling .gucci-home-section--products .thumbnail-top,
 body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--products .thumbnail-top,
-.gucci-not-found-products .gucci-home-section--products .thumbnail-top {
+.gucci-not-found-products .gucci-home-section--products .thumbnail-top,
+.gucci-category-empty-products .gucci-home-section--products .thumbnail-top,
+.gucci-search-empty-products .gucci-home-section--products .thumbnail-top {
   position: relative !important;
   width: 100% !important;
   aspect-ratio: 1 / 1 !important;
@@ -9033,7 +9091,11 @@ body#cart .gucci-cart-cross-selling .gucci-home-section--products .product-thumb
 body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--products .product-thumbnail,
 body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--products .product-thumbnail picture,
 .gucci-not-found-products .gucci-home-section--products .product-thumbnail,
-.gucci-not-found-products .gucci-home-section--products .product-thumbnail picture {
+.gucci-not-found-products .gucci-home-section--products .product-thumbnail picture,
+.gucci-category-empty-products .gucci-home-section--products .product-thumbnail,
+.gucci-category-empty-products .gucci-home-section--products .product-thumbnail picture,
+.gucci-search-empty-products .gucci-home-section--products .product-thumbnail,
+.gucci-search-empty-products .gucci-home-section--products .product-thumbnail picture {
   display: block !important;
   width: 100% !important;
   height: 100% !important;
@@ -9044,7 +9106,9 @@ body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--pro
 #index .gucci-home-section--products .product-thumbnail img,
 body#cart .gucci-cart-cross-selling .gucci-home-section--products .product-thumbnail img,
 body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--products .product-thumbnail img,
-.gucci-not-found-products .gucci-home-section--products .product-thumbnail img {
+.gucci-not-found-products .gucci-home-section--products .product-thumbnail img,
+.gucci-category-empty-products .gucci-home-section--products .product-thumbnail img,
+.gucci-search-empty-products .gucci-home-section--products .product-thumbnail img {
   width: 100% !important;
   height: 100% !important;
   max-width: none !important;
@@ -9058,7 +9122,9 @@ body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--pro
 #index .gucci-home-section--products .product-description,
 body#cart .gucci-cart-cross-selling .gucci-home-section--products .product-description,
 body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--products .product-description,
-.gucci-not-found-products .gucci-home-section--products .product-description {
+.gucci-not-found-products .gucci-home-section--products .product-description,
+.gucci-category-empty-products .gucci-home-section--products .product-description,
+.gucci-search-empty-products .gucci-home-section--products .product-description {
   padding: 0.65rem 0.5rem 0.85rem !important;
   margin: 0 !important;
 }
@@ -9070,7 +9136,11 @@ body#cart .gucci-cart-cross-selling .gucci-home-section--products .product-title
 body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--products .gucci-product-miniature .product-title,
 body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--products .product-title,
 .gucci-not-found-products .gucci-home-section--products .gucci-product-miniature .product-title,
-.gucci-not-found-products .gucci-home-section--products .product-title {
+.gucci-not-found-products .gucci-home-section--products .product-title,
+.gucci-category-empty-products .gucci-home-section--products .gucci-product-miniature .product-title,
+.gucci-category-empty-products .gucci-home-section--products .product-title,
+.gucci-search-empty-products .gucci-home-section--products .gucci-product-miniature .product-title,
+.gucci-search-empty-products .gucci-home-section--products .product-title {
   margin: 0 0 0.15rem !important;
   padding: 0 !important;
 }
@@ -9078,7 +9148,9 @@ body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--pro
 #index .gucci-home-section--products .product-price-and-shipping,
 body#cart .gucci-cart-cross-selling .gucci-home-section--products .product-price-and-shipping,
 body#order-confirmation .gucci-order-confirmation-extra .gucci-home-section--products .product-price-and-shipping,
-.gucci-not-found-products .gucci-home-section--products .product-price-and-shipping {
+.gucci-not-found-products .gucci-home-section--products .product-price-and-shipping,
+.gucci-category-empty-products .gucci-home-section--products .product-price-and-shipping,
+.gucci-search-empty-products .gucci-home-section--products .product-price-and-shipping {
   margin: 0 !important;
   padding: 0 !important;
 }
@@ -9669,6 +9741,10 @@ body#best-sales #products {
   pointer-events: none;
 }
 
+.gucci-plp-hero.is-no-image {
+  background: linear-gradient(155deg, var(--ba-panna) 0%, var(--ba-sabbia) 48%, var(--ba-panna) 100%);
+}
+
 .gucci-plp-hero.is-no-image .gucci-plp-hero__img {
   display: none;
 }
@@ -9899,10 +9975,24 @@ body#search .gucci-plp-list {
   pointer-events: none;
 }
 
+.gucci-plp-empty-listing {
+  overflow: visible !important;
+  max-width: 100%;
+}
+
+.gucci-plp-empty {
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 3rem;
+  text-align: center;
+  overflow: visible !important;
+}
+
 .gucci-plp-empty-title {
   margin: 0 0 0.75rem;
   font-family: var(--gucci-font-serif, "Cormorant Garamond", serif) !important;
   font-size: clamp(1.25rem, 3vw, 1.75rem) !important;
+  font-weight: 400 !important;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-align: center;
@@ -9915,6 +10005,78 @@ body#search .gucci-plp-list {
   line-height: 1.8;
   text-align: center;
   color: #666666;
+}
+
+.gucci-plp-empty-actions {
+  margin: 2rem 0 0;
+}
+
+.gucci-plp-empty-actions .gucci-btn {
+  min-width: 14rem;
+  text-decoration: none !important;
+}
+
+body#category #products .page-content.page-not-found,
+body#search #products .page-content.page-not-found,
+body#category #products #content.page-not-found,
+body#search #products #content.page-not-found {
+  overflow: visible !important;
+  max-height: none !important;
+  max-width: none !important;
+}
+
+body#category #products .gucci-plp-empty,
+body#search #products .gucci-plp-empty,
+body#category #products .gucci-plp-empty-listing,
+body#search #products .gucci-plp-empty-listing {
+  background: transparent;
+}
+
+body#category .gucci-category-empty-products,
+body#search .gucci-search-empty-products {
+  width: 100%;
+  max-width: none;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+  overflow-x: clip;
+}
+
+body#category .gucci-category-empty-products .gucci-home-section--products,
+body#search .gucci-search-empty-products .gucci-home-section--products {
+  margin: 0;
+  padding: 0;
+  max-width: none !important;
+  width: 100% !important;
+}
+
+body#category .gucci-category-empty-products .gucci-product-grid-section__header {
+  display: none !important;
+}
+
+body#category .gucci-category-empty-products .gucci-home-section__header,
+body#search .gucci-search-empty-products .gucci-home-section__header,
+body#search .gucci-search-empty-products .gucci-product-grid-section__header {
+  text-align: center;
+  margin: 0 0 1.5rem;
+  padding: 2.5rem 1.5rem 0;
+}
+
+body#category .gucci-category-empty-products .gucci-home-section__title,
+body#search .gucci-search-empty-products .gucci-home-section__title,
+body#search .gucci-search-empty-products .gucci-product-grid-section__title {
+  margin: 0;
+  font-size: var(--gucci-text-sm);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+body#category #products:has(.gucci-plp-empty-listing) > [class*="displayFooterCategory"],
+body#category #products:has(.gucci-plp-empty-listing) > .featured-products,
+body#category #products:has(.gucci-plp-empty-listing) .gucci-category-empty-products,
+body#category #products:has(.gucci-plp-empty-listing) .gucci-product-grid-hook {
+  display: none !important;
 }
 
 body#category #left-column .block,
@@ -10169,4 +10331,18 @@ body#checkout .gucci-checkout-page,
 body#authentication .page-content,
 body#registration .page-content {
   background-color: var(--ba-panna) !important;
+}
+
+/* CTA bordeaux — testo perla (specificità > bundle CCC a:not(#footer …)) */
+#wrapper a.gucci-btn.gucci-btn--primary,
+#wrapper a.gucci-btn.gucci-btn--primary:link,
+#wrapper a.gucci-btn.gucci-btn--primary:visited,
+#wrapper a.gucci-btn.gucci-btn--primary:hover,
+#wrapper a.gucci-btn.gucci-btn--primary:focus,
+body a.gucci-btn.gucci-btn--primary,
+button.gucci-btn.gucci-btn--primary,
+button.gucci-btn.gucci-btn--primary:hover {
+  color: var(--ba-perla) !important;
+  -webkit-text-fill-color: var(--ba-perla) !important;
+  opacity: 1 !important;
 }

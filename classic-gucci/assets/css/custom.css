@@ -40,6 +40,8 @@
   /* Drawer menu + contatti — stessa scala tipografica */
   --gucci-drawer-text: 17px;
   --gucci-drawer-text-sm: 15px;
+  --gucci-nav-category-text: 1.25rem;
+  --gucci-nav-subcategory-text: 1.0625rem;
   --gucci-drawer-line-height: 1.5;
   --gucci-drawer-letter-spacing: 0.01em;
   --gucci-drawer-padding-x: 1.5rem;
@@ -978,6 +980,14 @@ body.gucci-menu-open {
 }
 
 /* Override regole globali #header (12px uppercase) nei drawer */
+#header .gucci-nav-drawer .gucci-top-menu[data-depth="0"] > .gucci-menu-item > .gucci-menu-row .gucci-menu-link {
+  font-size: var(--gucci-nav-category-text) !important;
+  font-weight: var(--gucci-fw-medium) !important;
+  letter-spacing: var(--gucci-drawer-letter-spacing) !important;
+  line-height: var(--gucci-drawer-line-height) !important;
+  text-transform: none !important;
+}
+
 #header .gucci-nav-drawer .gucci-menu-link,
 #header .gucci-nav-drawer .gucci-drawer-link,
 #header .gucci-contact-drawer .gucci-contact-channel-link,
@@ -993,7 +1003,7 @@ body.gucci-menu-open {
 
 #header .gucci-nav-drawer .gucci-sub-menu .gucci-menu-link,
 #header .gucci-contact-drawer .gucci-contact-channel-hours {
-  font-size: var(--gucci-drawer-text-sm) !important;
+  font-size: var(--gucci-nav-subcategory-text) !important;
   font-weight: var(--gucci-fw-regular) !important;
 }
 
@@ -1032,7 +1042,12 @@ body.gucci-menu-open {
 }
 
 .gucci-nav-drawer .gucci-top-menu[data-depth="0"] > .gucci-menu-item > .gucci-menu-row {
-  padding: 0.6875rem 0;
+  padding: 0.875rem 0;
+}
+
+.gucci-nav-drawer .gucci-top-menu[data-depth="0"] > .gucci-menu-item > .gucci-menu-row .gucci-menu-link {
+  font-size: var(--gucci-nav-category-text) !important;
+  font-weight: var(--gucci-fw-medium) !important;
 }
 
 .gucci-nav-drawer .gucci-menu-link {
@@ -1171,11 +1186,11 @@ body.gucci-menu-open {
 }
 
 .gucci-nav-drawer .gucci-sub-menu .gucci-menu-row {
-  padding: 0.5rem 0 0.5rem 0.75rem;
+  padding: 0.625rem 0 0.625rem 0.75rem;
 }
 
 .gucci-nav-drawer .gucci-sub-menu .gucci-menu-link {
-  font-size: var(--gucci-drawer-text-sm) !important;
+  font-size: var(--gucci-nav-subcategory-text) !important;
   font-weight: var(--gucci-fw-regular) !important;
   letter-spacing: var(--gucci-drawer-letter-spacing) !important;
   text-transform: none !important;

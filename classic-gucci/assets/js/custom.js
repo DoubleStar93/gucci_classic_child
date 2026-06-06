@@ -337,6 +337,25 @@ const initClassicGucciTheme = () => {
     });
   };
 
+  const expandAllMenuSubmenus = () => {
+    if (!drawer) {
+      return;
+    }
+
+    drawer.querySelectorAll('.gucci-menu-expand[data-target]').forEach((button) => {
+      const targetSelector = button.getAttribute('data-target');
+      const target = targetSelector ? drawer.querySelector(targetSelector) : null;
+
+      if (!target) {
+        return;
+      }
+
+      target.classList.remove('show', 'in', 'collapse');
+      setAccordionPanelOpen(target, true, { openClass: 'is-open', instant: true });
+      button.setAttribute('aria-expanded', 'true');
+    });
+  };
+
   const closeMenu = () => {
     if (!drawer || !menuToggle) {
       return;
@@ -370,9 +389,9 @@ const initClassicGucciTheme = () => {
     document.body.classList.add('gucci-menu-open');
     revealDrawer(drawer, menuBackdrop);
 
-    collapseAllMenuSubmenus();
+    expandAllMenuSubmenus();
     [0, 50, 200].forEach((delay) => {
-      window.setTimeout(collapseAllMenuSubmenus, delay);
+      window.setTimeout(expandAllMenuSubmenus, delay);
     });
     updateHeaderOnScroll();
   };
@@ -772,7 +791,7 @@ const initClassicGucciTheme = () => {
     };
 
     initGucciMenuAccordion();
-    collapseAllMenuSubmenus();
+    expandAllMenuSubmenus();
 
     if (menuToggle) {
       menuToggle.addEventListener(

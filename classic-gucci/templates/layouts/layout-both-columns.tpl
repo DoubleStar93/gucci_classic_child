@@ -93,7 +93,7 @@
       </script>
       {include file="_partials/javascript.tpl" javascript=$javascript.bottom}
       {* Dopo il bundle CCC — evita cache JS obsoleta (come custom.css in head.tpl) *}
-      <script src="{$urls.base_url}themes/classic-gucci/assets/js/custom.js?v=2.3.6" defer></script>
+      <script src="{$urls.base_url}themes/classic-gucci/assets/js/custom.js?v=2.3.7" defer></script>
     {/block}
 
     {block name='hook_before_body_closing_tag'}

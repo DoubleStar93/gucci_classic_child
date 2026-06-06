@@ -23,7 +23,7 @@
                 type="button"
                 class="gucci-menu-expand btn-unstyle"
                 data-target="#top_sub_menu_{$_expand_id}"
-                aria-expanded="false"
+                aria-expanded="{if $depth === 0}true{else}false{/if}"
                 aria-controls="top_sub_menu_{$_expand_id}"
                 aria-label="{if isset($language) && $language.iso_code == 'it'}Sottocategorie{else}{l s='Subcategories' d='Shop.Theme.Global'}{/if}"
               >
@@ -32,7 +32,7 @@
             {/if}
           </div>
           {if $node.children|count}
-            <div class="sub-menu js-sub-menu gucci-sub-menu" id="top_sub_menu_{$_expand_id}" hidden>
+            <div class="sub-menu js-sub-menu gucci-sub-menu{if $depth === 0} is-open{/if}" id="top_sub_menu_{$_expand_id}"{if $depth !== 0} hidden{/if}>
               {menu nodes=$node.children depth=$node.depth parent=$node}
             </div>
           {/if}

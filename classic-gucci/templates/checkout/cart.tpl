@@ -4,7 +4,8 @@
 {extends file='parent:checkout/cart.tpl'}
 
 {block name='content'}
-  <section id="main" class="gucci-cart-page{if $cart.products_count == 0} gucci-cart-page--empty{/if}">
+  <section id="main">
+    <div class="gucci-cart-page{if $cart.products_count == 0} gucci-cart-page--empty{/if}">
     <header class="gucci-cart-header">
       <h1 class="gucci-cart-title">
         {if $language.iso_code == 'it'}Carrello{else}{l s='Shopping Cart' d='Shop.Theme.Checkout'}{/if}
@@ -58,19 +59,14 @@
         {block name='hook_reassurance'}{/block}
       </div>
     </div>
+    </div>
 
     {block name='display_crossselling'}
-      {if $language.iso_code == 'it'}
-        {assign var='gucciCartSelectionTitle' value='Selezione'}
-      {else}
-        {l s='Popular Products' d='Shop.Theme.Catalog' assign='gucciCartSelectionTitle'}
-      {/if}
       {include
         file='_partials/gucci-featured-products-strip.tpl'
         wrapperClass='gucci-cart-cross-selling'
         hookName='displayCrossSellingShoppingCart'
         widgetHook='displayHome'
-        sectionTitle=$gucciCartSelectionTitle
       }
     {/block}
 

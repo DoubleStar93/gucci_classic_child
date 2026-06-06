@@ -98,14 +98,11 @@
 
     <div id="gucci-search-panel" class="gucci-search-panel" aria-hidden="true" hidden>
       <div class="gucci-search-panel-top">
-        <button
-          type="button"
-          class="gucci-search-panel-close btn-unstyle"
-          aria-label="{if $language.iso_code == 'it'}Chiudi{else}{l s='Close' d='Shop.Theme.Global'}{/if}"
-          data-gucci-search-close
-        >
-          {if $language.iso_code == 'it'}Chiudi{else}{l s='Close' d='Shop.Theme.Global'}{/if}
-        </button>
+        {include
+          file='_partials/gucci-panel-close.tpl'
+          extraClass='gucci-search-panel-close'
+          closeAttr='data-gucci-search-close'
+        }
       </div>
 
       <div class="gucci-search-panel-body">
@@ -144,14 +141,7 @@
 
     <div id="mobile_top_menu_wrapper" class="gucci-nav-drawer gucci-side-drawer" hidden aria-hidden="true">
       <div class="gucci-nav-drawer-header">
-        <button
-          type="button"
-          class="gucci-drawer-close-circle btn-unstyle"
-          aria-label="{if $language.iso_code == 'it'}Chiudi{else}{l s='Close' d='Shop.Theme.Global'}{/if}"
-          data-gucci-drawer-close
-        >
-          <i class="material-icons" aria-hidden="true">close</i>
-        </button>
+        {include file='_partials/gucci-panel-close.tpl' closeAttr='data-gucci-drawer-close'}
       </div>
 
       <div class="gucci-drawer-body gucci-nav-drawer-body">
@@ -182,14 +172,7 @@
         <h2 class="gucci-contact-drawer-title">
           {if $language.iso_code == 'it'}Contatti{else}{l s='Contact us' d='Shop.Theme.Global'}{/if}
         </h2>
-        <button
-          type="button"
-          class="gucci-contact-close-circle btn-unstyle"
-          aria-label="{if $language.iso_code == 'it'}Chiudi{else}{l s='Close' d='Shop.Theme.Global'}{/if}"
-          data-gucci-contact-close
-        >
-          <i class="material-icons" aria-hidden="true">close</i>
-        </button>
+        {include file='_partials/gucci-panel-close.tpl' closeAttr='data-gucci-contact-close'}
       </div>
 
       <div class="gucci-drawer-body gucci-contact-drawer-body">
@@ -204,14 +187,7 @@
         <h2 class="gucci-drawer-title">
           {if $language.iso_code == 'it'}Account{else}{l s='My account' d='Shop.Theme.Customeraccount'}{/if}
         </h2>
-        <button
-          type="button"
-          class="gucci-drawer-close btn-unstyle"
-          aria-label="{if $language.iso_code == 'it'}Chiudi{else}{l s='Close' d='Shop.Theme.Global'}{/if}"
-          data-gucci-account-close
-        >
-          <i class="material-icons" aria-hidden="true">close</i>
-        </button>
+        {include file='_partials/gucci-panel-close.tpl' closeAttr='data-gucci-account-close'}
       </div>
 
       <div class="gucci-drawer-body gucci-account-drawer-body">

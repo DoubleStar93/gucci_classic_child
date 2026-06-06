@@ -34,14 +34,11 @@
         <p id="gucci-filters-drawer-title" class="gucci-plp-drawer-title">
           {if $language.iso_code == 'it'}Filtra{else}{l s='Filter' d='Shop.Theme.Actions'}{/if}
         </p>
-        <button
-          type="button"
-          class="gucci-plp-drawer-close gucci-drawer-close-circle btn-unstyle"
-          data-gucci-filters-close
-          aria-label="{if $language.iso_code == 'it'}Chiudi{else}{l s='Close' d='Shop.Theme.Global'}{/if}"
-        >
-          <i class="material-icons" aria-hidden="true">close</i>
-        </button>
+        {include
+          file='_partials/gucci-panel-close.tpl'
+          extraClass='gucci-plp-drawer-close'
+          closeAttr='data-gucci-filters-close'
+        }
       </div>
       <div class="gucci-plp-drawer-body gucci-filters-drawer-body">
         {$listing.rendered_facets nofilter}
@@ -56,14 +53,11 @@
         <p id="gucci-sort-drawer-title" class="gucci-plp-drawer-title">
           {if $language.iso_code == 'it'}Ordina{else}{l s='Sort by' d='Shop.Theme.Global'}{/if}
         </p>
-        <button
-          type="button"
-          class="gucci-plp-drawer-close gucci-drawer-close-circle btn-unstyle"
-          data-gucci-sort-close
-          aria-label="{if $language.iso_code == 'it'}Chiudi{else}{l s='Close' d='Shop.Theme.Global'}{/if}"
-        >
-          <i class="material-icons" aria-hidden="true">close</i>
-        </button>
+        {include
+          file='_partials/gucci-panel-close.tpl'
+          extraClass='gucci-plp-drawer-close'
+          closeAttr='data-gucci-sort-close'
+        }
       </div>
       <div class="gucci-plp-drawer-body">
         <nav class="gucci-sort-list" aria-label="{if $language.iso_code == 'it'}Ordinamento{else}{l s='Sort by' d='Shop.Theme.Global'}{/if}">

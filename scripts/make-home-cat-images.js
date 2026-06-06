@@ -11,9 +11,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = path.join(__dirname, '..', 'classic-gucci', 'assets', 'img', 'home');
 
 const CATEGORIES = [
-  { id: 3, top: '#eceae6', bottom: '#d8d4cd' },
-  { id: 6, top: '#e8e6e2', bottom: '#cfcbc4' },
-  { id: 9, top: '#ebe8e3', bottom: '#d3cec6' },
+  { id: 3, top: '#f6f1e8', bottom: '#e4d9c8' },
+  { id: 6, top: '#efe8dc', bottom: '#d9cfc0' },
+  { id: 9, top: '#e8dfd2', bottom: '#c9b9a4' },
 ];
 
 const WIDTH = 800;

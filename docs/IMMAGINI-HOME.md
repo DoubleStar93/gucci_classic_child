@@ -2,6 +2,8 @@
 
 La sezione **Esplora** in homepage usa immagini opzionali per categoria.
 
+Per la struttura completa della homepage (hero, griglia, newsletter, BO): [HOMEPAGE-STRUCTURE.md](./HOMEPAGE-STRUCTURE.md).
+
 ## Percorso sul server
 
 ```

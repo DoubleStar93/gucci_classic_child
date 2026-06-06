@@ -74,9 +74,11 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="{if $language.iso_code == 'it'}Chiudi{else}{l s='Close' d='Shop.Theme.Global'}{/if}">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                  {include
+                    file='_partials/gucci-panel-close.tpl'
+                    extraClass='gucci-modal-close'
+                    closeAttr='data-dismiss="modal"'
+                  }
                   <h4 class="modal-title">
                     {if $language.iso_code == 'it'}Personalizzazione prodotto{else}{l s='Product customization' d='Shop.Theme.Catalog'}{/if}
                   </h4>

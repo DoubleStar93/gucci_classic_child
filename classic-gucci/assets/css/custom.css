@@ -335,8 +335,8 @@ summary:focus-visible,
 .btn-primary,
 .btn-secondary,
 .btn-touch,
-button[type="submit"],
-input[type="submit"] {
+button[type="submit"]:not(.gucci-footer-submit),
+input[type="submit"]:not(.gucci-footer-submit) {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1644,26 +1644,28 @@ body#search .gucci-price {
 .gucci-footer-newsletter-row,
 .gucci-footer .gucci-footer-newsletter-row,
 #blockEmailSubscription.gucci-footer-newsletter .gucci-footer-newsletter-row {
-  display: inline-flex !important;
-  align-items: stretch;
-  justify-content: center;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
   gap: 0 !important;
-  width: auto;
-  max-width: calc(100% - 2rem);
+  width: 100% !important;
+  max-width: min(28rem, 100%) !important;
   margin-left: auto;
   margin-right: auto;
   border: 1px solid var(--gucci-color-gold);
+  box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
 .gucci-footer-input,
 .gucci-footer .gucci-footer-input,
 #blockEmailSubscription.gucci-footer-newsletter .gucci-footer-input {
-  flex: 1 1 14rem !important;
-  width: 14rem;
-  min-width: 10rem;
-  max-width: 18rem;
-  height: 2.75rem;
-  min-height: 2.75rem;
+  flex: 1 1 0% !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 2.75rem !important;
+  height: auto !important;
   border: none !important;
   border-right: 1px solid rgba(255, 255, 255, 0.35) !important;
   border-bottom: none !important;
@@ -1672,8 +1674,8 @@ body#search .gucci-price {
   color: #ffffff;
   font-size: var(--gucci-text-sm);
   letter-spacing: 0.04em;
-  line-height: 2.75rem;
-  padding: 0 1rem;
+  line-height: 1.4;
+  padding: 0.65rem 1rem;
   box-sizing: border-box;
   -webkit-appearance: none;
   appearance: none;
@@ -1690,20 +1692,26 @@ body#search .gucci-price {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 2.75rem;
+  align-self: stretch;
   min-height: 2.75rem;
+  height: auto;
   font-size: var(--gucci-text-xs);
   font-weight: var(--gucci-fw-medium);
   letter-spacing: var(--gucci-ls-wide);
   text-transform: uppercase;
-  color: #ffffff !important;
-  background: rgba(255, 255, 255, 0.12) !important;
+  color: var(--gucci-color-gold) !important;
+  background: var(--ba-bordeaux) !important;
   border: none !important;
   border-bottom: none !important;
-  padding: 0 1.25rem;
+  padding: 0.65rem 1.25rem;
   white-space: nowrap;
   cursor: pointer;
   box-sizing: border-box;
+  line-height: 1.4;
+}
+
+.gucci-footer-submit:hover {
+  background: var(--ba-bordeaux-dark) !important;
 }
 
 .gucci-footer-links-wrap {
@@ -1835,8 +1843,10 @@ body#search .gucci-price {
 
 .gucci-footer-newsletter form {
   width: 100%;
+  max-width: min(28rem, 100%);
   display: flex;
   justify-content: center;
+  align-items: stretch;
 }
 
 .gucci-footer-newsletter-note {
@@ -3522,9 +3532,45 @@ body#product #footer .container {
 }
 
 @media (max-width: 767px) {
+  .gucci-header-bar {
+    padding: 0.85rem 0 0.7rem;
+  }
+
+  .gucci-header-bar .container {
+    padding-left: max(0.75rem, env(safe-area-inset-left, 0px));
+    padding-right: max(0.75rem, env(safe-area-inset-right, 0px));
+  }
+
+  /* Una riga: 2 icone sx | logo centro | 2 icone dx */
   .gucci-header-inner {
-    grid-template-columns: 1fr auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    min-height: 0;
+    width: 100%;
     column-gap: 0.5rem;
+  }
+
+  .gucci-header-col--logo {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-self: center;
+    width: auto;
+    max-width: min(11rem, 46vw);
+    text-align: center;
+    z-index: 1;
+    pointer-events: auto;
+  }
+
+  .gucci-header-col--logo h1,
+  .gucci-header-col--logo .logo {
+    display: flex;
+    justify-content: center;
+  }
+
+  .gucci-header-col--logo .gucci-logo-link {
+    display: inline-block;
+    max-width: 100%;
   }
 
   .gucci-header-link {
@@ -3533,18 +3579,35 @@ body#product #footer .container {
   }
 
   .gucci-header-col--logo .gucci-logo {
-    max-height: 24px;
+    max-height: 26px;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    object-fit: contain;
   }
 
   .gucci-header-col--icons {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
     flex-wrap: nowrap;
-    gap: 0.5rem;
+    gap: 0.85rem;
     flex-shrink: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .gucci-header-col--icons > * {
+    pointer-events: auto;
   }
 
   .gucci-header-col--logo .gucci-logo-text-link {
     font-size: 1rem;
-    max-width: 42vw;
+    max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -3556,6 +3619,7 @@ body#product #footer .container {
 
   .gucci-header-col--logo #_mobile_logo {
     display: block;
+    text-align: center;
   }
 
   .gucci-header-col--logo #_desktop_logo:empty {
@@ -3563,8 +3627,10 @@ body#product #footer .container {
   }
 
   #_mobile_logo .gucci-logo {
-    max-height: 24px;
+    max-height: 26px;
+    max-width: min(11rem, 46vw);
     width: auto;
+    margin: 0 auto;
   }
 
   #_mobile_cart,
@@ -3578,25 +3644,15 @@ body#product #footer .container {
     font-size: 22px !important;
   }
 
-  .gucci-header-col--icons #_mobile_cart {
-    order: 1;
-  }
-
-  .gucci-header-col--icons #_mobile_user_info {
-    order: 2;
-  }
-
+  /* Su mobile: solo le 4 icone (niente duplicati desktop da displayNav2) */
   .gucci-header-col--icons #_desktop_cart,
   .gucci-header-col--icons #_desktop_user_info {
-    order: 0;
+    display: none !important;
   }
 
+  /* Carrello + account a sinistra; cerca + menu a destra */
   .gucci-header-col--icons .gucci-search-toggle {
-    order: 3;
-  }
-
-  .gucci-header-col--icons .gucci-menu-toggle {
-    order: 4;
+    margin-left: auto;
   }
 
   #index .product-miniature {
@@ -4178,7 +4234,8 @@ body#registration .btn-primary {
 }
 
 /* Testi slide BO — overlay centrato sull'immagine, altezza slider invariata */
-#index .gucci-home-hero-slider .gucci-home-hero-caption {
+#index .gucci-home-hero-slider .gucci-home-hero-caption,
+body#category .gucci-home-hero-slider .gucci-home-hero-caption {
   position: absolute;
   inset: 0;
   z-index: 14;
@@ -4193,7 +4250,8 @@ body#registration .btn-primary {
   border: none;
 }
 
-#index .gucci-home-hero-slider .gucci-home-hero-caption::before {
+#index .gucci-home-hero-slider .gucci-home-hero-caption::before,
+body#category .gucci-home-hero-slider .gucci-home-hero-caption::before {
   content: "";
   position: absolute;
   left: 0;
@@ -4210,7 +4268,8 @@ body#registration .btn-primary {
   z-index: 0;
 }
 
-#index .gucci-home-hero-slider .gucci-home-hero-caption__inner {
+#index .gucci-home-hero-slider .gucci-home-hero-caption__inner,
+body#category .gucci-home-hero-slider .gucci-home-hero-caption__inner {
   position: relative;
   z-index: 1;
   width: min(100%, 42rem);
@@ -4224,7 +4283,8 @@ body#registration .btn-primary {
   pointer-events: auto;
 }
 
-#index .gucci-home-hero-slider .gucci-home-hero-caption__legend {
+#index .gucci-home-hero-slider .gucci-home-hero-caption__legend,
+body#category .gucci-home-hero-slider .gucci-home-hero-caption__legend {
   margin: 0 0 0.5rem;
   font-family: var(--gucci-font-sans);
   font-size: 0.8125rem;
@@ -4234,7 +4294,8 @@ body#registration .btn-primary {
   color: rgba(26, 20, 16, 0.68);
 }
 
-#index .gucci-home-hero-slider .gucci-home-hero-caption__title {
+#index .gucci-home-hero-slider .gucci-home-hero-caption__title,
+body#category .gucci-home-hero-slider .gucci-home-hero-caption__title {
   margin: 0 !important;
   font-family: var(--gucci-font-serif) !important;
   font-size: clamp(1.625rem, 3.4vw, 2.375rem) !important;
@@ -4245,7 +4306,8 @@ body#registration .btn-primary {
   color: var(--ba-cioccolato) !important;
 }
 
-#index .gucci-home-hero-slider .gucci-home-hero-caption__description {
+#index .gucci-home-hero-slider .gucci-home-hero-caption__description,
+body#category .gucci-home-hero-slider .gucci-home-hero-caption__description {
   max-width: 36rem;
   margin: 0.75rem auto 0;
   font-family: var(--gucci-font-sans);
@@ -4260,14 +4322,18 @@ body#registration .btn-primary {
 }
 
 #index .gucci-home-hero-slider .gucci-home-hero-caption__description,
-#index .gucci-home-hero-slider .gucci-home-hero-caption__description * {
+#index .gucci-home-hero-slider .gucci-home-hero-caption__description *,
+body#category .gucci-home-hero-slider .gucci-home-hero-caption__description,
+body#category .gucci-home-hero-slider .gucci-home-hero-caption__description * {
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
 }
 
 #index .gucci-home-hero-slider .gucci-home-hero-caption__description p,
-#index .gucci-home-hero-slider .gucci-home-hero-caption__description span {
+#index .gucci-home-hero-slider .gucci-home-hero-caption__description span,
+body#category .gucci-home-hero-slider .gucci-home-hero-caption__description p,
+body#category .gucci-home-hero-slider .gucci-home-hero-caption__description span {
   display: inline;
   margin: 0;
   padding: 0;
@@ -4275,7 +4341,8 @@ body#registration .btn-primary {
   color: inherit !important;
 }
 
-#index .gucci-home-hero-slider .gucci-home-hero-caption__description p + p::before {
+#index .gucci-home-hero-slider .gucci-home-hero-caption__description p + p::before,
+body#category .gucci-home-hero-slider .gucci-home-hero-caption__description p + p::before {
   content: " ";
 }
 
@@ -4302,30 +4369,35 @@ body#registration .btn-primary {
 }
 
 @media (min-width: 992px) {
-  #index .gucci-home-hero-slider .gucci-home-hero-caption__description {
+  #index .gucci-home-hero-slider .gucci-home-hero-caption__description,
+  body#category .gucci-home-hero-slider .gucci-home-hero-caption__description {
     -webkit-line-clamp: 3;
   }
 }
 
 @media (max-width: 767px) {
-  #index .gucci-home-hero-slider {
+  #index .gucci-home-hero-slider,
+  body#category .gucci-home-hero-slider {
     height: var(--gucci-pdp-gallery-height) !important;
     min-height: var(--gucci-pdp-gallery-height) !important;
     max-height: var(--gucci-pdp-gallery-height) !important;
     aspect-ratio: auto;
   }
 
-  #index .gucci-home-hero-slider .gucci-pdp-gallery-viewport {
+  #index .gucci-home-hero-slider .gucci-pdp-gallery-viewport,
+  body#category .gucci-home-hero-slider .gucci-pdp-gallery-viewport {
     min-height: 100%;
     height: 100%;
   }
 
-  #index .gucci-home-hero-slider .gucci-pdp-gallery-slide {
+  #index .gucci-home-hero-slider .gucci-pdp-gallery-slide,
+  body#category .gucci-home-hero-slider .gucci-pdp-gallery-slide {
     min-height: 100%;
     height: 100%;
   }
 
-  #index .gucci-home-hero-slider .gucci-pdp-gallery-image {
+  #index .gucci-home-hero-slider .gucci-pdp-gallery-image,
+  body#category .gucci-home-hero-slider .gucci-pdp-gallery-image {
     width: auto !important;
     height: auto !important;
     max-width: 100%;
@@ -4353,20 +4425,24 @@ body#registration .btn-primary {
     border: 1px solid var(--border-color);
   }
 
-  #index .gucci-home-hero-slider .gucci-home-hero-caption {
+  #index .gucci-home-hero-slider .gucci-home-hero-caption,
+  body#category .gucci-home-hero-slider .gucci-home-hero-caption {
     padding: 0 max(0.85rem, env(safe-area-inset-right, 0px)) max(0.85rem, env(safe-area-inset-bottom, 0px)) max(0.85rem, env(safe-area-inset-left, 0px));
   }
 
-  #index .gucci-home-hero-slider .gucci-home-hero-caption__inner {
+  #index .gucci-home-hero-slider .gucci-home-hero-caption__inner,
+  body#category .gucci-home-hero-slider .gucci-home-hero-caption__inner {
     width: min(100%, calc(100% - 3.5rem));
     padding: 1.15rem 1.25rem 1.25rem;
   }
 
-  #index .gucci-home-hero-slider .gucci-home-hero-caption__title {
+  #index .gucci-home-hero-slider .gucci-home-hero-caption__title,
+  body#category .gucci-home-hero-slider .gucci-home-hero-caption__title {
     font-size: clamp(1.45rem, 5.5vw, 1.875rem) !important;
   }
 
-  #index .gucci-home-hero-slider .gucci-home-hero-caption__description {
+  #index .gucci-home-hero-slider .gucci-home-hero-caption__description,
+  body#category .gucci-home-hero-slider .gucci-home-hero-caption__description {
     font-size: 0.875rem;
   }
 }
@@ -9905,26 +9981,34 @@ body#contact.gucci-body #main .gucci-contact-form input[type="file"]#file-upload
 /* Newsletter footer — input + pulsante attaccati, gruppo centrato */
 .gucci-footer #blockEmailSubscription.gucci-footer-newsletter form {
   display: flex !important;
-  justify-content: center !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
   width: 100% !important;
+  max-width: min(28rem, 100%) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .gucci-footer #blockEmailSubscription .gucci-footer-newsletter-row {
-  display: inline-flex !important;
+  display: flex !important;
   flex-wrap: nowrap !important;
+  align-items: stretch !important;
   gap: 0 !important;
-  width: auto !important;
-  max-width: calc(100% - 2rem) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
 .gucci-footer #blockEmailSubscription .gucci-footer-input {
-  flex: 1 1 14rem !important;
-  width: 14rem !important;
-  max-width: 18rem !important;
-  height: 2.75rem !important;
+  flex: 1 1 0% !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
   min-height: 2.75rem !important;
-  line-height: 2.75rem !important;
-  padding: 0 1rem !important;
+  height: auto !important;
+  line-height: 1.4 !important;
+  padding: 0.65rem 1rem !important;
 }
 
 .gucci-footer #blockEmailSubscription .gucci-footer-submit,
@@ -9933,10 +10017,16 @@ body#contact.gucci-body #main .gucci-contact-form input[type="file"]#file-upload
   top: auto !important;
   right: auto !important;
   flex: 0 0 auto !important;
+  align-self: stretch !important;
   margin: 0 !important;
-  height: 2.75rem !important;
   min-height: 2.75rem !important;
-  padding: 0 1.25rem !important;
+  height: auto !important;
+  line-height: 1.4 !important;
+  padding: 0.65rem 1.25rem !important;
+  background: var(--ba-bordeaux) !important;
+  border: none !important;
+  color: var(--gucci-color-gold) !important;
+  box-sizing: border-box !important;
 }
 
 .gucci-footer #blockEmailSubscription .gucci-footer-newsletter-feedback {
@@ -9957,7 +10047,7 @@ body#contact.gucci-body #main .gucci-contact-form input[type="file"]#file-upload
 /* Fallback se ps_emailsubscription.js inietta .alert dentro il form (AJAX legacy) */
 .gucci-footer #blockEmailSubscription.gucci-footer-newsletter form {
   flex-direction: column !important;
-  align-items: center !important;
+  align-items: stretch !important;
 }
 
 .gucci-footer #blockEmailSubscription form > .alert,
@@ -10010,91 +10100,7 @@ body#best-sales #products {
   padding: 2.5rem 1.5rem 0.5rem;
 }
 
-/* Hero categoria */
-.gucci-plp-hero {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  min-height: clamp(220px, 42vh, 420px);
-  overflow: hidden;
-  background: linear-gradient(145deg, #f4f4f4 0%, #ececec 50%, #f7f7f7 100%);
-}
-
-.gucci-plp-hero__media {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.gucci-plp-hero__img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1);
-}
-
-.gucci-plp-hero:not(.is-no-image)::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.45) 100%);
-  pointer-events: none;
-}
-
-.gucci-plp-hero.is-no-image {
-  background: linear-gradient(155deg, var(--ba-panna) 0%, var(--ba-sabbia) 48%, var(--ba-panna) 100%);
-}
-
-.gucci-plp-hero.is-no-image .gucci-plp-hero__img {
-  display: none;
-}
-
-.gucci-plp-hero__content {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 48rem;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem 2rem;
-  text-align: center;
-}
-
-.gucci-plp-hero__title {
-  margin: 0 !important;
-  font-family: var(--gucci-font-serif, "Cormorant Garamond", serif) !important;
-  font-size: clamp(1.75rem, 4.5vw, 2.75rem) !important;
-  font-weight: 400 !important;
-  letter-spacing: 0.1em !important;
-  text-transform: uppercase !important;
-  line-height: 1.15 !important;
-  color: #111111 !important;
-}
-
-.gucci-plp-hero:not(.is-no-image) .gucci-plp-hero__title {
-  color: #ffffff !important;
-  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
-}
-
-.gucci-plp-hero__description {
-  max-width: 36rem;
-  margin: 1rem auto 0;
-  font-size: 0.8125rem;
-  line-height: 1.85;
-  font-weight: 300;
-  color: #666666;
-}
-
-.gucci-plp-hero:not(.is-no-image) .gucci-plp-hero__description {
-  color: rgba(255, 255, 255, 0.92);
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
-}
-
-.gucci-plp-hero__description p {
-  margin: 0;
-}
+/* Hero categoria — vedi blocco «PLP categoria — hero editoriale» in fondo a custom.css */
 
 /* Sottocategorie */
 .gucci-plp-subcategories {
@@ -10390,14 +10396,6 @@ body#search #left-column #search_filters {
 }
 
 @media (min-width: 768px) {
-  .gucci-plp-hero {
-    min-height: clamp(280px, 48vh, 480px);
-  }
-
-  .gucci-plp-hero__content {
-    padding: 3rem 2rem 2.5rem;
-  }
-
   .gucci-plp-subcategories {
     padding: 1.5rem 2rem 0.35rem;
   }
@@ -10578,11 +10576,41 @@ body#supplier #wrapper #products .gucci-plp-grid .thumbnail-container {
   color: var(--gucci-color-gold) !important;
 }
 
+.gucci-footer,
+.gucci-footer-inner,
+#footer,
+.gucci-footer-newsletter-wrap {
+  max-width: 100% !important;
+  overflow-x: clip !important;
+  box-sizing: border-box !important;
+}
+
+.gucci-footer-accordions.row,
+.gucci-footer-columns.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.gucci-footer-col.col-12 {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  max-width: 100% !important;
+}
+
 .gucci-footer-submit,
 .gucci-footer #blockEmailSubscription .gucci-footer-submit,
 #blockEmailSubscription.gucci-footer-newsletter button[type="submit"] {
   color: var(--gucci-color-gold) !important;
+  background: var(--ba-bordeaux) !important;
+  border: none !important;
   letter-spacing: 0.12em;
+}
+
+.gucci-footer-submit:hover,
+.gucci-footer #blockEmailSubscription button[type="submit"]:hover {
+  background: var(--ba-bordeaux-dark) !important;
 }
 
 .gucci-home-section__title,
@@ -10673,14 +10701,17 @@ body#index .gucci-home-modules > .ps_imageslider {
   padding: 0 !important;
 }
 
-body#index .gucci-home-hero {
+body#index .gucci-home-hero,
+body#category .gucci-plp-hero.gucci-home-hero {
   width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
 }
 
 body#index .gucci-home-hero-slider.gucci-pdp-gallery,
-body#index .gucci-home-hero-slider {
+body#index .gucci-home-hero-slider,
+body#category .gucci-home-hero-slider.gucci-pdp-gallery,
+body#category .gucci-home-hero-slider {
   position: relative !important;
   width: 100% !important;
   height: var(--gucci-pdp-gallery-height) !important;
@@ -10691,12 +10722,14 @@ body#index .gucci-home-hero-slider {
   overflow: hidden !important;
 }
 
-body#index .gucci-home-hero-slider::before {
+body#index .gucci-home-hero-slider::before,
+body#category .gucci-home-hero-slider::before {
   display: none !important;
   content: none !important;
 }
 
-body#index .gucci-home-hero-slider .gucci-pdp-gallery-viewport {
+body#index .gucci-home-hero-slider .gucci-pdp-gallery-viewport,
+body#category .gucci-home-hero-slider .gucci-pdp-gallery-viewport {
   position: relative !important;
   width: 100% !important;
   height: 100% !important;
@@ -10706,7 +10739,8 @@ body#index .gucci-home-hero-slider .gucci-pdp-gallery-viewport {
   background: var(--ba-perla) !important;
 }
 
-body#index .gucci-home-hero-slider .gucci-pdp-gallery-slide {
+body#index .gucci-home-hero-slider .gucci-pdp-gallery-slide,
+body#category .gucci-home-hero-slider .gucci-pdp-gallery-slide {
   position: absolute !important;
   inset: 0 !important;
   display: flex !important;
@@ -10721,7 +10755,9 @@ body#index .gucci-home-hero-slider .gucci-pdp-gallery-slide {
 }
 
 body#index .gucci-home-hero-slider .gucci-pdp-gallery-image,
-body#index .gucci-home-hero-slider picture img {
+body#index .gucci-home-hero-slider picture img,
+body#category .gucci-home-hero-slider .gucci-pdp-gallery-image,
+body#category .gucci-home-hero-slider picture img {
   position: relative !important;
   inset: auto !important;
   display: block !important;
@@ -10736,4 +10772,37 @@ body#index .gucci-home-hero-slider picture img {
 body#index .gucci-home-hero-slider .gucci-pdp-gallery-controls {
   position: absolute !important;
   z-index: 25 !important;
+}
+
+/* ==========================================================================
+   PLP categoria — hero editoriale (= homepage slider)
+   ========================================================================== */
+
+body#category .gucci-plp-header {
+  padding: 0 !important;
+  margin: 0 !important;
+  text-align: center;
+}
+
+body#category .gucci-home-hero-slider.is-no-image {
+  background: linear-gradient(155deg, var(--ba-panna) 0%, var(--ba-sabbia) 48%, var(--ba-panna) 100%) !important;
+}
+
+body#category .gucci-home-hero-slider.is-no-image .gucci-pdp-gallery-slide {
+  background: transparent !important;
+}
+
+body#category .gucci-home-hero-slider .gucci-home-hero-caption__description,
+body#category .gucci-home-hero-slider .gucci-home-hero-caption__description * {
+  float: none !important;
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: inherit !important;
+  color: inherit !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-style: normal !important;
+  font-weight: inherit !important;
 }

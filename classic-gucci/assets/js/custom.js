@@ -901,36 +901,6 @@ const initClassicGucciTheme = () => {
     });
   };
 
-  const syncGucciHomeHeroRatio = (gallery) => {
-    if (!gallery?.classList.contains('gucci-home-hero-slider')) {
-      return;
-    }
-
-    const activeImg =
-      gallery.querySelector('.gucci-pdp-gallery-slide.is-active .gucci-pdp-gallery-image') ||
-      gallery.querySelector('.gucci-pdp-gallery-image');
-
-    if (!activeImg) {
-      return;
-    }
-
-    const applyRatio = () => {
-      const width = activeImg.naturalWidth;
-      const height = activeImg.naturalHeight;
-
-      if (width > 0 && height > 0) {
-        gallery.style.setProperty('--gucci-home-hero-ratio', `${width} / ${height}`);
-      }
-    };
-
-    if (activeImg.complete && activeImg.naturalWidth > 0) {
-      applyRatio();
-      return;
-    }
-
-    activeImg.addEventListener('load', applyRatio, { once: true });
-  };
-
   const initGucciGallery = (gallery) => {
     if (!gallery || gallery.dataset.gucciGalleryReady === '1') {
       return;
@@ -986,7 +956,6 @@ const initClassicGucciTheme = () => {
       }
 
       upgradeGucciGalleryResolution();
-      syncGucciHomeHeroRatio(gallery);
     };
 
     galleryThumbs.forEach((thumb) => {
@@ -1047,7 +1016,6 @@ const initClassicGucciTheme = () => {
 
     upgradeGucciGalleryResolution();
     document.querySelectorAll('.js-gucci-pdp-gallery[data-gucci-gallery-slider]').forEach(initGucciGallery);
-    document.querySelectorAll('.gucci-home-hero-slider:not([data-gucci-gallery-slider])').forEach(syncGucciHomeHeroRatio);
   };
 
   initGucciGalleries();
@@ -1057,7 +1025,6 @@ const initClassicGucciTheme = () => {
     window.clearTimeout(gucciGalleryResizeTimer);
     gucciGalleryResizeTimer = window.setTimeout(() => {
       upgradeGucciGalleryResolution();
-      document.querySelectorAll('.gucci-home-hero-slider').forEach(syncGucciHomeHeroRatio);
     }, 150);
   });
 

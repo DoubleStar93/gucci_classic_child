@@ -1,5 +1,5 @@
 {**
- * Classic Gucci — galleria PDP: hero 16:9 (<img> + object-fit) + miniature
+ * Classic Gucci — galleria PDP: altezza fissa, img contain su panna + miniature
  * @param string $galleryMode hero|rest|all (legacy: solo "all" usato in product.tpl)
  *}
 {if !isset($galleryMode)}{assign var='galleryMode' value='all'}{/if}

@@ -3,20 +3,11 @@
  *}
 {if $homeslider.slides}
   {assign var='gucciSlideTotal' value=$homeslider.slides|count}
-  {assign var='gucciHeroRatioW' value=1110}
-  {assign var='gucciHeroRatioH' value=340}
-  {foreach from=$homeslider.slides item=slide name=gucciRatioInit}
-    {if $smarty.foreach.gucciRatioInit.first && !empty($slide.sizes[0]) && !empty($slide.sizes[1])}
-      {assign var='gucciHeroRatioW' value=$slide.sizes[0]}
-      {assign var='gucciHeroRatioH' value=$slide.sizes[1]}
-    {/if}
-  {/foreach}
 
   <section class="gucci-home-hero">
     <div
       class="gucci-pdp-gallery gucci-home-hero-slider js-gucci-pdp-gallery"
       id="gucci-home-slider"
-      style="--gucci-home-hero-ratio: {$gucciHeroRatioW} / {$gucciHeroRatioH};"
       data-image-total="{$gucciSlideTotal}"
       {if $gucciSlideTotal > 1}data-gucci-gallery-slider{/if}
     >
@@ -52,6 +43,27 @@
               data-image-large-src="{$gucciSlideSrc}"
               data-image-full-src="{$gucciSlideSrc}"
             >
+
+            {if !empty($slide.legend) || !empty($slide.title) || !empty($slide.description) || !empty($slide.url)}
+              <figcaption class="gucci-home-hero-caption">
+                <div class="gucci-home-hero-caption__inner">
+                  {if !empty($slide.legend)}
+                    <p class="gucci-home-hero-caption__legend">{$slide.legend|escape:'htmlall':'UTF-8'}</p>
+                  {/if}
+                  {if !empty($slide.title)}
+                    <h2 class="gucci-home-hero-caption__title">{$slide.title|escape:'htmlall':'UTF-8'}</h2>
+                  {/if}
+                  {if !empty($slide.description)}
+                    <div class="gucci-home-hero-caption__description">{$slide.description nofilter}</div>
+                  {/if}
+                  {if !empty($slide.url)}
+                    <a class="gucci-home-hero-caption__cta" href="{$slide.url|escape:'htmlall':'UTF-8'}">
+                      {if $language.iso_code == 'it'}Scopri{else}{l s='Discover' d='Shop.Theme.Global'}{/if}
+                    </a>
+                  {/if}
+                </div>
+              </figcaption>
+            {/if}
           </figure>
         {/foreach}
       </div>

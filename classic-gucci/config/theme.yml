@@ -29,7 +29,7 @@ meta:
 
 assets:
   use_parent_assets: true
-  # custom.css / custom.js caricati solo da head.tpl + layout (dopo il bundle CCC)
+  # custom.css in head.tpl; JS in gucci-theme.js (layout, dopo bundle CCC — non usare custom.js)
 
 global_settings:
   hooks:
@@ -42,6 +42,7 @@ global_settings:
         - ps_customersignin
       displayHome:
         - ps_imageslider
+        - ps_customtext
         - ps_featuredproducts
         - ps_banner
       displayCrossSellingShoppingCart:

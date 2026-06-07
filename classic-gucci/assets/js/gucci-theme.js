@@ -1,7 +1,15 @@
 /**
  * Classic Gucci — drawer menu, ricerca, contatti, accordion
+ * Caricato manualmente dopo il bundle CCC (non usare assets/js/custom.js — PS lo include nel bundle).
  */
-const initClassicGucciTheme = () => {
+(() => {
+  if (window.__gucciClassicThemeLoaded) {
+    return;
+  }
+
+  window.__gucciClassicThemeLoaded = true;
+
+  const initClassicGucciTheme = () => {
   if (document.documentElement.dataset.gucciThemeInit === '1') {
     return;
   }
@@ -1301,6 +1309,333 @@ const initClassicGucciTheme = () => {
       .on('hide.bs.modal hidden.bs.modal', () => syncCartModalBackdrop(false));
   }
 
+  const gucciReplaceBlockcartFromResponse = (resp) => {
+    if (!resp) {
+      return;
+    }
+
+    if (resp.preview) {
+      const cartRoot = document.querySelector('#_desktop_cart');
+      if (cartRoot) {
+        const previewWrap = document.createElement('div');
+        previewWrap.innerHTML = resp.preview.trim();
+        const newCartRoot = previewWrap.querySelector('#_desktop_cart') || previewWrap.firstElementChild;
+        if (newCartRoot) {
+          cartRoot.replaceWith(newCartRoot);
+        }
+      }
+    }
+
+    if (resp.modal) {
+      const currentModal = document.getElementById('blockcart-modal');
+      const modalWrap = document.createElement('div');
+      modalWrap.innerHTML = resp.modal.trim();
+      const newModal = modalWrap.querySelector('#blockcart-modal');
+
+      if (currentModal && newModal) {
+        const wasOpen =
+          currentModal.classList.contains('show')
+          || currentModal.classList.contains('in')
+          || document.body.classList.contains('gucci-cart-modal-open');
+
+        currentModal.replaceWith(newModal);
+        gucciAfterBlockcartModalMounted();
+
+        if (wasOpen && typeof window.jQuery !== 'undefined') {
+          window.jQuery(newModal).modal('show');
+        }
+
+        if (!newModal.querySelector('.gucci-cart-modal-product') && typeof window.jQuery !== 'undefined') {
+          window.jQuery(newModal).modal('hide');
+        }
+      }
+    }
+  };
+
+  const gucciSyncBlockcartPreview = () => {
+    const refreshUrl = document.querySelector('.blockcart')?.dataset?.refreshUrl;
+    if (!refreshUrl || typeof window.jQuery === 'undefined') {
+      return Promise.resolve(null);
+    }
+
+    return window.jQuery.post(refreshUrl, {}, null, 'json').then((refreshResp) => {
+      if (refreshResp?.preview) {
+        gucciReplaceBlockcartFromResponse({ preview: refreshResp.preview });
+      }
+
+      return refreshResp;
+    });
+  };
+
+  const gucciApplyCartUpdateToModal = (resp) => {
+    const modal = document.getElementById('blockcart-modal');
+    if (!modal || !resp) {
+      return;
+    }
+
+    const cart = resp.cart;
+    const products = cart?.products || [];
+    const isItalian =
+      document.documentElement.lang?.toLowerCase().startsWith('it')
+      || document.body.classList.contains('lang-it');
+
+    if (products.length) {
+      modal.querySelectorAll('.gucci-cart-modal-product').forEach((line) => {
+        const product = products.find((item) => {
+          const productId = String(item.id_product ?? item.id ?? '');
+          const attributeId = String(item.id_product_attribute ?? 0);
+          return productId === line.dataset.idProduct && attributeId === line.dataset.idProductAttribute;
+        });
+
+        if (!product) {
+          line.remove();
+          return;
+        }
+
+        const qty = product.quantity ?? product.cart_quantity ?? resp.quantity ?? 1;
+        const input = line.querySelector('.gucci-cart-modal-qty-input');
+        if (input) {
+          input.value = qty;
+          input.defaultValue = String(qty);
+        }
+      });
+    } else if (
+      typeof resp.id_product !== 'undefined'
+      && typeof resp.quantity !== 'undefined'
+    ) {
+      const line = modal.querySelector(
+        `.gucci-cart-modal-product[data-id-product="${resp.id_product}"][data-id-product-attribute="${resp.id_product_attribute || 0}"]`
+      );
+
+      if (resp.quantity <= 0) {
+        line?.remove();
+      } else {
+        const input = line?.querySelector('.gucci-cart-modal-qty-input');
+        if (input) {
+          input.value = resp.quantity;
+          input.defaultValue = String(resp.quantity);
+        }
+      }
+    }
+
+    if (cart) {
+      const count = cart.products_count ?? products.length;
+      const summary = modal.querySelector('.gucci-cart-modal-summary p');
+
+      if (summary) {
+        summary.textContent = isItalian
+          ? (count === 1 ? '1 articolo nel carrello' : `${count} articoli nel carrello`)
+          : (count === 1 ? '1 item in your cart' : `${count} items in your cart`);
+      }
+
+      const subtotal = modal.querySelector('.gucci-cart-modal-subtotal-value');
+      const subtotalValue = cart.subtotals?.products?.value;
+
+      if (subtotal && subtotalValue) {
+        subtotal.textContent = subtotalValue;
+      }
+    }
+
+    if (!modal.querySelector('.gucci-cart-modal-product') && typeof window.jQuery !== 'undefined') {
+      window.jQuery(modal).modal('hide');
+    }
+  };
+
+  const gucciRequestCartUpdate = (url, extraData = {}) => {
+    if (!url || typeof window.jQuery === 'undefined') {
+      return Promise.resolve(null);
+    }
+
+    return window.jQuery
+      .post(url, Object.assign({ ajax: 1, action: 'update' }, extraData), null, 'json')
+      .then((resp) => {
+        if (!resp || resp.hasError) {
+          return resp;
+        }
+
+        if (document.body.id === 'cart') {
+          window.location.reload();
+          return resp;
+        }
+
+        if (resp.modal) {
+          gucciReplaceBlockcartFromResponse(resp);
+        } else {
+          gucciApplyCartUpdateToModal(resp);
+        }
+
+        return gucciSyncBlockcartPreview().then(() => {
+          if (typeof prestashop !== 'undefined') {
+            if (resp.cart) {
+              prestashop.cart = resp.cart;
+            }
+
+            if (prestashop.emit) {
+              prestashop.emit('updateCart', {
+                reason: { linkAction: extraData.linkAction || 'update' },
+                resp,
+              });
+            }
+          }
+
+          return resp;
+        });
+      });
+  };
+
+  const gucciIsCartControlsTarget = (element) => {
+    if (!(element instanceof Element)) {
+      return false;
+    }
+
+    return Boolean(
+      element.closest('#blockcart-modal')
+      || element.closest('body#cart .gucci-cart-page')
+      || element.closest('body#cart .gucci-cart-overview')
+    );
+  };
+
+  const gucciInitCartControlsDelegation = () => {
+    if (document.documentElement.dataset.gucciCartControlsReady === '1') {
+      return;
+    }
+
+    document.documentElement.dataset.gucciCartControlsReady = '1';
+
+    document.addEventListener('click', (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target || !gucciIsCartControlsTarget(target)) {
+        return;
+      }
+
+      const qtyBtn = target.closest('[data-qty-action]');
+      if (qtyBtn) {
+        event.preventDefault();
+        event.stopPropagation();
+        const qtyWrap = qtyBtn.closest('[data-up-url][data-down-url]');
+        if (!qtyWrap) {
+          return;
+        }
+
+        const url = qtyBtn.dataset.qtyAction === 'up' ? qtyWrap.dataset.upUrl : qtyWrap.dataset.downUrl;
+        if (url) {
+          gucciRequestCartUpdate(url, { linkAction: 'update' });
+        }
+        return;
+      }
+
+      const removeLink = target.closest('.remove-from-cart');
+      if (removeLink) {
+        event.preventDefault();
+        event.stopPropagation();
+        gucciRequestCartUpdate(removeLink.href, { linkAction: 'delete-from-cart' });
+      }
+    });
+
+    document.addEventListener('change', (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target || !gucciIsCartControlsTarget(target)) {
+        return;
+      }
+
+      const qtyInput = target.closest('.gucci-cart-qty-input, .gucci-cart-modal-qty-input');
+      if (!qtyInput || !qtyInput.dataset.updateUrl) {
+        return;
+      }
+
+      const qty = parseInt(qtyInput.value, 10);
+      if (Number.isNaN(qty) || qty < 1) {
+        qtyInput.value = qtyInput.defaultValue;
+        return;
+      }
+
+      gucciRequestCartUpdate(qtyInput.dataset.updateUrl, {
+        linkAction: 'update',
+        qty,
+      });
+    });
+  };
+
+  const gucciUnwrapCartTouchspin = () => {
+    document.querySelectorAll('body#cart .bootstrap-touchspin').forEach((wrap) => {
+      const input = wrap.querySelector('.js-cart-line-product-quantity');
+      if (input && wrap.parentNode) {
+        wrap.parentNode.replaceChild(input, wrap);
+      }
+    });
+  };
+
+  const gucciBindCartModal = (modal) => {
+    if (!modal || typeof window.jQuery === 'undefined') {
+      return;
+    }
+
+    window.jQuery(modal)
+      .off('show.bs.modal.gucci shown.bs.modal.gucci hide.bs.modal.gucci hidden.bs.modal.gucci')
+      .on('show.bs.modal.gucci shown.bs.modal.gucci', () => syncCartModalBackdrop(true))
+      .on('hide.bs.modal.gucci hidden.bs.modal.gucci', () => syncCartModalBackdrop(false));
+  };
+
+  const gucciAfterBlockcartModalMounted = () => {
+    const modal = document.getElementById('blockcart-modal');
+    if (!modal) {
+      return;
+    }
+
+    gucciBindCartModal(modal);
+
+    if (
+      modal.classList.contains('show')
+      || modal.classList.contains('in')
+      || document.body.classList.contains('modal-open')
+      || document.body.classList.contains('gucci-cart-modal-open')
+    ) {
+      syncCartModalBackdrop(true);
+    }
+  };
+
+  const gucciHookBlockcartShowModal = () => {
+    if (typeof prestashop === 'undefined' || !prestashop.blockcart || prestashop.blockcart.__gucciModalHooked) {
+      return;
+    }
+
+    const originalShowModal = prestashop.blockcart.showModal;
+    if (typeof originalShowModal !== 'function') {
+      return;
+    }
+
+    prestashop.blockcart.showModal = (modalHtml) => {
+      originalShowModal(modalHtml);
+      gucciAfterBlockcartModalMounted();
+    };
+
+    prestashop.blockcart.__gucciModalHooked = true;
+  };
+
+  gucciInitCartControlsDelegation();
+  gucciHookBlockcartShowModal();
+  gucciAfterBlockcartModalMounted();
+
+  if (document.body.id === 'cart') {
+    gucciUnwrapCartTouchspin();
+  }
+
+  if (typeof prestashop !== 'undefined' && prestashop.on) {
+    prestashop.on('updateCart', (event) => {
+      if (!event?.resp || document.body.id === 'cart') {
+        return;
+      }
+
+      if (event.resp.modal) {
+        gucciReplaceBlockcartFromResponse(event.resp);
+      } else if (event.resp.cart || typeof event.resp.quantity !== 'undefined') {
+        gucciApplyCartUpdateToModal(event.resp);
+      }
+
+      requestAnimationFrame(gucciAfterBlockcartModalMounted);
+    });
+  }
+
   document.querySelectorAll(
     '.wishlist-add-to, .wishlist-delete, .wishlist-create, .wishlist-login, .wishlist-toast, [class*="wishlist-modal"]'
   ).forEach((node) => {
@@ -1751,8 +2086,9 @@ const initClassicGucciTheme = () => {
   initGucciFooterNewsletter();
 };
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initClassicGucciTheme);
-} else {
-  initClassicGucciTheme();
-}
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initClassicGucciTheme);
+  } else {
+    initClassicGucciTheme();
+  }
+})();

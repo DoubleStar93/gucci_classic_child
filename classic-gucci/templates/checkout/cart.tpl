@@ -30,11 +30,7 @@
           {/block}
         </div>
 
-        {block name='continue_shopping'}
-          <a class="gucci-cart-continue" href="{$urls.pages.index}">
-            {if $language.iso_code == 'it'}Continua lo shopping{else}{l s='Continue shopping' d='Shop.Theme.Actions'}{/if}
-          </a>
-        {/block}
+        {block name='continue_shopping'}{/block}
 
         {block name='hook_shopping_cart_footer'}{/block}
       </div>

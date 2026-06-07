@@ -8,6 +8,7 @@ import { Client } from "basic-ftp";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..");
 const localThemeDir = path.join(repoRoot, "classic-gucci");
+const localOverrideDir = path.join(repoRoot, "override");
 
 dotenv.config({ path: path.join(repoRoot, ".env") });
 
@@ -258,6 +259,28 @@ async function deployTheme(client, remotePath, localDir, mode) {
   await uploadThemeTree(client, remotePath, localDir);
 }
 
+function getShopRootFromThemePath(themeRemotePath) {
+  return themeRemotePath.replace(/\/themes\/classic-gucci\/?$/i, "");
+}
+
+async function deployOverride(client, themeRemotePath) {
+  const shopRoot = getShopRootFromThemePath(themeRemotePath);
+  const remoteOverridePath = `${shopRoot}/override`;
+
+  try {
+    await access(localOverrideDir);
+  } catch {
+    return;
+  }
+
+  console.log(`Override: ${remoteOverridePath} (sync)`);
+  await syncThemeTree(client, remoteOverridePath, localOverrideDir);
+}
+
+function getModuleRemotePath(themeRemotePath) {
+  return getShopRootFromThemePath(themeRemotePath) + "/modules/gucci_homecategories";
+}
+
 async function main() {
   const config = getConfig();
 
@@ -284,6 +307,7 @@ async function main() {
     });
 
     await deployTheme(client, config.remotePath, localThemeDir, config.themeMode);
+    await deployOverride(client, config.remotePath);
 
     for (const cachePath of config.cachePaths) {
       const label = cachePath === "/cache" ? "Cache root (/cache)" : `Cache (${cachePath})`;

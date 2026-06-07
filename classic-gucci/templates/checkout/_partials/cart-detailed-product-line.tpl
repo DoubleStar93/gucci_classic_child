@@ -1,51 +1,54 @@
 {**
- * Classic Gucci — riga prodotto nel carrello (IT + rimuovi icona)
+ * Classic Gucci — riga prodotto nel carrello
  *}
-<div class="product-line-grid">
-  <div class="product-line-grid-left col-md-3 col-xs-4">
-    <span class="product-image media-middle">
-      {if $product.default_image}
-        <picture>
-          {if !empty($product.default_image.bySize.cart_default.sources.avif)}<source srcset="{$product.default_image.bySize.cart_default.sources.avif}" type="image/avif">{/if}
-          {if !empty($product.default_image.bySize.cart_default.sources.webp)}<source srcset="{$product.default_image.bySize.cart_default.sources.webp}" type="image/webp">{/if}
-          <img src="{$product.default_image.bySize.cart_default.url}" alt="{$product.name|escape:'quotes'}" loading="lazy">
-        </picture>
-      {else}
-        <picture>
-          {if !empty($urls.no_picture_image.bySize.cart_default.sources.avif)}<source srcset="{$urls.no_picture_image.bySize.cart_default.sources.avif}" type="image/avif">{/if}
-          {if !empty($urls.no_picture_image.bySize.cart_default.sources.webp)}<source srcset="{$urls.no_picture_image.bySize.cart_default.sources.webp}" type="image/webp">{/if}
-          <img src="{$urls.no_picture_image.bySize.cart_default.url}" loading="lazy" alt="{$product.name|escape:'quotes'}">
-        </picture>
-      {/if}
-    </span>
-  </div>
+<article
+  class="gucci-cart-line cart-item product-line-grid"
+  data-id-product="{$product.id_product|intval}"
+  data-id-product-attribute="{$product.id_product_attribute|intval}"
+  data-id-customization="{$product.id_customization|default:0|intval}"
+>
+  <a href="{$product.url|escape:'html':'UTF-8'}" class="gucci-cart-line__media">
+    {if $product.default_image}
+      <picture>
+        {if !empty($product.default_image.bySize.cart_default.sources.avif)}<source srcset="{$product.default_image.bySize.cart_default.sources.avif}" type="image/avif">{/if}
+        {if !empty($product.default_image.bySize.cart_default.sources.webp)}<source srcset="{$product.default_image.bySize.cart_default.sources.webp}" type="image/webp">{/if}
+        <img src="{$product.default_image.bySize.cart_default.url}" alt="{$product.name|escape:'htmlall':'UTF-8'}" loading="lazy">
+      </picture>
+    {else}
+      <picture>
+        {if !empty($urls.no_picture_image.bySize.cart_default.sources.avif)}<source srcset="{$urls.no_picture_image.bySize.cart_default.sources.avif}" type="image/avif">{/if}
+        {if !empty($urls.no_picture_image.bySize.cart_default.sources.webp)}<source srcset="{$urls.no_picture_image.bySize.cart_default.sources.webp}" type="image/webp">{/if}
+        <img src="{$urls.no_picture_image.bySize.cart_default.url}" alt="{$product.name|escape:'htmlall':'UTF-8'}" loading="lazy">
+      </picture>
+    {/if}
+  </a>
 
-  <div class="product-line-grid-body col-md-4 col-xs-8">
-    <div class="product-line-info">
-      <a class="label" href="{$product.url}" data-id_customization="{$product.id_customization|intval}">{$product.name}</a>
+  <div class="gucci-cart-line__info">
+    <div class="gucci-cart-line__head">
+      <a class="gucci-cart-line__title" href="{$product.url|escape:'html':'UTF-8'}">{$product.name}</a>
+      {if empty($product.is_gift)}
+        <a
+          class="gucci-cart-line__remove remove-from-cart"
+          rel="nofollow"
+          href="{$product.remove_from_cart_url|escape:'html':'UTF-8'}"
+          data-link-action="delete-from-cart"
+          data-id-product="{$product.id_product|escape:'javascript'}"
+          data-id-product-attribute="{$product.id_product_attribute|escape:'javascript'}"
+          data-id-customization="{$product.id_customization|default:0|escape:'javascript'}"
+          aria-label="{if $language.iso_code == 'it'}Rimuovi{else}{l s='Remove' d='Shop.Theme.Actions'}{/if}"
+          title="{if $language.iso_code == 'it'}Rimuovi{else}{l s='Remove' d='Shop.Theme.Actions'}{/if}"
+        >
+          <span aria-hidden="true">&times;</span>
+        </a>
+      {/if}
     </div>
 
-    <div class="product-line-info product-price h5 {if $product.has_discount}has-discount{/if}">
+    <div class="gucci-cart-line__unit-price">
       {if $product.has_discount}
-        <div class="product-discount">
-          <span class="regular-price">{$product.regular_price}</span>
-          {if $product.discount_type === 'percentage'}
-            <span class="discount discount-percentage">-{$product.discount_percentage_absolute}</span>
-          {else}
-            <span class="discount discount-amount">-{$product.discount_to_display}</span>
-          {/if}
-        </div>
+        <span class="gucci-cart-line__regular-price">{$product.regular_price}</span>
       {/if}
-      <div class="current-price">
-        <span class="price">{$product.price}</span>
-        {if $product.unit_price_full}
-          <div class="unit-price-cart">{$product.unit_price_full}</div>
-        {/if}
-      </div>
-      {hook h='displayProductPriceBlock' product=$product type="unit_price"}
+      <span class="gucci-cart-line__price">{$product.price}</span>
     </div>
-
-    <br>
 
     {foreach from=$product.attributes key="attribute" item="value"}
       {assign var='gucciAttrLabel' value=$attribute}
@@ -57,117 +60,69 @@
         {if $value == 'White'}{assign var='gucciAttrValue' value='Bianco'}{/if}
         {if $value == 'Black'}{assign var='gucciAttrValue' value='Nero'}{/if}
       {/if}
-      <div class="product-line-info {$attribute|lower}">
-        <span class="label">{$gucciAttrLabel}:</span>
-        <span class="value">{$gucciAttrValue}</span>
-      </div>
+      <p class="gucci-cart-line__attr"><span>{$gucciAttrLabel}:</span> {$gucciAttrValue}</p>
     {/foreach}
 
-    {if is_array($product.customizations) && $product.customizations|count}
-      <br>
-      {block name='cart_detailed_product_line_customization'}
-        {foreach from=$product.customizations item="customization"}
-          <a href="#" data-toggle="modal" data-target="#product-customizations-modal-{$customization.id_customization}">
-            {if $language.iso_code == 'it'}Personalizzazione prodotto{else}{l s='Product customization' d='Shop.Theme.Catalog'}{/if}
-          </a>
-          <div class="modal fade customization-modal js-customization-modal" id="product-customizations-modal-{$customization.id_customization}" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  {include
-                    file='_partials/gucci-panel-close.tpl'
-                    extraClass='gucci-modal-close'
-                    closeAttr='data-dismiss="modal"'
-                  }
-                  <h4 class="modal-title">
-                    {if $language.iso_code == 'it'}Personalizzazione prodotto{else}{l s='Product customization' d='Shop.Theme.Catalog'}{/if}
-                  </h4>
-                </div>
-                <div class="modal-body">
-                  {foreach from=$customization.fields item="field"}
-                    <div class="product-customization-line row">
-                      <div class="col-sm-3 col-xs-4 label">{$field.label}</div>
-                      <div class="col-sm-9 col-xs-8 value">
-                        {if $field.type == 'text'}
-                          {if (int)$field.id_module}{$field.text nofilter}{else}{$field.text}{/if}
-                        {elseif $field.type == 'image'}
-                          <img src="{$field.image.small.url}" loading="lazy" alt="">
-                        {/if}
-                      </div>
-                    </div>
-                  {/foreach}
-                </div>
-              </div>
-            </div>
-          </div>
-        {/foreach}
-      {/block}
-    {/if}
     {hook h='displayCartExtraProductInfo' product=$product}
   </div>
 
-  <div class="product-line-grid-right product-line-actions col-md-5 col-xs-12">
-    <div class="row">
-      <div class="col-xs-4 hidden-md-up"></div>
-      <div class="col-md-10 col-xs-6">
-        <div class="row">
-          <div class="col-md-6 col-xs-6 qty">
-            {if !empty($product.is_gift)}
-              <span class="gift-quantity">{$product.quantity}</span>
-            {else}
-              <input
-                class="js-cart-line-product-quantity"
-                data-down-url="{$product.down_quantity_url}"
-                data-up-url="{$product.up_quantity_url}"
-                data-update-url="{$product.update_quantity_url}"
-                data-product-id="{$product.id_product}"
-                type="number"
-                inputmode="numeric"
-                pattern="[0-9]*"
-                value="{$product.quantity}"
-                name="product-quantity-spin"
-                aria-label="{if $language.iso_code == 'it'}Quantità: {$product.name|escape:'htmlall':'UTF-8'}{else}{l s='%productName% product quantity field' sprintf=['%productName%' => $product.name] d='Shop.Theme.Checkout'}{/if}"
-              />
-            {/if}
-          </div>
-          <div class="col-md-6 col-xs-2 price">
-            <span class="product-price">
-              <strong>
-                {if !empty($product.is_gift)}
-                  <span class="gift">{if $language.iso_code == 'it'}Omaggio{else}{l s='Gift' d='Shop.Theme.Checkout'}{/if}</span>
-                {else}
-                  {$product.total}
-                {/if}
-              </strong>
-            </span>
-          </div>
-        </div>
+  <div class="gucci-cart-line__qty">
+    {if !empty($product.is_gift)}
+      <span class="gucci-cart-line__qty-label">
+        {if $language.iso_code == 'it'}Quantità:{else}{l s='Quantity:' d='Shop.Theme.Checkout'}{/if} {$product.quantity}
+      </span>
+    {elseif !empty($product.up_quantity_url) && !empty($product.down_quantity_url)}
+      <span class="gucci-cart-line__qty-label">
+        {if $language.iso_code == 'it'}Quantità{else}{l s='Quantity' d='Shop.Theme.Checkout'}{/if}
+      </span>
+      <div
+        class="gucci-cart-line__qty-controls gucci-cart-qty"
+        data-up-url="{$product.up_quantity_url|escape:'html_attr':'UTF-8'}"
+        data-down-url="{$product.down_quantity_url|escape:'html_attr':'UTF-8'}"
+        data-update-url="{$product.update_quantity_url|default:''|escape:'html_attr':'UTF-8'}"
+      >
+        <button
+          type="button"
+          class="gucci-cart-qty-btn"
+          data-qty-action="down"
+          aria-label="{if $language.iso_code == 'it'}Diminuisci quantità{else}{l s='Decrease quantity' d='Shop.Theme.Actions'}{/if}"
+        >
+          &minus;
+        </button>
+        <input
+          class="js-cart-line-product-quantity gucci-cart-qty-input"
+          type="number"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          min="1"
+          value="{$product.quantity|intval}"
+          data-product-id="{$product.id_product|intval}"
+          data-down-url="{$product.down_quantity_url|escape:'html_attr':'UTF-8'}"
+          data-up-url="{$product.up_quantity_url|escape:'html_attr':'UTF-8'}"
+          data-update-url="{$product.update_quantity_url|default:''|escape:'html_attr':'UTF-8'}"
+          aria-label="{if $language.iso_code == 'it'}Quantità prodotto{else}{l s='Product quantity' d='Shop.Theme.Checkout'}{/if}"
+        >
+        <button
+          type="button"
+          class="gucci-cart-qty-btn"
+          data-qty-action="up"
+          aria-label="{if $language.iso_code == 'it'}Aumenta quantità{else}{l s='Increase quantity' d='Shop.Theme.Actions'}{/if}"
+        >
+          +
+        </button>
       </div>
-      <div class="col-md-2 col-xs-2 text-xs-right">
-        <div class="cart-line-product-actions">
-          {if empty($product.is_gift)}
-            <a
-              class="remove-from-cart"
-              rel="nofollow"
-              href="{$product.remove_from_cart_url}"
-              data-link-action="delete-from-cart"
-              data-id-product="{$product.id_product|escape:'javascript'}"
-              data-id-product-attribute="{$product.id_product_attribute|escape:'javascript'}"
-              data-id-customization="{$product.id_customization|default|escape:'javascript'}"
-              aria-label="{if $language.iso_code == 'it'}Rimuovi{else}{l s='Remove' d='Shop.Theme.Actions'}{/if}"
-              title="{if $language.iso_code == 'it'}Rimuovi{else}{l s='Remove' d='Shop.Theme.Actions'}{/if}"
-            >
-              <i class="material-icons float-xs-left" aria-hidden="true">close</i>
-            </a>
-          {/if}
-
-          {block name='hook_cart_extra_product_actions'}
-            {hook h='displayCartExtraProductActions' product=$product}
-          {/block}
-        </div>
-      </div>
-    </div>
+    {else}
+      <span class="gucci-cart-line__qty-label">
+        {if $language.iso_code == 'it'}Quantità:{else}{l s='Quantity:' d='Shop.Theme.Checkout'}{/if} {$product.quantity}
+      </span>
+    {/if}
   </div>
 
-  <div class="clearfix"></div>
-</div>
+  <div class="gucci-cart-line__total">
+    {if !empty($product.is_gift)}
+      <span class="gucci-cart-line__gift">{if $language.iso_code == 'it'}Omaggio{else}{l s='Gift' d='Shop.Theme.Checkout'}{/if}</span>
+    {else}
+      <span class="gucci-cart-line__total-value">{$product.total}</span>
+    {/if}
+  </div>
+</article>

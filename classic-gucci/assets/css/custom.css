@@ -4449,6 +4449,17 @@ body#category .gucci-home-hero-slider .gucci-home-hero-caption__description {
   font-weight: 400;
   line-height: 1.65;
   color: rgba(26, 20, 16, 0.78);
+}
+
+/* Home — testo slide completo (es. La nostra storia) */
+#index .gucci-home-hero-slider .gucci-home-hero-caption__description {
+  display: block;
+  overflow: visible;
+  max-width: min(42rem, 100%);
+}
+
+/* PLP categoria — teaser breve sull'hero */
+body#category .gucci-home-hero-slider .gucci-home-hero-caption__description {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -4468,14 +4479,26 @@ body#category .gucci-home-hero-slider .gucci-home-hero-caption__description * {
 #index .gucci-home-hero-slider .gucci-home-hero-caption__description span,
 body#category .gucci-home-hero-slider .gucci-home-hero-caption__description p,
 body#category .gucci-home-hero-slider .gucci-home-hero-caption__description span {
-  display: inline;
   margin: 0;
   padding: 0;
   font: inherit !important;
   color: inherit !important;
 }
 
-#index .gucci-home-hero-slider .gucci-home-hero-caption__description p + p::before,
+#index .gucci-home-hero-slider .gucci-home-hero-caption__description p {
+  display: block;
+  margin: 0 0 0.65rem;
+}
+
+#index .gucci-home-hero-slider .gucci-home-hero-caption__description p:last-child {
+  margin-bottom: 0;
+}
+
+body#category .gucci-home-hero-slider .gucci-home-hero-caption__description p,
+body#category .gucci-home-hero-slider .gucci-home-hero-caption__description span {
+  display: inline;
+}
+
 body#category .gucci-home-hero-slider .gucci-home-hero-caption__description p + p::before {
   content: " ";
 }
@@ -4503,7 +4526,6 @@ body#category .gucci-home-hero-slider .gucci-home-hero-caption__description p + 
 }
 
 @media (min-width: 992px) {
-  #index .gucci-home-hero-slider .gucci-home-hero-caption__description,
   body#category .gucci-home-hero-slider .gucci-home-hero-caption__description {
     -webkit-line-clamp: 3;
   }
@@ -4559,12 +4581,10 @@ body#category .gucci-home-hero-slider .gucci-home-hero-caption__description p + 
     border: 1px solid var(--border-color);
   }
 
-  #index .gucci-home-hero-slider .gucci-home-hero-caption,
   body#category .gucci-home-hero-slider .gucci-home-hero-caption {
     padding: 0 max(0.85rem, env(safe-area-inset-right, 0px)) max(0.85rem, env(safe-area-inset-bottom, 0px)) max(0.85rem, env(safe-area-inset-left, 0px));
   }
 
-  #index .gucci-home-hero-slider .gucci-home-hero-caption__inner,
   body#category .gucci-home-hero-slider .gucci-home-hero-caption__inner {
     width: min(100%, calc(100% - 3.5rem));
     padding: 1.15rem 1.25rem 1.25rem;

@@ -6,8 +6,13 @@
  * @param string $sectionType   popularproducts|newproducts|onsale|bestsellers
  * @param string $allProductsLink
  * @param string $allProductsLabel
+ * @param int    $maxProducts     opzionale (default 8)
  *}
 {if $products|count}
+  {assign var='gucciHomeMaxProducts' value=8}
+  {if isset($maxProducts) && $maxProducts > 0}
+    {assign var='gucciHomeMaxProducts' value=$maxProducts}
+  {/if}
   <section class="featured-products gucci-home-section gucci-home-section--products clearfix" data-type="{$sectionType|escape:'htmlall':'UTF-8'}">
     <header class="gucci-home-section__header">
       <h2 class="gucci-home-section__title products-section-title">{$sectionTitle}</h2>
@@ -17,7 +22,7 @@
       file='catalog/_partials/productlist.tpl'
       products=$products
       productClass='gucci-plp-cell gucci-product-miniature'
-      maxProducts=8
+      maxProducts=$gucciHomeMaxProducts
     }
 
     {if !empty($allProductsLink) && !empty($allProductsLabel)}

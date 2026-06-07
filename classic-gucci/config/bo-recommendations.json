@@ -27,7 +27,7 @@
     "ps_mainmenu",
     "ps_contactinfo"
   ],
-  "displayHome_note": "displayHome: solo ps_imageslider + ps_featuredproducts (Selezione, 8 prodotti) + ps_banner. Non agganciare ps_newproducts/ps_specials/ps_bestsellers in home.",
+  "displayHome_note": "displayHome: ps_imageslider → ps_customtext → ps_featuredproducts → ps_specials → ps_newproducts → ps_bestsellers. Griglia categorie via index.tpl. Ordine visivo in custom.css.",
   "product_grid_note": "Griglia unificata: productlist.tpl (gucci-plp-grid). PLP: products.tpl con #js-product-list. Vedi docs/GUCCI-PRODUCT-GRID.md",
   "footer_linklist_columns_it": [
     "Prodotti",

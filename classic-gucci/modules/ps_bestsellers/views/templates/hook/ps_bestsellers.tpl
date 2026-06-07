@@ -1,9 +1,9 @@
 {**
- * Classic Gucci — disabilitato su home (solo Selezione / ps_featuredproducts)
+ * Classic Gucci — più venduti (home: 4 prodotti)
  *}
-{if $products|count && (!isset($page.page_name) || $page.page_name != 'index')}
+{if $products|count}
   {if $language.iso_code == 'it'}
-    {assign var='gucciSectionTitle' value='Più venduti'}
+    {assign var='gucciSectionTitle' value='I più venduti'}
     {assign var='gucciSectionLinkLabel' value='Vedi tutto'}
   {else}
     {l s='Best sellers' d='Modules.Bestsellers.Shop' assign='gucciSectionTitle'}
@@ -14,6 +14,7 @@
     products=$products
     sectionTitle=$gucciSectionTitle
     sectionType='bestsellers'
+    maxProducts=4
     allProductsLink=$allProductsLink
     allProductsLabel=$gucciSectionLinkLabel
   }

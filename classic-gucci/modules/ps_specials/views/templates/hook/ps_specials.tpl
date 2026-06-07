@@ -1,7 +1,7 @@
 {**
- * Classic Gucci — disabilitato su home (solo Selezione / ps_featuredproducts)
+ * Classic Gucci — offerte speciali in homepage
  *}
-{if $products|count && (!isset($page.page_name) || $page.page_name != 'index')}
+{if $products|count}
   {if $language.iso_code == 'it'}
     {assign var='gucciSectionTitle' value='Offerte'}
     {assign var='gucciSectionLinkLabel' value='Vedi tutto'}
@@ -14,6 +14,7 @@
     products=$products
     sectionTitle=$gucciSectionTitle
     sectionType='onsale'
+    maxProducts=4
     allProductsLink=$allProductsLink
     allProductsLabel=$gucciSectionLinkLabel
   }

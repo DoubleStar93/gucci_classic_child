@@ -3,7 +3,7 @@
  *}
 {if $products}
   {if $language.iso_code == 'it'}
-    {assign var='gucciSectionTitle' value='Selezione'}
+    {assign var='gucciSectionTitle' value='Prodotti in vetrina'}
     {assign var='gucciSectionLinkLabel' value='Vedi tutto'}
   {else}
     {l s='Popular Products' d='Shop.Theme.Catalog' assign='gucciSectionTitle'}

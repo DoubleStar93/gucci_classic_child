@@ -113,7 +113,7 @@
 
         {block name='product_list_bottom'}{/block}
       {else}
-        {if isset($category) || (isset($page) && $page.page_name == 'search')}
+        {if isset($category) || (isset($page) && ($page.page_name == 'search' || $page.page_name == 'best-sales' || $page.page_name == 'new-products' || $page.page_name == 'prices-drop'))}
           {include file='catalog/_partials/gucci-plp-empty-listing.tpl'}
         {else}
           {capture assign="errorContent"}

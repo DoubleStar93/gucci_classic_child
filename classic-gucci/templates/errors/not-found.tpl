@@ -67,7 +67,7 @@
 
 {block name='hook_not_found'}
   {if $language.iso_code == 'it'}
-    {assign var='gucciNotFoundSelectionTitle' value='Selezione'}
+    {assign var='gucciNotFoundSelectionTitle' value='Prodotti in vetrina'}
   {else}
     {l s='Popular Products' d='Shop.Theme.Catalog' assign='gucciNotFoundSelectionTitle'}
   {/if}

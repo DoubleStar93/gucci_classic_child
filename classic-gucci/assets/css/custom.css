@@ -11835,3 +11835,231 @@ body#index .gucci-home-section--products[data-type="bestsellers"] .gucci-home-se
   display: block !important;
   visibility: visible !important;
 }
+
+/* ==========================================================================
+   Mobile header — sempre blocco cioccolato + testi bianchi (override finale)
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  /* Header block — nel flusso pagina: hero/galleria non sotto l'header */
+  #header,
+  body#index #header,
+  body#index #header:not(.is-scrolled),
+  body#index #header.is-scrolled,
+  body#product #header,
+  body#product #header:not(.is-scrolled),
+  body#product #header.is-scrolled {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+  }
+
+  body#index #wrapper,
+  body#product #wrapper,
+  body#product main,
+  body#product #content-wrapper,
+  body#product #main.gucci-pdp {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  #header,
+  #header.is-scrolled,
+  #header:not(.is-scrolled),
+  body#index #header,
+  body#index #header:not(.is-scrolled),
+  body#index #header.is-scrolled,
+  body#product #header,
+  body#product #header:not(.is-scrolled),
+  body#product #header.is-scrolled,
+  body#cart #header,
+  body#checkout #header,
+  body#authentication #header,
+  body#registration #header,
+  body#my-account #header,
+  body#contact #header,
+  body#cms #header,
+  body#password #header,
+  body#category #header,
+  body.gucci-menu-open #header,
+  body.gucci-search-open #header,
+  body.gucci-contact-open #header,
+  body.gucci-account-open #header,
+  body.gucci-filters-open #header,
+  body.gucci-sort-open #header {
+    background: var(--ba-cioccolato) !important;
+    background-color: var(--ba-cioccolato) !important;
+    border-bottom-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  #header .gucci-header-bar,
+  #header .header-top,
+  #header .gucci-header-bar .container,
+  body#index #header .gucci-header-bar,
+  body#index #header .header-top,
+  body#index #header .gucci-header-bar > .container,
+  body#product #header .gucci-header-bar,
+  body#product #header .header-top,
+  body#product #header .gucci-header-bar > .container,
+  body.gucci-menu-open #header .gucci-header-bar,
+  body.gucci-menu-open #header .header-top,
+  body.gucci-search-open #header .gucci-header-bar,
+  body.gucci-search-open #header .header-top,
+  body.gucci-contact-open #header .gucci-header-bar,
+  body.gucci-contact-open #header .header-top,
+  body.gucci-account-open #header .gucci-header-bar,
+  body.gucci-account-open #header .header-top,
+  body.gucci-filters-open #header .gucci-header-bar,
+  body.gucci-filters-open #header .header-top,
+  body.gucci-sort-open #header .gucci-header-bar,
+  body.gucci-sort-open #header .header-top {
+    background: transparent !important;
+    background-color: transparent !important;
+    border-bottom-color: transparent !important;
+  }
+
+  #header .gucci-header-link,
+  #header .gucci-header-col--icons a,
+  #header .gucci-header-col--icons .material-icons,
+  #header .gucci-header-col--icons button,
+  #header .gucci-search-toggle,
+  #header .gucci-menu-toggle,
+  #header #_desktop_cart a,
+  #header #_desktop_user_info a,
+  #header #_mobile_cart a,
+  #header #_mobile_user_info button,
+  #header #_mobile_user_info .material-icons,
+  #header .blockcart a,
+  #header .cart-products-count,
+  #header .gucci-logo-text-link,
+  body#index #header:not(.is-scrolled) .gucci-header-link,
+  body#index #header:not(.is-scrolled) .gucci-header-col--icons a,
+  body#index #header:not(.is-scrolled) .gucci-header-col--icons .material-icons,
+  body#index #header:not(.is-scrolled) .gucci-header-col--icons button,
+  body#index #header:not(.is-scrolled) .gucci-search-toggle,
+  body#index #header:not(.is-scrolled) .gucci-menu-toggle,
+  body#index #header:not(.is-scrolled) #_mobile_cart a,
+  body#index #header:not(.is-scrolled) #_mobile_user_info button,
+  body#index #header:not(.is-scrolled) #_mobile_user_info .material-icons,
+  body#index #header:not(.is-scrolled) .blockcart a,
+  body#index #header:not(.is-scrolled) .cart-products-count,
+  body#index #header:not(.is-scrolled) .gucci-logo-text-link,
+  body#product #header:not(.is-scrolled) .gucci-header-link,
+  body#product #header:not(.is-scrolled) .gucci-header-col--icons a,
+  body#product #header:not(.is-scrolled) .gucci-header-col--icons .material-icons,
+  body#product #header:not(.is-scrolled) .gucci-header-col--icons button,
+  body#product #header:not(.is-scrolled) .gucci-search-toggle,
+  body#product #header:not(.is-scrolled) .gucci-menu-toggle,
+  body#product #header:not(.is-scrolled) #_mobile_cart a,
+  body#product #header:not(.is-scrolled) #_mobile_user_info button,
+  body#product #header:not(.is-scrolled) #_mobile_user_info .material-icons,
+  body#product #header:not(.is-scrolled) .blockcart a,
+  body#product #header:not(.is-scrolled) .cart-products-count,
+  body#product #header:not(.is-scrolled) .gucci-logo-text-link,
+  body.gucci-menu-open #header .gucci-header-link,
+  body.gucci-menu-open #header .gucci-header-col--icons a,
+  body.gucci-menu-open #header .gucci-header-col--icons .material-icons,
+  body.gucci-search-open #header .gucci-header-link,
+  body.gucci-search-open #header .gucci-header-col--icons a,
+  body.gucci-search-open #header .gucci-header-col--icons .material-icons,
+  body.gucci-account-open #header .gucci-header-link,
+  body.gucci-account-open #header .gucci-header-col--icons a,
+  body.gucci-account-open #header .gucci-header-col--icons .material-icons,
+  body#category #header .gucci-header-link,
+  body#category #header .gucci-header-col--icons a,
+  body#category #header .gucci-header-col--icons .material-icons,
+  body#category #header .gucci-header-col--icons button,
+  body#search #header .gucci-header-link,
+  body#search #header .gucci-header-col--icons a,
+  body#search #header .gucci-header-col--icons .material-icons,
+  body#search #header .gucci-header-col--icons button,
+  body#cart #header .gucci-header-link,
+  body#cart #header .gucci-header-col--icons a,
+  body#cart #header .gucci-header-col--icons .material-icons,
+  body#checkout #header .gucci-header-link,
+  body#checkout #header .gucci-header-col--icons a,
+  body#checkout #header .gucci-header-col--icons .material-icons,
+  body#authentication #header .gucci-header-link,
+  body#registration #header .gucci-header-link,
+  body#my-account #header .gucci-header-link,
+  body#contact #header .gucci-header-link {
+    color: var(--ba-perla) !important;
+    -webkit-text-fill-color: var(--ba-perla) !important;
+    text-shadow: none;
+  }
+
+  #header .gucci-header-link:hover,
+  #header .gucci-header-col--icons a:hover,
+  #header .gucci-search-toggle:hover,
+  #header .gucci-menu-toggle:hover {
+    opacity: 0.75;
+    color: var(--ba-perla) !important;
+  }
+
+  #header #_mobile_logo .gucci-logo-wrap .gucci-logo--dark,
+  #header #_desktop_logo .gucci-logo-wrap .gucci-logo--dark,
+  #header .gucci-logo-wrap .gucci-logo--dark,
+  #header .gucci-header-col--logo .logo img.gucci-logo--dark,
+  body#index #header:not(.is-scrolled) #_mobile_logo .gucci-logo-wrap .gucci-logo--dark,
+  body#index #header:not(.is-scrolled) #_desktop_logo .gucci-logo-wrap .gucci-logo--dark,
+  body#index #header:not(.is-scrolled) .gucci-logo-wrap .gucci-logo--dark,
+  body#index #header:not(.is-scrolled) .gucci-header-col--logo .logo img,
+  body#product #header:not(.is-scrolled) #_mobile_logo .gucci-logo-wrap .gucci-logo--dark,
+  body#product #header:not(.is-scrolled) #_desktop_logo .gucci-logo-wrap .gucci-logo--dark,
+  body#product #header:not(.is-scrolled) .gucci-logo-wrap .gucci-logo--dark,
+  body#product #header:not(.is-scrolled) .gucci-header-col--logo .logo img,
+  body#category #header #_mobile_logo .gucci-logo--dark,
+  body#category #header #_desktop_logo .gucci-logo--dark,
+  body#category #header .gucci-logo--dark,
+  body#cart #header #_mobile_logo .gucci-logo--dark,
+  body#cart #header #_desktop_logo .gucci-logo--dark,
+  body#cart #header .gucci-logo--dark,
+  body#checkout #header #_mobile_logo .gucci-logo--dark,
+  body#checkout #header #_desktop_logo .gucci-logo--dark,
+  body#checkout #header .gucci-logo--dark,
+  body.gucci-menu-open #header .gucci-logo-wrap .gucci-logo--dark,
+  body.gucci-search-open #header .gucci-logo-wrap .gucci-logo--dark,
+  body.gucci-contact-open #header .gucci-logo-wrap .gucci-logo--dark,
+  body.gucci-account-open #header .gucci-logo-wrap .gucci-logo--dark,
+  body.gucci-filters-open #header .gucci-logo-wrap .gucci-logo--dark,
+  body.gucci-sort-open #header .gucci-logo-wrap .gucci-logo--dark {
+    display: none !important;
+  }
+
+  #header #_mobile_logo .gucci-logo-wrap .gucci-logo--light,
+  #header #_desktop_logo .gucci-logo-wrap .gucci-logo--light,
+  #header .gucci-logo-wrap .gucci-logo--light,
+  body#index #header:not(.is-scrolled) #_mobile_logo .gucci-logo-wrap .gucci-logo--light,
+  body#index #header:not(.is-scrolled) #_desktop_logo .gucci-logo-wrap .gucci-logo--light,
+  body#index #header:not(.is-scrolled) .gucci-logo-wrap .gucci-logo--light,
+  body#product #header:not(.is-scrolled) #_mobile_logo .gucci-logo-wrap .gucci-logo--light,
+  body#product #header:not(.is-scrolled) #_desktop_logo .gucci-logo-wrap .gucci-logo--light,
+  body#product #header:not(.is-scrolled) .gucci-logo-wrap .gucci-logo--light,
+  body#category #header #_mobile_logo .gucci-logo--light,
+  body#category #header #_desktop_logo .gucci-logo--light,
+  body#category #header .gucci-logo--light,
+  body#cart #header #_mobile_logo .gucci-logo--light,
+  body#cart #header #_desktop_logo .gucci-logo--light,
+  body#cart #header .gucci-logo--light,
+  body#checkout #header #_mobile_logo .gucci-logo--light,
+  body#checkout #header #_desktop_logo .gucci-logo--light,
+  body#checkout #header .gucci-logo--light,
+  body.gucci-menu-open #header #_mobile_logo .gucci-logo-wrap .gucci-logo--light,
+  body.gucci-search-open #header #_mobile_logo .gucci-logo-wrap .gucci-logo--light,
+  body.gucci-contact-open #header #_mobile_logo .gucci-logo-wrap .gucci-logo--light,
+  body.gucci-account-open #header #_mobile_logo .gucci-logo-wrap .gucci-logo--light,
+  body.gucci-filters-open #header #_mobile_logo .gucci-logo-wrap .gucci-logo--light,
+  body.gucci-sort-open #header #_mobile_logo .gucci-logo-wrap .gucci-logo--light {
+    display: block !important;
+    filter: none !important;
+  }
+
+  #header .gucci-header-col--logo .logo img,
+  #header .logo img {
+    filter: none !important;
+  }
+}

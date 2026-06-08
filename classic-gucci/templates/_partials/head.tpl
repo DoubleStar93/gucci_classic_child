@@ -4,6 +4,11 @@
  *}
 {extends file='parent:_partials/head.tpl'}
 
+{* Staging: blocca indicizzazione su tutte le pagine *}
+{block name='head_seo' prepend}
+  <meta name="robots" content="noindex, nofollow" />
+{/block}
+
 {block name='head_seo_title'}
   {if isset($language) && $language.iso_code == 'it'}
     {if $page.page_name == 'cms' && isset($cms.meta_title)}
@@ -47,7 +52,7 @@
 
 {* Dopo il bundle CCC — unica sorgente token/tipografia (custom.css) *}
 {block name='stylesheets' append}
-  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.13.4" type="text/css" media="all">
+  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.13.8" type="text/css" media="all">
   <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/home-overrides.css?v=1.0.3" type="text/css" media="all">
 {/block}
 

@@ -5,7 +5,7 @@
   {if $language.iso_code == 'it'}
     {assign var='gucciViewedTitle' value='Visti di recente'}
   {else}
-    {l s='Viewed products' d='Modules.Viewedproduct.Shop' assign='gucciViewedTitle'}
+    {assign var='gucciViewedTitle' value='Viewed products'}
   {/if}
   {if $products|@count > 8}
     {assign var='gucciGridProducts' value=$products|array_slice:0:8}

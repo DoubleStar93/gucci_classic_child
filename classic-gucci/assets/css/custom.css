@@ -606,9 +606,11 @@ section.carousel:not(.gucci-pdp-gallery) {
   justify-self: end;
 }
 
-/* Lingua/valuta non devono stare in displayNav2 (nascondi se ancora agganciati) */
-#_desktop_language_selector,
-#_desktop_currency_selector,
+/* Lingua/valuta non devono stare in header/nav (solo footer) */
+#header #_desktop_language_selector,
+#header #_desktop_currency_selector,
+.gucci-header #_desktop_language_selector,
+.gucci-header #_desktop_currency_selector,
 .gucci-header-col--icons .language-selector-wrapper,
 .gucci-header-col--icons .currency-selector {
   display: none !important;
@@ -1560,9 +1562,17 @@ body#search .gucci-price {
 #_desktop_user_info a span,
 #_desktop_cart a span:not(.cart-products-count),
 .blockcart span:not(.cart-products-count),
+/* Valuta — nascosta ovunque (solo EUR in negozio) */
+#_footer_currency_selector,
+#_mobile_currency_selector,
+#_desktop_currency_selector,
 .ps_currencyselector,
-.ps_languageselector,
-.currency-selector {
+.currency-selector,
+.gucci-footer-locale.currency-selector {
+  display: none !important;
+}
+
+.ps_languageselector {
   display: none !important;
 }
 
@@ -1888,7 +1898,7 @@ body#search .gucci-price {
 }
 
 .gucci-footer-meta {
-  display: none;
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
@@ -1897,19 +1907,6 @@ body#search .gucci-price {
   margin: 1.25rem 0 0;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   min-height: 0;
-}
-
-.gucci-footer-meta:has(
-  .language-selector,
-  .currency-selector,
-  .gucci-footer-locale,
-  .gucci-footer-social,
-  #_desktop_language_selector,
-  #_desktop_currency_selector,
-  .block-social,
-  .ps-social-follow
-) {
-  display: flex;
 }
 
 .gucci-footer-meta:empty {
@@ -1930,9 +1927,9 @@ body#search .gucci-price {
 }
 
 .gucci-footer-meta .language-selector,
-.gucci-footer-meta .currency-selector,
-.gucci-footer-meta #_desktop_language_selector,
-.gucci-footer-meta #_desktop_currency_selector {
+.gucci-footer-meta #_footer_language_selector {
+  display: inline-flex !important;
+  align-items: center;
   margin: 0;
 }
 
@@ -1966,28 +1963,13 @@ body#search .gucci-price {
 
 .gucci-footer-copyright {
   text-align: center;
-  margin: 1.5rem 0 0;
-  padding: 1.5rem 0 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  margin: 0;
+  padding: 0;
+  border: none;
   font-size: var(--gucci-type-caption);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.5);
-}
-
-.gucci-footer-meta:has(
-  .language-selector,
-  .currency-selector,
-  .gucci-footer-locale,
-  .gucci-footer-social,
-  #_desktop_language_selector,
-  #_desktop_currency_selector,
-  .block-social,
-  .ps-social-follow
-) + .gucci-footer-copyright {
-  margin-top: 1.25rem;
-  padding-top: 1.25rem;
-  border-top: none;
 }
 
 .gucci-footer .links .wrapper,
@@ -8012,10 +7994,17 @@ body#registration .form-group {
 .gucci-footer-meta-row {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 2rem 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem 1.75rem;
   width: 100%;
+}
+
+.gucci-footer-meta-row .gucci-footer-copyright {
+  flex: 0 1 auto;
+  margin: 0;
+  padding: 0;
+  border: none;
 }
 
 .gucci-footer-meta-label {

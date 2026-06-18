@@ -19,7 +19,7 @@
     class="Everpopup_block gucci-everpopup"
   >
     <div class="gucci-everpopup__panel"{if $everpspopup->bgcolor} style="background-color:{$everpspopup->bgcolor|escape:'htmlall':'UTF-8'};"{/if}>
-      <button type="button" class="gucci-everpopup__close" aria-label="{if isset($language) && $language.iso_code == 'it'}Chiudi{else}{l s='Close' mod='everpspopup'}{/if}">&times;</button>
+      <button type="button" class="gucci-everpopup__close" aria-label="{if $everpspopup_lang_iso == 'it'}Chiudi{else}Close{/if}">&times;</button>
       <style>
         #everpspopup_block_center,
         #everpspopup_block_center .gucci-everpopup__panel {
@@ -68,7 +68,7 @@
       {/if}
 
       {if $everpspopup->newsletter}
-        {if isset($language) && $language.iso_code == 'it'}
+        {if $everpspopup_lang_iso == 'it'}
           {assign var='gucciPopupAria' value='Iscrizione alla newsletter'}
           {assign var='gucciPopupNlTitle' value='Iscriviti alla newsletter'}
           {assign var='gucciPopupEmailPh' value='La tua e-mail'}
@@ -76,12 +76,12 @@
           {assign var='gucciPopupGdprErr' value='Consenso GDPR richiesto.'}
           {assign var='gucciPopupSubmit' value='Iscriviti'}
         {else}
-          {l s='Newsletter subscription' mod='everpspopup' assign='gucciPopupAria'}
-          {l s='Subscribe for newsletter' mod='everpspopup' assign='gucciPopupNlTitle'}
-          {l s='Your email' mod='everpspopup' assign='gucciPopupEmailPh'}
-          {l s='GDPR consent' mod='everpspopup' assign='gucciPopupGdpr'}
-          {l s='GDPR consent.' mod='everpspopup' assign='gucciPopupGdprErr'}
-          {l s='Submit' mod='everpspopup' assign='gucciPopupSubmit'}
+          {assign var='gucciPopupAria' value='Newsletter subscription'}
+          {assign var='gucciPopupNlTitle' value='Subscribe to our newsletter'}
+          {assign var='gucciPopupEmailPh' value='Your email address'}
+          {assign var='gucciPopupGdpr' value='I agree to the processing of my personal data'}
+          {assign var='gucciPopupGdprErr' value='GDPR consent is required.'}
+          {assign var='gucciPopupSubmit' value='Subscribe'}
         {/if}
         <section class="gucci-everpopup__newsletter" aria-label="{$gucciPopupAria|escape:'htmlall':'UTF-8'}">
           <h2 class="gucci-everpopup__title">{$gucciPopupNlTitle|escape:'htmlall':'UTF-8'}</h2>
@@ -91,8 +91,8 @@
             method="post"
             action="#"
             data-msg-gdpr="{$gucciPopupGdprErr|escape:'htmlall':'UTF-8'}"
-            data-msg-email="{if isset($language) && $language.iso_code == 'it'}Inserisci un indirizzo e-mail valido{else}{l s='Please enter a valid email address' mod='everpspopup'}{/if}"
-            data-msg-network="{if isset($language) && $language.iso_code == 'it'}Connessione non riuscita. Riprova.{else}{l s='Connection failed. Please try again.' mod='everpspopup'}{/if}"
+            data-msg-email="{if $everpspopup_lang_iso == 'it'}Inserisci un indirizzo e-mail valido{else}Please enter a valid email address{/if}"
+            data-msg-network="{if $everpspopup_lang_iso == 'it'}Connessione non riuscita. Riprova.{else}Connection failed. Please try again.{/if}"
           >
             <input
               id="everpspopupEmail"

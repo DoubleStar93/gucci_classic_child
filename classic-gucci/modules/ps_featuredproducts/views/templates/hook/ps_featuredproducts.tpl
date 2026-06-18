@@ -6,8 +6,8 @@
     {assign var='gucciSectionTitle' value='Prodotti in vetrina'}
     {assign var='gucciSectionLinkLabel' value='Vedi tutto'}
   {else}
-    {l s='Popular Products' d='Shop.Theme.Catalog' assign='gucciSectionTitle'}
-    {l s='View all' d='Shop.Theme.Actions' assign='gucciSectionLinkLabel'}
+    {assign var='gucciSectionTitle' value='Popular products'}
+    {assign var='gucciSectionLinkLabel' value='View all'}
   {/if}
   {assign var='gucciAllProductsLink' value=''}
   {if isset($allProductsLink) && $allProductsLink}

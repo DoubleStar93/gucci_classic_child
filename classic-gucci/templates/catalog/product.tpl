@@ -112,7 +112,7 @@
           {if $language.iso_code == 'it'}
             {assign var='gucciAccessoriesTitle' value='Potrebbe piacerti anche'}
           {else}
-            {l s='You might also like' d='Shop.Theme.Catalog' assign='gucciAccessoriesTitle'}
+            {assign var='gucciAccessoriesTitle' value='You might also like'}
           {/if}
           {include
             file='_partials/gucci-product-grid-section.tpl'

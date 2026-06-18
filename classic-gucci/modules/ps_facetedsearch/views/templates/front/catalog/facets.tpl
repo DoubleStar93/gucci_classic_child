@@ -132,10 +132,12 @@
         {elseif $facet.widgetType == 'slider'}
           <div id="facet_{$_expand_id}" class="collapse{if !$_collapse} in{/if}">
             {foreach from=$facet.filters item="filter"}
+              {if isset($filter.specifications) && $filter.specifications}
               <div class="facet-slider js-facet-slider">
                 <label>{$gucciFacetLabel|escape:'htmlall':'UTF-8'}</label>
                 <div class="js-slider" data-slider-min="{$filter.specifications.min}" data-slider-max="{$filter.specifications.max}" data-slider-id="{$_expand_id}" data-slider-values="{$filter.value|@json_encode}" data-slider-unit="{$filter.specifications.unit}" data-slider-label="{$filter.label}" data-slider-specifications="{$filter.specifications|@json_encode}" data-slider-encoded-url="{$filter.nextEncodedFacetsURL}"></div>
               </div>
+              {/if}
             {/foreach}
           </div>
         {/if}

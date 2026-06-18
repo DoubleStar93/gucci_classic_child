@@ -5,7 +5,7 @@
   {if $language.iso_code == 'it'}
     {assign var='gucciCategoryProductsTitle' value='Della stessa categoria'}
   {else}
-    {l s='More from this category' d='Shop.Theme.Catalog' assign='gucciCategoryProductsTitle'}
+    {assign var='gucciCategoryProductsTitle' value='More from this category'}
   {/if}
   {if $products|@count > 8}
     {assign var='gucciGridProducts' value=$products|array_slice:0:8}

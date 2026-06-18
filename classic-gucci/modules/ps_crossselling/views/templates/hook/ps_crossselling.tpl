@@ -5,7 +5,7 @@
   {if $language.iso_code == 'it'}
     {assign var='gucciCrossSellingTitle' value='Chi ha acquistato questo prodotto ha comprato anche'}
   {else}
-    {l s='Customers who bought this product also bought:' d='Modules.Crossselling.Shop' assign='gucciCrossSellingTitle'}
+    {assign var='gucciCrossSellingTitle' value='Customers who bought this product also bought:'}
   {/if}
   {if $products|@count > 8}
     {assign var='gucciGridProducts' value=$products|array_slice:0:8}

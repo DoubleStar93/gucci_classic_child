@@ -62,7 +62,6 @@ global_settings:
         - ps_linklist
       displayFooterAfter:
         - ps_languageselector
-        - ps_currencyselector
         - ps_socialfollow
       displayLeftColumn: []
       displayReassurance: []

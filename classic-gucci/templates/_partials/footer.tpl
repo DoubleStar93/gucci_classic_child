@@ -18,20 +18,18 @@
     <section class="gucci-footer-meta">
       <div class="gucci-footer-meta-row">
         {widget name='ps_languageselector'}
-        {widget name='ps_currencyselector'}
         {widget name='ps_socialfollow'}
+        <p class="gucci-footer-copyright">
+          {block name='copyright_link'}
+            &copy; {'Y'|date} {$shop.name}.
+            {if $language.iso_code == 'it'}
+              Tutti i diritti riservati.
+            {else}
+              {l s='All rights reserved.' d='Shop.Theme.Global'}
+            {/if}
+          {/block}
+        </p>
       </div>
     </section>
-
-    <p class="gucci-footer-copyright">
-      {block name='copyright_link'}
-        &copy; {'Y'|date} {$shop.name}.
-        {if $language.iso_code == 'it'}
-          Tutti i diritti riservati.
-        {else}
-          {l s='All rights reserved.' d='Shop.Theme.Global'}
-        {/if}
-      {/block}
-    </p>
   </div>
 </div>

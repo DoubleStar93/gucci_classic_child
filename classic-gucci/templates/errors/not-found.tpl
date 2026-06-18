@@ -9,8 +9,8 @@
       {assign var='gucciPlpEmptyTitle' value='Nessun articolo in questa categoria'}
       {assign var='gucciPlpEmptyText' value='Resta in contatto: nuovi articoli verranno aggiunti a breve.'}
     {else}
-      {l s='No products available yet' d='Shop.Theme.Catalog' assign='gucciPlpEmptyTitle'}
-      {l s='Stay tuned! More products will be shown here as they are added.' d='Shop.Theme.Catalog' assign='gucciPlpEmptyText'}
+      {assign var='gucciPlpEmptyTitle' value='No products available yet'}
+      {assign var='gucciPlpEmptyText' value='Stay tuned! More products will be shown here as they are added.'}
     {/if}
     {include file='catalog/_partials/gucci-plp-empty.tpl'}
   {elseif isset($page) && $page.page_name == 'search'}
@@ -19,8 +19,8 @@
       {assign var='gucciPlpEmptyTitle' value='Nessun risultato per la tua ricerca'}
       {assign var='gucciPlpEmptyText' value='Prova con altre parole chiave.'}
     {else}
-      {l s='No matches were found for your search' d='Shop.Theme.Catalog' assign='gucciPlpEmptyTitle'}
-      {l s='Please try other keywords to describe what you are looking for.' d='Shop.Theme.Catalog' assign='gucciPlpEmptyText'}
+      {assign var='gucciPlpEmptyTitle' value='No matches were found for your search'}
+      {assign var='gucciPlpEmptyText' value='Please try other keywords to describe what you are looking for.'}
     {/if}
     {include file='catalog/_partials/gucci-plp-empty.tpl'}
   {elseif isset($errorContent) && $errorContent|trim}
@@ -69,7 +69,7 @@
   {if $language.iso_code == 'it'}
     {assign var='gucciNotFoundSelectionTitle' value='Prodotti in vetrina'}
   {else}
-    {l s='Popular Products' d='Shop.Theme.Catalog' assign='gucciNotFoundSelectionTitle'}
+    {assign var='gucciNotFoundSelectionTitle' value='Popular products'}
   {/if}
   {include
     file='_partials/gucci-featured-products-strip.tpl'

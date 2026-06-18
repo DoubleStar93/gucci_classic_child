@@ -6,8 +6,8 @@
     {assign var='gucciSectionTitle' value='I più venduti'}
     {assign var='gucciSectionLinkLabel' value='Vedi tutto'}
   {else}
-    {l s='Best sellers' d='Modules.Bestsellers.Shop' assign='gucciSectionTitle'}
-    {l s='All best sellers' d='Modules.Bestsellers.Shop' assign='gucciSectionLinkLabel'}
+    {assign var='gucciSectionTitle' value='Best sellers'}
+    {assign var='gucciSectionLinkLabel' value='View all'}
   {/if}
   {assign var='gucciAllProductsLink' value=''}
   {if isset($allProductsLink) && $allProductsLink}

@@ -114,7 +114,7 @@
         {if $language.iso_code == 'it'}
           {assign var='gucciOrderSelectionTitle' value='Selezione'}
         {else}
-          {l s='Popular Products' d='Shop.Theme.Catalog' assign='gucciOrderSelectionTitle'}
+          {assign var='gucciOrderSelectionTitle' value='Popular products'}
         {/if}
         {include
           file='_partials/gucci-featured-products-strip.tpl'

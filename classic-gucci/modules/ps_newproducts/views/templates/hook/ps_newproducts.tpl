@@ -7,8 +7,8 @@
     {assign var='gucciSectionTitle' value='Nuovi arrivi'}
     {assign var='gucciSectionLinkLabel' value='Vedi tutto'}
   {else}
-    {l s='New products' d='Modules.Newproducts.Shop' assign='gucciSectionTitle'}
-    {l s='All new products' d='Modules.Newproducts.Shop' assign='gucciSectionLinkLabel'}
+    {assign var='gucciSectionTitle' value='New products'}
+    {assign var='gucciSectionLinkLabel' value='View all'}
   {/if}
   {assign var='gucciAllProductsLink' value=''}
   {if isset($allProductsLink) && $allProductsLink}

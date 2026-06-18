@@ -38,7 +38,7 @@ class Everpspopup extends Module
     {
         $this->name = 'everpspopup';
         $this->tab = 'administration';
-        $this->version = '5.6.6';
+        $this->version = '5.6.10';
         $this->author = 'Team Ever';
         $this->need_instance = 0;
         $this->bootstrap = true;
@@ -466,6 +466,11 @@ class Everpspopup extends Module
                 false
             );
         }
+        $content = $this->getLocalizedPopupContent(
+            $content,
+            (int) $this->context->language->id
+        );
+        $everpopup->content = $content;
         // Popup background
         if (file_exists(_PS_MODULE_DIR_.'everpspopup/views/img/everpopup_' . (int) $everpopup->id . '.jpg')) {
             $background = _PS_BASE_URL_
@@ -485,6 +490,7 @@ class Everpspopup extends Module
                 'everpspopup' => $everpopup,
                 'content' => $content,
                 'id_lang' => $this->context->language->id,
+                'everpspopup_lang_iso' => $this->context->language->iso_code,
                 'background' => $background,
                 'ever_ask_age' => (bool) Configuration::get('EVERPSPOPUP_ASK_AGE'),
                 'ever_required_age' => $date,
@@ -493,6 +499,31 @@ class Everpspopup extends Module
             ]
         );
         return $this->display(__FILE__, 'everpspopup.tpl', $this->getCacheId());
+    }
+
+    private function getLocalizedPopupContent($content, $idLang)
+    {
+        if (!is_string($content) || $content === '') {
+            return $content;
+        }
+
+        $iso = Language::getIsoById((int) $idLang);
+        if ($iso !== 'en') {
+            return $content;
+        }
+
+        if (
+            strpos($content, 'Resta in contatto') !== false
+            || strpos($content, 'Iscriviti per ricevere') !== false
+        ) {
+            return '
+                <p class="gucci-everpopup__eyebrow">Newsletter</p>
+                <h2 class="gucci-everpopup__title">Stay in touch</h2>
+                <p class="gucci-everpopup__lede">Subscribe to receive news, collections and exclusive invitations.</p>
+                ';
+        }
+
+        return $content;
     }
 
     private function changeShortcodes($message, $id_entity = false)
@@ -581,11 +612,19 @@ class Everpspopup extends Module
                 $popup->name[$language['id_lang']] = $this->l(
                     'Barbara Alvisi'
                 );
-                $popup->content[$language['id_lang']] = '
+                if ($language['iso_code'] === 'it') {
+                    $popup->content[$language['id_lang']] = '
                 <p class="gucci-everpopup__eyebrow">Newsletter</p>
                 <h2 class="gucci-everpopup__title">Resta in contatto</h2>
                 <p class="gucci-everpopup__lede">Iscriviti per ricevere novità, collezioni e inviti esclusivi.</p>
                 ';
+                } else {
+                    $popup->content[$language['id_lang']] = '
+                <p class="gucci-everpopup__eyebrow">Newsletter</p>
+                <h2 class="gucci-everpopup__title">Stay in touch</h2>
+                <p class="gucci-everpopup__lede">Subscribe to receive news, collections and exclusive invitations.</p>
+                ';
+                }
                 $popup->link[$language['id_lang']] = '';
             }
             $popup->save();

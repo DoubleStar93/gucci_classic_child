@@ -16,7 +16,34 @@
  *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 
+(function ($) {
+    'use strict';
+
+    function hideGucciPageLoader() {
+        var loader = document.getElementById('gucci-page-loader');
+        if (loader) {
+            loader.classList.add('is-hidden');
+        }
+        document.documentElement.classList.remove('gucci-is-loading');
+        if (document.body) {
+            document.body.classList.remove('gucci-is-loading');
+        }
+    }
+
+    window.hideGucciEverpopupPageLoader = hideGucciPageLoader;
+
  $(document).ready(function(){
+    if (window.__gucciEverpopupBound) {
+        return;
+    }
+    window.__gucciEverpopupBound = true;
+
+    // Rimuove handler obsoleti dal bundle CCC (vecchio Fancybox)
+    $(document).off('submit', '#ever_subscription_form');
+    $(document).off('click', '.gucci-everpopup__close');
+    $(document).off('click', '#gucci-everpopup-overlay');
+    $(document).off('keydown.gucciEverpopup');
+
     var cookie_time = $('#everpspopup_block_center').data('expire')?$('#everpspopup_block_center').data('expire'):0; //set cookie on 1day1hour1minute if not set in config
     var adult_mode = $('#everpspopup_block_center').data('adult');
     var delay = parseInt($('#everpspopup_block_center').data('delay'));
@@ -139,164 +166,260 @@
         var popcontent = 1;
     }
 
-    function markGucciFancybox(instance) {
-        var $container = instance && instance.$refs ? instance.$refs.container : $('.fancybox-container').last();
-        $container.addClass('gucci-everpopup-fancybox');
-    }
+    var gucciPopupStrict = false;
 
-    function fixGucciPopupOverflow(instance) {
-        if (!instance || !instance.$refs || !instance.$refs.container) {
-            return;
-        }
-        var $box = instance.$refs.container;
-        var $targets = $box.find(
-            '.fancybox-stage, .fancybox-inner, .fancybox-slide, .fancybox-content, ' +
-            '#everpspopup_block_center, .gucci-everpopup__panel'
-        );
-        $targets.css({
-            overflow: 'visible',
-            maxHeight: 'none',
-            height: 'auto'
-        });
-        $box.find('.fancybox-slide--current').css({
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            overflow: 'visible',
-            maxHeight: 'none',
-            height: 'auto'
-        });
-    }
+    // Pulizia eventuale Fancybox residuo (non usato più per questo popup)
+    $('.fancybox-container').remove();
+    $('html, body').removeClass('fancybox-active compensate-for-scrollbar');
 
-    function buildGucciPopupFancyboxOptions(strict) {
-        return {
-            type: 'inline',
-            animationEffect: 'fade',
-            transitionEffect: 'fade',
-            animationDuration: 380,
-            transitionDuration: 280,
-            infobar: false,
-            toolbar: false,
-            smallBtn: !strict,
-            clickContent: false,
-            clickSlide: strict ? false : 'close',
-            touch: false,
-            hideScrollbar: false,
-            modal: !!strict,
-            clickOutside: strict ? false : 'close',
-            escapeKey: !strict,
-            beforeClose: function(instance, current, e) {
-                if (strict) {
-                    return false;
-                }
-                $.cookie('everpspopup' + cookie_suffix, popcontent, { expires: cookie_time });
-            },
-            afterLoad: function(instance) {
-                markGucciFancybox(instance);
-                fixGucciPopupOverflow(instance);
-            },
-            afterShow: function(instance) {
-                markGucciFancybox(instance);
-                fixGucciPopupOverflow(instance);
-                if (instance && typeof instance.update === 'function') {
-                    instance.update();
-                }
-            }
-        };
+    function markPopupAsSeen() {
+        $.cookie('everpspopup' + cookie_suffix, popcontent, { expires: cookie_time });
     }
 
     function openGucciPopup(strict) {
-        $('#ever_fancy_mark').fancybox(buildGucciPopupFancyboxOptions(!!strict)).trigger('click');
-        if (!strict) {
-            $(window).bind('beforeunload', function() {
-                $.cookie('everpspopup' + cookie_suffix, popcontent, { expires: cookie_time });
-            });
-        }
+        gucciPopupStrict = !!strict;
+        var $overlay = $('#gucci-everpopup-overlay');
+        $overlay.removeAttr('hidden').attr('aria-hidden', 'false').addClass('is-open').css('display', 'flex');
+        $('body').addClass('gucci-everpopup-open');
     }
 
-    if ($('#ever_fancy_mark').length && $('#ever_fancy_mark').data('carrier')) {
-        var id_carrier = $('#ever_fancy_mark').data('carrier');
+    function closeGucciPopupSafely(force) {
+        if (gucciPopupStrict && !force) {
+            return;
+        }
+        markPopupAsSeen();
+        gucciPopupStrict = false;
+        var overlay = document.getElementById('gucci-everpopup-overlay');
+        if (overlay) {
+            overlay.setAttribute('hidden', '');
+            overlay.setAttribute('aria-hidden', 'true');
+            overlay.classList.remove('is-open');
+            overlay.style.display = 'none';
+        }
+        $('body').removeClass('gucci-everpopup-open');
+        resetSubscribeForm();
+        hideGucciPageLoader();
+    }
+
+    function resetSubscribeForm() {
+        var $form = $('#ever_subscription_form');
+        if (!$form.length) {
+            return;
+        }
+        $form.find('#everpspopupEmail, .gucci-everpopup__gdpr, .gucci-everpopup__submit').show();
+        $form.find('.gucci-everpopup__submit').prop('disabled', false);
+        $('#everpspopup_success_msg').hide().text('');
+        $('#everpspopupEmail').val('');
+        $('#everpspopupGdpr').prop('checked', false);
+    }
+
+    function handleSubscribeSuccess(message) {
+        markPopupAsSeen();
+        hideGucciPageLoader();
+        var $form = $('#ever_subscription_form');
+        $form.find('.gucci-everpopup__submit').hide();
+        $('#everpspopup_success_msg').text(message).show();
+        setTimeout(function() {
+            closeGucciPopupSafely(true);
+        }, 1600);
+    }
+
+    function hidePopupFeedback() {
+        $('#everpspopup_confirm, #everpspopup_error').stop(true, true).hide().empty();
+    }
+
+    function showPopupFeedback(type, message) {
+        var $ok = $('#everpspopup_confirm');
+        var $err = $('#everpspopup_error');
+        if (type === 'ok') {
+            $err.hide();
+            $ok.stop(true, true).html(message).slideDown();
+            return;
+        }
+        $ok.hide();
+        $err.stop(true, true).html(message).slideDown();
+    }
+
+    function parsePopupAjaxResponse(data, xhr) {
+        if (typeof data === 'string') {
+            try {
+                return JSON.parse(data);
+            } catch (e) {
+                return null;
+            }
+        }
+        if (data && typeof data === 'object') {
+            return data;
+        }
+        if (xhr && xhr.responseText) {
+            try {
+                return JSON.parse(xhr.responseText);
+            } catch (e2) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    if ($('#everpspopup_block_center').length && $('#everpspopup_block_center').data('carrier')) {
+        var id_carrier = $('#everpspopup_block_center').data('carrier');
         if ($('input[value="'+id_carrier+',"], input[value="'+id_carrier+'"]').is(':checked')) {
             openGucciPopup(false);
         }
-        $('input[value="'+id_carrier+',"], input[value="'+id_carrier+'"]').click(function(e){
+        $(document).on('click', 'input[value="'+id_carrier+',"], input[value="'+id_carrier+'"]', function() {
             openGucciPopup(false);
-        })
+        });
     }
-    //check if there's atleast 1 pop-up and if carrier is set
-    if ($('#ever_fancy_mark').length >= 1 || $('#ever_fancy_mark').data('carrier') != 0) { 
+
+    $(document).on('click', '.gucci-everpopup__close', function() {
+        closeGucciPopupSafely(true);
+    });
+
+    $(document).on('click', '#gucci-everpopup-overlay', function(e) {
+        if (e.target === this) {
+            closeGucciPopupSafely(true);
+        }
+    });
+
+    $(document).on('keydown.gucciEverpopup', function(e) {
+        if (e.key === 'Escape' && $('#gucci-everpopup-overlay').hasClass('is-open')) {
+            closeGucciPopupSafely(false);
+        }
+    });
+
+    $(document).on('change', '#everpspopupGdpr', function() {
+        if (!$(this).prop('checked')) {
+            return;
+        }
+        var gdprMsg = ($('#ever_subscription_form').data('msg-gdpr') || '').trim();
+        var $err = $('#everpspopup_error');
+        if ($err.is(':visible') && $err.text().trim() === gdprMsg) {
+            hidePopupFeedback();
+        }
+    });
+
+    $(document).on('input', '#everpspopupEmail', function() {
+        var emailMsg = ($('#ever_subscription_form').data('msg-email') || '').trim();
+        var $err = $('#everpspopup_error');
+        if ($err.is(':visible') && $err.text().trim() === emailMsg) {
+            hidePopupFeedback();
+        }
+    });
+
+    var processAdultModeSubmit = null;
+
+    if ($('#everpspopup_block_center').length >= 1) {
         setTimeout(function() {
             if ($.cookie('everpspopup' + cookie_suffix) != popcontent) {
                 openGucciPopup(!!adult_mode);
             }
         }, delay);
-        if(adult_mode) {
-            $('#adult_mode_form').submit(function(e) {
-                e.preventDefault();
+        $(window).on('beforeunload.everpspopup', function() {
+            if ($('#gucci-everpopup-overlay').hasClass('is-open') && !gucciPopupStrict) {
+                markPopupAsSeen();
+            }
+        });
+        if (adult_mode) {
+            processAdultModeSubmit = function() {
+                hideGucciPageLoader();
                 $.ajax({
                     type: 'POST',
                     url: $('#everpspopup_new_adult_url').val(),
                     cache: false,
-                    dataType: 'JSON',
+                    dataType: 'json',
                     data: {
                         action: 'CheckAge',
                         ajax: true,
                         ever_birthday: $('#ever_birthday').val()
                     },
-                    success: function(data) {
-                        if (data.return) {
-                            console.log(data.message);
+                    success: function(data, textStatus, xhr) {
+                        data = parsePopupAjaxResponse(data, xhr);
+                        if (data && data.return) {
                             $.cookie('everpspopup' + cookie_suffix, popcontent, { expires: cookie_time});
-                            $('#everpspopup_confirm').slideDown();
-                            $('#everpspopup_confirm').html(data.message);
-                            setTimeout(function() { location.reload() }, 2000);
+                            showPopupFeedback('ok', data.message);
+                            setTimeout(function() { location.reload(); }, 2000);
                         } else {
-                            $('#everpspopup_error').slideDown();
-                            $('#everpspopup_error').html(data.error);
-                            setTimeout(function() { $('#everpspopup_error').fadeOut(); }, 5000);
+                            showPopupFeedback('error', (data && data.error) ? data.error : 'Error');
                         }
                     },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log(textStatus + ' ' + errorThrown);
+                    error: function() {
+                        showPopupFeedback('error', 'Error');
                     }
                 });
-            });
+            };
         }
-    } else {
-        console.log('No popup available');
-    }
-    if ($('#ever_error_content').length) {
-        var errors = $('#ever_error_content').html();
-        console.log(errors);
     }
 
-    $('#ever_subscription_form').submit(function(e) {
-        e.preventDefault();
+    function processEverSubscriptionSubmit() {
+        hideGucciPageLoader();
+        var $form = $('#ever_subscription_form');
+        var email = $.trim($('#everpspopupEmail').val() || '');
+        var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!emailOk) {
+            showPopupFeedback('error', $form.data('msg-email') || 'Please enter a valid email address');
+            return;
+        }
+        if (!$('#everpspopupGdpr').prop('checked')) {
+            showPopupFeedback('error', $form.data('msg-gdpr') || 'GDPR consent.');
+            return;
+        }
+        var $submit = $form.find('.gucci-everpopup__submit');
+        $submit.prop('disabled', true);
         $.ajax({
             type: 'POST',
             url: $('#everpspopup_new_subscribe_url').val(),
             cache: false,
-            dataType: 'JSON',
+            dataType: 'json',
+            timeout: 20000,
             data: {
                 action: 'NewSubscribe',
                 ajax: true,
-                everpspopupEmail: $('#everpspopupEmail').val(),
-                everpspopupGdpr: $('#everpspopupGdpr').val()
+                everpspopupEmail: email,
+                everpspopupGdpr: 1
             },
-            success: function(data) {
+            success: function(data, textStatus, xhr) {
+                data = parsePopupAjaxResponse(data, xhr);
+                if (!data) {
+                    showPopupFeedback('error', $form.data('msg-network') || 'Connection failed. Please try again.');
+                    $submit.prop('disabled', false);
+                    return;
+                }
                 if (data.return) {
-                    $('#everpspopup_confirm').slideDown();
-                    $('#everpspopup_confirm').html(data.message);
-                    setTimeout(function() { $.fancybox.close() }, 4000);
+                    handleSubscribeSuccess(data.message);
                 } else {
-                    $('#everpspopup_error').slideDown();
-                    $('#everpspopup_error').html(data.error);
-                    setTimeout(function() { $('#everpspopup_error').fadeOut(); }, 5000);
+                    showPopupFeedback('error', data.error || $form.data('msg-network'));
+                    $submit.prop('disabled', false);
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log(textStatus + ' ' + errorThrown);
+            error: function(jqXHR) {
+                hideGucciPageLoader();
+                var data = parsePopupAjaxResponse(null, jqXHR);
+                showPopupFeedback('error', (data && data.error) ? data.error : ($form.data('msg-network') || 'Connection failed. Please try again.'));
+                $submit.prop('disabled', false);
+            },
+            complete: function() {
+                hideGucciPageLoader();
             }
         });
-    });
+    }
+
+    // Capture: blocca submit nativo + page loader del tema, esegue AJAX inline
+    document.addEventListener('submit', function(e) {
+        var form = e.target;
+        if (!form || !form.id) {
+            return;
+        }
+        if (form.id === 'ever_subscription_form') {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            processEverSubscriptionSubmit();
+            return;
+        }
+        if (form.id === 'adult_mode_form' && processAdultModeSubmit) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            processAdultModeSubmit();
+        }
+    }, true);
 });
+})(jQuery);

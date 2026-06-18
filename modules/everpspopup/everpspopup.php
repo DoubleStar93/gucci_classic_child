@@ -38,7 +38,7 @@ class Everpspopup extends Module
     {
         $this->name = 'everpspopup';
         $this->tab = 'administration';
-        $this->version = '5.4.9';
+        $this->version = '5.6.6';
         $this->author = 'Team Ever';
         $this->need_instance = 0;
         $this->bootstrap = true;
@@ -413,44 +413,7 @@ class Everpspopup extends Module
 
     public function hookHeader()
     {
-        $controller_name = Tools::getValue('controller');
-        $assetVersion = $this->version;
-
-        if ((bool) Configuration::get('EVERPSPOPUP_FANCYBOX') === true) {
-            if ($controller_name != 'order') {
-                if (method_exists($this->context->controller, 'registerStylesheet')) {
-                    $this->context->controller->registerStylesheet(
-                        'module-everpspopup-fancybox',
-                        'modules/'.$this->name.'/views/css/jquery.fancybox.min.css',
-                        ['media' => 'all', 'priority' => 190, 'version' => $assetVersion]
-                    );
-                    $this->context->controller->registerJavascript(
-                        'module-everpspopup-fancybox',
-                        'modules/'.$this->name.'/views/js/jquery.fancybox.min.js',
-                        ['position' => 'bottom', 'priority' => 190, 'version' => $assetVersion]
-                    );
-                } else {
-                    $this->context->controller->addCSS($this->_path . 'views/css/jquery.fancybox.min.css', 'all');
-                    $this->context->controller->addJS($this->_path . 'views/js/jquery.fancybox.min.js', 'all');
-                }
-            }
-        }
-
-        if (method_exists($this->context->controller, 'registerStylesheet')) {
-            $this->context->controller->registerStylesheet(
-                'module-everpspopup-style',
-                'modules/'.$this->name.'/views/css/everpspopup.css',
-                ['media' => 'all', 'priority' => 195, 'version' => $assetVersion]
-            );
-            $this->context->controller->registerJavascript(
-                'module-everpspopup-script',
-                'modules/'.$this->name.'/views/js/everpspopup.js',
-                ['position' => 'bottom', 'priority' => 195, 'version' => $assetVersion]
-            );
-        } else {
-            $this->context->controller->addCSS($this->_path . 'views/css/everpspopup.css', 'all');
-            $this->context->controller->addJS($this->_path . 'views/js/everpspopup.js', 'all');
-        }
+        // Asset popup caricati inline nel template (evita bundle CCC obsoleto).
     }
 
     public function hookDisplayAmpContent()
@@ -525,6 +488,8 @@ class Everpspopup extends Module
                 'background' => $background,
                 'ever_ask_age' => (bool) Configuration::get('EVERPSPOPUP_ASK_AGE'),
                 'ever_required_age' => $date,
+                'everpspopup_asset_version' => $this->version,
+                'everpspopup_assets_base' => $this->_path,
             ]
         );
         return $this->display(__FILE__, 'everpspopup.tpl', $this->getCacheId());

@@ -2163,6 +2163,10 @@
         return;
       }
 
+      if (form.closest('#gucci-everpopup-overlay')) {
+        return;
+      }
+
       showLoader();
     }, true);
 

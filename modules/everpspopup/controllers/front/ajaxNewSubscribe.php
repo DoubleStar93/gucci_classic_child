@@ -38,7 +38,6 @@ class EverpspopupAjaxNewSubscribeModuleFrontController extends ModuleFrontContro
      */
     public function displayAjaxNewSubscribe()
     {
-        $module = new Everpspopup();
         $ps_activeNewsletter = false;
         if ($this->isSeven) {
             $ps_activeNewsletter = Module::isEnabled('ps_emailsubscription');
@@ -52,7 +51,7 @@ class EverpspopupAjaxNewSubscribeModuleFrontController extends ModuleFrontContro
             ) {
                 die(json_encode([
                     'return' => false,
-                    'error' => $module->l('User ip not found or not valid', 'everpspopup'),
+                    'error' => $this->module->l('User ip not found or not valid', 'ajaxNewSubscribe'),
                 ]));
             }
 
@@ -61,14 +60,14 @@ class EverpspopupAjaxNewSubscribeModuleFrontController extends ModuleFrontContro
             ) {
                 die(json_encode([
                     'return' => false,
-                    'error' => $module->l('Mail address is empty or is not valid.', 'everpspopup'),
+                    'error' => $this->module->l('Mail address is empty or is not valid.', 'ajaxNewSubscribe'),
                 ]));
             }
 
             if (!Tools::getValue('everpspopupGdpr')) {
                 die(json_encode([
                     'return' => false,
-                    'error' => $module->l('GDPR consent.', 'everpspopup'),
+                    'error' => $this->module->l('GDPR consent.', 'ajaxNewSubscribe'),
                 ]));
             }
 
@@ -98,13 +97,13 @@ class EverpspopupAjaxNewSubscribeModuleFrontController extends ModuleFrontContro
                 if (!$activate) {
                     die(json_encode([
                         'return' => false,
-                        'error' => $module->l('Error : Can\'t update the newsletter subscription', 'ajaxNewSubscribe'),
+                        'error' => $this->module->l('Error : Can\'t update the newsletter subscription', 'ajaxNewSubscribe'),
                     ]));
                 }
 
                 die(json_encode([
-                    'return' => true,
-                    'message' => $module->l('You\'ve already registered to our mailing list', 'ajaxNewSubscribe'),
+                    'return' => false,
+                    'error' => $this->module->l('You\'ve already registered to our mailing list', 'ajaxNewSubscribe'),
                 ]));
             }
             if ($this->isSeven) {
@@ -133,13 +132,21 @@ class EverpspopupAjaxNewSubscribeModuleFrontController extends ModuleFrontContro
             );
 
             if ($newSubscription) {
-                if ($this->isSeven && Configuration::get('NW_CONFIRMATION_EMAIL')) {
+                $this->respondJsonAndFinish([
+                    'return' => true,
+                    'message' => $this->module->l('Thank you ! Your e-mail has been successfuly registered.', 'ajaxNewSubscribe'),
+                ], function () use ($user_email) {
+                    if (!$this->isSeven || !Configuration::get('NW_CONFIRMATION_EMAIL')) {
+                        return;
+                    }
+
                     $this->sendConfirmationEmail($user_email);
-                    // send voucher
-                    if ($code = Configuration::get('NW_VOUCHER_CODE')) {
+
+                    $code = Configuration::get('NW_VOUCHER_CODE');
+                    if ($code) {
                         $this->sendVoucher($user_email, $code);
                     }
-                    // hook
+
                     Hook::exec(
                         'actionNewsletterRegistrationAfter',
                         [
@@ -149,23 +156,53 @@ class EverpspopupAjaxNewSubscribeModuleFrontController extends ModuleFrontContro
                             'error' => false,
                         ]
                     );
-                }
-                die(json_encode([
-                    'return' => true,
-                    'message' => $module->l('Thank you ! Your e-mail has been successfuly registered.'),
-                ]));
+                });
             }
 
             die(json_encode([
                 'return' => false,
-                'error' => $module->l('Sorry, something went wrong. Please try again later.'),
-            ]));
-        } else {
-            die(json_encode([
-                'return' => true,
-                'message' => $module->l('Module Newsletter not activated'),
+                'error' => $this->module->l('Sorry, something went wrong. Please try again later.', 'ajaxNewSubscribe'),
             ]));
         }
+
+        die(json_encode([
+            'return' => true,
+            'message' => $this->module->l('Module Newsletter not activated', 'ajaxNewSubscribe'),
+        ]));
+    }
+
+    /**
+     * Invia subito la risposta JSON al browser, poi esegue callback opzionale
+     * (es. invio email) senza bloccare la chiusura del popup.
+     *
+     * @param array         $payload
+     * @param callable|null $afterResponse
+     */
+    protected function respondJsonAndFinish(array $payload, $afterResponse = null)
+    {
+        $json = json_encode($payload);
+
+        if (!headers_sent()) {
+            header('Content-Type: application/json; charset=utf-8');
+            header('Content-Length: ' . strlen($json));
+        }
+
+        echo $json;
+
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        } else {
+            if (ob_get_level() > 0) {
+                @ob_end_flush();
+            }
+            flush();
+        }
+
+        if (is_callable($afterResponse)) {
+            call_user_func($afterResponse);
+        }
+
+        exit;
     }
 
     /**

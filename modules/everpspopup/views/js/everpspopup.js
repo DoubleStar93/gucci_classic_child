@@ -144,6 +144,30 @@
         $container.addClass('gucci-everpopup-fancybox');
     }
 
+    function fixGucciPopupOverflow(instance) {
+        if (!instance || !instance.$refs || !instance.$refs.container) {
+            return;
+        }
+        var $box = instance.$refs.container;
+        var $targets = $box.find(
+            '.fancybox-stage, .fancybox-inner, .fancybox-slide, .fancybox-content, ' +
+            '#everpspopup_block_center, .gucci-everpopup__panel'
+        );
+        $targets.css({
+            overflow: 'visible',
+            maxHeight: 'none',
+            height: 'auto'
+        });
+        $box.find('.fancybox-slide--current').css({
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'visible',
+            maxHeight: 'none',
+            height: 'auto'
+        });
+    }
+
     function buildGucciPopupFancyboxOptions(strict) {
         return {
             type: 'inline',
@@ -157,7 +181,7 @@
             clickContent: false,
             clickSlide: strict ? false : 'close',
             touch: false,
-            hideScrollbar: true,
+            hideScrollbar: false,
             modal: !!strict,
             clickOutside: strict ? false : 'close',
             escapeKey: !strict,
@@ -169,6 +193,14 @@
             },
             afterLoad: function(instance) {
                 markGucciFancybox(instance);
+                fixGucciPopupOverflow(instance);
+            },
+            afterShow: function(instance) {
+                markGucciFancybox(instance);
+                fixGucciPopupOverflow(instance);
+                if (instance && typeof instance.update === 'function') {
+                    instance.update();
+                }
             }
         };
     }

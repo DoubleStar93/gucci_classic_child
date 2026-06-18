@@ -1,66 +1,254 @@
 /**
- * 2019-2023 Team Ever
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Academic Free License (AFL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/afl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@prestashop.com so we can send you a copy immediately.
- *
- *  @author    Team Ever <https://www.team-ever.com/>
- *  @copyright 2019-2023 Team Ever
- *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ * Ever Popup — stile Barbara Alvisi / Gucci (self-contained nel modulo)
  */
-/* Webbax - Tuto 36 - Popup */
-/*https://www.webbax.ch/2017/10/02/prestashop-1-7-popup-ep-36/*/
-#everpspopup_block_center{
-    background-size: cover;
-    margin: 0;
-    padding: 0;
-}
-#everpspopup_block_center h1, #everpspopup_block_center h2, #everpspopup_block_center span {
-    text-align: center;
-}
-#ever_newsletter_subscribe {
-    font-size: 0.9rem;
-}
-.fancybox-slide>*{
-    /*padding:0!important;*/
-    margin:0!important;
-    width:100%!important;
-    overflow: hidden;
-}
-.fancybox-slide{
-    padding:0 30%!important;
+.gucci-everpopup {
+  --everpopup-panna: #f6f1e8;
+  --everpopup-perla: #fff9f2;
+  --everpopup-cioccolato: #3d2b22;
+  --everpopup-taupe: #9a8b7a;
+  --everpopup-bordeaux: #6b2a28;
+  --everpopup-bordeaux-dark: #541f1d;
+  --everpopup-border: #d9cfc0;
+  --everpopup-font-sans: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --everpopup-font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
 }
 
-div#everpspopup_block_center img {
-    height: auto!important;
-    max-width: 100%!important;
+#everpspopup_block_center.gucci-everpopup {
+  margin: 0;
+  padding: 0;
+  background: transparent;
 }
 
-/* Ipad */
-@media(max-width:1024px){
-    .fancybox-slide{padding:0 0%!important;}
+#everpspopup_block_center.gucci-everpopup img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
-/* Mobile */
-@media(max-width:500px){
-   .fancybox-slide>*{width:80%!important;}
-   .fancybox-slide{padding:0 10%!important;}
+.gucci-everpopup__panel {
+  position: relative;
+  width: min(32rem, 92vw);
+  max-height: min(88vh, 42rem);
+  overflow: auto;
+  margin: 0;
+  padding: clamp(1.75rem, 4vw, 2.5rem);
+  background: var(--ba-panna, var(--everpopup-panna));
+  color: var(--ba-cioccolato, var(--everpopup-cioccolato));
+  border: 1px solid var(--border-color, var(--everpopup-border));
+  box-shadow: none;
+  text-align: center;
 }
-/*Merci Germain ! De la part de toute la Team :) */
-.fancybox-inner{
-    overflow: hidden!important;
+
+.gucci-everpopup__link-wrap {
+  display: block;
+  color: inherit;
+  text-decoration: none;
 }
-#adult_mode_form .input-group {
-    margin: 0 auto;
+
+.gucci-everpopup__content {
+  margin-bottom: 0;
 }
-.fancybox-container *{
-    margin:0;
-    padding:0;
+
+.gucci-everpopup__content.rte h1,
+.gucci-everpopup__content.rte h2,
+.gucci-everpopup__content.rte .gucci-everpopup__title,
+.gucci-everpopup__title {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-serif, var(--everpopup-font-serif));
+  font-size: clamp(1.5rem, 3.2vw, 1.875rem);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--ba-cioccolato, var(--everpopup-cioccolato));
+}
+
+.gucci-everpopup__content.rte p,
+.gucci-everpopup__content.rte .gucci-everpopup__lede,
+.gucci-everpopup__lede {
+  margin: 0 0 1rem;
+  font-family: var(--font-sans, var(--everpopup-font-sans));
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--text-muted, var(--everpopup-taupe));
+}
+
+.gucci-everpopup__content.rte img {
+  margin: 0 auto 1.25rem;
+  max-width: 100%;
+  height: auto;
+}
+
+.gucci-everpopup__eyebrow {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-sans, var(--everpopup-font-sans));
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ba-taupe, var(--everpopup-taupe));
+}
+
+.gucci-everpopup__newsletter,
+.gucci-everpopup__adult {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color, var(--everpopup-border));
+}
+
+.gucci-everpopup__form {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.gucci-everpopup__label {
+  margin: 0;
+  font-family: var(--font-sans, var(--everpopup-font-sans));
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ba-cioccolato, var(--everpopup-cioccolato));
+}
+
+.gucci-everpopup__input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.85rem !important;
+  font-family: var(--font-sans, var(--everpopup-font-sans)) !important;
+  font-size: 15px !important;
+  font-weight: 300;
+  color: var(--ba-cioccolato, var(--everpopup-cioccolato)) !important;
+  background: var(--ba-perla, var(--everpopup-perla)) !important;
+  border: 1px solid var(--border-color, var(--everpopup-border)) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.gucci-everpopup__input:focus {
+  border-color: var(--ba-cioccolato, var(--everpopup-cioccolato)) !important;
+  outline: none;
+  box-shadow: none !important;
+}
+
+.gucci-everpopup__gdpr {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.gucci-everpopup__checkbox {
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.gucci-everpopup__gdpr-label {
+  margin: 0;
+  font-family: var(--font-sans, var(--everpopup-font-sans));
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--text-muted, var(--everpopup-taupe));
+}
+
+.gucci-everpopup__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 2.75rem;
+  margin-top: 0.35rem;
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-sans, var(--everpopup-font-sans));
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ba-perla, var(--everpopup-perla)) !important;
+  background: var(--ba-bordeaux, var(--everpopup-bordeaux));
+  border: 1px solid var(--ba-bordeaux, var(--everpopup-bordeaux));
+  border-radius: 0;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.gucci-everpopup__submit:hover,
+.gucci-everpopup__submit:focus {
+  background: var(--ba-bordeaux-dark, var(--everpopup-bordeaux-dark));
+  border-color: var(--ba-bordeaux-dark, var(--everpopup-bordeaux-dark));
+  outline: none;
+}
+
+.gucci-everpopup__feedback {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-sans, var(--everpopup-font-sans));
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.gucci-everpopup__feedback--ok {
+  background: rgba(107, 42, 40, 0.08);
+  color: var(--ba-bordeaux, var(--everpopup-bordeaux));
+  border: 1px solid rgba(107, 42, 40, 0.18);
+}
+
+.gucci-everpopup__feedback--error {
+  background: rgba(61, 43, 34, 0.06);
+  color: var(--ba-cioccolato, var(--everpopup-cioccolato));
+  border: 1px solid var(--border-color, var(--everpopup-border));
+}
+
+#everpspopup_block_center.gucci-everpopup .well,
+#everpspopup_block_center.gucci-everpopup .btn-info,
+#everpspopup_block_center.gucci-everpopup .alert-success,
+#everpspopup_block_center.gucci-everpopup .alert-warning {
+  all: unset;
+}
+
+/* Fancybox */
+.fancybox-container.gucci-everpopup-fancybox .fancybox-bg {
+  background: rgba(26, 20, 18, 0.72);
+}
+
+.fancybox-container.gucci-everpopup-fancybox .fancybox-slide {
+  padding: 1.25rem !important;
+}
+
+.fancybox-container.gucci-everpopup-fancybox .fancybox-content {
+  background: transparent;
+  padding: 0;
+  overflow: visible;
+}
+
+.fancybox-container.gucci-everpopup-fancybox .fancybox-inner {
+  overflow: visible !important;
+}
+
+.fancybox-container.gucci-everpopup-fancybox .fancybox-close-small {
+  top: 0.35rem;
+  right: 0.35rem;
+  padding: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: transparent;
+  color: var(--ba-cioccolato, var(--everpopup-cioccolato));
+  opacity: 0.72;
+}
+
+.fancybox-container.gucci-everpopup-fancybox .fancybox-close-small:hover {
+  color: var(--ba-bordeaux, var(--everpopup-bordeaux));
+  opacity: 1;
+}
+
+@media (max-width: 500px) {
+  .fancybox-container.gucci-everpopup-fancybox .fancybox-slide {
+    padding: 0.75rem !important;
+  }
 }

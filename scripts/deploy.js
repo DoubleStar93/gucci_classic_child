@@ -287,8 +287,32 @@ async function deployModulesToServer(client, themeRemotePath) {
       continue;
     }
 
+    const remoteEntries = await listRemoteDirSafe(client, remoteModulePath);
+    const remoteFileCount = remoteEntries.filter((e) => e.isFile).length;
+    const localFiles = await walkLocalFiles(localModuleDir);
+
+    if (remoteFileCount < Math.min(3, localFiles.length)) {
+      console.log(`Modulo ${moduleName}: ${remoteModulePath} (upload completo — cartella remota vuota/incompleta)`);
+      await ensureRemoteDir(client, remoteModulePath);
+      await client.uploadFromDir(localModuleDir, remoteModulePath);
+      console.log(`Modulo ${moduleName}: upload completato (${localFiles.length} file).`);
+      continue;
+    }
+
     console.log(`Modulo ${moduleName}: ${remoteModulePath} (sync)`);
     await syncThemeTree(client, remoteModulePath, localModuleDir);
+  }
+}
+
+async function listRemoteDirSafe(client, remotePath) {
+  const startDir = await client.pwd();
+  try {
+    await client.cd(remotePath);
+    return await listDir(client);
+  } catch {
+    return [];
+  } finally {
+    await client.cd(startDir);
   }
 }
 

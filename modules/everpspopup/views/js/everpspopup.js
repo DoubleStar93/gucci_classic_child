@@ -138,88 +138,64 @@
     } else {
         var popcontent = 1;
     }
+
+    function markGucciFancybox(instance) {
+        var $container = instance && instance.$refs ? instance.$refs.container : $('.fancybox-container').last();
+        $container.addClass('gucci-everpopup-fancybox');
+    }
+
+    function buildGucciPopupFancyboxOptions(strict) {
+        return {
+            type: 'inline',
+            animationEffect: 'fade',
+            transitionEffect: 'fade',
+            animationDuration: 380,
+            transitionDuration: 280,
+            infobar: false,
+            toolbar: false,
+            smallBtn: !strict,
+            clickContent: false,
+            clickSlide: strict ? false : 'close',
+            touch: false,
+            hideScrollbar: true,
+            modal: !!strict,
+            clickOutside: strict ? false : 'close',
+            escapeKey: !strict,
+            beforeClose: function(instance, current, e) {
+                if (strict) {
+                    return false;
+                }
+                $.cookie('everpspopup' + cookie_suffix, popcontent, { expires: cookie_time });
+            },
+            afterLoad: function(instance) {
+                markGucciFancybox(instance);
+            }
+        };
+    }
+
+    function openGucciPopup(strict) {
+        $('#ever_fancy_mark').fancybox(buildGucciPopupFancyboxOptions(!!strict)).trigger('click');
+        if (!strict) {
+            $(window).bind('beforeunload', function() {
+                $.cookie('everpspopup' + cookie_suffix, popcontent, { expires: cookie_time });
+            });
+        }
+    }
+
     if ($('#ever_fancy_mark').length && $('#ever_fancy_mark').data('carrier')) {
         var id_carrier = $('#ever_fancy_mark').data('carrier');
         if ($('input[value="'+id_carrier+',"], input[value="'+id_carrier+'"]').is(':checked')) {
-            $('#ever_fancy_mark').fancybox({
-                'type'  :   'inline',
-                'transitionIn'  :   'elastic',
-                'transitionOut' :   'elastic',
-                'speedIn'       :   600,
-                'speedOut'      :   200,
-                'hideOnContentClick'    :   true,
-                'overlayShow'   :   false,
-                'opacity' : 1,
-                'beforeClose': function() {
-                    $.cookie('everpspopup' + cookie_suffix, popcontent, { expires: cookie_time});
-                },
-            }).trigger('click');
-            $(window).bind('beforeunload', function(){
-              $.cookie('everpspopup' + cookie_suffix, popcontent, { expires: cookie_time});
-            });
+            openGucciPopup(false);
         }
         $('input[value="'+id_carrier+',"], input[value="'+id_carrier+'"]').click(function(e){
-            $('#ever_fancy_mark').fancybox({
-                'type'  :   'inline',
-                'transitionIn'  :   'elastic',
-                'transitionOut' :   'elastic',
-                'speedIn'       :   600,
-                'speedOut'      :   200,
-                'hideOnContentClick'    :   true,
-                'overlayShow'   :   false,
-                'opacity' : 1,
-                'beforeClose': function() {
-                    $.cookie('everpspopup' + cookie_suffix, popcontent, { expires: cookie_time});
-                },
-            }).trigger('click');
-            $(window).bind('beforeunload', function(){
-              $.cookie('everpspopup' + cookie_suffix, popcontent, { expires: cookie_time});
-            });
+            openGucciPopup(false);
         })
     }
     //check if there's atleast 1 pop-up and if carrier is set
     if ($('#ever_fancy_mark').length >= 1 || $('#ever_fancy_mark').data('carrier') != 0) { 
         setTimeout(function() {
             if ($.cookie('everpspopup' + cookie_suffix) != popcontent) {
-                if (adult_mode) {
-                    $('#ever_fancy_mark').fancybox({
-                        'type'  :   'inline',
-                        'transitionIn'  :   'elastic',
-                        'transitionOut' :   'elastic',
-                        'speedIn'       :   600,
-                        'speedOut'      :   200,
-                        'showCloseButton' : false,
-                        'hideOnOverlayClick' : false,
-                        'hideOnContentClick' : false,
-                        'closeClick' : false,
-                        'overlayShow'   :   false,
-                        'closeBtn' : false,
-                        'opacity' : 1,
-                        beforeClose : function () {
-                            return false; //prevent clicking on sides to close the pop-up
-                        },
-                        touch: false //prevent from dragging to close the pop-up
-                    }).trigger('click');
-                    $('.fancybox-close-small, .fancybox-skin .fancybox-close').hide();
-                    $('.fancybox-bg, .fancybox-stage, .fancybox-overlay, .fancybox-overlay-fixed').css('background-color', '#000000');
-                } else {
-                    $('#ever_fancy_mark').fancybox({
-                        'type'  :   'inline',
-                        'transitionIn'  :   'elastic',
-                        'transitionOut' :   'elastic',
-                        'speedIn'       :   600,
-                        'speedOut'      :   200,
-                        'hideOnContentClick'    :   true,
-                        'overlayShow'   :   false,
-                        'opacity' : 1,
-                        'beforeClose': function() {
-                            $.cookie('everpspopup' + cookie_suffix, popcontent, { expires: cookie_time});
-                        },
-                    }).trigger('click');
-                    $(window).bind('beforeunload', function(){
-                      $.cookie('everpspopup' + cookie_suffix, popcontent, { expires: cookie_time});
-                    });
-                }
+                openGucciPopup(!!adult_mode);
             }
         }, delay);
         if(adult_mode) {

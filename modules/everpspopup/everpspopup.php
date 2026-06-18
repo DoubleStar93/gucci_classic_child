@@ -38,7 +38,7 @@ class Everpspopup extends Module
     {
         $this->name = 'everpspopup';
         $this->tab = 'administration';
-        $this->version = '5.4.1';
+        $this->version = '5.4.3';
         $this->author = 'Team Ever';
         $this->need_instance = 0;
         $this->bootstrap = true;
@@ -414,14 +414,43 @@ class Everpspopup extends Module
     public function hookHeader()
     {
         $controller_name = Tools::getValue('controller');
+        $assetVersion = $this->version;
+
         if ((bool) Configuration::get('EVERPSPOPUP_FANCYBOX') === true) {
             if ($controller_name != 'order') {
-                $this->context->controller->addCSS($this->_path . 'views/css/jquery.fancybox.min.css', 'all');
-                $this->context->controller->addJS($this->_path . 'views/js/jquery.fancybox.min.js', 'all');
+                if (method_exists($this->context->controller, 'registerStylesheet')) {
+                    $this->context->controller->registerStylesheet(
+                        'module-everpspopup-fancybox',
+                        'modules/'.$this->name.'/views/css/jquery.fancybox.min.css',
+                        ['media' => 'all', 'priority' => 190, 'version' => $assetVersion]
+                    );
+                    $this->context->controller->registerJavascript(
+                        'module-everpspopup-fancybox',
+                        'modules/'.$this->name.'/views/js/jquery.fancybox.min.js',
+                        ['position' => 'bottom', 'priority' => 190, 'version' => $assetVersion]
+                    );
+                } else {
+                    $this->context->controller->addCSS($this->_path . 'views/css/jquery.fancybox.min.css', 'all');
+                    $this->context->controller->addJS($this->_path . 'views/js/jquery.fancybox.min.js', 'all');
+                }
             }
         }
-        $this->context->controller->addCSS($this->_path . 'views/css/everpspopup.css', 'all');
-        $this->context->controller->addJS($this->_path . 'views/js/everpspopup.js', 'all');
+
+        if (method_exists($this->context->controller, 'registerStylesheet')) {
+            $this->context->controller->registerStylesheet(
+                'module-everpspopup-style',
+                'modules/'.$this->name.'/views/css/everpspopup.css',
+                ['media' => 'all', 'priority' => 195, 'version' => $assetVersion]
+            );
+            $this->context->controller->registerJavascript(
+                'module-everpspopup-script',
+                'modules/'.$this->name.'/views/js/everpspopup.js',
+                ['position' => 'bottom', 'priority' => 195, 'version' => $assetVersion]
+            );
+        } else {
+            $this->context->controller->addCSS($this->_path . 'views/css/everpspopup.css', 'all');
+            $this->context->controller->addJS($this->_path . 'views/js/everpspopup.js', 'all');
+        }
     }
 
     public function hookDisplayAmpContent()
@@ -585,15 +614,14 @@ class Everpspopup extends Module
             $popup->active = 1;
             foreach (Language::getLanguages(false) as $language) {
                 $popup->name[$language['id_lang']] = $this->l(
-                    'Prestashop popup by Team Ever'
+                    'Barbara Alvisi'
                 );
                 $popup->content[$language['id_lang']] = '
-                <h1>Prestashop popup by Team Ever</h1>
-                <p>Hi, my name is Sudo !</p>
-                <p>I\'m a good girl, i like hugs and sweets</p>
-                <img src="https://www.team-ever.com/wp-content/uploads/2019/06/sudo-6.jpg" alt="Sudo Prestashop" title="Sudo Prestashop" style="width:100%;"/>
+                <p class="gucci-everpopup__eyebrow">Newsletter</p>
+                <h2 class="gucci-everpopup__title">Resta in contatto</h2>
+                <p class="gucci-everpopup__lede">Iscriviti per ricevere novità, collezioni e inviti esclusivi.</p>
                 ';
-                $popup->link[$language['id_lang']] = 'https://www.team-ever.com/prestashop-ever-ultimate-seo/';
+                $popup->link[$language['id_lang']] = '';
             }
             $popup->save();
         }

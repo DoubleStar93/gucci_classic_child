@@ -7,11 +7,27 @@
   {else}
     {l s='More from this category' d='Shop.Theme.Catalog' assign='gucciCategoryProductsTitle'}
   {/if}
-  {include
-    file='_partials/gucci-product-grid-section.tpl'
-    products=$products
-    sectionTitle=$gucciCategoryProductsTitle
-    sectionClass='gucci-pdp-category-products gucci-pdp-related'
-    titleClass='gucci-pdp-category-products-title'
-  }
+  {if $products|@count > 8}
+    {assign var='gucciGridProducts' value=$products|array_slice:0:8}
+  {else}
+    {assign var='gucciGridProducts' value=$products}
+  {/if}
+  <section class="gucci-product-grid-section gucci-pdp-category-products gucci-pdp-related clearfix">
+    <header class="gucci-product-grid-section__header">
+      <p class="gucci-product-grid-section__title gucci-pdp-category-products-title">
+        {$gucciCategoryProductsTitle}
+      </p>
+    </header>
+    <div class="products gucci-plp-grid gucci-product-grid" data-gucci-product-grid>
+      {foreach from=$gucciGridProducts item="product" key="position"}
+        {include
+          file='catalog/_partials/miniatures/product.tpl'
+          product=$product
+          position=$position
+          productClasses='gucci-plp-cell gucci-product-miniature'
+          scope='parent'
+        }
+      {/foreach}
+    </div>
+  </section>
 {/if}

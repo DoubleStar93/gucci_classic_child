@@ -1,5 +1,5 @@
 {**
- * Classic Gucci — prodotti visti (griglia come homepage)
+ * Classic Gucci — prodotti visti (PDP)
  *}
 {if $products|count}
   {if $language.iso_code == 'it'}
@@ -7,11 +7,27 @@
   {else}
     {l s='Viewed products' d='Modules.Viewedproduct.Shop' assign='gucciViewedTitle'}
   {/if}
-  {include
-    file='_partials/gucci-product-grid-section.tpl'
-    products=$products
-    sectionTitle=$gucciViewedTitle
-    sectionClass='gucci-pdp-viewed-products'
-    titleClass='gucci-pdp-viewed-products-title'
-  }
+  {if $products|@count > 8}
+    {assign var='gucciGridProducts' value=$products|array_slice:0:8}
+  {else}
+    {assign var='gucciGridProducts' value=$products}
+  {/if}
+  <section class="gucci-product-grid-section gucci-pdp-viewed-products clearfix">
+    <header class="gucci-product-grid-section__header">
+      <p class="gucci-product-grid-section__title gucci-pdp-viewed-products-title">
+        {$gucciViewedTitle}
+      </p>
+    </header>
+    <div class="products gucci-plp-grid gucci-product-grid" data-gucci-product-grid>
+      {foreach from=$gucciGridProducts item="product" key="position"}
+        {include
+          file='catalog/_partials/miniatures/product.tpl'
+          product=$product
+          position=$position
+          productClasses='gucci-plp-cell gucci-product-miniature'
+          scope='parent'
+        }
+      {/foreach}
+    </div>
+  </section>
 {/if}

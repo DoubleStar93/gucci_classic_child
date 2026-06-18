@@ -40,7 +40,57 @@
   {/if}
 {/block}
 
+{block name='head_seo' append}
+  <script>document.documentElement.classList.add('gucci-is-loading');</script>
+  <style id="gucci-page-loader-critical">
+    html.gucci-is-loading,
+    html.gucci-is-loading body {
+      overflow: hidden;
+    }
+
+    .gucci-page-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    .gucci-page-loader.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .gucci-page-loader__mark {
+      display: block;
+      width: clamp(4.5rem, 14vw, 6.25rem);
+      height: auto;
+      animation: gucci-loader-pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes gucci-loader-pulse {
+      0%,
+      100% {
+        opacity: 0.5;
+        transform: scale(0.94);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+{/block}
+
 {block name='head_icons' prepend}
+  <link rel="preload" as="image" href="{$urls.base_url}themes/classic-gucci/assets/img/brand/charger.png" type="image/png">
   <link rel="icon" type="image/png" sizes="512x512" href="{$urls.base_url}themes/classic-gucci/assets/img/brand/favicon/favicon-512.png">
   <link rel="icon" type="image/png" sizes="32x32" href="{$urls.base_url}themes/classic-gucci/assets/img/brand/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="{$urls.base_url}themes/classic-gucci/assets/img/brand/favicon/favicon-16.png">
@@ -52,7 +102,7 @@
 
 {* Dopo il bundle CCC — unica sorgente token/tipografia (custom.css) *}
 {block name='stylesheets' append}
-  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.13.8" type="text/css" media="all">
+  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.13.11" type="text/css" media="all">
   <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/home-overrides.css?v=1.0.3" type="text/css" media="all">
 {/block}
 

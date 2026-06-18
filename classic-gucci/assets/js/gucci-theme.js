@@ -2084,6 +2084,96 @@
   };
 
   initGucciFooterNewsletter();
+
+  const initGucciPageLoader = () => {
+    const loader = document.getElementById('gucci-page-loader');
+    if (!loader) {
+      return;
+    }
+
+    const setLoadingState = (isLoading) => {
+      document.documentElement.classList.toggle('gucci-is-loading', isLoading);
+      document.body.classList.toggle('gucci-is-loading', isLoading);
+    };
+
+    const showLoader = () => {
+      loader.classList.remove('is-hidden');
+      setLoadingState(true);
+    };
+
+    const hideLoader = () => {
+      if (loader.classList.contains('is-hidden')) {
+        return;
+      }
+
+      loader.classList.add('is-hidden');
+      setLoadingState(false);
+    };
+
+    const isInternalNavigationLink = (link) => {
+      if (!(link instanceof HTMLAnchorElement)) {
+        return false;
+      }
+
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || link.target === '_blank' || link.hasAttribute('download')) {
+        return false;
+      }
+
+      try {
+        const url = new URL(href, window.location.href);
+        if (url.origin !== window.location.origin) {
+          return false;
+        }
+
+        return url.protocol === 'http:' || url.protocol === 'https:';
+      } catch {
+        return false;
+      }
+    };
+
+    const revealWhenReady = () => {
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(hideLoader);
+      });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', revealWhenReady, { once: true });
+    } else {
+      revealWhenReady();
+    }
+
+    document.addEventListener('click', (event) => {
+      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return;
+      }
+
+      const link = event.target.closest('a[href]');
+      if (!isInternalNavigationLink(link)) {
+        return;
+      }
+
+      showLoader();
+    }, true);
+
+    document.addEventListener('submit', (event) => {
+      const form = event.target;
+      if (!(form instanceof HTMLFormElement) || form.target) {
+        return;
+      }
+
+      showLoader();
+    }, true);
+
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) {
+        hideLoader();
+      }
+    });
+  };
+
+  initGucciPageLoader();
 };
 
   if (document.readyState === 'loading') {

@@ -2089,6 +2089,28 @@ body#search .gucci-price {
   box-shadow: none;
 }
 
+/* Classic PS — niente linea grigia sotto immagine su hover/focus card */
+.gucci-product-miniature .thumbnail-container:hover .product-description::after,
+.gucci-product-miniature .thumbnail-container:focus .product-description::after,
+.gucci-product-miniature .thumbnail-container:focus-within .product-description::after,
+.gucci-plp-cell .thumbnail-container:hover .product-description::after,
+.gucci-plp-cell .thumbnail-container:focus .product-description::after,
+.gucci-plp-cell .thumbnail-container:focus-within .product-description::after,
+.product-miniature .thumbnail-container:hover .product-description::after,
+.product-miniature .thumbnail-container:focus .product-description::after,
+.product-miniature .thumbnail-container:focus-within .product-description::after {
+  content: none !important;
+  display: none !important;
+  border: none !important;
+  opacity: 0 !important;
+}
+
+.gucci-product-miniature .product-title a:hover,
+.gucci-product-miniature .product-title a:focus,
+.gucci-product-miniature .product-title a:focus-visible {
+  text-decoration: none !important;
+}
+
 /* ==========================================================================
    Mobile header
    ========================================================================== */
@@ -8882,11 +8904,11 @@ body#checkout #payment-confirmation button {
   letter-spacing: 0.16em !important;
   text-transform: uppercase !important;
   line-height: 1.25 !important;
-  background: var(--gucci-color-accent) !important;
-  border: 1px solid var(--gucci-color-accent) !important;
+  background: rgba(107, 42, 40, 0.72) !important;
+  border: 1px solid rgba(107, 42, 40, 0.72) !important;
   color: var(--ba-perla) !important;
   -webkit-text-fill-color: var(--ba-perla) !important;
-  box-shadow: 0 4px 18px rgba(26, 20, 18, 0.24);
+  box-shadow: 0 4px 18px rgba(26, 20, 18, 0.14);
   white-space: nowrap;
   max-width: calc(100% - 1.5rem);
   overflow: hidden;
@@ -8896,8 +8918,8 @@ body#checkout #payment-confirmation button {
 .gucci-home-category-card__btn:hover,
 .gucci-home-category-card__btn:focus,
 .gucci-home-category-card__btn:focus-visible {
-  background: var(--ba-bordeaux-dark) !important;
-  border-color: var(--ba-bordeaux-dark) !important;
+  background: rgba(84, 31, 29, 0.82) !important;
+  border-color: rgba(84, 31, 29, 0.82) !important;
   color: var(--ba-perla) !important;
   -webkit-text-fill-color: var(--ba-perla) !important;
   opacity: 1;
@@ -12061,5 +12083,60 @@ body#index .gucci-home-section--products[data-type="bestsellers"] .gucci-home-se
   #header .gucci-header-col--logo .logo img,
   #header .logo img {
     filter: none !important;
+  }
+}
+
+/* ==========================================================================
+   Page loader — monogramma B pulsante
+   ========================================================================== */
+
+html.gucci-is-loading,
+html.gucci-is-loading body {
+  overflow: hidden;
+}
+
+.gucci-page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.gucci-page-loader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.gucci-page-loader__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gucci-page-loader__mark {
+  display: block;
+  width: clamp(4.5rem, 14vw, 6.25rem);
+  height: auto;
+  animation: gucci-loader-pulse 1.8s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes gucci-loader-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.94);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
   }
 }

@@ -12,6 +12,14 @@ class Ps_BestsellersOverride extends Ps_Bestsellers
     {
         $variables = parent::getWidgetVariables($hookName, $configuration);
 
+        if (!is_array($variables)) {
+            $variables = [];
+        }
+
+        if (empty($variables['allProductsLink'])) {
+            $variables['allProductsLink'] = $this->context->link->getPageLink('best-sales');
+        }
+
         if (!empty($variables['products'])) {
             return $variables;
         }
@@ -33,7 +41,9 @@ class Ps_BestsellersOverride extends Ps_Bestsellers
 
         try {
             $variables['products'] = GucciHomeBestsellers::getProducts($this->context, 4);
-            $variables['allProductsLink'] = GucciHomeBestsellers::getAllProductsLink($this->context);
+            if (empty($variables['allProductsLink'])) {
+                $variables['allProductsLink'] = GucciHomeBestsellers::getAllProductsLink($this->context);
+            }
         } catch (Exception $exception) {
             PrestaShopLogger::addLog(
                 'GucciHomeBestsellers fallback: ' . $exception->getMessage(),

@@ -54,7 +54,6 @@ class EverPsPopupClass extends ObjectModel
             'groups' => array(
                 'type' => self::TYPE_STRING,
                 'lang' => false,
-                'validate' => 'isAnything',
                 'required' => false
             ),
             'newsletter' => array(
@@ -76,20 +75,19 @@ class EverPsPopupClass extends ObjectModel
             ),
             'categories' => array(
                 'type' => self::TYPE_STRING,
-                'validate' => 'isAnything',
                 'required' => false
             ),
             'carrier' => array(
                 'type' => self::TYPE_INT,
                 'lang' => false,
-                'validate' => 'isUnsignedId',
+                'validate' => 'isUnsignedInt',
                 'required' => false
             ),
             'cookie_time' => array(
                 'type' => self::TYPE_INT,
                 'lang' => false,
-                'validate' => 'isUnsignedId',
-                'required' => true
+                'validate' => 'isUnsignedInt',
+                'required' => false
             ),
             'adult_mode' => array(
                 'type' => self::TYPE_INT,
@@ -100,7 +98,7 @@ class EverPsPopupClass extends ObjectModel
             'delay' => array(
                 'type' => self::TYPE_INT,
                 'lang' => false,
-                'validate' => 'isUnsignedId',
+                'validate' => 'isUnsignedInt',
                 'required' => false
             ),
             'date_start' => array(
@@ -125,7 +123,8 @@ class EverPsPopupClass extends ObjectModel
             'link' => array(
                 'type' => self::TYPE_STRING,
                 'lang' => true,
-                'validate' => 'isUrl'
+                'validate' => 'isUrl',
+                'required' => false,
             ),
             'name' => array(
                 'type' => self::TYPE_STRING,

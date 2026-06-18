@@ -21,12 +21,28 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-require_once _PS_MODULE_DIR_.'everpspopup/models/EverPsPopupClass.php';
 class AdminEverPsPopupController extends ModuleAdminController
 {
-    private $html;
+    public $isSeven;
+
+    private $html = '';
     const POPUP_IMG  = _PS_MODULE_DIR_.'everpspopup/views/img/';
     const POPUP_VIEWS  = _PS_MODULE_DIR_.'everpspopup/views/';
+
+    private function loadModel()
+    {
+        require_once _PS_MODULE_DIR_.'everpspopup/models/EverPsPopupClass.php';
+    }
+
+    private function renderLegacyError($message)
+    {
+        if (method_exists('Tools', 'displayError')) {
+            return Tools::displayError($message);
+        }
+
+        return '<div class="alert alert-danger">' . htmlspecialchars((string) $message, ENT_QUOTES, 'UTF-8') . '</div>';
+    }
+
     public function __construct()
     {
         $this->bootstrap = true;
@@ -34,11 +50,15 @@ class AdminEverPsPopupController extends ModuleAdminController
         $this->table = 'everpspopup';
         $this->module_name = 'everpspopup';
         $this->className = 'EverPsPopupClass';
-        $this->context = Context::getContext();
         $this->identifier = 'id_everpspopup';
-        $this->isSeven = Tools::version_compare(_PS_VERSION_, '1.7', '>=') ? true : false;
+        $this->isSeven = Tools::version_compare(_PS_VERSION_, '1.7', '>=');
+
+        parent::__construct();
+        $this->loadModel();
+
+        $this->context = Context::getContext();
         $this->context->smarty->assign(array(
-            'everpspopup_dir' => _MODULE_DIR_ . '/everpspopup/'
+            'everpspopup_dir' => _MODULE_DIR_ . 'everpspopup/'
         ));
         $this->success = [];
         $this->fields_list = array(
@@ -62,13 +82,20 @@ class AdminEverPsPopupController extends ModuleAdminController
         );
 
         $this->colorOnBackground = true;
-        $module_link  = 'index.php?controller=AdminModules&configure=everpspopup&token=';
-        $module_link .= Tools::getAdminTokenLite('AdminModules');
+        $module_link = $this->context->link->getAdminLink(
+            'AdminModules',
+            true,
+            [],
+            [
+                'configure' => $this->module_name,
+                'module_name' => $this->module_name,
+            ]
+        );
+        $popup_admin_link = $this->context->link->getAdminLink('AdminEverPsPopup');
         $this->context->smarty->assign(array(
-            'module_link' => $module_link
+            'module_link' => $module_link,
+            'popup_admin_link' => $popup_admin_link,
         ));
-
-        parent::__construct();
     }
 
     public function l($string, $class = null, $addslashes = false, $htmlentities = true)
@@ -136,7 +163,11 @@ class AdminEverPsPopupController extends ModuleAdminController
 
         $this->html .= $this->context->smarty->fetch(self::POPUP_VIEWS.'templates/admin/header.tpl');
         $module_instance = Module::getInstanceByName($this->module_name);
-        if ($module_instance->checkLatestEverModuleVersion($this->module_name, $module_instance->version)) {
+        if (
+            $module_instance
+            && method_exists($module_instance, 'checkLatestEverModuleVersion')
+            && $module_instance->checkLatestEverModuleVersion($this->module_name, $module_instance->version)
+        ) {
             $this->html .= $this->context->smarty->fetch(
                 _PS_MODULE_DIR_
                 .'/'
@@ -411,7 +442,7 @@ class AdminEverPsPopupController extends ModuleAdminController
         $this->html .= $lists;
         if (count($this->errors)) {
             foreach ($this->errors as $error) {
-                $this->html .= Tools::displayError($error);
+                $this->html .= $this->renderLegacyError($error);
             }
         }
         $this->html .= $this->context->smarty->fetch(
@@ -544,7 +575,7 @@ class AdminEverPsPopupController extends ModuleAdminController
                     Tools::redirectAdmin(self::$currentIndex.'&token='.$this->token);
                 }
             } else {
-                $this->errors[] = Tools::displayError('Can\'t update the current object');
+                $this->errors[] = $this->renderLegacyError('Can\'t update the current object');
             }
         }
     }

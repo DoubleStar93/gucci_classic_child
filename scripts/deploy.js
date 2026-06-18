@@ -7,10 +7,16 @@ import { Client } from "basic-ftp";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..");
+dotenv.config({ path: path.join(repoRoot, ".env") });
+
 const localThemeDir = path.join(repoRoot, "classic-gucci");
 const localOverrideDir = path.join(repoRoot, "override");
-
-dotenv.config({ path: path.join(repoRoot, ".env") });
+const localModulesDir = path.join(repoRoot, "modules");
+/** Moduli sincronizzati insieme al tema (override: FTP_DEPLOY_MODULES in .env) */
+const deployModules = (process.env.FTP_DEPLOY_MODULES || "everpspopup")
+  .split(",")
+  .map((name) => name.trim())
+  .filter(Boolean);
 
 const requiredEnv = ["FTP_HOST", "FTP_USER", "FTP_PASSWORD", "FTP_REMOTE_PATH"];
 
@@ -263,6 +269,29 @@ function getShopRootFromThemePath(themeRemotePath) {
   return themeRemotePath.replace(/\/themes\/classic-gucci\/?$/i, "");
 }
 
+async function deployModulesToServer(client, themeRemotePath) {
+  if (!deployModules.length) {
+    return;
+  }
+
+  const shopRoot = getShopRootFromThemePath(themeRemotePath);
+
+  for (const moduleName of deployModules) {
+    const localModuleDir = path.join(localModulesDir, moduleName);
+    const remoteModulePath = `${shopRoot}/modules/${moduleName}`;
+
+    try {
+      await access(localModuleDir);
+    } catch {
+      console.warn(`Modulo ${moduleName}: cartella locale non trovata, skip.`);
+      continue;
+    }
+
+    console.log(`Modulo ${moduleName}: ${remoteModulePath} (sync)`);
+    await syncThemeTree(client, remoteModulePath, localModuleDir);
+  }
+}
+
 async function deployOverride(client, themeRemotePath) {
   const shopRoot = getShopRootFromThemePath(themeRemotePath);
   const remoteOverridePath = `${shopRoot}/override`;
@@ -308,6 +337,7 @@ async function main() {
 
     await deployTheme(client, config.remotePath, localThemeDir, config.themeMode);
     await deployOverride(client, config.remotePath);
+    await deployModulesToServer(client, config.remotePath);
 
     for (const cachePath of config.cachePaths) {
       const label = cachePath === "/cache" ? "Cache root (/cache)" : `Cache (${cachePath})`;

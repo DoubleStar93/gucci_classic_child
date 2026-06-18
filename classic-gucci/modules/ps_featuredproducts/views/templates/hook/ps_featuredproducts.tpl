@@ -9,12 +9,16 @@
     {l s='Popular Products' d='Shop.Theme.Catalog' assign='gucciSectionTitle'}
     {l s='View all' d='Shop.Theme.Actions' assign='gucciSectionLinkLabel'}
   {/if}
+  {assign var='gucciAllProductsLink' value=''}
+  {if isset($allProductsLink) && $allProductsLink}
+    {assign var='gucciAllProductsLink' value=$allProductsLink}
+  {/if}
   {include
     file='_partials/gucci-home-products-section.tpl'
     products=$products
     sectionTitle=$gucciSectionTitle
     sectionType='popularproducts'
-    allProductsLink=$allProductsLink
+    allProductsLink=$gucciAllProductsLink
     allProductsLabel=$gucciSectionLinkLabel
   }
 {/if}

@@ -21,11 +21,13 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-require_once _PS_MODULE_DIR_.'everpspopup/models/EverPsPopupClass.php';
-
 class Everpspopup extends Module
 {
-    private $html;
+    public $isSeven;
+    public $siteUrl;
+    public $cookie_suffix;
+
+    private $html = '';
     private $postErrors = [];
     private $postSuccess = [];
     const IMG_FOLDER  = _PS_MODULE_DIR_.'everpspopup/views/img/';
@@ -36,17 +38,109 @@ class Everpspopup extends Module
     {
         $this->name = 'everpspopup';
         $this->tab = 'administration';
-        $this->version = '5.3.8';
+        $this->version = '5.4.1';
         $this->author = 'Team Ever';
         $this->need_instance = 0;
         $this->bootstrap = true;
         parent::__construct();
         $this->displayName = $this->l('Ever Popup');
         $this->description = $this->l('No doubt the most famous pop up module');
-        $this->ps_versions_compliancy = ['min' => '1.6', 'max' => _PS_VERSION_];
-        $this->isSeven = Tools::version_compare(_PS_VERSION_, '1.7', '>=') ? true : false;
+        $this->ps_versions_compliancy = ['min' => '1.7', 'max' => _PS_VERSION_];
+        $this->isSeven = Tools::version_compare(_PS_VERSION_, '1.7', '>=');
         $this->siteUrl = Tools::getHttpHost(true) . __PS_BASE_URI__;
-        $this->cookie_suffix = Tools::substr(Tools::encrypt('everpspopup/cookie'), 0, 10);
+        $this->cookie_suffix = $this->buildCookieSuffix();
+    }
+
+    /**
+     * PS 8.1+ — Tools::encrypt() rimosso, sostituito da Tools::hash()
+     */
+    private function buildCookieSuffix()
+    {
+        $seed = 'everpspopup/cookie';
+
+        if (method_exists('Tools', 'hash')) {
+            return Tools::substr(Tools::hash($seed), 0, 10);
+        }
+
+        if (method_exists('Tools', 'encrypt')) {
+            return Tools::substr(Tools::encrypt($seed), 0, 10);
+        }
+
+        $key = defined('_COOKIE_KEY_') ? _COOKIE_KEY_ : '';
+
+        return Tools::substr(md5($seed . $key), 0, 10);
+    }
+
+    private function getModuleBasePath()
+    {
+        if (!empty($this->local_path)) {
+            return $this->local_path;
+        }
+
+        if (method_exists($this, 'getLocalPath')) {
+            return $this->getLocalPath();
+        }
+
+        return _PS_MODULE_DIR_ . $this->name . '/';
+    }
+
+    private function getConfigureAdminLink($withToken = true)
+    {
+        return $this->context->link->getAdminLink(
+            'AdminModules',
+            $withToken,
+            [],
+            [
+                'configure' => $this->name,
+                'module_name' => $this->name,
+                'tab_module' => $this->tab,
+            ]
+        );
+    }
+
+    private function getPopupAdminLink()
+    {
+        return $this->context->link->getAdminLink('AdminEverPsPopup');
+    }
+
+    private function loadModel()
+    {
+        require_once _PS_MODULE_DIR_.'everpspopup/models/EverPsPopupClass.php';
+    }
+
+    private function getShopSslUrl()
+    {
+        if (method_exists('Tools', 'getShopDomainSsl')) {
+            return Tools::getShopDomainSsl(true);
+        }
+
+        if (method_exists('Tools', 'getShopDomain')) {
+            return Tools::getShopDomain(true);
+        }
+
+        return Tools::getHttpHost(true) . __PS_BASE_URI__;
+    }
+
+    private function fetchRemoteBody($url)
+    {
+        if (function_exists('curl_init')) {
+            $handle = curl_init($url);
+            curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($handle, CURLOPT_CONNECTTIMEOUT, 5);
+            curl_setopt($handle, CURLOPT_TIMEOUT, 10);
+            $body = curl_exec($handle);
+            curl_close($handle);
+
+            if (is_string($body)) {
+                return $body;
+            }
+        }
+
+        if (method_exists('Tools', 'file_get_contents')) {
+            return Tools::file_get_contents($url);
+        }
+
+        return @file_get_contents($url);
     }
 
     /**
@@ -55,6 +149,7 @@ class Everpspopup extends Module
      */
     public function install()
     {
+        $this->loadModel();
         include(dirname(__FILE__) . '/sql/install.php');
         if ($this->isSeven) {
             Configuration::updateValue('EVERPSPOPUP_FANCYBOX', true);
@@ -151,21 +246,22 @@ class Everpspopup extends Module
                 $this->html .= $this->displayConfirmation($success);
             }
         }
-        $popup_admin_link  = 'index.php?controller=AdminEverPsPopup&token=';
-        $popup_admin_link .= Tools::getAdminTokenLite('AdminEverPsPopup');
+        $popup_admin_link = $this->getPopupAdminLink();
 
         $this->context->smarty->assign([
             'everpspopup_dir' => $this->_path,
             'popup_admin_link' => $popup_admin_link,
+            'module_link' => $this->getConfigureAdminLink(),
         ]);
 
-        $this->html .= $this->context->smarty->fetch($this->local_path . 'views/templates/admin/header.tpl');
+        $viewsPath = $this->getModuleBasePath();
+        $this->html .= $this->context->smarty->fetch($viewsPath . 'views/templates/admin/header.tpl');
         if ($this->checkLatestEverModuleVersion($this->name, $this->version)) {
-            $this->html .= $this->context->smarty->fetch($this->local_path . 'views/templates/admin/upgrade.tpl');
+            $this->html .= $this->context->smarty->fetch($viewsPath . 'views/templates/admin/upgrade.tpl');
         }
         $this->html .= $this->renderForm();
-        $this->html .= $this->context->smarty->fetch($this->local_path . 'views/templates/admin/configure.tpl');
-        $this->html .= $this->context->smarty->fetch($this->local_path . 'views/templates/admin/footer.tpl');
+        $this->html .= $this->context->smarty->fetch($viewsPath . 'views/templates/admin/configure.tpl');
+        $this->html .= $this->context->smarty->fetch($viewsPath . 'views/templates/admin/footer.tpl');
 
         return $this->html;
     }
@@ -185,7 +281,7 @@ class Everpspopup extends Module
 
         $helper->identifier = $this->identifier;
         $helper->submit_action = 'submitEverpspopupModule';
-        $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false) .'&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name;
+        $helper->currentIndex = $this->getConfigureAdminLink(false);
         $helper->token = Tools::getAdminTokenLite('AdminModules');
 
         $helper->tpl_vars = [
@@ -343,6 +439,7 @@ class Everpspopup extends Module
     */
     public function hookDisplayBeforeBodyClosingTag()
     {
+        $this->loadModel();
         $controller_name = Tools::getValue('controller');
         $everpopup = EverPsPopupClass::getPopupByIdController(
             (int) $this->context->shop->id,
@@ -358,7 +455,7 @@ class Everpspopup extends Module
                 $everpopup->categories
             );
             if (!in_array((int)Tools::getValue('id_category'), $allowed_cats)) {
-                $this->smarty->assign(
+                $this->context->smarty->assign(
                     [
                         'ever_errors' => 'category not allowed',
                     ]
@@ -390,7 +487,7 @@ class Everpspopup extends Module
         $date = strtotime('Y-m-d H:i:s -' . (int) Configuration::get('EVERPSPOPUP_AGE').' year');
         $date = date('Y-m-d H:i:s', $date);
         $everpopup->cookie_suffix = $this->cookie_suffix;
-        $this->smarty->assign(
+        $this->context->smarty->assign(
             [
                 'controller_name' => $controller_name,
                 'everpspopup' => $everpopup,
@@ -434,14 +531,14 @@ class Everpspopup extends Module
             ];
         }
         $defaultShortcodes = [
-            '[shop_url]' => Tools::getShopDomainSsl(true),
+            '[shop_url]' => $this->getShopSslUrl(),
             '[shop_name]'=> Configuration::get('PS_SHOP_NAME'),
             '[start_cart_link]' => '<a href="'
-            . Tools::getShopDomainSsl(true)
+            . $this->getShopSslUrl()
             . '/index.php?controller=cart&action=show" rel="nofollow" target="_blank">',
             '[end_cart_link]' => '</a>',
             '[start_shop_link]' => '<a href="'
-            . Tools::getShopDomainSsl(true)
+            . $this->getShopSslUrl()
             . '" target="_blank">',
             '[start_contact_link]' => '<a href="'.$contactLink.'" rel="nofollow" target="_blank">',
             '[end_shop_link]' => '</a>',
@@ -459,6 +556,7 @@ class Everpspopup extends Module
 
     private function createPopupDemo()
     {
+        $this->loadModel();
         $shops = Shop::getShops();
         foreach ($shops as $shop) {
             $groups = Group::getGroups(
@@ -516,9 +614,7 @@ class Everpspopup extends Module
             if ($httpCode != 200) {
                 return false;
             }
-            $module_version = Tools::file_get_contents(
-                $upgrade_link
-            );
+            $module_version = $this->fetchRemoteBody($upgrade_link);
             if ($module_version && $module_version > $version) {
                 return true;
             }

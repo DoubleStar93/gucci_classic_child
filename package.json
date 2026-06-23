@@ -8,11 +8,14 @@
     "clean:stash": "node scripts/clean-stash.js",
     "test:ftp": "node scripts/test-ftp.js",
     "make:home-cats": "node scripts/make-home-cat-images.js",
-    "clean:materials-bg": "node scripts/remove-materials-background.js"
+    "clean:materials-bg": "node scripts/remove-materials-background.js",
+    "diagnose:shipping": "node scripts/run-diagnose-shipping.js",
+    "diagnose:shipping:db": "node scripts/diagnose-shipping-db.js"
   },
   "devDependencies": {
     "basic-ftp": "^5.0.5",
     "dotenv": "^16.4.7",
+    "mysql2": "^3.22.5",
     "opentype.js": "^2.0.0",
     "sharp": "^0.34.5"
   }

@@ -1367,6 +1367,64 @@
     });
   };
 
+  const gucciFormatMoneyLikeSample = (amount, sampleValue) => {
+    const safeAmount = Math.max(0, Number(amount) || 0);
+    const sample = typeof sampleValue === 'string' ? sampleValue : '';
+
+    if (sample.includes(',')) {
+      return `${safeAmount.toFixed(2).replace('.', ',')} €`;
+    }
+
+    if (sample.includes('€')) {
+      return `€${safeAmount.toFixed(2)}`;
+    }
+
+    return safeAmount.toFixed(2);
+  };
+
+  const gucciSyncFreeShippingHintInModal = (modal, cart) => {
+    if (!modal || !cart) {
+      return;
+    }
+
+    const summaryBlock = modal.querySelector('.gucci-cart-summary-block');
+    if (!summaryBlock) {
+      return;
+    }
+
+    const threshold = parseFloat(summaryBlock.dataset.gucciFreeShippingThreshold || '0');
+    const productsAmount = parseFloat(cart.subtotals?.products?.amount ?? '0');
+    const subtotalSample = cart.subtotals?.products?.value || '';
+    const isItalian =
+      document.documentElement.lang?.toLowerCase().startsWith('it')
+      || document.body.classList.contains('lang-it');
+
+    let hint = summaryBlock.querySelector('.gucci-free-shipping-hint');
+
+    if (threshold <= 0 || productsAmount >= threshold - 0.001) {
+      hint?.remove();
+      return;
+    }
+
+    const remaining = threshold - productsAmount;
+    const remainingValue = gucciFormatMoneyLikeSample(remaining, subtotalSample);
+
+    if (!hint) {
+      hint = document.createElement('div');
+      hint.className = 'gucci-free-shipping-hint';
+      hint.setAttribute('aria-live', 'polite');
+      hint.innerHTML = isItalian
+        ? '<p class="gucci-free-shipping-hint__text">SPEDIZIONE GRATUITA SE AGGIUNGI ALTRI <span class="gucci-free-shipping-hint__amount"></span> DI SPESA AL CARRELLO.</p>'
+        : '<p class="gucci-free-shipping-hint__text">Free shipping if you add another <span class="gucci-free-shipping-hint__amount"></span> of spending to your cart.</p>';
+      summaryBlock.appendChild(hint);
+    }
+
+    const amountNode = hint.querySelector('.gucci-free-shipping-hint__amount');
+    if (amountNode) {
+      amountNode.textContent = remainingValue;
+    }
+  };
+
   const gucciApplyCartUpdateToModal = (resp) => {
     const modal = document.getElementById('blockcart-modal');
     if (!modal || !resp) {
@@ -1420,25 +1478,38 @@
 
     if (cart) {
       const count = cart.products_count ?? products.length;
-      const summary = modal.querySelector('.gucci-cart-modal-summary p');
+      const summary = modal.querySelector('.gucci-cart-summary-count');
 
       if (summary) {
         summary.textContent = isItalian
-          ? (count === 1 ? '1 articolo nel carrello' : `${count} articoli nel carrello`)
-          : (count === 1 ? '1 item in your cart' : `${count} items in your cart`);
+          ? (count === 1 ? '1 ARTICOLO NEL CARRELLO' : `${count} ARTICOLI NEL CARRELLO`)
+          : (count === 1 ? '1 ITEM IN YOUR CART' : `${count} ITEMS IN YOUR CART`);
       }
 
-      const subtotal = modal.querySelector('.gucci-cart-modal-subtotal-value');
+      const subtotal = modal.querySelector('.gucci-cart-summary-subtotal-value');
       const subtotalValue = cart.subtotals?.products?.value;
 
       if (subtotal && subtotalValue) {
         subtotal.textContent = subtotalValue;
       }
+
+      gucciSyncFreeShippingHintInModal(modal, cart);
     }
 
     if (!modal.querySelector('.gucci-cart-modal-product') && typeof window.jQuery !== 'undefined') {
       window.jQuery(modal).modal('hide');
     }
+  };
+
+  const gucciHidePageLoaderIfVisible = () => {
+    const loader = document.getElementById('gucci-page-loader');
+    if (!loader || loader.classList.contains('is-hidden')) {
+      return;
+    }
+
+    loader.classList.add('is-hidden');
+    document.documentElement.classList.remove('gucci-is-loading');
+    document.body.classList.remove('gucci-is-loading');
   };
 
   const gucciRequestCartUpdate = (url, extraData = {}) => {
@@ -1480,7 +1551,8 @@
 
           return resp;
         });
-      });
+      })
+      .always(gucciHidePageLoaderIfVisible);
   };
 
   const gucciIsCartControlsTarget = (element) => {
@@ -1679,6 +1751,7 @@
       ['Show details', 'Mostra dettagli'],
       ['Hide details', 'Nascondi dettagli'],
       ['Shipping', 'Spedizione'],
+      ['Free', 'Gratis'],
       ['Total', 'Totale'],
       ['Subtotal', 'Subtotale'],
       ['Taxes', 'Tasse'],
@@ -1807,7 +1880,7 @@
     });
     applyItalianLabels('.gucci-footer-copyright');
     applyItalianLabels('.gucci-account-back-link, .gucci-account-back-links a, .gucci-orders-page a, body#guest-login label');
-    applyItalianLabels('body#cart .cart-summary-line .label, body#cart .promo-code-button, body#cart .block-promo label, body#checkout .js-show-details, body#checkout .promo-code-button, body#checkout .cart-summary-line .label, body#order-confirmation .cart-summary-line .label, body#order-confirmation .order-confirmation-table .label');
+    applyItalianLabels('body#cart .cart-summary-line .label, body#cart .cart-summary-line .value, body#cart .promo-code-button, body#cart .block-promo label, body#checkout .js-show-details, body#checkout .promo-code-button, body#checkout .cart-summary-line .label, body#checkout .cart-summary-line .value, body#order-confirmation .cart-summary-line .label, body#order-confirmation .order-confirmation-table .label');
     applyItalianLabels('body#cart .cart-detailed-actions a, body#cart .checkout a, .gucci-cart-modal-actions a, .gucci-cart-modal-actions button');
     applyItalianLabels('.gucci-breadcrumb a span, .gucci-breadcrumb span, .gucci-menu-link, .gucci-drawer-footer .gucci-drawer-link');
     applyItalianLabels('.gucci-sitemap-group-title, .gucci-sitemap-col a, body#contact label, body#contact .form-control-label, body#cms label');
@@ -2132,6 +2205,19 @@
       }
     };
 
+    const isGucciAjaxCartLink = (link) => {
+      if (!(link instanceof HTMLAnchorElement)) {
+        return false;
+      }
+
+      if (link.classList.contains('remove-from-cart')) {
+        return true;
+      }
+
+      const linkAction = link.dataset.linkAction;
+      return linkAction === 'delete-from-cart' || linkAction === 'update';
+    };
+
     const revealWhenReady = () => {
       window.requestAnimationFrame(() => {
         window.requestAnimationFrame(hideLoader);
@@ -2150,7 +2236,7 @@
       }
 
       const link = event.target.closest('a[href]');
-      if (!isInternalNavigationLink(link)) {
+      if (!isInternalNavigationLink(link) || isGucciAjaxCartLink(link)) {
         return;
       }
 

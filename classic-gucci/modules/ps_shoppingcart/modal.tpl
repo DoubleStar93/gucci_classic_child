@@ -49,27 +49,8 @@
 
 
         <div class="gucci-cart-modal-summary">
-
-          {if $cart.products_count > 1}
-
-            <p>{if $language.iso_code == 'it'}{$cart.products_count} articoli nel carrello{else}{l s='There are %products_count% items in your cart.' sprintf=['%products_count%' => $cart.products_count] d='Shop.Theme.Checkout'}{/if}</p>
-
-          {else}
-
-            <p>{if $language.iso_code == 'it'}1 articolo nel carrello{else}{l s='There is %products_count% item in your cart.' sprintf=['%products_count%' => $cart.products_count] d='Shop.Theme.Checkout'}{/if}</p>
-
-          {/if}
-
-          <p class="gucci-cart-modal-subtotal">
-
-            <span>{if $language.iso_code == 'it'}Subtotale{else}{l s='Subtotal:' d='Shop.Theme.Checkout'}{/if}</span>
-
-            <span class="gucci-cart-modal-subtotal-value">{$cart.subtotals.products.value}</span>
-
-          </p>
-
           {hook h='displayCartModalContent' product=$product}
-
+          {include file='_partials/gucci-cart-summary-block.tpl'}
         </div>
 
 

@@ -38,9 +38,9 @@
       <div class="cart-grid-right col-lg-4">
         {block name='cart_summary'}
           <div class="gucci-cart-summary">
-            {block name='hook_shopping_cart'}
-              {hook h='displayShoppingCart'}
-            {/block}
+            {block name='hook_shopping_cart'}{/block}
+
+            {include file='_partials/gucci-cart-summary-block.tpl'}
 
             {block name='cart_totals'}
               {include file='checkout/_partials/cart-detailed-totals.tpl' cart=$cart}

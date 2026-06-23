@@ -38,7 +38,7 @@ class Everpspopup extends Module
     {
         $this->name = 'everpspopup';
         $this->tab = 'administration';
-        $this->version = '5.6.10';
+        $this->version = '5.6.14';
         $this->author = 'Team Ever';
         $this->need_instance = 0;
         $this->bootstrap = true;
@@ -168,6 +168,8 @@ class Everpspopup extends Module
             return parent::install()
                 && $this->registerHook('displayBeforeBodyClosingTag')
                 && $this->registerHook('header')
+                && $this->registerHook('displayShoppingCart')
+                && $this->registerHook('displayCartModalContent')
                 && $this->installModuleTab('AdminEverPsPopup', 'Ever Popup');
         }
     }
@@ -413,7 +415,80 @@ class Everpspopup extends Module
 
     public function hookHeader()
     {
-        // Asset popup caricati inline nel template (evita bundle CCC obsoleto).
+        $this->ensureGucciCartHooks();
+
+        if (
+            !empty($this->context->cart)
+            && Validate::isLoadedObject($this->context->cart)
+            && $this->context->cart->nbProducts()
+        ) {
+            $this->runGucciCartShippingAssign();
+        }
+    }
+
+    /**
+     * Calcola spedizione fissa per il riepilogo carrello (tema classic-gucci).
+     */
+    public function hookDisplayShoppingCart()
+    {
+        $this->runGucciCartShippingAssign();
+
+        return '';
+    }
+
+    /**
+     * Messaggio soglia spedizione gratuita nel drawer carrello (add-to-cart).
+     */
+    public function hookDisplayCartModalContent(array $params)
+    {
+        $this->runGucciCartShippingAssign();
+
+        return '';
+    }
+
+    private function runGucciCartShippingAssign(): bool
+    {
+        if (empty($this->context->cart) || !Validate::isLoadedObject($this->context->cart)) {
+            return false;
+        }
+
+        $classFile = _PS_THEME_DIR_ . 'classes/GucciCartShipping.php';
+        if (!is_file($classFile)) {
+            $classFile = _PS_ROOT_DIR_ . '/themes/classic-gucci/classes/GucciCartShipping.php';
+        }
+
+        if (!is_file($classFile)) {
+            return false;
+        }
+
+        require_once $classFile;
+
+        if (!class_exists('GucciCartShipping', false)) {
+            return false;
+        }
+
+        GucciCartShipping::assignCartShippingVars($this->context->cart, $this->context);
+
+        return true;
+    }
+
+    private function ensureGucciCartHooks()
+    {
+        static $registered = false;
+
+        if ($registered) {
+            return;
+        }
+
+        $registered = true;
+
+        if (!$this->isRegisteredInHook('displayShoppingCart')) {
+            $this->registerHook('displayShoppingCart');
+        }
+
+        if (!$this->isRegisteredInHook('displayCartModalContent')) {
+            $this->registerHook('displayCartModalContent');
+        }
     }
 
     public function hookDisplayAmpContent()

@@ -102,7 +102,7 @@
 
 {* Dopo il bundle CCC — unica sorgente token/tipografia (custom.css) *}
 {block name='stylesheets' append}
-  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.13.15" type="text/css" media="all">
+  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.13.16" type="text/css" media="all">
   <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/home-overrides.css?v=1.0.3" type="text/css" media="all">
 {/block}
 

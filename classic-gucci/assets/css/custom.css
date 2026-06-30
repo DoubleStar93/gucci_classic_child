@@ -78,6 +78,7 @@
   --gucci-type-ui: 13px;
   --gucci-type-leading: 1.55;
   --gucci-type-leading-loose: 1.75;
+  --gucci-cms-content-max: 56rem;
   --gucci-type-letter: 0.01em;
   --gucci-type-plp-title: 17px;
   --gucci-type-card-title: 17px;
@@ -6535,7 +6536,7 @@ body#cms .page-content.page-cms,
 body#cms #content,
 body#cms .gucci-cms-page,
 body#cms.sitemap .page-content {
-  max-width: 52rem;
+  max-width: var(--gucci-cms-content-max);
   margin: 0 auto;
   padding: 0 1.5rem 4rem;
   font-size: var(--gucci-type-base);
@@ -6544,6 +6545,10 @@ body#cms.sitemap .page-content {
   background: var(--ba-panna) !important;
   border: none !important;
   box-shadow: none !important;
+}
+
+body#cms.sitemap .page-content {
+  max-width: 52rem;
 }
 
 body#cms .page-title,
@@ -7682,6 +7687,11 @@ body#order-confirmation #header .gucci-header-col--icons a {
   margin: 0 auto 0.5rem;
 }
 
+body#cms:not(.sitemap) .gucci-page-header,
+body#cms:not(.sitemap) .page-header {
+  max-width: var(--gucci-cms-content-max);
+}
+
 .gucci-page-title,
 .gucci-cms-title {
   font-family: var(--gucci-font-serif) !important;
@@ -7694,9 +7704,6 @@ body#order-confirmation #header .gucci-header-col--icons a {
   line-height: 1.15 !important;
 }
 
-.gucci-cms-page-inner,
-.gucci-cms-page .cms-page,
-.gucci-cms-page .page-cms,
 .gucci-stores-page-inner,
 .gucci-stores-page,
 .gucci-order-confirmation-inner,
@@ -8908,7 +8915,7 @@ body#checkout #payment-confirmation button {
 }
 
 .gucci-cms-page-inner {
-  max-width: 40rem;
+  max-width: var(--gucci-cms-content-max);
   margin: 0 auto;
   padding: 0 1.5rem 4rem;
   font-size: 13px;
@@ -9784,13 +9791,13 @@ body#cart .product-line-info .value {
    Gucci v1.5.6 — CMS IT, breadcrumb CMS, sitemap
    ========================================================================== */
 
-body#cms .gucci-breadcrumb {
-  max-width: 42rem;
+body#cms:not(.sitemap) .gucci-breadcrumb {
+  max-width: var(--gucci-cms-content-max);
   padding-top: 1.5rem;
 }
 
-body#cms .gucci-cms-page-inner {
-  max-width: 42rem;
+body#cms:not(.sitemap) .gucci-cms-page-inner {
+  max-width: var(--gucci-cms-content-max);
   margin: 0 auto;
   padding: 0 1.5rem 4rem;
 }

@@ -1263,8 +1263,75 @@
   }
 
   /* Cart modal — backdrop scuro */
-  const cartModal = document.getElementById('blockcart-modal');
   let cartModalBackdrop = document.querySelector('.gucci-cart-modal-backdrop');
+
+  const gucciGetCartModal = () => document.getElementById('blockcart-modal');
+
+  const gucciIsCartModalOpen = () => {
+    const modal = gucciGetCartModal();
+    if (!modal) {
+      return false;
+    }
+
+    return (
+      modal.classList.contains('show')
+      || modal.classList.contains('in')
+      || document.body.classList.contains('gucci-cart-modal-open')
+      || document.body.classList.contains('modal-open')
+    );
+  };
+
+  const gucciCloseCartModal = () => {
+    const modal = gucciGetCartModal();
+    if (!modal) {
+      return;
+    }
+
+    if (typeof window.jQuery !== 'undefined' && typeof window.jQuery(modal).modal === 'function') {
+      window.jQuery(modal).modal('hide');
+      return;
+    }
+
+    modal.classList.remove('show', 'in');
+    modal.setAttribute('aria-hidden', 'true');
+    modal.style.display = 'none';
+    document.body.classList.remove('modal-open', 'gucci-cart-modal-open');
+    document.querySelectorAll('.modal-backdrop').forEach((node) => node.remove());
+    syncCartModalBackdrop(false);
+  };
+
+  const gucciInitCartModalCloseDelegation = () => {
+    if (document.documentElement.dataset.gucciCartModalCloseReady === '1') {
+      return;
+    }
+
+    document.documentElement.dataset.gucciCartModalCloseReady = '1';
+
+    document.addEventListener('click', (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target) {
+        return;
+      }
+
+      const closeBtn = target.closest(
+        '#blockcart-modal [data-gucci-cart-modal-close], #blockcart-modal [data-dismiss="modal"]'
+      );
+      if (!closeBtn) {
+        return;
+      }
+
+      event.preventDefault();
+      gucciCloseCartModal();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !gucciIsCartModalOpen()) {
+        return;
+      }
+
+      gucciCloseCartModal();
+    });
+  };
 
   const ensureCartModalBackdrop = () => {
     if (!cartModalBackdrop) {
@@ -1272,11 +1339,7 @@
       cartModalBackdrop.className = 'gucci-cart-modal-backdrop';
       cartModalBackdrop.hidden = true;
       document.body.appendChild(cartModalBackdrop);
-      cartModalBackdrop.addEventListener('click', () => {
-        if (typeof window.jQuery !== 'undefined' && cartModal) {
-          window.jQuery(cartModal).modal('hide');
-        }
-      });
+      cartModalBackdrop.addEventListener('click', gucciCloseCartModal);
     }
   };
 
@@ -1302,12 +1365,6 @@
 
     document.body.classList.toggle('gucci-cart-modal-open', open);
   };
-
-  if (cartModal && typeof window.jQuery !== 'undefined') {
-    window.jQuery(cartModal)
-      .on('show.bs.modal shown.bs.modal', () => syncCartModalBackdrop(true))
-      .on('hide.bs.modal hidden.bs.modal', () => syncCartModalBackdrop(false));
-  }
 
   const gucciReplaceBlockcartFromResponse = (resp) => {
     if (!resp) {
@@ -1685,6 +1742,7 @@
   };
 
   gucciInitCartControlsDelegation();
+  gucciInitCartModalCloseDelegation();
   gucciHookBlockcartShowModal();
   gucciAfterBlockcartModalMounted();
 

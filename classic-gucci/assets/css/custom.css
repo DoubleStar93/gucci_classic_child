@@ -3862,6 +3862,8 @@ body.gucci-account-open {
   justify-content: flex-end;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 2;
 }
 
 .gucci-cart-modal-header .gucci-panel-close {
@@ -5080,6 +5082,10 @@ a:not(.gucci-footer a):not(#footer .gucci-footer a):not(.gucci-btn):hover {
 
 body.gucci-cart-modal-open {
   overflow: hidden;
+}
+
+body.gucci-cart-modal-open #header {
+  pointer-events: none;
 }
 
 .gucci-cart-modal-backdrop {

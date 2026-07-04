@@ -18,7 +18,7 @@
 
           extraClass='gucci-cart-modal-close'
 
-          closeAttr='data-dismiss="modal"'
+          closeAttr='data-gucci-cart-modal-close'
 
         }
 
@@ -57,7 +57,7 @@
 
         <div class="gucci-cart-modal-actions">
 
-          <button type="button" class="gucci-btn gucci-btn--outline" data-dismiss="modal">
+          <button type="button" class="gucci-btn gucci-btn--outline" data-gucci-cart-modal-close>
 
             {if $language.iso_code == 'it'}Continua lo shopping{else}{l s='Continue shopping' d='Shop.Theme.Actions'}{/if}
 

@@ -4,6 +4,7 @@
 {extends file='parent:checkout/_partials/address-form.tpl'}
 
 {block name='form_buttons'}
+  <div class="gucci-checkout-form-actions">
   {if !$form_has_continue_button}
     <button class="gucci-btn gucci-btn--outline" type="submit">
       {if $language.iso_code == 'it'}Salva{else}{l s='Save' d='Shop.Theme.Actions'}{/if}
@@ -21,4 +22,5 @@
       </a>
     {/if}
   {/if}
+  </div>
 {/block}

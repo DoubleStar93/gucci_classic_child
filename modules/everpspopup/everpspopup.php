@@ -508,6 +508,9 @@ class Everpspopup extends Module
     {
         $this->loadModel();
         $controller_name = Tools::getValue('controller');
+        if ($this->isGucciPopupExcludedPage($controller_name)) {
+            return;
+        }
         $everpopup = EverPsPopupClass::getPopupByIdController(
             (int) $this->context->shop->id,
             (int) $this->context->language->id,
@@ -599,6 +602,26 @@ class Everpspopup extends Module
         }
 
         return $content;
+    }
+
+    /**
+     * Newsletter popup must not interrupt cart or checkout.
+     */
+    private function isGucciPopupExcludedPage($controllerName)
+    {
+        $excludedControllers = ['cart', 'order', 'orderopc'];
+        if (in_array((string) $controllerName, $excludedControllers, true)) {
+            return true;
+        }
+
+        if (!empty($this->context->controller->php_self)) {
+            $pageName = (string) $this->context->controller->php_self;
+            if (in_array($pageName, ['cart', 'checkout', 'order'], true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function changeShortcodes($message, $id_entity = false)

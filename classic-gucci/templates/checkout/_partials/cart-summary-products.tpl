@@ -1,23 +1,24 @@
 {**
- * Classic Gucci — riepilogo prodotti (checkout sidebar)
+ * Classic Gucci — prodotti nel riepilogo checkout
  *}
-<div class="cart-summary-products js-cart-summary-products">
-  <p>{$cart.summary_string}</p>
-
-  <p>
-    <a href="#cart-summary-product-list" data-toggle="collapse" class="js-show-details" aria-expanded="false">
-      {if $language.iso_code == 'it'}Mostra dettagli{else}{l s='show details' d='Shop.Theme.Actions'}{/if}
-      <i class="material-icons" aria-hidden="true">expand_more</i>
-    </a>
+<div class="gucci-checkout-summary-products js-cart-summary-products">
+  {if $cart.products_count > 1}
+  <p class="gucci-checkout-summary-count">
+    {if $language.iso_code == 'it'}{$cart.products_count} articoli{else}{$cart.summary_string}{/if}
   </p>
+  {else}
+  <p class="gucci-checkout-summary-count">
+    {if $language.iso_code == 'it'}1 articolo{else}{$cart.summary_string}{/if}
+  </p>
+  {/if}
 
   {block name='cart_summary_product_list'}
-    <div class="collapse" id="cart-summary-product-list">
-      <ul class="media-list">
-        {foreach from=$cart.products item=product}
-          <li class="media">{include file='checkout/_partials/cart-summary-product-line.tpl' product=$product}</li>
-        {/foreach}
-      </ul>
-    </div>
+    <ul class="gucci-checkout-summary-product-list" id="cart-summary-product-list">
+      {foreach from=$cart.products item=product}
+        <li class="gucci-checkout-summary-product-item">
+          {include file='checkout/_partials/cart-summary-product-line.tpl' product=$product}
+        </li>
+      {/foreach}
+    </ul>
   {/block}
 </div>

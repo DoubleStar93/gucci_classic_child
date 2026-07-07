@@ -42,11 +42,11 @@
       <li class="nav-item">
         <a
           class="nav-link{if !$show_login_form} active{/if}"
-          data-link-action="show-register-form"
+          data-toggle="tab"
           href="#checkout-guest-form"
           role="tab"
           aria-controls="checkout-guest-form"
-          {if !$show_login_form} aria-selected="true"{/if}
+          {if !$show_login_form} aria-selected="true"{else} aria-selected="false"{/if}
         >
           {if $language.iso_code == 'it'}Ordina come ospite{else}{l s='Order as a guest' d='Shop.Theme.Checkout'}{/if}
         </a>
@@ -54,22 +54,23 @@
       <li class="nav-item">
         <a
           class="nav-link{if $show_login_form} active{/if}"
+          data-toggle="tab"
           data-link-action="show-login-form"
           href="#checkout-login-form"
           role="tab"
           aria-controls="checkout-login-form"
-          {if $show_login_form} aria-selected="true"{/if}
+          {if $show_login_form} aria-selected="true"{else} aria-selected="false"{/if}
         >
           {if $language.iso_code == 'it'}Accedi{else}{l s='Sign in' d='Shop.Theme.Actions'}{/if}
         </a>
       </li>
     </ul>
 
-    <div class="tab-content">
-      <div class="tab-pane{if !$show_login_form} active{/if}" id="checkout-guest-form" role="tabpanel">
+    <div class="tab-content gucci-checkout-tab-panels">
+      <div class="tab-pane{if !$show_login_form} active{/if}" id="checkout-guest-form" role="tabpanel" {if $show_login_form}aria-hidden="true"{else}aria-hidden="false"{/if}>
         {render file='checkout/_partials/customer-form.tpl' ui=$register_form guest_allowed=$guest_allowed}
       </div>
-      <div class="tab-pane{if $show_login_form} active{/if}" id="checkout-login-form" role="tabpanel">
+      <div class="tab-pane{if $show_login_form} active{/if}" id="checkout-login-form" role="tabpanel" {if !$show_login_form}aria-hidden="true"{else}aria-hidden="false"{/if}>
         {render file='checkout/_partials/login-form.tpl' ui=$login_form}
       </div>
     </div>

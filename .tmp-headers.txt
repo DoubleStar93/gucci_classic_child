@@ -1,0 +1,15 @@
+HTTP/1.1 302 Found
+Server: nginx
+Date: Tue, 07 Jul 2026 10:46:54 GMT
+Content-Type: text/html; charset=utf-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate
+Pragma: no-cache
+Location: https://barbaraalvisi.it/index.php?controller=cart&action=show
+X-Httpd: 1
+Host-Header: 6b7412fb82ca5edfd0917e3957f05d89
+X-Proxy-Cache: MISS
+X-Proxy-Cache-Info: 0302 NC:000000 UP:
+

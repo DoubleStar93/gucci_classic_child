@@ -1,42 +1,23 @@
 {**
- * Copyright since 2007 PrestaShop SA and Contributors
- * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Academic Free License 3.0 (AFL-3.0)
- * that is bundled with this package in the file LICENSE.md.
- * It is also available through the world-wide-web at this URL:
- * https://opensource.org/licenses/AFL-3.0
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@prestashop.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
- * versions in the future. If you wish to customize PrestaShop for your
- * needs please refer to https://devdocs.prestashop.com/ for more information.
- *
- * @author    PrestaShop SA and Contributors <contact@prestashop.com>
- * @copyright Since 2007 PrestaShop SA and Contributors
- * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
+ * Classic Gucci — totale checkout sidebar
  *}
-<div class="card-block cart-summary-totals js-cart-summary-totals">
-
+<div class="gucci-checkout-summary-total js-cart-summary-totals">
   {block name='cart_summary_total'}
     {if !$configuration.display_prices_tax_incl && $configuration.taxes_enabled}
-      <div class="cart-summary-line">
+      <div class="gucci-checkout-summary-line cart-summary-line">
         <span class="label">{$cart.totals.total.label}&nbsp;{$cart.labels.tax_short}</span>
         <span class="value">{$cart.totals.total.value}</span>
       </div>
-      <div class="cart-summary-line cart-total">
+      <div class="gucci-checkout-summary-line gucci-checkout-summary-line--total cart-summary-line cart-total">
         <span class="label">{$cart.totals.total_including_tax.label}</span>
         <span class="value">{$cart.totals.total_including_tax.value}</span>
       </div>
     {else}
-      <div class="cart-summary-line cart-total">
-        <span class="label">{$cart.totals.total.label}&nbsp;{if $configuration.display_taxes_label && $configuration.taxes_enabled}{$cart.labels.tax_short}{/if}</span>
+      <div class="gucci-checkout-summary-line gucci-checkout-summary-line--total cart-summary-line cart-total">
+        <span class="label">
+          {if $language.iso_code == 'it'}Totale{else}{$cart.totals.total.label}{/if}
+          {if $configuration.display_taxes_label && $configuration.taxes_enabled}&nbsp;{$cart.labels.tax_short}{/if}
+        </span>
         <span class="value">{if isset($gucci_cart_total_value) && $gucci_cart_total_value|count_characters > 0}{$gucci_cart_total_value}{else}{$cart.totals.total.value}{/if}</span>
       </div>
     {/if}
@@ -44,11 +25,10 @@
 
   {block name='cart_summary_tax'}
     {if $cart.subtotals.tax}
-      <div class="cart-summary-line">
+      <div class="gucci-checkout-summary-line gucci-checkout-summary-line--tax cart-summary-line">
         <span class="label sub">{l s='%label%:' sprintf=['%label%' => $cart.subtotals.tax.label] d='Shop.Theme.Global'}</span>
         <span class="value sub">{$cart.subtotals.tax.value}</span>
       </div>
     {/if}
   {/block}
-
 </div>

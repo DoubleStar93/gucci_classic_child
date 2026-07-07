@@ -12,7 +12,7 @@
     {/block}
   </head>
 
-  <body id="{$page.page_name}" class="{$page.body_classes|classnames} gucci-body gucci-is-loading">
+  <body id="{$page.page_name}" class="{$page.body_classes|classnames} gucci-body{if $page.page_name != 'checkout'} gucci-is-loading{/if}">
 
     {include file='_partials/gucci-page-loader.tpl'}
 
@@ -95,7 +95,7 @@
       </script>
       {include file="_partials/javascript.tpl" javascript=$javascript.bottom}
       {* Dopo il bundle CCC — evita cache JS obsoleta (come custom.css in head.tpl) *}
-      <script src="{$urls.base_url}themes/classic-gucci/assets/js/gucci-theme.js?v=2.5.2" defer></script>
+      <script src="{$urls.base_url}themes/classic-gucci/assets/js/gucci-theme.js?v=2.6.8" defer></script>
     {/block}
 
     {block name='hook_before_body_closing_tag'}

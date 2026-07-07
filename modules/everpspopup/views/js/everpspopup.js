@@ -168,6 +168,11 @@
 
     var gucciPopupStrict = false;
 
+    function isGucciCheckoutOrCartPage() {
+        var bodyId = document.body && document.body.id;
+        return bodyId === 'cart' || bodyId === 'checkout';
+    }
+
     // Pulizia eventuale Fancybox residuo (non usato più per questo popup)
     $('.fancybox-container').remove();
     $('html, body').removeClass('fancybox-active compensate-for-scrollbar');
@@ -263,11 +268,13 @@
 
     if ($('#everpspopup_block_center').length && $('#everpspopup_block_center').data('carrier')) {
         var id_carrier = $('#everpspopup_block_center').data('carrier');
-        if ($('input[value="'+id_carrier+',"], input[value="'+id_carrier+'"]').is(':checked')) {
+        if (!isGucciCheckoutOrCartPage() && $('input[value="'+id_carrier+',"], input[value="'+id_carrier+'"]').is(':checked')) {
             openGucciPopup(false);
         }
         $(document).on('click', 'input[value="'+id_carrier+',"], input[value="'+id_carrier+'"]', function() {
-            openGucciPopup(false);
+            if (!isGucciCheckoutOrCartPage()) {
+                openGucciPopup(false);
+            }
         });
     }
 
@@ -309,6 +316,10 @@
     var processAdultModeSubmit = null;
 
     if ($('#everpspopup_block_center').length >= 1) {
+        if (isGucciCheckoutOrCartPage()) {
+            $('#gucci-everpopup-overlay').remove();
+            hideGucciPageLoader();
+        } else {
         setTimeout(function() {
             if ($.cookie('everpspopup' + cookie_suffix) != popcontent) {
                 openGucciPopup(!!adult_mode);
@@ -347,6 +358,7 @@
                     }
                 });
             };
+        }
         }
     }
 

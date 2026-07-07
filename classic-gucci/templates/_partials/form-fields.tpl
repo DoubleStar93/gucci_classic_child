@@ -3,9 +3,27 @@
  *}
 {extends file='parent:_partials/form-fields.tpl'}
 
+{block name='form_field'}
+  {if $language.iso_code == 'it' && $field.name == 'customer_privacy' && (($page.page_name|default:'') == 'checkout' || ($smarty.get.controller|default:'') == 'order')}
+    <input
+      type="hidden"
+      name="customer_privacy"
+      value=""
+      class="js-gucci-customer-privacy-sync"
+      disabled
+      aria-hidden="true"
+    >
+    {block name='form_field_errors'}
+      {include file='_partials/form-errors.tpl' errors=$field.errors}
+    {/block}
+  {else}
+    {$smarty.block.parent}
+  {/if}
+{/block}
+
 {block name='form_field_item_checkbox'}
-  {if $language.iso_code == 'it' && $field.name == 'customer_privacy'}
-    {* Evita duplicato con psgdpr su checkout guest *}
+  {if $language.iso_code == 'it' && $field.name == 'customer_privacy' && (($page.page_name|default:'') == 'checkout' || ($smarty.get.controller|default:'') == 'order')}
+    {* Campo mirror: vedi blocco form_field *}
   {else}
   <div class="col-md-{$field.width|default:12} form-group{if $field.required} required{/if}">
     <span class="custom-checkbox gucci-form-checkbox">

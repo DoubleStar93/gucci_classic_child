@@ -41,7 +41,35 @@
 {/block}
 
 {block name='head_seo' append}
-  <script>document.documentElement.classList.add('gucci-is-loading');</script>
+  <script>
+    (function () {
+      var hideGucciPageLoader = function () {
+        document.documentElement.classList.remove('gucci-is-loading');
+        if (document.body) {
+          document.body.classList.remove('gucci-is-loading');
+        }
+        var loader = document.getElementById('gucci-page-loader');
+        if (loader) {
+          loader.classList.add('is-hidden');
+        }
+      };
+
+      window.gucciHidePageLoader = hideGucciPageLoader;
+      {if ($page.page_name|default:'') == 'checkout'}
+      hideGucciPageLoader();
+      {else}
+      document.documentElement.classList.add('gucci-is-loading');
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', hideGucciPageLoader, { once: true });
+      } else {
+        hideGucciPageLoader();
+      }
+      {/if}
+
+      window.addEventListener('load', hideGucciPageLoader, { once: true });
+      window.addEventListener('pageshow', hideGucciPageLoader);
+    }());
+  </script>
   <style id="gucci-page-loader-critical">
     html.gucci-is-loading,
     html.gucci-is-loading body {
@@ -102,7 +130,7 @@
 
 {* Dopo il bundle CCC — unica sorgente token/tipografia (custom.css) *}
 {block name='stylesheets' append}
-  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.13.16" type="text/css" media="all">
+  <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/custom.css?v=2.15.0" type="text/css" media="all">
   <link rel="stylesheet" href="{$urls.base_url}themes/classic-gucci/assets/css/home-overrides.css?v=1.0.3" type="text/css" media="all">
 {/block}
 

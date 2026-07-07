@@ -1,7 +1,7 @@
 {**
  * Classic Gucci — overlay caricamento pagina (monogramma B)
  *}
-<div id="gucci-page-loader" class="gucci-page-loader" aria-live="polite" role="status">
+<div id="gucci-page-loader" class="gucci-page-loader{if $page.page_name == 'checkout'} is-hidden{/if}" aria-live="polite" role="status">
   <div class="gucci-page-loader__inner">
     <img
       class="gucci-page-loader__mark"

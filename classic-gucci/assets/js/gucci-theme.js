@@ -3,6 +3,457 @@
  * Caricato manualmente dopo il bundle CCC (non usare assets/js/custom.js — PS lo include nel bundle).
  */
 (() => {
+  const syncGucciCustomerPrivacyField = () => {
+    const customerForm = document.getElementById('customer-form');
+    if (!customerForm) {
+      return;
+    }
+
+    const consentCheckbox = customerForm.querySelector('input[name="psgdpr"]');
+    if (!consentCheckbox) {
+      return;
+    }
+
+    let privacyField = customerForm.querySelector('.js-gucci-customer-privacy-sync');
+    if (!privacyField) {
+      privacyField = document.createElement('input');
+      privacyField.type = 'hidden';
+      privacyField.name = 'customer_privacy';
+      privacyField.className = 'js-gucci-customer-privacy-sync';
+      privacyField.setAttribute('aria-hidden', 'true');
+      customerForm.appendChild(privacyField);
+    } else if (privacyField.type === 'checkbox') {
+      const hiddenField = document.createElement('input');
+      hiddenField.type = 'hidden';
+      hiddenField.name = 'customer_privacy';
+      hiddenField.className = 'js-gucci-customer-privacy-sync';
+      hiddenField.setAttribute('aria-hidden', 'true');
+      privacyField.replaceWith(hiddenField);
+      privacyField = hiddenField;
+    }
+
+    if (consentCheckbox.checked) {
+      privacyField.disabled = false;
+      privacyField.value = '1';
+      return;
+    }
+
+    privacyField.value = '';
+    privacyField.disabled = true;
+  };
+
+  const isCheckoutOrderRequest = (url, method) => {
+    if (document.body?.id !== 'checkout') {
+      return false;
+    }
+
+    const requestMethod = String(method || 'GET').toUpperCase();
+    if (requestMethod !== 'POST') {
+      return false;
+    }
+
+    return String(url || '').includes('controller=order');
+  };
+
+  const getGucciCustomerPrivacyValue = () => {
+    syncGucciCustomerPrivacyField();
+
+    const privacyField = document.querySelector('#customer-form .js-gucci-customer-privacy-sync');
+    if (!(privacyField instanceof HTMLInputElement) || privacyField.disabled) {
+      return '';
+    }
+
+    return privacyField.value || '1';
+  };
+
+  const appendGucciCustomerPrivacyToBody = (body) => {
+    const privacyValue = getGucciCustomerPrivacyValue();
+    if (!privacyValue || typeof body !== 'string' || body.includes('customer_privacy=')) {
+      return body;
+    }
+
+    const prefix = body.length ? '&' : '';
+    return `${body}${prefix}customer_privacy=${encodeURIComponent(privacyValue)}`;
+  };
+
+  const guardGucciCheckoutOrderPosts = () => {
+    if (window.__gucciCheckoutOrderPostGuard === '1') {
+      return;
+    }
+
+    window.__gucciCheckoutOrderPostGuard = '1';
+
+    if (window.jQuery && typeof window.jQuery === 'function') {
+      window.jQuery.ajaxPrefilter((options) => {
+        if (!isCheckoutOrderRequest(options?.url, options?.type)) {
+          return;
+        }
+
+        if (typeof options.data === 'string') {
+          options.data = appendGucciCustomerPrivacyToBody(options.data);
+          return;
+        }
+
+        if (options.data && typeof options.data === 'object' && !(options.data instanceof FormData)) {
+          if (!Object.prototype.hasOwnProperty.call(options.data, 'customer_privacy')) {
+            const privacyValue = getGucciCustomerPrivacyValue();
+            if (privacyValue) {
+              options.data.customer_privacy = privacyValue;
+            }
+          }
+        }
+      });
+    }
+
+    if (typeof XMLHttpRequest !== 'undefined') {
+      const xhrOpen = XMLHttpRequest.prototype.open;
+      const xhrSend = XMLHttpRequest.prototype.send;
+
+      XMLHttpRequest.prototype.open = function open(method, url, ...rest) {
+        this.__gucciMethod = method;
+        this.__gucciUrl = url;
+        return xhrOpen.call(this, method, url, ...rest);
+      };
+
+      XMLHttpRequest.prototype.send = function send(body) {
+        if (isCheckoutOrderRequest(this.__gucciUrl, this.__gucciMethod)) {
+          body = appendGucciCustomerPrivacyToBody(body);
+        }
+
+        return xhrSend.call(this, body);
+      };
+    }
+  };
+
+  const setupGucciCheckoutConsent = () => {
+    if (document.body?.id !== 'checkout') {
+      return;
+    }
+
+    guardGucciCheckoutOrderPosts();
+
+    const customerForm = document.getElementById('customer-form');
+    if (!customerForm || customerForm.dataset.gucciConsentValidation === '1') {
+      return;
+    }
+
+    customerForm.dataset.gucciConsentValidation = '1';
+
+    const consentCheckbox = customerForm.querySelector('input[name="psgdpr"]');
+    if (!consentCheckbox) {
+      return;
+    }
+
+    const consentGroup = consentCheckbox.closest('.form-group');
+    const consentMessage = 'Seleziona questa casella per accettare i termini e condizioni e continuare.';
+
+    const syncConsentValidity = () => {
+      syncGucciCustomerPrivacyField();
+
+      if (consentCheckbox.checked) {
+        consentCheckbox.setCustomValidity('');
+        consentGroup?.classList.remove('gucci-form-group--invalid');
+        return;
+      }
+
+      consentCheckbox.setCustomValidity(consentMessage);
+    };
+
+    consentCheckbox.addEventListener('change', syncConsentValidity);
+    consentCheckbox.addEventListener('invalid', () => {
+      consentGroup?.classList.add('gucci-form-group--invalid');
+      consentCheckbox.setCustomValidity(consentMessage);
+    });
+
+    customerForm.addEventListener('submit', (event) => {
+      syncConsentValidity();
+      if (!customerForm.checkValidity()) {
+        event.preventDefault();
+        const firstInvalid = customerForm.querySelector(':invalid');
+        if (firstInvalid instanceof HTMLElement) {
+          firstInvalid.reportValidity();
+          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      const trigger = event.target.closest(
+        '#customer-form [type="submit"], #customer-form [data-link-action="register-new-customer"], [data-link-action="register-new-customer"]'
+      );
+      if (!trigger || !customerForm.contains(trigger)) {
+        return;
+      }
+
+      syncConsentValidity();
+    }, true);
+
+    syncConsentValidity();
+  };
+
+  const bootGucciCheckoutConsent = () => {
+    setupGucciCheckoutConsent();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootGucciCheckoutConsent, { once: true });
+  } else {
+    bootGucciCheckoutConsent();
+  }
+
+  const setupGucciCheckoutTabs = () => {
+    if (document.body?.id !== 'checkout') {
+      return;
+    }
+
+    const step = document.getElementById('checkout-personal-information-step');
+    if (!step || step.dataset.gucciTabsInit === '1') {
+      return;
+    }
+
+    const tabList = step.querySelector('.gucci-checkout-tabs');
+    const tabPanels = step.querySelector('.gucci-checkout-tab-panels');
+    if (!tabList || !tabPanels) {
+      return;
+    }
+
+    step.dataset.gucciTabsInit = '1';
+
+    const activateCheckoutTab = (link) => {
+      if (!(link instanceof HTMLAnchorElement)) {
+        return;
+      }
+
+      const targetId = link.getAttribute('href')?.replace('#', '');
+      if (!targetId) {
+        return;
+      }
+
+      const targetPane = document.getElementById(targetId);
+      if (!targetPane || !tabPanels.contains(targetPane)) {
+        return;
+      }
+
+      tabList.querySelectorAll('.nav-link').forEach((tab) => {
+        const isActive = tab === link;
+        tab.classList.toggle('active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      tabPanels.querySelectorAll('.tab-pane').forEach((pane) => {
+        const isActive = pane === targetPane;
+        pane.classList.toggle('active', isActive);
+        pane.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+      });
+    };
+
+    tabList.addEventListener('click', (event) => {
+      const link = event.target.closest('a[href^="#checkout-"]');
+      if (!link || !tabList.contains(link)) {
+        return;
+      }
+
+      event.preventDefault();
+      activateCheckoutTab(link);
+    });
+  };
+
+  const bootGucciCheckoutTabs = () => {
+    setupGucciCheckoutTabs();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootGucciCheckoutTabs, { once: true });
+  } else {
+    bootGucciCheckoutTabs();
+  }
+
+  const setupGucciCheckoutPayment = () => {
+    if (document.body?.id !== 'checkout' || document.body.dataset.gucciPaymentInit === '1') {
+      return;
+    }
+
+    document.body.dataset.gucciPaymentInit = '1';
+
+    const PAYMENT_SUBMIT_KEY = 'gucciCheckoutPaymentSubmit';
+
+    const clearPaymentSubmitLock = () => {
+      try {
+        sessionStorage.removeItem(PAYMENT_SUBMIT_KEY);
+      } catch {
+        // ignore
+      }
+
+      document.body?.removeAttribute('data-gucci-payment-submit');
+    };
+
+    clearPaymentSubmitLock();
+
+    const getPaymentStep = () => document.getElementById('checkout-payment-step');
+
+    const getSelectedPaymentOption = () => (
+      document.querySelector('input[name="payment-option"]:checked')?.id || ''
+    );
+
+    const haveTermsBeenAccepted = () => (
+      [...document.querySelectorAll('#conditions-to-approve input[type="checkbox"]')]
+        .every((checkbox) => checkbox.checked)
+    );
+
+    const syncTermsButtonState = () => {
+      const confirmButton = document.querySelector('#payment-confirmation button[type="submit"]');
+      if (!confirmButton) {
+        return;
+      }
+
+      const accepted = haveTermsBeenAccepted() && Boolean(getSelectedPaymentOption());
+      confirmButton.disabled = !accepted;
+      confirmButton.classList.toggle('disabled', !accepted);
+    };
+
+    const markTermsInvalid = () => {
+      Array.from(document.querySelectorAll('#conditions-to-approve input[type="checkbox"]')).forEach((checkbox) => {
+        const group = checkbox.closest('.form-group, li, .condition-label');
+        if (!checkbox.checked) {
+          group?.classList.add('gucci-form-group--invalid');
+          checkbox.setCustomValidity('Accetta i termini per continuare.');
+          checkbox.reportValidity();
+        } else {
+          group?.classList.remove('gucci-form-group--invalid');
+          checkbox.setCustomValidity('');
+        }
+      });
+    };
+
+    document.querySelectorAll('#conditions-to-approve input[type="checkbox"]').forEach((checkbox) => {
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          const group = checkbox.closest('.form-group, li, .condition-label');
+          group?.classList.remove('gucci-form-group--invalid');
+          checkbox.setCustomValidity('');
+        }
+        syncTermsButtonState();
+        if (window.jQuery) {
+          window.jQuery(checkbox).trigger('change');
+        }
+      });
+    });
+
+    document.addEventListener('change', (event) => {
+      if (event.target.matches('input[name="payment-option"]')) {
+        syncTermsButtonState();
+      }
+    }, true);
+
+    const isPaymentSubmitLocked = () => {
+      if (document.body?.dataset.gucciPaymentSubmit === '1') {
+        return true;
+      }
+
+      try {
+        return sessionStorage.getItem(PAYMENT_SUBMIT_KEY) === '1';
+      } catch {
+        return false;
+      }
+    };
+
+    const armPaymentSubmitLock = () => {
+      document.body?.setAttribute('data-gucci-payment-submit', '1');
+
+      try {
+        sessionStorage.setItem(PAYMENT_SUBMIT_KEY, '1');
+      } catch {
+        // ignore
+      }
+    };
+
+    // Lascia al checkout nativo PS (bottom.js) ma blocca doppi click/submit.
+    // I log server mostrano validateOrder chiamato due volte sullo stesso carrello.
+    document.addEventListener('click', (event) => {
+      const confirmButton = event.target.closest('#payment-confirmation button[type="submit"]');
+      if (!confirmButton || confirmButton.disabled) {
+        return;
+      }
+
+      if (isPaymentSubmitLocked()) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        return;
+      }
+
+      armPaymentSubmitLock();
+      if (typeof window.gucciHidePageLoader === 'function') {
+        window.gucciHidePageLoader();
+      }
+    }, true);
+
+    document.addEventListener('submit', (event) => {
+      const form = event.target;
+      if (!(form instanceof HTMLFormElement)) {
+        return;
+      }
+
+      const paymentStep = getPaymentStep();
+      if (!paymentStep || !paymentStep.contains(form)) {
+        return;
+      }
+
+      if (!form.closest('.js-payment-option-form, [id^="pay-with-"]')) {
+        return;
+      }
+
+      armPaymentSubmitLock();
+    }, true);
+
+    // Non intercettare #payment-confirmation: lascia al checkout nativo PS (bottom.js).
+    document.addEventListener('click', (event) => {
+      const paymentStep = getPaymentStep();
+      if (!paymentStep) {
+        return;
+      }
+
+      const rogueSubmit = event.target.closest(
+        '.js-payment-option-form button[type="submit"], .js-payment-option-form input[type="submit"], .additional-information button[type="submit"], .additional-information input[type="submit"]'
+      );
+
+      if (!rogueSubmit || !paymentStep.contains(rogueSubmit)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      markTermsInvalid();
+    }, true);
+
+    if (typeof prestashop !== 'undefined' && prestashop.on) {
+      prestashop.on('changedCheckoutStep', () => {
+        window.requestAnimationFrame(syncTermsButtonState);
+      });
+      prestashop.on('orderConfirmationErrors', clearPaymentSubmitLock);
+      prestashop.on('handleError', clearPaymentSubmitLock);
+    }
+
+    window.addEventListener('pageshow', () => {
+      if (document.body?.id === 'order-confirmation' || document.body?.id === 'checkout') {
+        clearPaymentSubmitLock();
+      }
+    });
+
+    syncTermsButtonState();
+  };
+
+  const bootGucciCheckoutPayment = () => {
+    setupGucciCheckoutPayment();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootGucciCheckoutPayment, { once: true });
+  } else {
+    bootGucciCheckoutPayment();
+  }
+
   if (window.__gucciClassicThemeLoaded) {
     return;
   }
@@ -14,6 +465,30 @@
     return;
   }
   document.documentElement.dataset.gucciThemeInit = '1';
+
+  const suppressEverpopupOnCheckoutCart = () => {
+    const bodyId = document.body && document.body.id;
+    if (bodyId !== 'cart' && bodyId !== 'checkout') {
+      return;
+    }
+
+    document.body.classList.remove('gucci-everpopup-open');
+
+    const overlay = document.getElementById('gucci-everpopup-overlay');
+    if (overlay) {
+      overlay.setAttribute('hidden', '');
+      overlay.setAttribute('aria-hidden', 'true');
+      overlay.classList.remove('is-open');
+      overlay.style.display = 'none';
+    }
+
+    if (typeof window.hideGucciEverpopupPageLoader === 'function') {
+      window.hideGucciEverpopupPageLoader();
+    }
+  };
+
+  suppressEverpopupOnCheckoutCart();
+  document.addEventListener('DOMContentLoaded', suppressEverpopupOnCheckoutCart, { once: true });
 
   const header = document.getElementById('header');
   const headerScrollThreshold = 32;
@@ -1559,6 +2034,11 @@
   };
 
   const gucciHidePageLoaderIfVisible = () => {
+    if (typeof window.gucciHidePageLoader === 'function') {
+      window.gucciHidePageLoader();
+      return;
+    }
+
     const loader = document.getElementById('gucci-page-loader');
     if (!loader || loader.classList.contains('is-hidden')) {
       return;
@@ -2046,6 +2526,10 @@
     document.querySelectorAll('body#checkout button.continue, body#checkout button[name="confirm-addresses"]').forEach((btn) => {
       btn.classList.add('gucci-btn', 'gucci-btn--primary');
     });
+
+    setupGucciCheckoutConsent();
+    setupGucciCheckoutTabs();
+    setupGucciCheckoutPayment();
   }
 
   /** Griglia prodotti come homepage — anche liste legacy (.products.row) e AJAX listing */
@@ -2228,6 +2712,10 @@
     };
 
     const showLoader = () => {
+      if (document.body?.id === 'checkout') {
+        return;
+      }
+
       loader.classList.remove('is-hidden');
       setLoadingState(true);
     };
@@ -2240,6 +2728,8 @@
       loader.classList.add('is-hidden');
       setLoadingState(false);
     };
+
+    window.gucciHidePageLoader = hideLoader;
 
     const isInternalNavigationLink = (link) => {
       if (!(link instanceof HTMLAnchorElement)) {
@@ -2293,6 +2783,10 @@
         return;
       }
 
+      if (event.target.closest('#payment-confirmation button, #payment-confirmation [type="submit"]')) {
+        return;
+      }
+
       const link = event.target.closest('a[href]');
       if (!isInternalNavigationLink(link) || isGucciAjaxCartLink(link)) {
         return;
@@ -2311,8 +2805,18 @@
         return;
       }
 
+      if (document.body.id === 'checkout') {
+        return;
+      }
+
       showLoader();
     }, true);
+
+    if (typeof prestashop !== 'undefined' && prestashop.on) {
+      prestashop.on('orderConfirmationErrors', hideLoader);
+      prestashop.on('handleError', hideLoader);
+      prestashop.on('changedCheckoutStep', hideLoader);
+    }
 
     window.addEventListener('pageshow', (event) => {
       if (event.persisted) {

@@ -15,16 +15,14 @@
     </header>
 
     <div class="row gucci-checkout-grid">
-      <div class="cart-grid-body col-xs-12 col-lg-8">
+      <div class="cart-grid-body col-xs-12 col-lg-8 gucci-checkout-process">
         {block name='checkout_process'}
           {render file='checkout/checkout-process.tpl' ui=$checkout_process}
         {/block}
       </div>
-      <div class="cart-grid-right col-xs-12 col-lg-4">
+      <div class="cart-grid-right col-xs-12 col-lg-4 gucci-checkout-summary-col">
         {block name='cart_summary'}
-          <div class="gucci-checkout-summary js-cart">
-            {include file='checkout/_partials/cart-summary.tpl' cart=$cart}
-          </div>
+          {include file='checkout/_partials/cart-summary.tpl' cart=$cart}
         {/block}
         {block name='hook_reassurance'}{/block}
       </div>

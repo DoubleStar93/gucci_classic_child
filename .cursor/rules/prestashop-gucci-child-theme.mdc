@@ -77,7 +77,8 @@ Setup una tantum: tema **Classic Gucci Style** attivo, padre `classic` presente,
 ## Regole di implementazione
 
 1. **Solo override necessari** nel child; non modificare il tema padre `classic`.
-2. **Preferire** `custom.css` + override `.tpl` in `classic-gucci/`; usare `{extends file='parent:...'}` quando basta.
+2. **No nuovi override PHP** in `override/` senza OK esplicito — vedi regola `no-prestashop-php-overrides.mdc` (inventario: 8 file attivi).
+3. **Preferire** `custom.css` + override `.tpl` in `classic-gucci/`; usare `{extends file='parent:...'}` quando basta.
 3. **Hook:** menu in `displayTop`, ricerca/account/carrello in `displayNav2` (vedi `config/theme.yml`).
 4. **Dopo ogni deploy:** svuotare cache PrestaShop e controllare lo staging Hostinger.
 5. **Non reintrodurre** stile Classic default (bottoni colorati, `#24b9d7`, box-shadow, `header-nav` grigia).

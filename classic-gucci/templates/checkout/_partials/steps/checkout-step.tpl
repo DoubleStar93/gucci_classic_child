@@ -20,9 +20,11 @@
   ]|classnames}"
 >
   <h1 class="step-title js-step-title h3 gucci-checkout-step-title">
-    <i class="material-icons rtl-no-flip done" aria-hidden="true">&#xE876;</i>
-    <span class="step-number">{$position}</span>
-    {$gucciStepTitle|escape:'htmlall':'UTF-8'}
+    <span class="gucci-checkout-step-title__main">
+      <i class="material-icons rtl-no-flip done" aria-hidden="true">&#xE876;</i>
+      <span class="step-number">{$position}</span>
+      {$gucciStepTitle|escape:'htmlall':'UTF-8'}
+    </span>
     <span class="step-edit text-muted">
       <i class="material-icons edit" aria-hidden="true">mode_edit</i>
       {if isset($language) && $language.iso_code == 'it'}Modifica{else}{l s='Edit' d='Shop.Theme.Actions'}{/if}

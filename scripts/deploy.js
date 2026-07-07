@@ -13,7 +13,7 @@ const localThemeDir = path.join(repoRoot, "classic-gucci");
 const localOverrideDir = path.join(repoRoot, "override");
 const localModulesDir = path.join(repoRoot, "modules");
 /** Moduli sincronizzati insieme al tema (override: FTP_DEPLOY_MODULES in .env) */
-const deployModules = (process.env.FTP_DEPLOY_MODULES || "everpspopup")
+const deployModules = (process.env.FTP_DEPLOY_MODULES || "everpspopup,gucci_homecategories")
   .split(",")
   .map((name) => name.trim())
   .filter(Boolean);
@@ -320,9 +320,12 @@ async function deployOverride(client, themeRemotePath) {
   const shopRoot = getShopRootFromThemePath(themeRemotePath);
   const remoteOverridePath = `${shopRoot}/override`;
 
+  await removeLegacyOverrideFiles(client, remoteOverridePath);
+
   try {
     await access(localOverrideDir);
   } catch {
+    console.log("Override: cartella locale assente, solo rimozione legacy sul server.");
     return;
   }
 
@@ -330,8 +333,67 @@ async function deployOverride(client, themeRemotePath) {
   await syncThemeTree(client, remoteOverridePath, localOverrideDir);
 }
 
+/** File override PHP rimossi dal repo — vanno eliminati anche sul server. */
+const LEGACY_OVERRIDE_FILES = [
+  "controllers/front/IndexController.php",
+  "controllers/front/OrderController.php",
+  "modules/ps_shoppingcart/ps_shoppingcart.php",
+  "modules/ps_featuredproducts/ps_featuredproducts.php",
+  "modules/ps_bestsellers/ps_bestsellers.php",
+  "modules/ps_newproducts/ps_newproducts.php",
+  "modules/ps_specials/ps_specials.php",
+  "modules/ps_wirepayment/controllers/front/validation.php",
+];
+
+async function removeLegacyOverrideFiles(client, remoteOverridePath) {
+  for (const rel of LEGACY_OVERRIDE_FILES) {
+    const remoteFile = `${remoteOverridePath}/${rel}`;
+    try {
+      await client.remove(remoteFile);
+      console.log(`Override legacy rimosso: ${rel}`);
+    } catch {
+      // File già assente.
+    }
+  }
+}
+
 function getModuleRemotePath(themeRemotePath) {
   return getShopRootFromThemePath(themeRemotePath) + "/modules/gucci_homecategories";
+}
+
+async function ensureGucciHomecategoriesModule(client, themeRemotePath, stagingUrl) {
+  if (!deployModules.includes("gucci_homecategories")) {
+    return;
+  }
+
+  const shopRoot = getShopRootFromThemePath(themeRemotePath);
+  const localInstaller = path.join(repoRoot, "scripts", "gucci-install-homecategories.php");
+  const remoteInstaller = `${shopRoot}/gucci-install-homecategories.php`;
+  const token =
+    process.env.GUCCI_MODULE_INSTALL_TOKEN?.trim() || "gucci-homecategories-install";
+
+  try {
+    await access(localInstaller);
+    await client.uploadFrom(localInstaller, remoteInstaller);
+
+    const installUrl = `${stagingUrl.replace(/\/+$/, "")}/gucci-install-homecategories.php?token=${encodeURIComponent(token)}`;
+    const response = await fetch(installUrl, { redirect: "follow" });
+    const body = (await response.text()).trim();
+    const summary = body.replace(/\s+/g, " ").slice(0, 240);
+    console.log(
+      `gucci_homecategories: ${summary || `HTTP ${response.status}`}`
+    );
+  } catch (error) {
+    console.warn(
+      `gucci_homecategories install: ${error.message} — installa manualmente da BO → Moduli.`
+    );
+  } finally {
+    try {
+      await client.remove(remoteInstaller);
+    } catch {
+      // Installer già rimosso o non caricato.
+    }
+  }
 }
 
 async function main() {
@@ -363,6 +425,10 @@ async function main() {
     await deployOverride(client, config.remotePath);
     await deployModulesToServer(client, config.remotePath);
 
+    const verifyUrl =
+      process.env.STAGING_URL?.trim() || "https://barbaraalvisi.it/";
+    await ensureGucciHomecategoriesModule(client, config.remotePath, verifyUrl);
+
     for (const cachePath of config.cachePaths) {
       const label = cachePath === "/cache" ? "Cache root (/cache)" : `Cache (${cachePath})`;
       try {
@@ -374,8 +440,6 @@ async function main() {
       }
     }
 
-    const verifyUrl =
-      process.env.STAGING_URL?.trim() || "https://barbaraalvisi.it/";
     console.log("\nDeploy completato.");
     console.log(`Verifica: ${verifyUrl}`);
   } finally {

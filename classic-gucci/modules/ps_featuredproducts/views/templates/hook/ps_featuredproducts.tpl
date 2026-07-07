@@ -10,8 +10,11 @@
     {assign var='gucciSectionLinkLabel' value='View all'}
   {/if}
   {assign var='gucciAllProductsLink' value=''}
-  {if isset($allProductsLink) && $allProductsLink}
-    {assign var='gucciAllProductsLink' value=$allProductsLink}
+  {if $products|@count > 0}
+    {assign var='gucciFeaturedProduct' value=$products[0]}
+    {if !empty($gucciFeaturedProduct.id_category_default)}
+      {assign var='gucciAllProductsLink' value=$link->getCategoryLink($gucciFeaturedProduct.id_category_default)}
+    {/if}
   {/if}
   <section class="featured-products gucci-home-section gucci-home-section--products clearfix" data-type="popularproducts">
     <header class="gucci-home-section__header">

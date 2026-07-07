@@ -1,6 +1,6 @@
 {**
  * Classic Gucci — griglia 4 categorie (stile card prodotto)
- * Dati: IndexController override → $gucci_home_top_categories
+ * Dati: modulo gucci_homecategories (hook displayHome) → $gucci_home_top_categories
  *}
 {assign var='gucciHasHomeCategories' value=!empty($gucci_home_top_categories) && $gucci_home_top_categories|count}
 {assign var='gucciFallbackCatIds' value=[3, 6, 9, 11]}

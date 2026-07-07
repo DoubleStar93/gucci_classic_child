@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+    <name>gucci_homecategories</name>
+    <displayName><![CDATA[Gucci — categorie homepage]]></displayName>
+    <version><![CDATA[1.0.0]]></version>
+    <description><![CDATA[Griglia categorie top in homepage per il tema classic-gucci.]]></description>
+    <author><![CDATA[Anton]]></author>
+    <tab><![CDATA[front_office_features]]></tab>
+    <is_configurable>0</is_configurable>
+    <need_instance>0</need_instance>
+    <limited_countries></limited_countries>
+</module>

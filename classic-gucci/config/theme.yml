@@ -47,6 +47,7 @@ global_settings:
         - ps_specials
         - ps_newproducts
         - ps_bestsellers
+        - gucci_homecategories
       displayCrossSellingShoppingCart:
         - ps_featuredproducts
       displayOrderConfirmation2:

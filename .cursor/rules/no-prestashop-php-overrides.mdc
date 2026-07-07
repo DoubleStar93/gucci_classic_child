@@ -5,44 +5,34 @@ alwaysApply: true
 
 # Override PHP PrestaShop — evitare (policy progetto)
 
-Il titolare del progetto è **contrario agli override PHP** su core/moduli PrestaShop (`override/` nella root del repo, deployati in `/override/` sul server). Rischi: fatal error dopo upgrade PS, `class_index` non rigenerato, conflitti tra moduli, debug difficile, regressioni silenziose.
+Il titolare del progetto è **contrario agli override PHP** su core/moduli PrestaShop (`override/` nella root del repo). Rischi: fatal error dopo upgrade PS, `class_index` non rigenerato, conflitti tra moduli, debug difficile.
 
-**L'AI non deve aggiungere nuovi file in `override/`** senza approvazione esplicita dell'utente. Prima di proporre un override, esaurire le alternative sotto.
+**L'AI non deve aggiungere nuovi file in `override/`** senza approvazione esplicita dell'utente.
 
-## Inventario attuale (8 override funzionali)
+## Stato attuale
 
-Cartella repo: `override/` → server: `public_html/override/`
+**0 override PHP** nel repo (cartella `override/` rimossa). Il deploy elimina ancora i file legacy sul server (`scripts/deploy.js` → `LEGACY_OVERRIDE_FILES`).
 
-| # | File | Cosa modifica |
-|---|------|----------------|
-| 1 | `controllers/front/IndexController.php` | Homepage: categorie top via `GucciHomeCategories` |
-| 2 | `controllers/front/OrderController.php` | Checkout: forza HTTP 200 (workaround status 400 in console) |
-| 3 | `modules/ps_shoppingcart/ps_shoppingcart.php` | Modal carrello: variabili spedizione Gucci |
-| 4 | `modules/ps_featuredproducts/ps_featuredproducts.php` | Link «Vedi tutto» in evidenza |
-| 5 | `modules/ps_bestsellers/ps_bestsellers.php` | Link + fallback prodotti se nessuna vendita |
-| 6 | `modules/ps_newproducts/ps_newproducts.php` | Link «Vedi tutto» novità |
-| 7 | `modules/ps_specials/ps_specials.php` | Link «Vedi tutto» offerte |
-| 8 | `modules/ps_wirepayment/controllers/front/validation.php` | Bonifico: redirect se ordine già creato (doppio submit) |
+Integrazione senza override:
 
-In più: file `index.php` di sicurezza nelle sottocartelle (boilerplate PS, non logica).
-
-**Non contano come override nativi** (pratica standard child theme): template `.tpl`, CSS/JS e `theme.yml` in `classic-gucci/` — preferire sempre questi.
+| Ex-override | Sostituito da |
+|-------------|----------------|
+| IndexController | Modulo `gucci_homecategories` (hook `displayHome`) |
+| OrderController | Rimosso (400 in console accettabile) |
+| ps_shoppingcart | `everpspopup` → hook `displayCartModalContent` + `GucciCartShipping` |
+| ps_featured/new/specials/bestsellers | Link «Vedi tutto» nei tpl child (`$urls.pages.*`, `$link->getCategoryLink`) |
+| ps_wirepayment/validation | Rimosso; anti doppio submit in `gucci-theme.js` + SMTP in BO |
 
 ## Ordine di preferenza per nuove modifiche
 
-1. `classic-gucci/assets/css/custom.css` o `gucci-theme.js` (selettori scoped: `#checkout`, `#product`, …)
+1. `classic-gucci/assets/css/custom.css` o `gucci-theme.js`
 2. Template child `classic-gucci/templates/` o `classic-gucci/modules/**/*.tpl`
-3. Hook / configurazione BO (posizioni moduli, CMS, Link List)
-4. Modulo custom leggero in `modules/` (repo) se serve logica PHP isolata
-5. **Override PHP in `override/`** — solo se l'utente approva esplicitamente, con motivazione scritta e piano di rimozione
+3. Hook / configurazione BO
+4. Modulo custom in `modules/` (es. `gucci_homecategories`, `everpspopup`)
+5. **Override PHP** — solo con OK esplicito dell'utente
 
-## Se un bug sembra richiedere override
+## Modulo gucci_homecategories
 
-1. Verificare se è risolvibile in tema/JS (es. doppio submit → lock client, non patch server)
-2. Controllare log (`var/logs`, `php_errorlog`) prima di patchare PHP
-3. Per controller modulo: classe deve finire in `*Override` e **estendere** la classe del modulo (vedi `classes/Dispatcher.php`, `FC_MODULE`) — mai ridefinire la stessa classe del core
-4. Non toccare `classes/`, `controllers/` o `modules/` **nativi** sul server; solo `override/` nel repo (e solo con OK utente)
-
-## Refactor futuro (non automatico)
-
-Valutare con l'utente la **rimozione graduale** degli 8 override esistenti (es. homepage via hook modulo dedicato, link «Vedi tutto» via tpl, checkout via JS-only). Non rimuovere override senza richiesta esplicita.
+- Path: `modules/gucci_homecategories/`
+- Deploy: incluso in `FTP_DEPLOY_MODULES` (default: `everpspopup,gucci_homecategories`)
+- Prima installazione BO: Moduli → «Gucci — categorie homepage» → Installa, oppure script one-shot `scripts/gucci-install-homecategories.php` sul server (poi eliminare)

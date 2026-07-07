@@ -13094,3 +13094,338 @@ body#checkout #footer .text-sm-center {
   color: rgba(255, 255, 255, 0.42);
 }
 
+/* ==========================================================================
+   Gucci v2.16.0 — conferma ordine (layout pulito, bonifico, totali)
+   ========================================================================== */
+
+body#order-confirmation {
+  background: #ffffff !important;
+}
+
+body#order-confirmation #wrapper,
+body#order-confirmation #content-wrapper,
+body#order-confirmation .page-content,
+body#order-confirmation .card,
+body#order-confirmation .card-block {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+body#order-confirmation #content-hook_order_confirmation,
+body#order-confirmation #content-hook_payment_return,
+body#order-confirmation #content-hook-order-confirmation-footer,
+body#order-confirmation .page-order-confirmation.card,
+body#order-confirmation .material-icons.done,
+body#order-confirmation .account-transformation,
+body#order-confirmation form[name="account-transformation"] {
+  display: none !important;
+}
+
+.gucci-order-confirmation-page {
+  padding: 1.5rem 0 4rem;
+}
+
+.gucci-order-confirmation-intro {
+  text-align: center;
+  max-width: 40rem;
+  margin: 0 auto 2.75rem;
+  padding: 0 1.5rem;
+}
+
+.gucci-order-confirmation-eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: var(--gucci-type-ui);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ba-taupe, #8a7b72);
+}
+
+body#order-confirmation .gucci-order-confirmation-title {
+  font-family: var(--gucci-font-serif, 'Cormorant Garamond', Georgia, serif);
+  font-size: clamp(1.85rem, 4.5vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.15;
+  margin: 0 0 1rem;
+  color: #111111;
+}
+
+.gucci-order-confirmation-section-title,
+.gucci-order-confirmation-details-title {
+  margin: 0 0 1.25rem;
+  font-family: var(--gucci-font-sans, 'Montserrat', sans-serif);
+  font-size: var(--gucci-type-ui);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #111111;
+  text-align: left;
+}
+
+.gucci-order-confirmation-table-wrap {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.1);
+}
+
+.gucci-order-confirmation-line {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr) auto auto;
+  gap: 1rem 1.25rem;
+  align-items: center;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.gucci-order-confirmation-line:last-child {
+  border-bottom: none;
+}
+
+.gucci-order-confirmation-line__media img {
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
+  display: block;
+}
+
+.gucci-order-confirmation-line__name {
+  margin: 0 0 0.35rem;
+  font-family: var(--gucci-font-sans, 'Montserrat', sans-serif);
+  font-size: var(--gucci-text-sm);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.45;
+  color: #111111;
+}
+
+.gucci-order-confirmation-line__name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.gucci-order-confirmation-line__unit {
+  margin: 0;
+  font-size: var(--gucci-type-ui);
+  letter-spacing: 0.06em;
+  color: #666666;
+}
+
+.gucci-order-confirmation-line__qty,
+.gucci-order-confirmation-line__total {
+  font-size: var(--gucci-text-sm);
+  letter-spacing: 0.06em;
+  color: #111111;
+  white-space: nowrap;
+}
+
+.gucci-order-confirmation-line__total {
+  font-weight: 500;
+  min-width: 5.5rem;
+  text-align: right;
+}
+
+.gucci-order-confirmation-totals {
+  margin-top: 1.5rem;
+  padding-top: 0.5rem;
+}
+
+body#order-confirmation .gucci-order-confirmation-summary-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  border: none !important;
+  background: transparent !important;
+}
+
+body#order-confirmation .gucci-order-confirmation-summary-line .label,
+body#order-confirmation .gucci-order-confirmation-summary-line .value {
+  font-size: var(--gucci-text-sm);
+  letter-spacing: 0.08em;
+  color: #666666;
+}
+
+body#order-confirmation .gucci-order-confirmation-summary-line--total {
+  margin-top: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #111111 !important;
+}
+
+body#order-confirmation .gucci-order-confirmation-summary-line--total .label,
+body#order-confirmation .gucci-order-confirmation-summary-line--total .value {
+  font-size: var(--gucci-type-caption);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #111111;
+  font-weight: 500;
+}
+
+.gucci-order-confirmation-details {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(17, 17, 17, 0.1);
+}
+
+.gucci-order-confirmation-details-grid {
+  margin: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.gucci-order-confirmation-details-row {
+  display: grid;
+  grid-template-columns: minmax(7rem, 9rem) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.gucci-order-confirmation-details-row dt {
+  margin: 0;
+  font-size: var(--gucci-type-ui);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ba-taupe, #8a7b72);
+}
+
+.gucci-order-confirmation-details-row dd {
+  margin: 0;
+  font-size: var(--gucci-text-sm);
+  letter-spacing: 0.04em;
+  line-height: 1.55;
+  color: #111111;
+}
+
+.gucci-order-confirmation-payment-return {
+  margin-top: 2.5rem;
+  padding: 1.75rem 1.5rem;
+  background: var(--ba-panna, #f7f3ee);
+  border: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.gucci-order-confirmation-payment-return__body > p,
+.gucci-order-confirmation-payment-return__body > strong {
+  font-size: var(--gucci-text-sm);
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+  color: #444444;
+}
+
+.gucci-order-confirmation-payment-return__body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+}
+
+.gucci-order-confirmation-payment-return__body table tr {
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.gucci-order-confirmation-payment-return__body table td {
+  padding: 0.85rem 0;
+  vertical-align: top;
+  font-size: var(--gucci-text-sm);
+  letter-spacing: 0.04em;
+  line-height: 1.55;
+  color: #111111;
+}
+
+.gucci-order-confirmation-payment-return__body table td:first-child {
+  width: 38%;
+  padding-right: 1rem;
+  font-size: var(--gucci-type-ui);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ba-taupe, #8a7b72);
+}
+
+.gucci-order-confirmation-hook,
+.gucci-order-confirmation-hook-1:empty {
+  display: none !important;
+}
+
+.gucci-order-confirmation-extra {
+  margin-top: 3rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(17, 17, 17, 0.1);
+}
+
+@media (max-width: 767px) {
+  .gucci-order-confirmation-line {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    grid-template-areas:
+      "media body"
+      "media meta";
+  }
+
+  .gucci-order-confirmation-line__media {
+    grid-area: media;
+  }
+
+  .gucci-order-confirmation-line__body {
+    grid-area: body;
+  }
+
+  .gucci-order-confirmation-line__qty {
+    display: none;
+  }
+
+  .gucci-order-confirmation-line__total {
+    grid-area: meta;
+    text-align: left;
+    min-width: 0;
+    margin-top: 0.35rem;
+  }
+
+  .gucci-order-confirmation-details-row {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .gucci-order-confirmation-payment-return {
+    padding: 1.25rem 1rem;
+  }
+
+  .gucci-order-confirmation-payment-return__body table,
+  .gucci-order-confirmation-payment-return__body table tbody,
+  .gucci-order-confirmation-payment-return__body table tr,
+  .gucci-order-confirmation-payment-return__body table td {
+    display: block;
+    width: 100%;
+  }
+
+  .gucci-order-confirmation-payment-return__body table td:first-child {
+    width: 100%;
+    padding-bottom: 0.25rem;
+  }
+}
+
+/* ==========================================================================
+   Gucci v2.17.0 — checkout: header Gucci (no menu Classic mobile visibile)
+   ========================================================================== */
+
+body#checkout #header .header-nav,
+body#checkout #header .header-top,
+body#checkout #header #mobile_top_menu_wrapper:not(.gucci-nav-drawer) {
+  display: none !important;
+}
+
+body#checkout #header .gucci-header-bar {
+  display: block !important;
+}
+
+body#checkout #header #mobile_top_menu_wrapper.gucci-nav-drawer:not(.is-open) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body#checkout #header #mobile_top_menu_wrapper.gucci-nav-drawer.is-open {
+  display: flex !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+

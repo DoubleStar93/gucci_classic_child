@@ -10,8 +10,8 @@
     {assign var='gucciSectionLinkLabel' value='View all'}
   {/if}
   {assign var='gucciAllProductsLink' value=''}
-  {if isset($allProductsLink) && $allProductsLink}
-    {assign var='gucciAllProductsLink' value=$allProductsLink}
+  {if isset($urls.pages.prices_drop) && $urls.pages.prices_drop}
+    {assign var='gucciAllProductsLink' value=$urls.pages.prices_drop}
   {/if}
   {if $products|@count > 4}
     {assign var='gucciHomeProducts' value=$products|array_slice:0:4}

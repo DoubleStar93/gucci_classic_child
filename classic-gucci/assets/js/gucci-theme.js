@@ -533,7 +533,7 @@
     window.addEventListener('resize', updateHeaderOnScroll, { passive: true });
   }
 
-  const drawer = document.getElementById('mobile_top_menu_wrapper');
+  const drawer = document.querySelector('#mobile_top_menu_wrapper.gucci-nav-drawer');
   const menuToggle = document.getElementById('menu-icon');
   const menuBackdrop = document.getElementById('gucci-nav-backdrop');
   const drawerCloseBtn = document.querySelector('[data-gucci-drawer-close]');

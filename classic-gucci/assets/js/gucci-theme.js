@@ -1511,6 +1511,53 @@
     }, 150);
   });
 
+  const syncGucciPdpVariantNote = () => {
+    const note = document.querySelector('.js-gucci-variant-note');
+    if (!(note instanceof HTMLElement)) {
+      return;
+    }
+
+    const names = [...document.querySelectorAll('#product .product-variants input:checked')]
+      .map((input) => {
+        if (!(input instanceof HTMLInputElement)) {
+          return '';
+        }
+        const label = input.closest('label');
+        const aria = label?.getAttribute('aria-label');
+        return (input.title || aria || '').trim();
+      })
+      .filter(Boolean);
+
+    if (!names.length) {
+      note.hidden = true;
+      return;
+    }
+
+    const isIt = document.body.classList.contains('lang-it')
+      || document.documentElement.lang?.toLowerCase().startsWith('it');
+    const prefix = isIt ? 'Variante' : 'Variant';
+    note.textContent = `${prefix} ${names.join(' ')}`;
+    note.hidden = false;
+  };
+
+  const syncGucciPdpAddToCartState = () => {
+    const availability = document.getElementById('product-availability');
+    const addToCartBtn = document.querySelector('.gucci-add-to-cart');
+    if (!(availability instanceof HTMLElement)) {
+      return;
+    }
+
+    if (addToCartBtn instanceof HTMLButtonElement && addToCartBtn.disabled) {
+      availability.hidden = true;
+      addToCartBtn.classList.add('gucci-add-to-cart--unavailable');
+      return;
+    }
+
+    addToCartBtn?.classList.remove('gucci-add-to-cart--unavailable');
+    const text = availability.textContent.replace(/\s+/g, ' ').trim();
+    availability.hidden = !text;
+  };
+
   if (typeof prestashop !== 'undefined' && prestashop.on) {
     prestashop.on('updatedProduct', () => {
       document.querySelectorAll('.js-gucci-pdp-gallery').forEach((gallery) => {
@@ -1521,6 +1568,8 @@
       });
       cleanupClassicPdpImages();
       initGucciGalleries();
+      syncGucciPdpVariantNote();
+      syncGucciPdpAddToCartState();
     });
   }
 

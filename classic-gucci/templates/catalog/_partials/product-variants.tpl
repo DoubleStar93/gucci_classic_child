@@ -16,7 +16,13 @@
         {if $group.group_type == 'select'}
           <ul id="group_{$id_attribute_group}" class="gucci-variant-radios gucci-variant-sizes">
             {foreach from=$group.attributes key=id_attribute item=group_attribute}
-              <li class="input-container gucci-variant-radio-item">
+              {assign var='gucciAttrUnavailable' value=false}
+              {if isset($group_attribute.available) && $group_attribute.available == false}
+                {assign var='gucciAttrUnavailable' value=true}
+              {elseif isset($group.attributes_quantity[$id_attribute]) && $group.attributes_quantity[$id_attribute] < 1}
+                {assign var='gucciAttrUnavailable' value=true}
+              {/if}
+              <li class="input-container gucci-variant-radio-item{if $gucciAttrUnavailable} gucci-variant--unavailable{/if}">
                 <label>
                   <input
                     class="input-radio gucci-variant-size-input"
@@ -35,7 +41,13 @@
         {elseif $group.group_type == 'color'}
           <ul id="group_{$id_attribute_group}" class="gucci-variant-colors">
             {foreach from=$group.attributes key=id_attribute item=group_attribute}
-              <li class="input-container gucci-variant-color-item">
+              {assign var='gucciAttrUnavailable' value=false}
+              {if isset($group_attribute.available) && $group_attribute.available == false}
+                {assign var='gucciAttrUnavailable' value=true}
+              {elseif isset($group.attributes_quantity[$id_attribute]) && $group.attributes_quantity[$id_attribute] < 1}
+                {assign var='gucciAttrUnavailable' value=true}
+              {/if}
+              <li class="input-container gucci-variant-color-item{if $gucciAttrUnavailable} gucci-variant--unavailable{/if}">
                 <label aria-label="{$group_attribute.name}">
                   <input
                     class="input-color"
@@ -64,7 +76,13 @@
         {elseif $group.group_type == 'radio'}
           <ul id="group_{$id_attribute_group}" class="gucci-variant-radios">
             {foreach from=$group.attributes key=id_attribute item=group_attribute}
-              <li class="input-container gucci-variant-radio-item">
+              {assign var='gucciAttrUnavailable' value=false}
+              {if isset($group_attribute.available) && $group_attribute.available == false}
+                {assign var='gucciAttrUnavailable' value=true}
+              {elseif isset($group.attributes_quantity[$id_attribute]) && $group.attributes_quantity[$id_attribute] < 1}
+                {assign var='gucciAttrUnavailable' value=true}
+              {/if}
+              <li class="input-container gucci-variant-radio-item{if $gucciAttrUnavailable} gucci-variant--unavailable{/if}">
                 <label>
                   <input
                     class="input-radio"

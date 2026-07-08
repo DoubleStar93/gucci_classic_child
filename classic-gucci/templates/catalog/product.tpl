@@ -11,16 +11,7 @@
       <meta itemprop="sku" content="{$product.reference_to_display}">
     {/if}
 
-    <form
-      action="{$urls.pages.cart}"
-      method="post"
-      id="add-to-cart-or-refresh"
-      class="gucci-pdp-layout product-container js-product-container"
-    >
-      <input type="hidden" name="token" value="{$static_token}">
-      <input type="hidden" name="id_product" value="{$product.id}" id="product_page_product_id">
-      <input type="hidden" name="id_customization" value="{$product.id_customization}" id="product_customization_id" class="js-product-customization-id">
-
+    <div class="gucci-pdp-layout product-container js-product-container">
       <div class="gucci-pdp-gallery-col">
         {include file='catalog/_partials/gucci-product-gallery.tpl' galleryMode='all'}
       </div>
@@ -28,6 +19,14 @@
       <div class="gucci-pdp-content-row">
         <div class="gucci-pdp-buybox-col product-information">
           <div class="gucci-pdp-buybox product-actions js-product-actions">
+            <form
+              action="{$urls.pages.cart}"
+              method="post"
+              id="add-to-cart-or-refresh"
+            >
+              <input type="hidden" name="token" value="{$static_token}">
+              <input type="hidden" name="id_product" value="{$product.id}" id="product_page_product_id">
+              <input type="hidden" name="id_customization" value="{$product.id_customization}" id="product_customization_id" class="js-product-customization-id">
             {block name='page_header_container'}
               {block name='page_header'}
                 <h1 class="h1 gucci-product-page-title" itemprop="name">{block name='page_title'}{$product.name}{/block}</h1>
@@ -65,16 +64,19 @@
                 {include file='catalog/_partials/product-add-to-cart.tpl'}
               {/block}
 
-              {block name='product_refresh'}{/block}
+              {block name='product_refresh'}
+                <input class="product-refresh ps-hidden-by-js" name="refresh" type="submit" value="{l s='Refresh' d='Shop.Theme.Actions'}">
+              {/block}
             {/block}
 
-            <button
-              type="button"
-              class="gucci-pdp-secondary-btn gucci-contact-toggle gucci-btn gucci-btn--outline btn-unstyle"
-              data-gucci-contact-open
-            >
-              {if $language.iso_code == 'it'}Contattaci{else}{l s='Contact us' d='Shop.Theme.Global'}{/if}
-            </button>
+              <button
+                type="button"
+                class="gucci-pdp-secondary-btn gucci-contact-toggle gucci-btn gucci-btn--outline btn-unstyle"
+                data-gucci-contact-open
+              >
+                {if $language.iso_code == 'it'}Contattaci{else}{l s='Contact us' d='Shop.Theme.Global'}{/if}
+              </button>
+            </form>
           </div>
         </div>
 
@@ -104,7 +106,7 @@
           {include file='catalog/_partials/gucci-product-accordions.tpl'}
         </div>
       </div>
-    </form>
+    </div>
 
     <div class="gucci-pdp-product-grids">
       {block name='product_accessories'}

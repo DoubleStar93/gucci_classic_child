@@ -13931,3 +13931,74 @@ body#contact .gucci-contact-form .gucci-file-upload__trigger:active {
 body#contact .gucci-file-upload__name {
   color: #333333 !important;
 }
+
+/* ==========================================================================
+   Gucci v2.21.2 — PDP disponibilità varianti + refresh nascosto
+   ========================================================================== */
+
+#product .product-refresh.ps-hidden-by-js {
+  display: none !important;
+}
+
+#product .gucci-product-availability {
+  margin: 0.85rem 0 0;
+}
+
+#product .gucci-product-availability[hidden] {
+  display: none !important;
+}
+
+#product .gucci-product-availability__text {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #666666;
+}
+
+#product .gucci-product-availability--unavailable .gucci-product-availability__text,
+#product .gucci-product-availability.gucci-product-availability--unavailable .gucci-product-availability__text {
+  color: #8a4a45;
+}
+
+#product .gucci-product-availability__sub {
+  margin: 0.35rem 0 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: #666666;
+}
+
+#product .gucci-add-to-cart--unavailable,
+#product .gucci-add-to-cart:disabled {
+  background: transparent !important;
+  border-color: #999999 !important;
+  color: #666666 !important;
+  -webkit-text-fill-color: #666666 !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+#product .gucci-add-to-cart--unavailable:hover,
+#product .gucci-add-to-cart:disabled:hover {
+  background: transparent !important;
+  border-color: #999999 !important;
+  color: #666666 !important;
+  -webkit-text-fill-color: #666666 !important;
+}
+
+#product .gucci-variant--unavailable .gucci-variant-radio-label,
+#product .gucci-variant--unavailable .gucci-variant-size-label {
+  color: #999999;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+#product .gucci-variant--unavailable .color,
+#product .gucci-variant--unavailable .color.texture {
+  opacity: 0.35;
+}
+
+#product .gucci-variant--unavailable .gucci-variant-radio-label::after,
+#product .gucci-variant--unavailable .gucci-variant-size-label::after {
+  content: none;
+}

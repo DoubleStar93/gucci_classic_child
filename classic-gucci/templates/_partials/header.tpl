@@ -176,7 +176,7 @@
       </div>
 
       <div class="gucci-drawer-body gucci-contact-drawer-body">
-        {widget name='ps_contactinfo' template='module:ps_contactinfo/views/templates/hook/gucci-contact-panel.tpl'}
+        {widget name='ps_contactinfo'}
       </div>
     </div>
 

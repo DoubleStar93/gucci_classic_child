@@ -1,5 +1,5 @@
 {**
- * Classic Gucci — contatti full width, form luxury
+ * Classic Gucci — pagina Contattaci (colonna singola)
  *}
 {extends file='parent:contact.tpl'}
 
@@ -9,13 +9,25 @@
 {block name='right_column'}{/block}
 
 {block name='page_content'}
-  <header class="page-header gucci-page-header gucci-contact-header">
-    <h1 class="gucci-page-title">
-      {if $language.iso_code == 'it'}Contattaci{else}{l s='Contact us' d='Shop.Theme.Global'}{/if}
-    </h1>
-  </header>
-
   <div class="gucci-contact-page">
-    {hook h='displayContactContent'}
+    <header class="gucci-contact-header">
+      <p class="gucci-contact-eyebrow" aria-hidden="true">
+        {if $language.iso_code == 'it'}Assistenza{else}{l s='Customer care' d='Shop.Theme.Global'}{/if}
+      </p>
+      <h1 class="gucci-page-title gucci-contact-title">
+        {if $language.iso_code == 'it'}Contattaci{else}{l s='Contact us' d='Shop.Theme.Global'}{/if}
+      </h1>
+      <p class="gucci-contact-lead">
+        {if $language.iso_code == 'it'}
+          Scrivici per assistenza su ordini, prodotti o informazioni generali. Ti risponderemo il prima possibile.
+        {else}
+          {l s='Contact us for assistance with orders, products or general enquiries.' d='Shop.Theme.Global'}
+        {/if}
+      </p>
+    </header>
+
+    <div class="gucci-contact-form-wrap">
+      {hook h='displayContactContent'}
+    </div>
   </div>
 {/block}

@@ -14,14 +14,6 @@
     {/if}
 
     {if !$notifications || $notifications.nw_error}
-      <p class="gucci-contact-intro">
-        {if $language.iso_code == 'it'}
-          Scrivici per assistenza su ordini, prodotti o informazioni generali. Ti risponderemo il prima possibile.
-        {else}
-          {l s='Contact us for assistance with orders, products or general enquiries.' d='Shop.Theme.Global'}
-        {/if}
-      </p>
-
       <div class="form-fields gucci-contact-fields">
         {if $contact.contacts|count === 1}
           {assign var=firstContact value=current($contact.contacts)}
@@ -70,12 +62,20 @@
         {/if}
 
         {if $contact.allow_file_upload}
-          <div class="form-group gucci-form-group">
+          <div class="form-group gucci-form-group gucci-form-group--file">
             <label class="form-control-label" for="file-upload">
               {if $language.iso_code == 'it'}Allegato{else}{l s='Attachment' d='Shop.Forms.Labels'}{/if}
               <span class="gucci-form-optional">{if $language.iso_code == 'it'}(facoltativo){else}{l s='optional' d='Shop.Forms.Help'}{/if}</span>
             </label>
-            <input id="file-upload" type="file" name="fileUpload" class="form-control">
+            <div class="gucci-file-upload">
+              <input id="file-upload" type="file" name="fileUpload" class="form-control gucci-file-upload__input">
+              <button type="button" class="gucci-file-upload__trigger" data-gucci-file-trigger>
+                {if $language.iso_code == 'it'}Scegli file{else}{l s='Choose file' d='Shop.Theme.Actions'}{/if}
+              </button>
+              <span class="gucci-file-upload__name" data-gucci-file-name aria-live="polite">
+                {if $language.iso_code == 'it'}Nessun file selezionato{else}{l s='No file selected' d='Shop.Theme.Global'}{/if}
+              </span>
+            </div>
           </div>
         {/if}
 

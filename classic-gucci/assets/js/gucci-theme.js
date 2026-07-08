@@ -2700,6 +2700,34 @@
 
   initGucciFooterNewsletter();
 
+  const initGucciContactFileUpload = () => {
+    if (document.body.id !== 'contact') {
+      return;
+    }
+
+    document.querySelectorAll('.gucci-file-upload').forEach((wrapper) => {
+      const input = wrapper.querySelector('.gucci-file-upload__input');
+      const trigger = wrapper.querySelector('[data-gucci-file-trigger]');
+      const nameEl = wrapper.querySelector('[data-gucci-file-name]');
+      if (!(input instanceof HTMLInputElement) || !(nameEl instanceof HTMLElement)) {
+        return;
+      }
+
+      if (trigger instanceof HTMLButtonElement) {
+        trigger.addEventListener('click', () => input.click());
+      }
+
+      const emptyLabel = nameEl.textContent.trim();
+
+      input.addEventListener('change', () => {
+        const file = input.files && input.files[0];
+        nameEl.textContent = file ? file.name : emptyLabel;
+      });
+    });
+  };
+
+  initGucciContactFileUpload();
+
   const initGucciPageLoader = () => {
     const loader = document.getElementById('gucci-page-loader');
     if (!loader) {

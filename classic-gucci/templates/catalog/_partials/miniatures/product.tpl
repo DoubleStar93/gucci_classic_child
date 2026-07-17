@@ -9,30 +9,31 @@
       <div class="thumbnail-top">
         {block name='product_thumbnail'}
           {if $product.cover}
+            {* large_default (800px): home_default (250px) risultava sfocato sulle celle full-bleed / Retina *}
             <a href="{$product.url}" class="thumbnail product-thumbnail">
               <picture>
-                {if !empty($product.cover.bySize.home_default.sources.avif)}<source srcset="{$product.cover.bySize.home_default.sources.avif}" type="image/avif">{/if}
-                {if !empty($product.cover.bySize.home_default.sources.webp)}<source srcset="{$product.cover.bySize.home_default.sources.webp}" type="image/webp">{/if}
+                {if !empty($product.cover.bySize.large_default.sources.avif)}<source srcset="{$product.cover.bySize.large_default.sources.avif}" type="image/avif">{/if}
+                {if !empty($product.cover.bySize.large_default.sources.webp)}<source srcset="{$product.cover.bySize.large_default.sources.webp}" type="image/webp">{/if}
                 <img
-                  src="{$product.cover.bySize.home_default.url}"
+                  src="{$product.cover.bySize.large_default.url}"
                   alt="{if !empty($product.cover.legend)}{$product.cover.legend}{else}{$product.name|truncate:30:'...'}{/if}"
                   loading="lazy"
                   data-full-size-image-url="{$product.cover.large.url}"
-                  width="{$product.cover.bySize.home_default.width}"
-                  height="{$product.cover.bySize.home_default.height}"
+                  width="{$product.cover.bySize.large_default.width}"
+                  height="{$product.cover.bySize.large_default.height}"
                 />
               </picture>
             </a>
           {else}
             <a href="{$product.url}" class="thumbnail product-thumbnail">
               <picture>
-                {if !empty($urls.no_picture_image.bySize.home_default.sources.avif)}<source srcset="{$urls.no_picture_image.bySize.home_default.sources.avif}" type="image/avif">{/if}
-                {if !empty($urls.no_picture_image.bySize.home_default.sources.webp)}<source srcset="{$urls.no_picture_image.bySize.home_default.sources.webp}" type="image/webp">{/if}
+                {if !empty($urls.no_picture_image.bySize.large_default.sources.avif)}<source srcset="{$urls.no_picture_image.bySize.large_default.sources.avif}" type="image/avif">{/if}
+                {if !empty($urls.no_picture_image.bySize.large_default.sources.webp)}<source srcset="{$urls.no_picture_image.bySize.large_default.sources.webp}" type="image/webp">{/if}
                 <img
-                  src="{$urls.no_picture_image.bySize.home_default.url}"
+                  src="{$urls.no_picture_image.bySize.large_default.url}"
                   loading="lazy"
-                  width="{$urls.no_picture_image.bySize.home_default.width}"
-                  height="{$urls.no_picture_image.bySize.home_default.height}"
+                  width="{$urls.no_picture_image.bySize.large_default.width}"
+                  height="{$urls.no_picture_image.bySize.large_default.height}"
                 />
               </picture>
             </a>

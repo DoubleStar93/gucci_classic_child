@@ -8,12 +8,11 @@
    ========================================================================== */
 
 :root {
-  /* Barbara Alvisi — palette (materials/palette.jpeg + LINEEE_GUIDA_ANTONIO)
-     Background: bianco sito-wide (ex beige panna/avorio/perla) */
-  --ba-panna: #ffffff;
-  --ba-avorio: #ffffff;
-  --ba-perla: #ffffff;
-  --ba-sabbia: #f0f0f0;
+  /* Barbara Alvisi — palette (materials/palette.jpeg + LINEEE_GUIDA_ANTONIO) */
+  --ba-panna: #f6f1e8;
+  --ba-avorio: #faf6ef;
+  --ba-perla: #fff9f2;
+  --ba-sabbia: #e4d9c8;
   --ba-taupe: #9a8b7a;
   --ba-cioccolato: #3d2b22;
   --ba-bordeaux: #6b2a28;
@@ -23,11 +22,11 @@
   --ba-bronzo: #8f7348;
 
   /* Semantici */
-  --bg-primary: #ffffff;
-  --bg-secondary: #ffffff;
+  --bg-primary: var(--ba-panna);
+  --bg-secondary: var(--ba-sabbia);
   --text-color: var(--ba-cioccolato);
   --text-muted: var(--ba-taupe);
-  --border-color: #e5e5e5;
+  --border-color: #d9cfc0;
   --color-black: var(--ba-nero);
   /* Sans UI/menu — Jost ≈ Gucci Sans (uppercase, tracking, peso leggero) */
   --font-sans: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -3009,7 +3008,7 @@ body#product .gucci-pdp-gallery picture img {
   font-weight: 400;
   letter-spacing: 0.06em;
   color: var(--ba-cioccolato);
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(246, 241, 232, 0.92);
   border: 1px solid var(--border-color);
   pointer-events: none;
 }
@@ -4590,7 +4589,7 @@ body#registration .btn-primary {
   font-weight: 400;
   letter-spacing: 0.06em;
   color: var(--ba-cioccolato);
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(246, 241, 232, 0.92);
   border: 1px solid var(--border-color);
   pointer-events: none;
   user-select: none;
@@ -4638,7 +4637,7 @@ body#category .gucci-home-hero-slider .gucci-home-hero-caption__inner {
   width: min(100%, 42rem);
   margin: 0 auto;
   padding: 1.35rem 1.6rem 1.45rem;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(246, 241, 232, 0.9);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.35);
@@ -4805,7 +4804,7 @@ body#category .gucci-home-hero-slider .gucci-home-hero-caption__description p + 
     font-size: var(--gucci-type-caption);
     min-width: 2.25rem;
     padding: 0.25rem 0.45rem;
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(246, 241, 232, 0.92);
     color: var(--ba-cioccolato);
     border: 1px solid var(--border-color);
   }
@@ -5990,7 +5989,7 @@ body.gucci-sort-open #header .gucci-header-col--icons .material-icons {
     font-size: var(--gucci-type-caption);
     min-width: 2.25rem;
     padding: 0.25rem 0.45rem;
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(246, 241, 232, 0.92);
     color: var(--ba-cioccolato);
     border: 1px solid var(--border-color);
   }
@@ -13540,7 +13539,7 @@ body#order-confirmation .gucci-order-confirmation-summary-line--total .value {
 .gucci-order-confirmation-payment-return {
   margin-top: 2.5rem;
   padding: 1.75rem 1.5rem;
-  background: var(--ba-panna, #ffffff);
+  background: var(--ba-panna, #f7f3ee);
   border: 1px solid rgba(17, 17, 17, 0.08);
 }
 
@@ -13844,7 +13843,7 @@ body#contact .gucci-file-upload__trigger:hover,
 body#contact .gucci-file-upload__trigger:focus,
 body#contact .gucci-file-upload__trigger:active {
   color: #111111;
-  background: #f5f5f5;
+  background: #f3f0e8;
   border-color: #111111;
   outline: none;
 }
@@ -13925,7 +13924,7 @@ body#contact .gucci-contact-form .gucci-file-upload__trigger:hover,
 body#contact .gucci-contact-form .gucci-file-upload__trigger:focus,
 body#contact .gucci-contact-form .gucci-file-upload__trigger:active {
   color: #111111 !important;
-  background: #f5f5f5 !important;
+  background: #f3f0e8 !important;
   border-color: #111111 !important;
 }
 

@@ -13,7 +13,9 @@
 
     <div class="gucci-pdp-layout product-container js-product-container">
       <div class="gucci-pdp-gallery-col">
-        {include file='catalog/_partials/gucci-product-gallery.tpl' galleryMode='all'}
+        {block name='product_cover_thumbnails'}
+          {include file='catalog/_partials/product-cover-thumbnails.tpl'}
+        {/block}
       </div>
 
       <div class="gucci-pdp-content-row">

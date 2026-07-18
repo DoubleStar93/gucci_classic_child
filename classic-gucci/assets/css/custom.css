@@ -3282,7 +3282,7 @@ body#product .gucci-pdp-gallery picture img {
 }
 
 #product .scroll-box-arrows,
-#product .images-container,
+#product .images-container:not(.gucci-pdp-images-container),
 #product .product-images,
 #product .js-qv-mask,
 #product .js-qv-mask-images,
@@ -3297,11 +3297,23 @@ body#product .gucci-pdp-gallery picture img {
   display: none !important;
 }
 
+/* Wrapper PS-refreshable della galleria Gucci (cambio variante AJAX)
+   Specificità > theme-*.css: `#product .gucci-pdp-gallery-col > .images-container` */
+#product .gucci-pdp-gallery-col > .images-container.gucci-pdp-images-container,
+#product .gucci-pdp-layout > .images-container.gucci-pdp-images-container,
+#product .product-container > .images-container.gucci-pdp-images-container,
+#product .gucci-pdp-images-container.js-images-container {
+  display: block !important;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 /* Blocchi Classic iniettati dopo cambio variante */
-#product .gucci-pdp-gallery-col > .images-container,
+#product .gucci-pdp-gallery-col > .images-container:not(.gucci-pdp-images-container),
 #product .gucci-pdp-gallery-col > .product-cover:not(.gucci-pdp-gallery),
-#product .gucci-pdp-layout > .images-container,
-#product .product-container > .images-container {
+#product .gucci-pdp-layout > .images-container:not(.gucci-pdp-images-container),
+#product .product-container > .images-container:not(.gucci-pdp-images-container) {
   display: none !important;
 }
 

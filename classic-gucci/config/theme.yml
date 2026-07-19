@@ -42,12 +42,12 @@ global_settings:
         - ps_customersignin
       displayHome:
         - ps_imageslider
-        - ps_customtext
         - ps_featuredproducts
+        - gucci_homecategories
+        - ps_customtext
         - ps_specials
         - ps_newproducts
         - ps_bestsellers
-        - gucci_homecategories
       displayCrossSellingShoppingCart:
         - ps_featuredproducts
       displayOrderConfirmation2:

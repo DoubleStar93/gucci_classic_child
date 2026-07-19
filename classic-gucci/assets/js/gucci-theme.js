@@ -1260,16 +1260,8 @@
           toggleGucciSubmenu(button, event);
         });
 
-        const row = button.closest('.gucci-menu-row');
-        const parentItem = button.closest('.gucci-menu-item--parent');
-        const link = row ? row.querySelector('.gucci-menu-link') : null;
-
-        if (link && parentItem) {
-          link.addEventListener('click', (event) => {
-            event.preventDefault();
-            toggleGucciSubmenu(button, event);
-          });
-        }
+        // Il link padre naviga alla categoria; solo il chevron apre/chiude il sottomenu.
+        // (prima preventDefault + loader in capture lasciavano la pagina bloccata in caricamento)
       });
     };
 
@@ -2932,6 +2924,7 @@
       revealWhenReady();
     }
 
+    // Bubble (non capture): rispetta preventDefault di drawer/menu/AJAX e non lascia il loader appeso
     document.addEventListener('click', (event) => {
       if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
         return;
@@ -2947,7 +2940,7 @@
       }
 
       showLoader();
-    }, true);
+    });
 
     document.addEventListener('submit', (event) => {
       const form = event.target;

@@ -36,14 +36,17 @@ body#index .gucci-home-section--products[data-type="bestsellers"] .gucci-home-se
   visibility: visible !important;
 }
 
-/* Nuovi arrivi + I più venduti — titoli editoriali più grandi */
+/* Prodotti in vetrina + Nuovi arrivi + I più venduti — titoli editoriali */
+body#index .gucci-home-section--products[data-type="popularproducts"] .gucci-home-section__header,
 body#index .gucci-home-section--products[data-type="newproducts"] .gucci-home-section__header,
 body#index .gucci-home-section--products[data-type="bestsellers"] .gucci-home-section__header {
   margin-bottom: 2rem !important;
 }
 
+body#index .gucci-home-section--products[data-type="popularproducts"] .gucci-home-section__title,
 body#index .gucci-home-section--products[data-type="newproducts"] .gucci-home-section__title,
 body#index .gucci-home-section--products[data-type="bestsellers"] .gucci-home-section__title,
+body#index .gucci-home-section--products[data-type="popularproducts"] .products-section-title,
 body#index .gucci-home-section--products[data-type="newproducts"] .products-section-title,
 body#index .gucci-home-section--products[data-type="bestsellers"] .products-section-title {
   font-family: var(--gucci-font-serif) !important;

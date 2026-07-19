@@ -2956,22 +2956,27 @@ body#product .gucci-pdp-gallery picture img {
   align-items: flex-end;
   gap: 0.65rem;
   pointer-events: none;
+  /* Dimensione massima: 4 miniature + counter nella galleria; overflow se >4 */
+  --gucci-pdp-thumb-size: min(96px, calc((var(--gucci-pdp-gallery-height) - 5rem) / 4));
 }
 
 #product .gucci-pdp-gallery-thumbs {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 0.35rem;
-  overflow: visible;
+  gap: 0.5rem;
+  max-height: calc(var(--gucci-pdp-gallery-height) - 3.75rem);
+  overflow-x: hidden;
+  overflow-y: auto;
   padding: 2px;
   pointer-events: auto;
+  scrollbar-width: thin;
 }
 
 #product .gucci-pdp-gallery-thumb {
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: var(--gucci-pdp-thumb-size);
+  height: var(--gucci-pdp-thumb-size);
   aspect-ratio: 1 / 1;
   padding: 0;
   border: 1px solid rgba(0, 0, 0, 0.15);
@@ -5979,21 +5984,25 @@ body.gucci-sort-open #header .gucci-header-col--icons .material-icons {
     align-items: flex-end;
     gap: 0.35rem;
     z-index: 25 !important;
+    /* Max sicuro mobile: 4 thumbs nella galleria min (~22rem); ≈70px, cap 72 */
+    --gucci-pdp-thumb-size: min(72px, calc((var(--gucci-pdp-gallery-height) - 4.5rem) / 4));
   }
 
-  /* Miniature: colonna senza scroll, tutti i quadratini visibili */
+  /* Miniature: colonna; scroll solo se immagini > 4 */
   #product .gucci-pdp-gallery-thumbs {
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: flex-end;
     justify-content: flex-end;
-    gap: 0.3rem;
-    overflow: visible;
+    gap: 0.35rem;
+    max-height: calc(var(--gucci-pdp-gallery-height) - 3.25rem);
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   #product .gucci-pdp-gallery-thumb {
-    width: 32px;
-    height: 32px;
+    width: var(--gucci-pdp-thumb-size);
+    height: var(--gucci-pdp-thumb-size);
     aspect-ratio: 1 / 1;
     flex-shrink: 0;
   }

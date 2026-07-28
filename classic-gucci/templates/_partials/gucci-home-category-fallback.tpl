@@ -1,8 +1,8 @@
 {**
- * Fallback card categoria — quando l'override non ha ancora popolato i dati
+ * Fallback card categoria — quando il modulo non ha ancora popolato i dati.
+ * Nessuna immagine tema: senza cover BO la card resta senza foto.
  *}
 {assign var='gucciCatUrl' value=$link->getCategoryLink($catId)|escape:'html':'UTF-8'}
-{assign var='gucciCatImg' value=$urls.base_url|cat:'themes/classic-gucci/assets/img/home/cat-'|cat:$catId|cat:'.jpg'}
 {assign var='gucciCatName' value=''}
 {if $catId == 3}{assign var='gucciCatName' value='Abbigliamento'}
 {elseif $catId == 6}{assign var='gucciCatName' value='Accessori'}
@@ -16,7 +16,7 @@
     'name' => $gucciCatName,
     'url' => $gucciCatUrl,
     'image' => [
-      'url' => $gucciCatImg,
+      'url' => '',
       'has_image' => false,
       'width' => 800,
       'height' => 800

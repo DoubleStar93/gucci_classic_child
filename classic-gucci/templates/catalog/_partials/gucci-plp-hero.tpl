@@ -1,49 +1,28 @@
 {**
  * Classic Gucci — hero categoria PLP (stesse classi/markup dello slider homepage)
- * Immagine: solo cover categoria BO confermata da PrestaShop (no URL inventati)
+ * Immagine: solo cover originale BO (`img/c/{id}.jpg`) + cache-bust (CDN SiteGround)
  *}
 {include file='_partials/gucci-it-label.tpl' gucciLabelIn=$category.name scope='parent'}
 
 {assign var='gucciCatImg' value=''}
 {assign var='gucciCatImgFull' value=''}
-{assign var='gucciCatImgWidth' value=1920}
-{assign var='gucciCatImgHeight' value=1080}
+{assign var='gucciCatImgWidth' value=1080}
+{assign var='gucciCatImgHeight' value=1440}
 {assign var='gucciCatHasCoverImage' value=false}
-{assign var='gucciHeroPixels' value=0}
-{assign var='gucciCatDescription' value=$category.description|strip_tags|trim}
 {assign var='gucciCatHasTitle' value=false}
-{assign var='gucciCatHasDescription' value=false}
-{assign var='gucciCatHasCaption' value=false}
 {if !empty($gucciLabelOut)}{assign var='gucciCatHasTitle' value=true}{/if}
-{if !empty($gucciCatDescription)}{assign var='gucciCatHasDescription' value=true}{/if}
-{if $gucciCatHasTitle || $gucciCatHasDescription}{assign var='gucciCatHasCaption' value=true}{/if}
 
-{if !empty($category.cover.bySize)}
-  {foreach from=$category.cover.bySize item=sizeData}
-    {if !empty($sizeData.url) && !empty($sizeData.width) && !empty($sizeData.height)}
-      {assign var='gucciSizePixels' value=$sizeData.width * $sizeData.height}
-      {if $gucciSizePixels > $gucciHeroPixels}
-        {assign var='gucciCatImg' value=$sizeData.url}
-        {assign var='gucciCatImgWidth' value=$sizeData.width}
-        {assign var='gucciCatImgHeight' value=$sizeData.height}
-        {assign var='gucciHeroPixels' value=$gucciSizePixels}
-        {assign var='gucciCatHasCoverImage' value=true}
-      {/if}
-    {/if}
-  {/foreach}
-{/if}
-
-{if !$gucciCatHasCoverImage && !empty($category.cover.large.url)}
-  {assign var='gucciCatImg' value=$category.cover.large.url}
-  {if !empty($category.cover.large.width)}{assign var='gucciCatImgWidth' value=$category.cover.large.width}{/if}
-  {if !empty($category.cover.large.height)}{assign var='gucciCatImgHeight' value=$category.cover.large.height}{/if}
-  {assign var='gucciCatHasCoverImage' value=true}
-{/if}
-
-{if $gucciCatHasCoverImage && !empty($category.link_rewrite) && !empty($category.id)}
-  {assign var='gucciCatImgFull' value=$link->getCatImageLink($category.link_rewrite, $category.id, null)}
-{elseif $gucciCatHasCoverImage}
+{* Cover presente solo se PrestaShop ha verificato img/c/{id}.jpg *}
+{if !empty($category.cover) && !empty($category.id) && !empty($category.link_rewrite)}
+  {assign var='gucciCatImg' value=$link->getCatImageLink($category.link_rewrite, $category.id, null)}
+  {* Bypass cache CDN (max-age 30g): senza ?t= resta la cover precedente *}
+  {if !empty($category.date_upd)}
+    {assign var='gucciCatImg' value=$gucciCatImg|cat:'?t='|cat:($category.date_upd|replace:' ':''|replace:'-':''|replace:':':'')}
+  {elseif !empty($category.id)}
+    {assign var='gucciCatImg' value=$gucciCatImg|cat:'?t='|cat:$category.id}
+  {/if}
   {assign var='gucciCatImgFull' value=$gucciCatImg}
+  {assign var='gucciCatHasCoverImage' value=true}
 {/if}
 
 <section class="gucci-plp-hero gucci-home-hero" aria-label="{if $gucciCatHasTitle}{$gucciLabelOut|escape:'htmlall':'UTF-8'}{else}{$category.name|escape:'htmlall':'UTF-8'}{/if}">
@@ -63,20 +42,11 @@
             onerror="this.closest('.gucci-home-hero-slider').classList.add('is-no-image'); this.remove();"
           >
         {/if}
-
-        {if $gucciCatHasCaption}
-          <figcaption class="gucci-home-hero-caption">
-            <div class="gucci-home-hero-caption__inner">
-              {if $gucciCatHasTitle}
-                <h1 class="gucci-home-hero-caption__title">{$gucciLabelOut|escape:'htmlall':'UTF-8'}</h1>
-              {/if}
-              {if $gucciCatHasDescription}
-                <div class="gucci-home-hero-caption__description">{$category.description nofilter}</div>
-              {/if}
-            </div>
-          </figcaption>
-        {/if}
       </figure>
+      {* Titolo solo per SEO/a11y — nessun riquadro overlay sulle PLP categoria *}
+      {if $gucciCatHasTitle}
+        <h1 class="visually-hidden">{$gucciLabelOut|escape:'htmlall':'UTF-8'}</h1>
+      {/if}
     </div>
   </div>
 </section>

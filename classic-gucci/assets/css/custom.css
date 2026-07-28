@@ -9330,6 +9330,30 @@ body#checkout #payment-confirmation button.disabled {
 
 .gucci-home-category-card .thumbnail-top {
   position: relative !important;
+  background: var(--ba-perla, #f7f5f2) !important;
+}
+
+/* Cover categoria intera (come hero PLP): no crop object-fit cover della griglia prodotti */
+#index .gucci-home-categories-grid .gucci-home-category-card .product-thumbnail,
+#index .gucci-home-categories-grid .gucci-home-category-card .product-thumbnail picture {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent !important;
+}
+
+#index .gucci-home-categories-grid .gucci-home-category-card .product-thumbnail img,
+#index .gucci-home-categories-grid .gucci-home-category-card .gucci-home-category-card__img {
+  position: relative !important;
+  inset: auto !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
 }
 
 .gucci-home-category-card__overlay {
@@ -11874,19 +11898,9 @@ body#category .gucci-home-hero-slider.is-no-image .gucci-pdp-gallery-slide {
   background: transparent !important;
 }
 
-body#category .gucci-home-hero-slider .gucci-home-hero-caption__description,
-body#category .gucci-home-hero-slider .gucci-home-hero-caption__description * {
-  float: none !important;
-  width: auto !important;
-  max-width: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  text-align: inherit !important;
-  color: inherit !important;
-  font-family: inherit !important;
-  font-size: inherit !important;
-  font-style: normal !important;
-  font-weight: inherit !important;
+/* PLP categoria: niente riquadro titolo/descrizione sull'hero (solo cover) */
+body#category .gucci-plp-hero .gucci-home-hero-caption {
+  display: none !important;
 }
 
 /* ==========================================================================

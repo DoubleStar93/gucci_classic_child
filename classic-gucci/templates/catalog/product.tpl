@@ -89,9 +89,7 @@
             </h2>
 
             {if isset($product.reference_to_display) && $product.reference_to_display}
-              <p class="gucci-pdp-style-code">
-                {if $language.iso_code == 'it'}Stile{else}{l s='Style' d='Shop.Theme.Catalog'}{/if} {$product.reference_to_display}
-              </p>
+              <p class="gucci-pdp-style-code">{$product.reference_to_display}</p>
             {/if}
 
             {if $product.description}

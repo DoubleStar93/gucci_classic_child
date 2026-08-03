@@ -112,7 +112,7 @@ class Gucci_Homecategories extends Module
 
         try {
             return GucciMenuCategories::getMenuNodes($this->context);
-        } catch (Exception $exception) {
+        } catch (Throwable $exception) {
             PrestaShopLogger::addLog(
                 'gucci_homecategories menu: ' . $exception->getMessage(),
                 3,

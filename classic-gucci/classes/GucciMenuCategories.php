@@ -60,6 +60,7 @@ class GucciMenuCategories
 
     private static function resolveCurrentCategoryId(Context $context): int
     {
+        // Solo da request: su ProductController::$category è protected e non va letto qui.
         $fromRequest = (int) Tools::getValue('id_category');
         if ($fromRequest > 0) {
             return $fromRequest;
@@ -67,12 +68,13 @@ class GucciMenuCategories
 
         if (
             isset($context->controller)
-            && is_object($context->controller)
-            && property_exists($context->controller, 'category')
-            && $context->controller->category instanceof Category
-            && (int) $context->controller->category->id > 0
+            && $context->controller instanceof CategoryController
+            && method_exists($context->controller, 'getCategory')
         ) {
-            return (int) $context->controller->category->id;
+            $category = $context->controller->getCategory();
+            if ($category instanceof Category && (int) $category->id > 0) {
+                return (int) $category->id;
+            }
         }
 
         return 0;

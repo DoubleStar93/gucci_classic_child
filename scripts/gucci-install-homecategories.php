@@ -44,8 +44,13 @@ try {
     }
 
     $module->enable();
-    $module->registerHook('displayHome');
-    exit("OK: modulo già presente (id {$module->id}), hook displayHome registrato\n");
+    if (method_exists($module, 'ensureHooks')) {
+        $module->ensureHooks();
+    } else {
+        $module->registerHook('displayHome');
+        $module->registerHook('actionFrontControllerSetVariables');
+    }
+    exit("OK: modulo già presente (id {$module->id}), hook displayHome + menu registrati\n");
 } catch (Throwable $exception) {
     http_response_code(500);
     exit('ERRORE: ' . $exception->getMessage() . "\n");

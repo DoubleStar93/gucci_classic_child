@@ -2,8 +2,8 @@
 <module>
     <name>gucci_homecategories</name>
     <displayName><![CDATA[Gucci — categorie homepage]]></displayName>
-    <version><![CDATA[1.0.0]]></version>
-    <description><![CDATA[Griglia categorie top in homepage per il tema classic-gucci.]]></description>
+    <version><![CDATA[1.1.0]]></version>
+    <description><![CDATA[Categorie homepage e menu drawer (esclusa Vetrina) per classic-gucci.]]></description>
     <author><![CDATA[Anton]]></author>
     <tab><![CDATA[front_office_features]]></tab>
     <is_configurable>0</is_configurable>

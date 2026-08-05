@@ -1,6 +1,6 @@
 <?php
 /**
- * One-shot installer — caricato dal deploy, poi rimosso dal server.
+ * One-shot installer â€” caricato dal deploy, poi rimosso dal server.
  */
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
@@ -38,7 +38,7 @@ try {
 
     if (!$module->id) {
         if (!$module->install()) {
-            exit('ERRORE: install() fallito — ' . implode(', ', $module->getErrors()) . "\n");
+            exit('ERRORE: install() fallito â€” ' . implode(', ', $module->getErrors()) . "\n");
         }
         exit("OK: modulo installato (id {$module->id})\n");
     }
@@ -50,7 +50,7 @@ try {
         $module->registerHook('displayHome');
         $module->registerHook('actionFrontControllerSetVariables');
     }
-    exit("OK: modulo già presente (id {$module->id}), hook displayHome + menu registrati\n");
+    exit("OK: modulo giÃ  presente (id {$module->id}), hook displayHome + menu registrati\n");
 } catch (Throwable $exception) {
     http_response_code(500);
     exit('ERRORE: ' . $exception->getMessage() . "\n");

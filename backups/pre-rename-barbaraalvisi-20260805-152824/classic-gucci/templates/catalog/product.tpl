@@ -1,0 +1,142 @@
+{**
+ * Classic Gucci — scheda prodotto stile gucci.com (Gossip shoulder bag reference)
+ *}
+{extends file='parent:catalog/product.tpl'}
+
+{block name='content'}
+  <section id="main" class="gucci-pdp" itemscope itemtype="https://schema.org/Product">
+    <meta itemprop="url" content="{$product.url}">
+
+    {if isset($product.reference_to_display) && $product.reference_to_display}
+      <meta itemprop="sku" content="{$product.reference_to_display}">
+    {/if}
+
+    <div class="gucci-pdp-layout product-container js-product-container">
+      <div class="gucci-pdp-gallery-col">
+        {block name='product_cover_thumbnails'}
+          {include file='catalog/_partials/product-cover-thumbnails.tpl'}
+        {/block}
+      </div>
+
+      <div class="gucci-pdp-content-row">
+        <div class="gucci-pdp-buybox-col product-information">
+          <div class="gucci-pdp-buybox product-actions js-product-actions">
+            <form
+              action="{$urls.pages.cart}"
+              method="post"
+              id="add-to-cart-or-refresh"
+            >
+              <input type="hidden" name="token" value="{$static_token}">
+              <input type="hidden" name="id_product" value="{$product.id}" id="product_page_product_id">
+              <input type="hidden" name="id_customization" value="{$product.id_customization}" id="product_customization_id" class="js-product-customization-id">
+            {block name='page_header_container'}
+              {block name='page_header'}
+                <h1 class="h1 gucci-product-page-title" itemprop="name">{block name='page_title'}{$product.name}{/block}</h1>
+              {/block}
+            {/block}
+
+            <p class="gucci-pdp-variant-note js-gucci-variant-note" {if empty($product.attributes)}hidden{/if}>
+              {if $language.iso_code == 'it'}Variante{else}{l s='Variant' d='Shop.Theme.Catalog'}{/if}
+              {if !empty($product.attributes)}
+                {foreach from=$product.attributes item=attribute name=gucciAttrs}
+                  {if !$smarty.foreach.gucciAttrs.first} {/if}{$attribute.name}
+                {/foreach}
+              {/if}
+            </p>
+
+            {block name='product_prices'}
+              {include file='catalog/_partials/product-prices.tpl'}
+            {/block}
+
+            {if $product.is_customizable && count($product.customizations.fields)}
+              {block name='product_customization'}
+                {include file="catalog/_partials/product-customization.tpl" customizations=$product.customizations}
+              {/block}
+            {/if}
+
+            {block name='product_variants'}
+              {include file='catalog/_partials/product-variants.tpl'}
+            {/block}
+
+            {block name='product_buy'}
+              {block name='product_pack'}{/block}
+              {block name='product_discounts'}{/block}
+
+              {block name='product_add_to_cart'}
+                {include file='catalog/_partials/product-add-to-cart.tpl'}
+              {/block}
+
+              {block name='product_refresh'}
+                <input class="product-refresh ps-hidden-by-js" name="refresh" type="submit" value="{l s='Refresh' d='Shop.Theme.Actions'}">
+              {/block}
+            {/block}
+
+              <button
+                type="button"
+                class="gucci-pdp-secondary-btn gucci-contact-toggle gucci-btn gucci-btn--outline btn-unstyle"
+                data-gucci-contact-open
+              >
+                {if $language.iso_code == 'it'}Contattaci{else}{l s='Contact us' d='Shop.Theme.Global'}{/if}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="gucci-pdp-details-col">
+          <section class="gucci-pdp-description-block" aria-labelledby="gucci-pdp-description-title">
+            <h2 id="gucci-pdp-description-title" class="gucci-pdp-section-title">
+              {if $language.iso_code == 'it'}Descrizione del prodotto{else}{l s='Product description' d='Shop.Theme.Catalog'}{/if}
+            </h2>
+
+            {if isset($product.reference_to_display) && $product.reference_to_display}
+              <p class="gucci-pdp-style-code">{$product.reference_to_display}</p>
+            {/if}
+
+            {if $product.description}
+              <div class="gucci-pdp-description-text product-description" itemprop="description">
+                {$product.description nofilter}
+              </div>
+            {elseif $product.description_short}
+              <div class="gucci-pdp-description-text product-description gucci-pdp-short-description" itemprop="description">
+                {$product.description_short nofilter}
+              </div>
+            {/if}
+          </section>
+
+          {include file='catalog/_partials/gucci-product-accordions.tpl'}
+        </div>
+      </div>
+    </div>
+
+    <div class="gucci-pdp-product-grids">
+      {block name='product_accessories'}
+        {if $accessories}
+          {if $language.iso_code == 'it'}
+            {assign var='gucciAccessoriesTitle' value='Potrebbe piacerti anche'}
+          {else}
+            {assign var='gucciAccessoriesTitle' value='You might also like'}
+          {/if}
+          {include
+            file='_partials/gucci-product-grid-section.tpl'
+            products=$accessories
+            sectionTitle=$gucciAccessoriesTitle
+            sectionClass='product-accessories gucci-pdp-accessories'
+            titleClass='gucci-pdp-accessories-title'
+          }
+        {/if}
+      {/block}
+
+      {block name='product_footer'}
+        <div class="gucci-pdp-footer-grids">
+          {hook h='displayFooterProduct' product=$product category=$category}
+        </div>
+      {/block}
+    </div>
+
+    {block name='product_images_modal'}{/block}
+
+    {block name='page_footer_container'}{/block}
+  </section>
+{/block}
+
+{block name='hook_display_reassurance'}{/block}

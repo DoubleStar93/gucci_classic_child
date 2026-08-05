@@ -1,0 +1,361 @@
+/**
+ * Ever Popup — stile Barbara Alvisi / Gucci (self-contained nel modulo)
+ */
+.gucci-everpopup {
+  --everpopup-panna: #f6f1e8;
+  --everpopup-perla: #fff9f2;
+  --everpopup-cioccolato: #3d2b22;
+  --everpopup-taupe: #9a8b7a;
+  --everpopup-bordeaux: #6b2a28;
+  --everpopup-bordeaux-dark: #541f1d;
+  --everpopup-border: #d9cfc0;
+  --everpopup-font-sans: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --everpopup-font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+}
+
+#everpspopup_block_center.gucci-everpopup {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+#everpspopup_block_center.gucci-everpopup img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#everpspopup_block_center .gucci-everpopup__panel {
+  position: relative;
+  width: min(32rem, 92vw);
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  margin: 0;
+  padding: 0;
+  background: var(--ba-panna, var(--everpopup-panna));
+  color: var(--ba-cioccolato, var(--everpopup-cioccolato));
+  border: 1px solid var(--border-color, var(--everpopup-border));
+  box-shadow: none;
+  text-align: center;
+}
+
+.gucci-everpopup__link-wrap {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.gucci-everpopup__content {
+  margin-bottom: 0;
+}
+
+.gucci-everpopup__content.rte h1,
+.gucci-everpopup__content.rte h2,
+.gucci-everpopup__content.rte .gucci-everpopup__title,
+.gucci-everpopup__title {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-serif, var(--everpopup-font-serif));
+  font-size: clamp(1.5rem, 3.2vw, 1.875rem);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--ba-cioccolato, var(--everpopup-cioccolato));
+}
+
+.gucci-everpopup__content.rte p,
+.gucci-everpopup__content.rte .gucci-everpopup__lede,
+.gucci-everpopup__lede {
+  margin: 0 0 1rem;
+  font-family: var(--font-sans, var(--everpopup-font-sans));
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--text-muted, var(--everpopup-taupe));
+}
+
+.gucci-everpopup__content.rte img {
+  margin: 0 auto 0;
+  max-width: 100%;
+  height: auto;
+}
+
+#everpspopup_block_center .gucci-everpopup__content:has(img) + .gucci-everpopup__newsletter,
+#everpspopup_block_center .gucci-everpopup__newsletter {
+  margin-top: 0.65rem;
+  padding-top: 0 !important;
+  border-top: none !important;
+}
+
+.gucci-everpopup__eyebrow {
+  display: none !important;
+}
+
+#everpspopup_block_center .gucci-everpopup__adult {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color, var(--everpopup-border));
+}
+
+.gucci-everpopup__newsletter .gucci-everpopup__title {
+  margin-top: 0;
+  margin-bottom: 0.65rem;
+}
+
+#everpspopup_block_center .gucci-everpopup__newsletter {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.gucci-everpopup__form {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.gucci-everpopup__label {
+  display: none !important;
+}
+
+.gucci-everpopup__input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.85rem !important;
+  font-family: var(--font-sans, var(--everpopup-font-sans)) !important;
+  font-size: 15px !important;
+  font-weight: 300;
+  color: var(--ba-cioccolato, var(--everpopup-cioccolato)) !important;
+  background: var(--ba-perla, var(--everpopup-perla)) !important;
+  border: 1px solid var(--border-color, var(--everpopup-border)) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.gucci-everpopup__input:focus {
+  border-color: var(--ba-cioccolato, var(--everpopup-cioccolato)) !important;
+  outline: none;
+  box-shadow: none !important;
+}
+
+.gucci-everpopup__gdpr {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.gucci-everpopup__checkbox {
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.gucci-everpopup__gdpr-label {
+  margin: 0;
+  font-family: var(--font-sans, var(--everpopup-font-sans));
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--text-muted, var(--everpopup-taupe));
+}
+
+.gucci-everpopup__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 2.75rem;
+  margin-top: 0.35rem;
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-sans, var(--everpopup-font-sans));
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: none;
+  text-align: center;
+  color: var(--ba-perla, var(--everpopup-perla)) !important;
+  background: var(--ba-bordeaux, var(--everpopup-bordeaux));
+  border: 1px solid var(--ba-bordeaux, var(--everpopup-bordeaux));
+  border-radius: 0;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.gucci-everpopup__submit:hover,
+.gucci-everpopup__submit:focus {
+  background: var(--ba-bordeaux-dark, var(--everpopup-bordeaux-dark));
+  border-color: var(--ba-bordeaux-dark, var(--everpopup-bordeaux-dark));
+  outline: none;
+}
+
+.gucci-everpopup__success {
+  display: none;
+  margin: 0.35rem 0 0;
+  padding: 0.75rem 0;
+  font-family: var(--font-sans, var(--everpopup-font-sans));
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--ba-bordeaux, var(--everpopup-bordeaux));
+}
+
+.gucci-everpopup__feedback {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-sans, var(--everpopup-font-sans));
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.gucci-everpopup__feedback--ok {
+  background: rgba(107, 42, 40, 0.08);
+  color: var(--ba-bordeaux, var(--everpopup-bordeaux));
+  border: 1px solid rgba(107, 42, 40, 0.18);
+}
+
+.gucci-everpopup__feedback--error {
+  background: rgba(61, 43, 34, 0.06);
+  color: var(--ba-cioccolato, var(--everpopup-cioccolato));
+  border: 1px solid var(--border-color, var(--everpopup-border));
+}
+
+#everpspopup_block_center.gucci-everpopup .well,
+#everpspopup_block_center.gucci-everpopup .btn-info,
+#everpspopup_block_center.gucci-everpopup .alert-success,
+#everpspopup_block_center.gucci-everpopup .alert-warning {
+  all: unset;
+}
+
+/* Overlay custom — sostituisce Fancybox per evitare corruzione DOM */
+.gucci-everpopup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99990;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(26, 20, 18, 0.72);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gucci-everpopup-overlay[hidden] {
+  display: none !important;
+}
+
+body.gucci-everpopup-open {
+  overflow: hidden;
+}
+
+#everpspopup_block_center.gucci-everpopup {
+  position: relative;
+  flex: 0 1 auto;
+  width: min(32rem, 92vw);
+  margin: 0;
+}
+
+.gucci-everpopup__close {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  font-family: var(--font-sans, var(--everpopup-font-sans));
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ba-cioccolato, var(--everpopup-cioccolato));
+  background: transparent;
+  border: 0;
+  opacity: 0.72;
+  cursor: pointer;
+}
+
+.gucci-everpopup__close:hover,
+.gucci-everpopup__close:focus {
+  color: var(--ba-bordeaux, var(--everpopup-bordeaux));
+  opacity: 1;
+  outline: none;
+}
+
+@media (max-width: 500px) {
+  .gucci-everpopup-overlay {
+    padding: 0.75rem;
+  }
+}
+
+/* Legacy Fancybox — ignorato se overlay attivo */
+.fancybox-container.gucci-everpopup-fancybox .fancybox-stage,
+.fancybox-container.gucci-everpopup-fancybox .fancybox-inner {
+  overflow: visible !important;
+}
+
+.fancybox-container.gucci-everpopup-fancybox .fancybox-bg {
+  background: rgba(26, 20, 18, 0.72);
+}
+
+.fancybox-container.gucci-everpopup-fancybox .fancybox-slide,
+.fancybox-container.gucci-everpopup-fancybox .fancybox-slide--current,
+.fancybox-container.gucci-everpopup-fancybox .fancybox-slide--html {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1.25rem !important;
+  overflow: visible !important;
+  height: auto !important;
+  min-height: 100%;
+}
+
+.fancybox-container.gucci-everpopup-fancybox .fancybox-slide::before {
+  display: none !important;
+  content: none !important;
+  height: 0 !important;
+}
+
+.fancybox-container.gucci-everpopup-fancybox .fancybox-content {
+  background: transparent !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  max-height: none !important;
+  height: auto !important;
+  width: auto !important;
+  vertical-align: middle;
+}
+
+.fancybox-container.gucci-everpopup-fancybox #everpspopup_block_center,
+.fancybox-container.gucci-everpopup-fancybox #everpspopup_block_center .gucci-everpopup__panel {
+  overflow: visible !important;
+  max-height: none !important;
+  height: auto !important;
+}
+
+.fancybox-container.gucci-everpopup-fancybox .fancybox-close-small {
+  top: 0.35rem;
+  right: 0.35rem;
+  padding: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: transparent;
+  color: var(--ba-cioccolato, var(--everpopup-cioccolato));
+  opacity: 0.72;
+}
+
+.fancybox-container.gucci-everpopup-fancybox .fancybox-close-small:hover {
+  color: var(--ba-bordeaux, var(--everpopup-bordeaux));
+  opacity: 1;
+}
+
+@media (max-width: 500px) {
+  .fancybox-container.gucci-everpopup-fancybox .fancybox-slide {
+    padding: 0.75rem !important;
+  }
+}

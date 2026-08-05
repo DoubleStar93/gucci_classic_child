@@ -38,7 +38,7 @@ class Everpspopup extends Module
     {
         $this->name = 'everpspopup';
         $this->tab = 'administration';
-        $this->version = '5.6.14';
+        $this->version = '5.6.15';
         $this->author = 'Team Ever';
         $this->need_instance = 0;
         $this->bootstrap = true;
@@ -415,23 +415,23 @@ class Everpspopup extends Module
 
     public function hookHeader()
     {
-        $this->ensureGucciCartHooks();
+        $this->ensureBarbaraalvisiCartHooks();
 
         if (
             !empty($this->context->cart)
             && Validate::isLoadedObject($this->context->cart)
             && $this->context->cart->nbProducts()
         ) {
-            $this->runGucciCartShippingAssign();
+            $this->runBarbaraalvisiCartShippingAssign();
         }
     }
 
     /**
-     * Calcola spedizione fissa per il riepilogo carrello (tema classic-gucci).
+     * Calcola spedizione fissa per il riepilogo carrello (tema barbaraalvisi).
      */
     public function hookDisplayShoppingCart()
     {
-        $this->runGucciCartShippingAssign();
+        $this->runBarbaraalvisiCartShippingAssign();
 
         return '';
     }
@@ -441,20 +441,20 @@ class Everpspopup extends Module
      */
     public function hookDisplayCartModalContent(array $params)
     {
-        $this->runGucciCartShippingAssign();
+        $this->runBarbaraalvisiCartShippingAssign();
 
         return '';
     }
 
-    private function runGucciCartShippingAssign(): bool
+    private function runBarbaraalvisiCartShippingAssign(): bool
     {
         if (empty($this->context->cart) || !Validate::isLoadedObject($this->context->cart)) {
             return false;
         }
 
-        $classFile = _PS_THEME_DIR_ . 'classes/GucciCartShipping.php';
+        $classFile = _PS_THEME_DIR_ . 'classes/BarbaraalvisiCartShipping.php';
         if (!is_file($classFile)) {
-            $classFile = _PS_ROOT_DIR_ . '/themes/classic-gucci/classes/GucciCartShipping.php';
+            $classFile = _PS_ROOT_DIR_ . '/themes/barbaraalvisi/classes/BarbaraalvisiCartShipping.php';
         }
 
         if (!is_file($classFile)) {
@@ -463,16 +463,16 @@ class Everpspopup extends Module
 
         require_once $classFile;
 
-        if (!class_exists('GucciCartShipping', false)) {
+        if (!class_exists('BarbaraalvisiCartShipping', false)) {
             return false;
         }
 
-        GucciCartShipping::assignCartShippingVars($this->context->cart, $this->context);
+        BarbaraalvisiCartShipping::assignCartShippingVars($this->context->cart, $this->context);
 
         return true;
     }
 
-    private function ensureGucciCartHooks()
+    private function ensureBarbaraalvisiCartHooks()
     {
         static $registered = false;
 
@@ -508,7 +508,7 @@ class Everpspopup extends Module
     {
         $this->loadModel();
         $controller_name = Tools::getValue('controller');
-        if ($this->isGucciPopupExcludedPage($controller_name)) {
+        if ($this->isBarbaraalvisiPopupExcludedPage($controller_name)) {
             return;
         }
         $everpopup = EverPsPopupClass::getPopupByIdController(
@@ -595,9 +595,9 @@ class Everpspopup extends Module
             || strpos($content, 'Iscriviti per ricevere') !== false
         ) {
             return '
-                <p class="gucci-everpopup__eyebrow">Newsletter</p>
-                <h2 class="gucci-everpopup__title">Stay in touch</h2>
-                <p class="gucci-everpopup__lede">Subscribe to receive news, collections and exclusive invitations.</p>
+                <p class="barbaraalvisi-everpopup__eyebrow">Newsletter</p>
+                <h2 class="barbaraalvisi-everpopup__title">Stay in touch</h2>
+                <p class="barbaraalvisi-everpopup__lede">Subscribe to receive news, collections and exclusive invitations.</p>
                 ';
         }
 
@@ -607,7 +607,7 @@ class Everpspopup extends Module
     /**
      * Newsletter popup must not interrupt cart or checkout.
      */
-    private function isGucciPopupExcludedPage($controllerName)
+    private function isBarbaraalvisiPopupExcludedPage($controllerName)
     {
         $excludedControllers = ['cart', 'order', 'orderopc'];
         if (in_array((string) $controllerName, $excludedControllers, true)) {
@@ -712,15 +712,15 @@ class Everpspopup extends Module
                 );
                 if ($language['iso_code'] === 'it') {
                     $popup->content[$language['id_lang']] = '
-                <p class="gucci-everpopup__eyebrow">Newsletter</p>
-                <h2 class="gucci-everpopup__title">Resta in contatto</h2>
-                <p class="gucci-everpopup__lede">Iscriviti per ricevere novità, collezioni e inviti esclusivi.</p>
+                <p class="barbaraalvisi-everpopup__eyebrow">Newsletter</p>
+                <h2 class="barbaraalvisi-everpopup__title">Resta in contatto</h2>
+                <p class="barbaraalvisi-everpopup__lede">Iscriviti per ricevere novità, collezioni e inviti esclusivi.</p>
                 ';
                 } else {
                     $popup->content[$language['id_lang']] = '
-                <p class="gucci-everpopup__eyebrow">Newsletter</p>
-                <h2 class="gucci-everpopup__title">Stay in touch</h2>
-                <p class="gucci-everpopup__lede">Subscribe to receive news, collections and exclusive invitations.</p>
+                <p class="barbaraalvisi-everpopup__eyebrow">Newsletter</p>
+                <h2 class="barbaraalvisi-everpopup__title">Stay in touch</h2>
+                <p class="barbaraalvisi-everpopup__lede">Subscribe to receive news, collections and exclusive invitations.</p>
                 ';
                 }
                 $popup->link[$language['id_lang']] = '';

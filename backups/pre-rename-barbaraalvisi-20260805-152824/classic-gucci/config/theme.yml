@@ -1,0 +1,101 @@
+parent: classic
+name: classic-gucci
+display_name: Classic Gucci Style
+version: 1.8.0
+author:
+  name: "Anton"
+  email: ""
+  url: ""
+
+meta:
+  compatibility:
+    from: 9.0.0
+    to: ~
+  framework: 'bootstrap-v4.0.0-alpha.5'
+
+  available_layouts:
+    layout-full-width:
+      name: Full Width
+      description: No side columns, ideal for distraction-free pages such as product pages.
+    layout-both-columns:
+      name: Three Columns
+      description: One large central column and 2 side columns.
+    layout-left-column:
+      name: Two Columns, small left column
+      description: Two columns with a small left column
+    layout-right-column:
+      name: Two Columns, small right column
+      description: Two columns with a small right column
+
+assets:
+  use_parent_assets: true
+  # custom.css in head.tpl; JS in gucci-theme.js (layout, dopo bundle CCC — non usare custom.js)
+
+global_settings:
+  hooks:
+    modules_to_hook:
+      displayNav1: []
+      displayTop:
+        - ps_mainmenu
+      displayNav2:
+        - ps_shoppingcart
+        - ps_customersignin
+      displayHome:
+        - ps_imageslider
+        - ps_featuredproducts
+        - gucci_homecategories
+        - ps_customtext
+        - ps_specials
+        - ps_newproducts
+        - ps_bestsellers
+      displayCrossSellingShoppingCart:
+        - ps_featuredproducts
+      displayOrderConfirmation2:
+        - ps_featuredproducts
+      displayCartModalFooter:
+        - ps_featuredproducts
+      displayNotFound:
+        - ps_featuredproducts
+      displayFooterProduct:
+        - ps_categoryproducts
+      displayFooterBefore: []
+      displayFooter:
+        - ps_linklist
+      displayFooterAfter:
+        - ps_languageselector
+        - ps_socialfollow
+      displayLeftColumn: []
+      displayReassurance: []
+      displayWrapperTop: []
+      displayWrapperBottom: []
+
+theme_settings:
+  default_layout: layout-full-width
+  layouts:
+    category: layout-full-width
+    best-sales: layout-full-width
+    new-products: layout-full-width
+    prices-drop: layout-full-width
+    manufacturer: layout-full-width
+    supplier: layout-full-width
+    contact: layout-full-width
+    search: layout-full-width
+    cart: layout-full-width
+    checkout: layout-full-width
+    authentication: layout-full-width
+    registration: layout-full-width
+    my-account: layout-full-width
+    cms: layout-full-width
+    order-confirmation: layout-full-width
+    stores: layout-full-width
+    history: layout-full-width
+    order-detail: layout-full-width
+    password: layout-full-width
+    address: layout-full-width
+    guest-tracking: layout-full-width
+    guest-login: layout-full-width
+    discount: layout-full-width
+    order-slip: layout-full-width
+    order-follow: layout-full-width
+    page-not-found: layout-full-width
+    sitemap: layout-full-width

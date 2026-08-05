@@ -9,11 +9,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..");
 dotenv.config({ path: path.join(repoRoot, ".env") });
 
-const localThemeDir = path.join(repoRoot, "classic-gucci");
+const localThemeDir = path.join(repoRoot, "barbaraalvisi");
 const localOverrideDir = path.join(repoRoot, "override");
 const localModulesDir = path.join(repoRoot, "modules");
 /** Moduli sincronizzati insieme al tema (override: FTP_DEPLOY_MODULES in .env) */
-const deployModules = (process.env.FTP_DEPLOY_MODULES || "everpspopup,gucci_homecategories")
+const deployModules = (process.env.FTP_DEPLOY_MODULES || "everpspopup,barbaraalvisi_homecategories")
   .split(",")
   .map((name) => name.trim())
   .filter(Boolean);
@@ -266,7 +266,7 @@ async function deployTheme(client, remotePath, localDir, mode) {
 }
 
 function getShopRootFromThemePath(themeRemotePath) {
-  return themeRemotePath.replace(/\/themes\/classic-gucci\/?$/i, "");
+  return themeRemotePath.replace(/\/themes\/(classic-gucci|barbaraalvisi)\/?$/i, "");
 }
 
 async function deployModulesToServer(client, themeRemotePath) {
@@ -358,34 +358,28 @@ async function removeLegacyOverrideFiles(client, remoteOverridePath) {
 }
 
 function getModuleRemotePath(themeRemotePath) {
-  return getShopRootFromThemePath(themeRemotePath) + "/modules/gucci_homecategories";
+  return getShopRootFromThemePath(themeRemotePath) + "/modules/barbaraalvisi_homecategories";
 }
 
-async function ensureGucciHomecategoriesModule(client, themeRemotePath, stagingUrl) {
-  if (!deployModules.includes("gucci_homecategories")) {
-    return;
-  }
-
+async function ensureBarbaraalvisiThemeAndModules(client, themeRemotePath, stagingUrl) {
   const shopRoot = getShopRootFromThemePath(themeRemotePath);
-  const localInstaller = path.join(repoRoot, "scripts", "gucci-install-homecategories.php");
-  const remoteInstaller = `${shopRoot}/gucci-install-homecategories.php`;
+  const localInstaller = path.join(repoRoot, "scripts", "barbaraalvisi-activate-theme.php");
+  const remoteInstaller = `${shopRoot}/barbaraalvisi-activate-theme.php`;
   const token =
-    process.env.GUCCI_MODULE_INSTALL_TOKEN?.trim() || "gucci-homecategories-install";
+    process.env.BARBARAALVISI_THEME_ACTIVATE_TOKEN?.trim() || "barbaraalvisi-theme-activate";
 
   try {
     await access(localInstaller);
     await client.uploadFrom(localInstaller, remoteInstaller);
 
-    const installUrl = `${stagingUrl.replace(/\/+$/, "")}/gucci-install-homecategories.php?token=${encodeURIComponent(token)}`;
+    const installUrl = `${stagingUrl.replace(/\/+$/, "")}/barbaraalvisi-activate-theme.php?token=${encodeURIComponent(token)}`;
     const response = await fetch(installUrl, { redirect: "follow" });
     const body = (await response.text()).trim();
-    const summary = body.replace(/\s+/g, " ").slice(0, 240);
-    console.log(
-      `gucci_homecategories: ${summary || `HTTP ${response.status}`}`
-    );
+    const summary = body.replace(/\s+/g, " ").slice(0, 400);
+    console.log(`tema/moduli barbaraalvisi: ${summary || `HTTP ${response.status}`}`);
   } catch (error) {
     console.warn(
-      `gucci_homecategories install: ${error.message} — installa manualmente da BO → Moduli.`
+      `Attivazione tema barbaraalvisi: ${error.message} — verifica BO → Design → Tema.`
     );
   } finally {
     try {
@@ -427,7 +421,7 @@ async function main() {
 
     const verifyUrl =
       process.env.STAGING_URL?.trim() || "https://barbaraalvisi.it/";
-    await ensureGucciHomecategoriesModule(client, config.remotePath, verifyUrl);
+    await ensureBarbaraalvisiThemeAndModules(client, config.remotePath, verifyUrl);
 
     for (const cachePath of config.cachePaths) {
       const label = cachePath === "/cache" ? "Cache root (/cache)" : `Cache (${cachePath})`;

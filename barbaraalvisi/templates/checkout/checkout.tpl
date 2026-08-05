@@ -1,0 +1,31 @@
+{**
+ * Barbara Alvisi — checkout
+ *}
+{extends file='parent:checkout/checkout.tpl'}
+
+{block name='content'}
+  <section id="content" class="barbaraalvisi-checkout-page">
+    <header class="barbaraalvisi-checkout-header">
+      <h1 class="barbaraalvisi-checkout-title">
+        {if $language.iso_code == 'it'}Cassa{else}{l s='Checkout' d='Shop.Theme.Checkout'}{/if}
+      </h1>
+      <p class="barbaraalvisi-checkout-subtitle">
+        {if $language.iso_code == 'it'}Completa il tuo ordine{else}{l s='Complete your order' d='Shop.Theme.Checkout'}{/if}
+      </p>
+    </header>
+
+    <div class="row barbaraalvisi-checkout-grid">
+      <div class="cart-grid-body col-xs-12 col-lg-8 barbaraalvisi-checkout-process">
+        {block name='checkout_process'}
+          {render file='checkout/checkout-process.tpl' ui=$checkout_process}
+        {/block}
+      </div>
+      <div class="cart-grid-right col-xs-12 col-lg-4 barbaraalvisi-checkout-summary-col">
+        {block name='cart_summary'}
+          {include file='checkout/_partials/cart-summary.tpl' cart=$cart}
+        {/block}
+        {block name='hook_reassurance'}{/block}
+      </div>
+    </div>
+  </section>
+{/block}

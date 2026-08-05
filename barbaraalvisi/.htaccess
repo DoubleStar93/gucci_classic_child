@@ -1,0 +1,7 @@
+# Allow preview.png to refresh in BO (avoid sticky CDN/proxy cache of old Classic preview)
+<IfModule mod_headers.c>
+  <Files "preview.png">
+    Header set Cache-Control "no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+  </Files>
+</IfModule>

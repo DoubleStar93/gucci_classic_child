@@ -1,0 +1,146 @@
+/**
+ * Homepage displayHome — override finale (non nel bundle CCC).
+ * Specificità > theme-*.css legacy che nasconde moduli BO.
+ */
+
+body#index .gucci-home-modules .gucci-home-section--products.gucci-home-section[data-type="popularproducts"],
+body#index .gucci-home-modules .gucci-home-section--products.gucci-home-section[data-type="onsale"],
+body#index .gucci-home-modules .gucci-home-section--products.gucci-home-section[data-type="newproducts"],
+body#index .gucci-home-modules .gucci-home-section--products.gucci-home-section[data-type="bestsellers"],
+body#index .gucci-home-modules > #module-ps_featuredproducts,
+body#index .gucci-home-modules > #module-ps_specials,
+body#index .gucci-home-modules > #module-ps_newproducts,
+body#index .gucci-home-modules > #module-ps_bestsellers {
+  display: block !important;
+  visibility: visible !important;
+  width: 100% !important;
+}
+
+body#index .gucci-home-section--products[data-type="popularproducts"] .gucci-home-section__header,
+body#index .gucci-home-section--products[data-type="onsale"] .gucci-home-section__header,
+body#index .gucci-home-section--products[data-type="newproducts"] .gucci-home-section__header,
+body#index .gucci-home-section--products[data-type="bestsellers"] .gucci-home-section__header,
+body#index .gucci-home-section--products[data-type="popularproducts"] .gucci-home-section__footer,
+body#index .gucci-home-section--products[data-type="onsale"] .gucci-home-section__footer,
+body#index .gucci-home-section--products[data-type="newproducts"] .gucci-home-section__footer,
+body#index .gucci-home-section--products[data-type="bestsellers"] .gucci-home-section__footer {
+  display: block !important;
+  visibility: visible !important;
+}
+
+body#index .gucci-home-section--products[data-type="popularproducts"] .gucci-home-section__title,
+body#index .gucci-home-section--products[data-type="onsale"] .gucci-home-section__title,
+body#index .gucci-home-section--products[data-type="newproducts"] .gucci-home-section__title,
+body#index .gucci-home-section--products[data-type="bestsellers"] .gucci-home-section__title {
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* Prodotti in vetrina + Nuovi arrivi + I più venduti — titoli editoriali */
+body#index .gucci-home-section--products[data-type="popularproducts"] .gucci-home-section__header,
+body#index .gucci-home-section--products[data-type="newproducts"] .gucci-home-section__header,
+body#index .gucci-home-section--products[data-type="bestsellers"] .gucci-home-section__header {
+  margin-bottom: 2rem !important;
+}
+
+body#index .gucci-home-section--products[data-type="popularproducts"] .gucci-home-section__title,
+body#index .gucci-home-section--products[data-type="newproducts"] .gucci-home-section__title,
+body#index .gucci-home-section--products[data-type="bestsellers"] .gucci-home-section__title,
+body#index .gucci-home-section--products[data-type="popularproducts"] .products-section-title,
+body#index .gucci-home-section--products[data-type="newproducts"] .products-section-title,
+body#index .gucci-home-section--products[data-type="bestsellers"] .products-section-title {
+  font-family: var(--gucci-font-serif) !important;
+  font-size: clamp(1.625rem, 4vw, 2.375rem) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.1em !important;
+  line-height: 1.15 !important;
+  color: var(--ba-nero) !important;
+  padding: 3.25rem 1.5rem 1.75rem !important;
+  margin-bottom: 0 !important;
+}
+
+/* Home hero mobile — testo slide sotto l'immagine (override audit palette) */
+@media (max-width: 767px) {
+  body#index .gucci-home-hero-slider.gucci-pdp-gallery,
+  body#index .gucci-home-hero-slider {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body#index .gucci-home-hero-slider .gucci-pdp-gallery-viewport {
+    height: auto !important;
+    min-height: var(--gucci-pdp-gallery-height) !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body#index .gucci-home-hero-slider .gucci-pdp-gallery-slide:not(.is-active) {
+    position: absolute !important;
+    inset: 0 auto auto 0 !important;
+    width: 100% !important;
+    height: var(--gucci-pdp-gallery-height) !important;
+    min-height: var(--gucci-pdp-gallery-height) !important;
+    max-height: var(--gucci-pdp-gallery-height) !important;
+    overflow: hidden !important;
+  }
+
+  body#index .gucci-home-hero-slider .gucci-pdp-gallery-slide.is-active {
+    position: relative !important;
+    inset: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: var(--gucci-pdp-gallery-height) !important;
+    max-height: none !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  body#index .gucci-home-hero-slider .gucci-pdp-gallery-slide.is-active .gucci-pdp-gallery-image {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: var(--gucci-pdp-gallery-height) !important;
+    object-fit: contain !important;
+  }
+
+  body#index .gucci-home-hero-slider .gucci-home-hero-caption {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    padding: 0 !important;
+    pointer-events: auto !important;
+  }
+
+  body#index .gucci-home-hero-slider .gucci-home-hero-caption::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  body#index .gucci-home-hero-slider .gucci-home-hero-caption__inner {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 1.75rem 1.25rem 2rem !important;
+    background: var(--ba-panna) !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  body#index .gucci-home-hero-slider .gucci-pdp-gallery-controls {
+    top: calc(var(--gucci-pdp-gallery-height) - 3.25rem) !important;
+    bottom: auto !important;
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "gucci-classic-child-deploy",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "deploy": "node scripts/deploy.js",
+    "restore:everpspopup": "node scripts/restore-everpspopup.mjs --force",
+    "clean:stash": "node scripts/clean-stash.js",
+    "clean:logs": "node scripts/clean-logs.js",
+    "test:ftp": "node scripts/test-ftp.js",
+    "make:home-cats": "node scripts/make-home-cat-images.js",
+    "clean:materials-bg": "node scripts/remove-materials-background.js",
+    "diagnose:shipping": "node scripts/run-diagnose-shipping.js",
+    "diagnose:shipping:db": "node scripts/diagnose-shipping-db.js",
+    "diagnose:mail": "node scripts/run-diagnose-mail.js"
+  },
+  "devDependencies": {
+    "basic-ftp": "^5.0.5",
+    "dotenv": "^16.4.7",
+    "mysql2": "^3.22.5",
+    "opentype.js": "^2.0.0",
+    "sharp": "^0.34.5"
+  }
+}

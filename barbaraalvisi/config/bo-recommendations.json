@@ -1,0 +1,46 @@
+{
+  "version": "1.1.0",
+  "after_theme_apply": [
+    "BO → Design → Tema → Barbara Alvisi → Ri-applica tema",
+    "BO → Parametri avanzati → Prestazioni → Svuota cache"
+  ],
+  "shop_branding": {
+    "logo": "Preferenze → Negozio → logo monocromatico (SVG/PNG nero)",
+    "default_language": "Italiano",
+    "default_currency": "EUR"
+  },
+  "disable_modules": [
+    "blockreassurance",
+    "blockwishlist"
+  ],
+  "keep_modules": [
+    "ps_imageslider",
+    "ps_featuredproducts",
+    "ps_categoryproducts",
+    "ps_banner",
+    "ps_customtext",
+    "ps_specials",
+    "ps_newproducts",
+    "ps_bestsellers",
+    "ps_emailsubscription",
+    "ps_linklist",
+    "ps_mainmenu",
+    "ps_contactinfo"
+  ],
+  "displayHome_note": "displayHome: ps_imageslider → ps_customtext → ps_featuredproducts → ps_specials → ps_newproducts → ps_bestsellers. Griglia categorie via index.tpl. Ordine visivo in custom.css.",
+  "product_grid_note": "Griglia unificata: productlist.tpl (barbaraalvisi-plp-grid). PLP: products.tpl con #js-product-list. Vedi docs/BARBARAALVISI-PRODUCT-GRID.md",
+  "footer_linklist_columns_it": [
+    "Prodotti",
+    "La nostra azienda",
+    "Note legali"
+  ],
+  "products": {
+    "min_images_per_pdp": 6,
+    "accessories": "Collegare prodotti correlati per sezione Potrebbe piacerti anche"
+  },
+  "contactinfo": {
+    "phone": "Numero reale in ps_contactinfo",
+    "email": "Email reale",
+    "whatsapp": "Link WhatsApp nel pannello contatti"
+  }
+}

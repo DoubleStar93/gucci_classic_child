@@ -19,30 +19,30 @@
 (function ($) {
     'use strict';
 
-    function hideGucciPageLoader() {
-        var loader = document.getElementById('gucci-page-loader');
+    function hideBarbaraalvisiPageLoader() {
+        var loader = document.getElementById('barbaraalvisi-page-loader');
         if (loader) {
             loader.classList.add('is-hidden');
         }
-        document.documentElement.classList.remove('gucci-is-loading');
+        document.documentElement.classList.remove('barbaraalvisi-is-loading');
         if (document.body) {
-            document.body.classList.remove('gucci-is-loading');
+            document.body.classList.remove('barbaraalvisi-is-loading');
         }
     }
 
-    window.hideGucciEverpopupPageLoader = hideGucciPageLoader;
+    window.hideBarbaraalvisiEverpopupPageLoader = hideBarbaraalvisiPageLoader;
 
  $(document).ready(function(){
-    if (window.__gucciEverpopupBound) {
+    if (window.__barbaraalvisiEverpopupBound) {
         return;
     }
-    window.__gucciEverpopupBound = true;
+    window.__barbaraalvisiEverpopupBound = true;
 
     // Rimuove handler obsoleti dal bundle CCC (vecchio Fancybox)
     $(document).off('submit', '#ever_subscription_form');
-    $(document).off('click', '.gucci-everpopup__close');
-    $(document).off('click', '#gucci-everpopup-overlay');
-    $(document).off('keydown.gucciEverpopup');
+    $(document).off('click', '.barbaraalvisi-everpopup__close');
+    $(document).off('click', '#barbaraalvisi-everpopup-overlay');
+    $(document).off('keydown.barbaraalvisiEverpopup');
 
     var cookie_time = $('#everpspopup_block_center').data('expire')?$('#everpspopup_block_center').data('expire'):0; //set cookie on 1day1hour1minute if not set in config
     var adult_mode = $('#everpspopup_block_center').data('adult');
@@ -166,9 +166,9 @@
         var popcontent = 1;
     }
 
-    var gucciPopupStrict = false;
+    var barbaraalvisiPopupStrict = false;
 
-    function isGucciCheckoutOrCartPage() {
+    function isBarbaraalvisiCheckoutOrCartPage() {
         var bodyId = document.body && document.body.id;
         return bodyId === 'cart' || bodyId === 'checkout';
     }
@@ -181,29 +181,29 @@
         $.cookie('everpspopup' + cookie_suffix, popcontent, { expires: cookie_time });
     }
 
-    function openGucciPopup(strict) {
-        gucciPopupStrict = !!strict;
-        var $overlay = $('#gucci-everpopup-overlay');
+    function openBarbaraalvisiPopup(strict) {
+        barbaraalvisiPopupStrict = !!strict;
+        var $overlay = $('#barbaraalvisi-everpopup-overlay');
         $overlay.removeAttr('hidden').attr('aria-hidden', 'false').addClass('is-open').css('display', 'flex');
-        $('body').addClass('gucci-everpopup-open');
+        $('body').addClass('barbaraalvisi-everpopup-open');
     }
 
-    function closeGucciPopupSafely(force) {
-        if (gucciPopupStrict && !force) {
+    function closeBarbaraalvisiPopupSafely(force) {
+        if (barbaraalvisiPopupStrict && !force) {
             return;
         }
         markPopupAsSeen();
-        gucciPopupStrict = false;
-        var overlay = document.getElementById('gucci-everpopup-overlay');
+        barbaraalvisiPopupStrict = false;
+        var overlay = document.getElementById('barbaraalvisi-everpopup-overlay');
         if (overlay) {
             overlay.setAttribute('hidden', '');
             overlay.setAttribute('aria-hidden', 'true');
             overlay.classList.remove('is-open');
             overlay.style.display = 'none';
         }
-        $('body').removeClass('gucci-everpopup-open');
+        $('body').removeClass('barbaraalvisi-everpopup-open');
         resetSubscribeForm();
-        hideGucciPageLoader();
+        hideBarbaraalvisiPageLoader();
     }
 
     function resetSubscribeForm() {
@@ -211,8 +211,8 @@
         if (!$form.length) {
             return;
         }
-        $form.find('#everpspopupEmail, .gucci-everpopup__gdpr, .gucci-everpopup__submit').show();
-        $form.find('.gucci-everpopup__submit').prop('disabled', false);
+        $form.find('#everpspopupEmail, .barbaraalvisi-everpopup__gdpr, .barbaraalvisi-everpopup__submit').show();
+        $form.find('.barbaraalvisi-everpopup__submit').prop('disabled', false);
         $('#everpspopup_success_msg').hide().text('');
         $('#everpspopupEmail').val('');
         $('#everpspopupGdpr').prop('checked', false);
@@ -220,12 +220,12 @@
 
     function handleSubscribeSuccess(message) {
         markPopupAsSeen();
-        hideGucciPageLoader();
+        hideBarbaraalvisiPageLoader();
         var $form = $('#ever_subscription_form');
-        $form.find('.gucci-everpopup__submit').hide();
+        $form.find('.barbaraalvisi-everpopup__submit').hide();
         $('#everpspopup_success_msg').text(message).show();
         setTimeout(function() {
-            closeGucciPopupSafely(true);
+            closeBarbaraalvisiPopupSafely(true);
         }, 1600);
     }
 
@@ -268,29 +268,29 @@
 
     if ($('#everpspopup_block_center').length && $('#everpspopup_block_center').data('carrier')) {
         var id_carrier = $('#everpspopup_block_center').data('carrier');
-        if (!isGucciCheckoutOrCartPage() && $('input[value="'+id_carrier+',"], input[value="'+id_carrier+'"]').is(':checked')) {
-            openGucciPopup(false);
+        if (!isBarbaraalvisiCheckoutOrCartPage() && $('input[value="'+id_carrier+',"], input[value="'+id_carrier+'"]').is(':checked')) {
+            openBarbaraalvisiPopup(false);
         }
         $(document).on('click', 'input[value="'+id_carrier+',"], input[value="'+id_carrier+'"]', function() {
-            if (!isGucciCheckoutOrCartPage()) {
-                openGucciPopup(false);
+            if (!isBarbaraalvisiCheckoutOrCartPage()) {
+                openBarbaraalvisiPopup(false);
             }
         });
     }
 
-    $(document).on('click', '.gucci-everpopup__close', function() {
-        closeGucciPopupSafely(true);
+    $(document).on('click', '.barbaraalvisi-everpopup__close', function() {
+        closeBarbaraalvisiPopupSafely(true);
     });
 
-    $(document).on('click', '#gucci-everpopup-overlay', function(e) {
+    $(document).on('click', '#barbaraalvisi-everpopup-overlay', function(e) {
         if (e.target === this) {
-            closeGucciPopupSafely(true);
+            closeBarbaraalvisiPopupSafely(true);
         }
     });
 
-    $(document).on('keydown.gucciEverpopup', function(e) {
-        if (e.key === 'Escape' && $('#gucci-everpopup-overlay').hasClass('is-open')) {
-            closeGucciPopupSafely(false);
+    $(document).on('keydown.barbaraalvisiEverpopup', function(e) {
+        if (e.key === 'Escape' && $('#barbaraalvisi-everpopup-overlay').hasClass('is-open')) {
+            closeBarbaraalvisiPopupSafely(false);
         }
     });
 
@@ -316,23 +316,23 @@
     var processAdultModeSubmit = null;
 
     if ($('#everpspopup_block_center').length >= 1) {
-        if (isGucciCheckoutOrCartPage()) {
-            $('#gucci-everpopup-overlay').remove();
-            hideGucciPageLoader();
+        if (isBarbaraalvisiCheckoutOrCartPage()) {
+            $('#barbaraalvisi-everpopup-overlay').remove();
+            hideBarbaraalvisiPageLoader();
         } else {
         setTimeout(function() {
             if ($.cookie('everpspopup' + cookie_suffix) != popcontent) {
-                openGucciPopup(!!adult_mode);
+                openBarbaraalvisiPopup(!!adult_mode);
             }
         }, delay);
         $(window).on('beforeunload.everpspopup', function() {
-            if ($('#gucci-everpopup-overlay').hasClass('is-open') && !gucciPopupStrict) {
+            if ($('#barbaraalvisi-everpopup-overlay').hasClass('is-open') && !barbaraalvisiPopupStrict) {
                 markPopupAsSeen();
             }
         });
         if (adult_mode) {
             processAdultModeSubmit = function() {
-                hideGucciPageLoader();
+                hideBarbaraalvisiPageLoader();
                 $.ajax({
                     type: 'POST',
                     url: $('#everpspopup_new_adult_url').val(),
@@ -363,7 +363,7 @@
     }
 
     function processEverSubscriptionSubmit() {
-        hideGucciPageLoader();
+        hideBarbaraalvisiPageLoader();
         var $form = $('#ever_subscription_form');
         var email = $.trim($('#everpspopupEmail').val() || '');
         var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -375,7 +375,7 @@
             showPopupFeedback('error', $form.data('msg-gdpr') || 'GDPR consent.');
             return;
         }
-        var $submit = $form.find('.gucci-everpopup__submit');
+        var $submit = $form.find('.barbaraalvisi-everpopup__submit');
         $submit.prop('disabled', true);
         $.ajax({
             type: 'POST',
@@ -404,13 +404,13 @@
                 }
             },
             error: function(jqXHR) {
-                hideGucciPageLoader();
+                hideBarbaraalvisiPageLoader();
                 var data = parsePopupAjaxResponse(null, jqXHR);
                 showPopupFeedback('error', (data && data.error) ? data.error : ($form.data('msg-network') || 'Connection failed. Please try again.'));
                 $submit.prop('disabled', false);
             },
             complete: function() {
-                hideGucciPageLoader();
+                hideBarbaraalvisiPageLoader();
             }
         });
     }

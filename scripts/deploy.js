@@ -139,11 +139,19 @@ function buildStashName(folderName) {
 /**
  * Stash istantaneo: rinomina la cartella remota e ne crea una vuota.
  * Le cartelle _stash-* restano sul server (sporco accumulato, ok in sviluppo).
+ *
+ * Se la cartella è sotto /themes/, lo stash va in /_theme_stash/ (fuori da themes/).
+ * Altrimenti PrestaShop legge ancora theme.yml e il tema compare duplicato in BO.
  */
 async function stashRemoteFolder(client, remotePath, label) {
   const { parent, name, absolute } = splitRemotePath(remotePath);
   const startDir = await client.pwd();
   const stashName = buildStashName(name);
+  const parentBase = parent.split("/").filter(Boolean).pop() || "";
+  const stashOutsideThemes = parentBase === "themes";
+  const stashParent = stashOutsideThemes
+    ? path.posix.join(path.posix.dirname(parent), "_theme_stash")
+    : parent;
 
   try {
     await client.cd(parent);
@@ -160,8 +168,14 @@ async function stashRemoteFolder(client, remotePath, label) {
     return;
   }
 
-  console.log(`${label}: stash ${absolute} → ${path.posix.join(parent, stashName)}`);
-  await client.rename(name, stashName);
+  if (stashOutsideThemes) {
+    await ensureRemoteDir(client, stashParent);
+  }
+
+  const fromAbs = path.posix.join(parent, name);
+  const toAbs = path.posix.join(stashParent, stashName);
+  console.log(`${label}: stash ${fromAbs} → ${toAbs}`);
+  await client.rename(fromAbs, toAbs);
   await ensureRemoteDir(client, absolute);
   console.log(`${label}: nuova cartella vuota ${absolute}`);
   await client.cd(startDir);

@@ -1,17 +1,26 @@
 {**
  * Barbara Alvisi — override miniature prodotto
  * Layout minimalista: nome in evidenza, prezzo piccolo sotto, senza etichette invadenti.
+ * Hover (desktop): mostra la seconda foto se disponibile.
  *}
 {block name='product_miniature_item'}
-<div class="js-product product barbaraalvisi-product-miniature{if !empty($productClasses)} {$productClasses}{/if}">
+{assign var='barbaraalvisiHoverImage' value=false}
+{if $product.cover && isset($product.images) && $product.images|count > 1}
+  {foreach from=$product.images item=barbaraalvisiImage}
+    {if !$barbaraalvisiHoverImage && isset($barbaraalvisiImage.id_image) && $barbaraalvisiImage.id_image != $product.cover.id_image}
+      {assign var='barbaraalvisiHoverImage' value=$barbaraalvisiImage}
+    {/if}
+  {/foreach}
+{/if}
+<div class="js-product product barbaraalvisi-product-miniature{if !empty($productClasses)} {$productClasses}{/if}{if $barbaraalvisiHoverImage} has-barbaraalvisi-hover-image{/if}">
   <article class="product-miniature js-product-miniature" data-id-product="{$product.id_product}" data-id-product-attribute="{$product.id_product_attribute}">
     <div class="thumbnail-container">
       <div class="thumbnail-top">
         {block name='product_thumbnail'}
           {if $product.cover}
             {* large_default (800px): home_default (250px) risultava sfocato sulle celle full-bleed / Retina *}
-            <a href="{$product.url}" class="thumbnail product-thumbnail">
-              <picture>
+            <a href="{$product.url}" class="thumbnail product-thumbnail{if $barbaraalvisiHoverImage} barbaraalvisi-thumb-swap{/if}">
+              <picture class="barbaraalvisi-thumb-swap__primary">
                 {if !empty($product.cover.bySize.large_default.sources.avif)}<source srcset="{$product.cover.bySize.large_default.sources.avif}" type="image/avif">{/if}
                 {if !empty($product.cover.bySize.large_default.sources.webp)}<source srcset="{$product.cover.bySize.large_default.sources.webp}" type="image/webp">{/if}
                 <img
@@ -23,6 +32,19 @@
                   height="{$product.cover.bySize.large_default.height}"
                 />
               </picture>
+              {if $barbaraalvisiHoverImage}
+                <picture class="barbaraalvisi-thumb-swap__secondary" aria-hidden="true">
+                  {if !empty($barbaraalvisiHoverImage.bySize.large_default.sources.avif)}<source srcset="{$barbaraalvisiHoverImage.bySize.large_default.sources.avif}" type="image/avif">{/if}
+                  {if !empty($barbaraalvisiHoverImage.bySize.large_default.sources.webp)}<source srcset="{$barbaraalvisiHoverImage.bySize.large_default.sources.webp}" type="image/webp">{/if}
+                  <img
+                    src="{$barbaraalvisiHoverImage.bySize.large_default.url}"
+                    alt=""
+                    loading="lazy"
+                    width="{$barbaraalvisiHoverImage.bySize.large_default.width}"
+                    height="{$barbaraalvisiHoverImage.bySize.large_default.height}"
+                  />
+                </picture>
+              {/if}
             </a>
           {else}
             <a href="{$product.url}" class="thumbnail product-thumbnail">

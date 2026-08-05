@@ -1,7 +1,7 @@
 <?php
 /**
  * Flush SiteGround nginx proxy cache (localhost PURGE).
- * URL: /module/everpspopup/sgflush?token=...
+ * URL: /index.php?fc=module&module=everpspopup&controller=sgflush&token=...
  */
 if (!defined('_PS_VERSION_')) {
     exit;

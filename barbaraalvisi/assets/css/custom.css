@@ -2212,6 +2212,79 @@ body#search .barbaraalvisi-price {
   text-decoration: none !important;
 }
 
+/* Listing — seconda foto al hover: UNA sola immagine per volta (crossfade) */
+.barbaraalvisi-product-miniature .barbaraalvisi-thumb-swap {
+  /* Deve restare absolute come .product-thumbnail nella griglia, altrimenti
+     le picture assolute collassano e le foto restano miniature minuscole. */
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden;
+  background: #fff;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.barbaraalvisi-product-miniature .barbaraalvisi-thumb-swap__primary,
+.barbaraalvisi-product-miniature .barbaraalvisi-thumb-swap__secondary {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  background: #fff;
+}
+
+.barbaraalvisi-product-miniature .barbaraalvisi-thumb-swap__primary {
+  z-index: 1;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+.barbaraalvisi-product-miniature .barbaraalvisi-thumb-swap__secondary {
+  z-index: 2;
+  opacity: 0 !important;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.barbaraalvisi-product-miniature .barbaraalvisi-thumb-swap__primary img,
+.barbaraalvisi-product-miniature .barbaraalvisi-thumb-swap__secondary img {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  display: block !important;
+  margin: 0 !important;
+  background: #fff !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .barbaraalvisi-product-miniature.has-barbaraalvisi-hover-image:hover .barbaraalvisi-thumb-swap__primary,
+  .barbaraalvisi-product-miniature.has-barbaraalvisi-hover-image:focus-within .barbaraalvisi-thumb-swap__primary {
+    opacity: 0;
+  }
+
+  .barbaraalvisi-product-miniature.has-barbaraalvisi-hover-image:hover .barbaraalvisi-thumb-swap__secondary,
+  .barbaraalvisi-product-miniature.has-barbaraalvisi-hover-image:focus-within .barbaraalvisi-thumb-swap__secondary {
+    opacity: 1 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barbaraalvisi-product-miniature .barbaraalvisi-thumb-swap__primary,
+  .barbaraalvisi-product-miniature .barbaraalvisi-thumb-swap__secondary {
+    transition: none;
+  }
+}
+
 /* ==========================================================================
    Mobile header
    ========================================================================== */
@@ -3526,12 +3599,144 @@ body#product .barbaraalvisi-pdp-gallery picture img {
 }
 
 #product .barbaraalvisi-pdp-accessories .barbaraalvisi-plp-grid,
-#product .barbaraalvisi-pdp-category-products .barbaraalvisi-plp-grid {
+#product .barbaraalvisi-pdp-category-products .barbaraalvisi-plp-grid,
+#product .barbaraalvisi-pdp-related .barbaraalvisi-plp-grid,
+#product .barbaraalvisi-product-grid-section .barbaraalvisi-plp-grid {
   margin-top: 0;
   width: 100vw !important;
   max-width: 100vw !important;
   margin-left: calc(50% - 50vw) !important;
   margin-right: calc(50% - 50vw) !important;
+  display: grid !important;
+  gap: 0 !important;
+  justify-content: start !important;
+  align-items: start !important;
+  /* Sempre 4 colonne da tablet: con 2 soli accessori evita celle da ~50vw (immagini “giganti”) */
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+@media (min-width: 576px) {
+  #product .barbaraalvisi-pdp-accessories .barbaraalvisi-plp-grid,
+  #product .barbaraalvisi-pdp-category-products .barbaraalvisi-plp-grid,
+  #product .barbaraalvisi-pdp-related .barbaraalvisi-plp-grid,
+  #product .barbaraalvisi-product-grid-section .barbaraalvisi-plp-grid,
+  #product .product-accessories .barbaraalvisi-plp-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Correlati PDP — miniature full-bleed (fix hover swap + Classic) */
+#product .barbaraalvisi-pdp-accessories .thumbnail-top,
+#product .barbaraalvisi-pdp-category-products .thumbnail-top,
+#product .barbaraalvisi-pdp-related .thumbnail-top,
+#product .barbaraalvisi-product-grid-section .thumbnail-top,
+#product .product-accessories .thumbnail-top {
+  position: relative !important;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+#product .barbaraalvisi-pdp-accessories .product-thumbnail,
+#product .barbaraalvisi-pdp-category-products .product-thumbnail,
+#product .barbaraalvisi-pdp-related .product-thumbnail,
+#product .barbaraalvisi-product-grid-section .product-thumbnail,
+#product .barbaraalvisi-pdp-accessories .barbaraalvisi-thumb-swap,
+#product .barbaraalvisi-pdp-category-products .barbaraalvisi-thumb-swap,
+#product .barbaraalvisi-pdp-related .barbaraalvisi-thumb-swap,
+#product .barbaraalvisi-product-grid-section .barbaraalvisi-thumb-swap {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#product .barbaraalvisi-pdp-accessories .product-thumbnail picture,
+#product .barbaraalvisi-pdp-category-products .product-thumbnail picture,
+#product .barbaraalvisi-pdp-related .product-thumbnail picture,
+#product .barbaraalvisi-product-grid-section .product-thumbnail picture,
+#product .barbaraalvisi-pdp-accessories .barbaraalvisi-thumb-swap__primary,
+#product .barbaraalvisi-pdp-category-products .barbaraalvisi-thumb-swap__primary,
+#product .barbaraalvisi-pdp-related .barbaraalvisi-thumb-swap__primary,
+#product .barbaraalvisi-product-grid-section .barbaraalvisi-thumb-swap__primary,
+#product .barbaraalvisi-pdp-accessories .barbaraalvisi-thumb-swap__secondary,
+#product .barbaraalvisi-pdp-category-products .barbaraalvisi-thumb-swap__secondary,
+#product .barbaraalvisi-pdp-related .barbaraalvisi-thumb-swap__secondary,
+#product .barbaraalvisi-product-grid-section .barbaraalvisi-thumb-swap__secondary {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  margin: 0 !important;
+}
+
+#product .barbaraalvisi-pdp-accessories .product-thumbnail img,
+#product .barbaraalvisi-pdp-category-products .product-thumbnail img,
+#product .barbaraalvisi-pdp-related .product-thumbnail img,
+#product .barbaraalvisi-product-grid-section .product-thumbnail img {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  display: block !important;
+  margin: 0 !important;
+}
+
+#product .barbaraalvisi-pdp-accessories .barbaraalvisi-plp-cell,
+#product .barbaraalvisi-pdp-category-products .barbaraalvisi-plp-cell,
+#product .barbaraalvisi-pdp-related .barbaraalvisi-plp-cell,
+#product .barbaraalvisi-product-grid-section .barbaraalvisi-plp-cell,
+#product .barbaraalvisi-pdp-accessories .barbaraalvisi-product-miniature,
+#product .barbaraalvisi-pdp-category-products .barbaraalvisi-product-miniature,
+#product .barbaraalvisi-pdp-related .barbaraalvisi-product-miniature,
+#product .barbaraalvisi-product-grid-section .barbaraalvisi-product-miniature {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  flex: none !important;
+  float: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#product .barbaraalvisi-pdp-accessories article.product-miniature,
+#product .barbaraalvisi-pdp-category-products article.product-miniature,
+#product .barbaraalvisi-pdp-related article.product-miniature,
+#product .barbaraalvisi-product-grid-section article.product-miniature {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  margin: 0 !important;
+}
+
+#product .barbaraalvisi-pdp-accessories .thumbnail-container,
+#product .barbaraalvisi-pdp-category-products .thumbnail-container,
+#product .barbaraalvisi-pdp-related .thumbnail-container,
+#product .barbaraalvisi-product-grid-section .thumbnail-container,
+#product .barbaraalvisi-pdp-accessories .product-description,
+#product .barbaraalvisi-pdp-category-products .product-description,
+#product .barbaraalvisi-pdp-related .product-description,
+#product .barbaraalvisi-product-grid-section .product-description {
+  width: 100% !important;
+  max-width: none !important;
+  align-self: stretch !important;
+  box-sizing: border-box !important;
 }
 
 #product .barbaraalvisi-pdp-accessories .barbaraalvisi-plp-cell .product-description,
@@ -7149,6 +7354,28 @@ body#supplier #products {
   padding: 0;
   border: none;
   border-radius: 0;
+  width: 100% !important;
+  max-width: none !important;
+  align-self: stretch !important;
+  box-sizing: border-box;
+}
+
+.barbaraalvisi-plp-grid article.product-miniature,
+.barbaraalvisi-plp-grid .barbaraalvisi-plp-cell article.product-miniature {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  margin: 0 !important;
+}
+
+.barbaraalvisi-plp-grid .product-description {
+  width: 100% !important;
+  max-width: none !important;
+  align-self: stretch !important;
+  box-sizing: border-box;
 }
 
 .barbaraalvisi-plp-grid .thumbnail-top,
@@ -10798,17 +11025,14 @@ body#contact .barbaraalvisi-contact-footer button[type="submit"] {
 }
 
 /* ==========================================================================
-   Griglie compatte — colonne adattive solo in drawer/modali (non PLP/home)
+   Griglie compatte — colonne adattive SOLO drawer/modali/carrello
+   (non PDP correlati: con 2 accessori a 2 col full-bleed le thumb diventano ~50vw)
    ========================================================================== */
 
 .barbaraalvisi-cart-modal-cross-selling .barbaraalvisi-plp-grid:has(> :only-child),
 .barbaraalvisi-cart-modal-products .barbaraalvisi-plp-grid:has(> :only-child),
 .barbaraalvisi-cart-cross-selling .products:has(> :only-child),
-.barbaraalvisi-order-confirmation-extra .products:has(> :only-child),
-.cross-selling .products:has(> :only-child),
-.barbaraalvisi-product-grid-section .products:has(> :only-child),
-.product-accessories .products:has(> :only-child),
-#product .barbaraalvisi-pdp-product-grids .products:has(> :only-child) {
+.barbaraalvisi-order-confirmation-extra .products:has(> :only-child) {
   grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
 }
 
@@ -10816,22 +11040,14 @@ body#contact .barbaraalvisi-contact-footer button[type="submit"] {
   .barbaraalvisi-cart-modal-cross-selling .barbaraalvisi-plp-grid:has(> :nth-child(2):last-child),
   .barbaraalvisi-cart-modal-products .barbaraalvisi-plp-grid:has(> :nth-child(2):last-child),
   .barbaraalvisi-cart-cross-selling .products:has(> :nth-child(2):last-child),
-  .barbaraalvisi-order-confirmation-extra .products:has(> :nth-child(2):last-child),
-  .cross-selling .products:has(> :nth-child(2):last-child),
-  .barbaraalvisi-product-grid-section .products:has(> :nth-child(2):last-child),
-  .product-accessories .products:has(> :nth-child(2):last-child),
-  #product .barbaraalvisi-pdp-product-grids .products:has(> :nth-child(2):last-child) {
+  .barbaraalvisi-order-confirmation-extra .products:has(> :nth-child(2):last-child) {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 
   .barbaraalvisi-cart-modal-cross-selling .barbaraalvisi-plp-grid:has(> :nth-child(3):last-child),
   .barbaraalvisi-cart-modal-products .barbaraalvisi-plp-grid:has(> :nth-child(3):last-child),
   .barbaraalvisi-cart-cross-selling .products:has(> :nth-child(3):last-child),
-  .barbaraalvisi-order-confirmation-extra .products:has(> :nth-child(3):last-child),
-  .cross-selling .products:has(> :nth-child(3):last-child),
-  .barbaraalvisi-product-grid-section .products:has(> :nth-child(3):last-child),
-  .product-accessories .products:has(> :nth-child(3):last-child),
-  #product .barbaraalvisi-pdp-product-grids .products:has(> :nth-child(3):last-child) {
+  .barbaraalvisi-order-confirmation-extra .products:has(> :nth-child(3):last-child) {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
 }
@@ -10840,23 +11056,32 @@ body#contact .barbaraalvisi-contact-footer button[type="submit"] {
   .barbaraalvisi-cart-modal-cross-selling .barbaraalvisi-plp-grid:has(> :nth-child(2):last-child),
   .barbaraalvisi-cart-modal-products .barbaraalvisi-plp-grid:has(> :nth-child(2):last-child),
   .barbaraalvisi-cart-cross-selling .products:has(> :nth-child(2):last-child),
-  .barbaraalvisi-order-confirmation-extra .products:has(> :nth-child(2):last-child),
-  .cross-selling .products:has(> :nth-child(2):last-child),
-  .barbaraalvisi-product-grid-section .products:has(> :nth-child(2):last-child),
-  .product-accessories .products:has(> :nth-child(2):last-child),
-  #product .barbaraalvisi-pdp-product-grids .products:has(> :nth-child(2):last-child) {
+  .barbaraalvisi-order-confirmation-extra .products:has(> :nth-child(2):last-child) {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 
   .barbaraalvisi-cart-modal-cross-selling .barbaraalvisi-plp-grid:has(> :nth-child(3):last-child),
   .barbaraalvisi-cart-modal-products .barbaraalvisi-plp-grid:has(> :nth-child(3):last-child),
   .barbaraalvisi-cart-cross-selling .products:has(> :nth-child(3):last-child),
-  .barbaraalvisi-order-confirmation-extra .products:has(> :nth-child(3):last-child),
-  .cross-selling .products:has(> :nth-child(3):last-child),
-  .barbaraalvisi-product-grid-section .products:has(> :nth-child(3):last-child),
-  .product-accessories .products:has(> :nth-child(3):last-child),
-  #product .barbaraalvisi-pdp-product-grids .products:has(> :nth-child(3):last-child) {
+  .barbaraalvisi-order-confirmation-extra .products:has(> :nth-child(3):last-child) {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* PDP correlati — 4 colonne da tablet (anche con 2 soli prodotti: ~25vw, non ~50vw).
+   Specificità alta per battere eventuali :has(2 figli)→2 col nel bundle CCC theme-*.css. */
+@media (min-width: 576px) {
+  #product .barbaraalvisi-pdp-product-grids .barbaraalvisi-pdp-accessories .products.barbaraalvisi-plp-grid,
+  #product .barbaraalvisi-pdp-product-grids .barbaraalvisi-pdp-category-products .products.barbaraalvisi-plp-grid,
+  #product .barbaraalvisi-pdp-product-grids .barbaraalvisi-product-grid-section .products.barbaraalvisi-plp-grid,
+  #product .barbaraalvisi-pdp-footer-grids .products.barbaraalvisi-plp-grid,
+  #product .barbaraalvisi-pdp-product-grids .barbaraalvisi-pdp-accessories .products.barbaraalvisi-plp-grid:has(> :nth-child(2):last-child),
+  #product .barbaraalvisi-pdp-product-grids .barbaraalvisi-pdp-category-products .products.barbaraalvisi-plp-grid:has(> :nth-child(2):last-child),
+  #product .barbaraalvisi-pdp-product-grids .barbaraalvisi-product-grid-section .products.barbaraalvisi-plp-grid:has(> :nth-child(2):last-child),
+  #product .barbaraalvisi-pdp-product-grids .barbaraalvisi-pdp-accessories .products.barbaraalvisi-plp-grid:has(> :nth-child(3):last-child),
+  #product .barbaraalvisi-pdp-product-grids .barbaraalvisi-pdp-category-products .products.barbaraalvisi-plp-grid:has(> :nth-child(3):last-child),
+  #product .barbaraalvisi-pdp-product-grids .barbaraalvisi-product-grid-section .products.barbaraalvisi-plp-grid:has(> :nth-child(3):last-child) {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   }
 }
 

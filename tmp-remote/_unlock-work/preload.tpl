@@ -1,0 +1,5 @@
+{*
+ * Preload hints for PrestaShop BO new-theme (restored).
+ *}
+<link rel="preload" href="{$admin_dir}theme.css" as="style">
+<link rel="preload" href="{$admin_dir}main.bundle.js" as="script">

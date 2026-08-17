@@ -21,9 +21,14 @@ function getConfig() {
 
   const remotePath = process.env.FTP_REMOTE_PATH.trim().replace(/\/+$/, "");
   const cachePaths = parseCachePaths();
+  const shopRoot = remotePath.replace(/\/themes\/[^/]+$/i, "");
+  const themesDir = path.posix.dirname(remotePath);
 
   const scanDirs = new Set([
-    path.posix.dirname(remotePath),
+    shopRoot,
+    themesDir,
+    path.posix.join(shopRoot, "_theme_stash"),
+    ...cachePaths,
     ...cachePaths.map((p) => path.posix.dirname(p)),
   ]);
 
@@ -181,11 +186,20 @@ async function removeRemoteFolder(session, folderName, parentDir) {
   return true;
 }
 
+function isStashFolder(name) {
+  return (
+    name.startsWith(STASH_PREFIX) ||
+    name.startsWith("_stash-unlock-") ||
+    name.startsWith("_stash-logmax-") ||
+    name.startsWith("_stash-cache-")
+  );
+}
+
 async function findStashFolders(session, parentDir) {
   try {
     const entries = await listDir(session, parentDir);
     return entries
-      .filter((entry) => entry.isDirectory && entry.name.startsWith(STASH_PREFIX))
+      .filter((entry) => entry.isDirectory && isStashFolder(entry.name))
       .map((entry) => entry.name);
   } catch {
     console.log(`Directory non accessibile: ${parentDir}`);

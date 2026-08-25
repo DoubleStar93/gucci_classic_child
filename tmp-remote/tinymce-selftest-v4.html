@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<title>TinyMCE self-test v4</title>
+<link rel="stylesheet" href="https://barbaraalvisi.it/js/tiny_mce/skins/prestashop/skin.min.css">
+<script>window.tinyMCEPreInit={base:'https://barbaraalvisi.it/js/tiny_mce',suffix:'.min'};</script>
+<script src="https://barbaraalvisi.it/js/tiny_mce/tinymce.min.js"></script>
+<script src="https://barbaraalvisi.it/js/tiny_mce/themes/modern/theme.min.js"></script>
+<style>
+body{font:14px sans-serif;padding:20px;max-width:800px}
+#log{white-space:pre-wrap;background:#111;color:#0f0;padding:12px;margin-top:12px}
+</style>
+</head><body>
+<h1>TinyMCE self-test v4 (preload theme)</h1>
+<textarea id="t1" class="autoload_rte"><p>Hello test after preload</p></textarea>
+<div id="log"></div>
+<script>
+var L=function(m){document.getElementById('log').textContent+=m+'\\n';};
+L('tinyMCE='+typeof tinyMCE);
+L('theme modern='+!!(tinyMCE.ThemeManager&&tinyMCE.ThemeManager.get('modern')));
+tinyMCE.init({
+  selector:'#t1',
+  theme:'modern',
+  skin:'prestashop',
+  plugins:'lists link code',
+  toolbar:'bold italic | bullist | link | code',
+  menubar:false,
+  height:220,
+  init_instance_callback:function(ed){
+    L('INIT OK iframe='+!!ed.iframeElement+' container='+!!ed.getContainer());
+  }
+});
+setTimeout(function(){
+  L('shells='+document.querySelectorAll('.mce-tinymce').length);
+  L('iframes='+document.querySelectorAll('.mce-tinymce iframe').length);
+},1500);
+</script>
+</body></html>

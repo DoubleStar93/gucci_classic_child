@@ -1,0 +1,18 @@
+/* Fallback only: keep fields usable if TinyMCE fails. When .mce-tinymce iframe exists, PS hides textarea. */
+textarea.autoload_rte.bo-rte-fallback,
+textarea.rte.bo-rte-fallback {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-height: 180px !important;
+  width: 100% !important;
+  pointer-events: auto !important;
+  background: #fff !important;
+  color: #222 !important;
+  border: 1px solid #999 !important;
+  padding: 10px !important;
+  font: 14px/1.45 Consolas, Monaco, monospace !important;
+  box-sizing: border-box !important;
+  z-index: 5 !important;
+  position: relative !important;
+}

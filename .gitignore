@@ -1,2 +1,7 @@
 node_modules/
 .env
+
+# Official PrestaShop source (local reference only — do not commit)
+PrestaShop-9.0.3.zip
+PrestaShop-9.0.3/
+tmp-remote/_ps903/

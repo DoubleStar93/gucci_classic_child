@@ -1,0 +1,8 @@
+# Admin new-theme public assets: do not let SiteGround proxy keep empty CSS/JS for 7 days.
+# "private" tells SuperCacher/NGINX not to store the response in the shared cache.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|woff2?|ttf)$">
+    Header unset Cache-Control
+    Header set Cache-Control "private, max-age=300, must-revalidate"
+  </FilesMatch>
+</IfModule>

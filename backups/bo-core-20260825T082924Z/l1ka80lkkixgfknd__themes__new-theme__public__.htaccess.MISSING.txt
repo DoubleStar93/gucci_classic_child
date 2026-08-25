@@ -1,0 +1,1 @@
+550 Can't open /barbaraalvisi.it/public_html/l1ka80lkkixgfknd/themes/new-theme/public/.htaccess: No such file or directory

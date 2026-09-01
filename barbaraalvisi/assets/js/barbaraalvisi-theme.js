@@ -1,6 +1,7 @@
 /**
  * Barbara Alvisi — drawer menu, ricerca, contatti, accordion
  * Caricato manualmente dopo il bundle CCC (non usare assets/js/custom.js — PS lo include nel bundle).
+ * cache-bust 2.8.0
  */
 (() => {
   const syncBarbaraalvisiCustomerPrivacyField = () => {

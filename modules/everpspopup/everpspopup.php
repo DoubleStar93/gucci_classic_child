@@ -38,7 +38,7 @@ class Everpspopup extends Module
     {
         $this->name = 'everpspopup';
         $this->tab = 'administration';
-        $this->version = '5.6.15';
+        $this->version = '5.6.16';
         $this->author = 'Team Ever';
         $this->need_instance = 0;
         $this->bootstrap = true;
@@ -576,7 +576,7 @@ class Everpspopup extends Module
                 'everpspopup_assets_base' => $this->_path,
             ]
         );
-        return $this->display(__FILE__, 'everpspopup.tpl', $this->getCacheId());
+        return $this->display(__FILE__, 'everpspopup.tpl', $this->getCacheId() . '|v' . $this->version);
     }
 
     private function getLocalizedPopupContent($content, $idLang)

@@ -1,0 +1,10 @@
+# Popup CSS/JS: do not cache (avoid empty 200s stuck for 7 days).
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js)$">
+    Header unset Cache-Control
+    Header unset Expires
+    Header unset Pragma
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+  </FilesMatch>
+</IfModule>

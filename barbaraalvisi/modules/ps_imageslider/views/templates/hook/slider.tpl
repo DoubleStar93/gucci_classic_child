@@ -113,3 +113,6 @@
     <div class="barbaraalvisi-home-hero-empty" role="presentation"></div>
   </section>
 {/if}
+{if $page.page_name == 'index'}
+  {include file='_partials/barbaraalvisi-home-newsletter-marquee.tpl'}
+{/if}

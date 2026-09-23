@@ -1845,7 +1845,7 @@ body#search .barbaraalvisi-price {
 
 .barbaraalvisi-footer-links-wrap {
   margin: 0 0 1.25rem;
-  padding-top: 0.25rem;
+  padding-top: 0;
 }
 
 .barbaraalvisi-footer-accordions,
@@ -7517,6 +7517,7 @@ body#supplier #products {
    Barbaraalvisi v1.3.4 — PLP toolbar, listing header, carrello
    ========================================================================== */
 
+/* PLP / listing — stesso header marrone dello scroll home/PDP (logo chiaro, icone perla) */
 body#category #header,
 body#search #header,
 body#prices-drop #header,
@@ -7524,32 +7525,95 @@ body#new-products #header,
 body#best-sales #header,
 body#manufacturer #header,
 body#supplier #header {
-  background: var(--ba-panna) !important;
+  background: var(--ba-cioccolato) !important;
+  background-color: var(--ba-cioccolato) !important;
   border-bottom: none !important;
+}
+
+body#category #header .header-top,
+body#category #header .barbaraalvisi-header-bar,
+body#category #header .barbaraalvisi-header-bar > .container,
+body#search #header .header-top,
+body#search #header .barbaraalvisi-header-bar,
+body#search #header .barbaraalvisi-header-bar > .container,
+body#prices-drop #header .header-top,
+body#prices-drop #header .barbaraalvisi-header-bar,
+body#new-products #header .header-top,
+body#new-products #header .barbaraalvisi-header-bar,
+body#best-sales #header .header-top,
+body#best-sales #header .barbaraalvisi-header-bar,
+body#manufacturer #header .header-top,
+body#manufacturer #header .barbaraalvisi-header-bar,
+body#supplier #header .header-top,
+body#supplier #header .barbaraalvisi-header-bar {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-bottom-color: transparent !important;
 }
 
 body#category #header .barbaraalvisi-header-link,
 body#category #header .barbaraalvisi-header-col--icons a,
 body#category #header .barbaraalvisi-header-col--icons .material-icons,
 body#category #header .barbaraalvisi-header-col--icons button,
+body#category #header .barbaraalvisi-search-toggle,
+body#category #header .barbaraalvisi-menu-toggle,
+body#category #header #_desktop_cart a,
+body#category #header #_desktop_user_info a,
+body#category #header #_mobile_cart a,
+body#category #header #_mobile_user_info button,
+body#category #header #_mobile_user_info .material-icons,
+body#category #header .blockcart a,
+body#category #header .cart-products-count,
+body#category #header .barbaraalvisi-logo-text-link,
 body#search #header .barbaraalvisi-header-link,
 body#search #header .barbaraalvisi-header-col--icons a,
 body#search #header .barbaraalvisi-header-col--icons .material-icons,
 body#search #header .barbaraalvisi-header-col--icons button,
+body#search #header .barbaraalvisi-search-toggle,
+body#search #header .barbaraalvisi-menu-toggle,
+body#search #header #_desktop_cart a,
+body#search #header #_desktop_user_info a,
+body#search #header .blockcart a,
+body#search #header .cart-products-count,
 body#prices-drop #header .barbaraalvisi-header-link,
+body#prices-drop #header .barbaraalvisi-header-col--icons a,
+body#prices-drop #header .barbaraalvisi-header-col--icons .material-icons,
 body#new-products #header .barbaraalvisi-header-link,
-body#best-sales #header .barbaraalvisi-header-link {
-  color: #111111 !important;
+body#new-products #header .barbaraalvisi-header-col--icons a,
+body#new-products #header .barbaraalvisi-header-col--icons .material-icons,
+body#best-sales #header .barbaraalvisi-header-link,
+body#best-sales #header .barbaraalvisi-header-col--icons a,
+body#best-sales #header .barbaraalvisi-header-col--icons .material-icons {
+  color: var(--ba-perla) !important;
 }
 
-body#category #header .barbaraalvisi-logo--light,
-body#search #header .barbaraalvisi-logo--light {
-  display: none !important;
+body#category #header .barbaraalvisi-header-link:hover,
+body#category #header .barbaraalvisi-header-col--icons a:hover,
+body#search #header .barbaraalvisi-header-link:hover,
+body#search #header .barbaraalvisi-header-col--icons a:hover {
+  opacity: 0.75;
+  color: var(--ba-perla) !important;
 }
 
 body#category #header .barbaraalvisi-logo--dark,
-body#search #header .barbaraalvisi-logo--dark {
+body#search #header .barbaraalvisi-logo--dark,
+body#prices-drop #header .barbaraalvisi-logo--dark,
+body#new-products #header .barbaraalvisi-logo--dark,
+body#best-sales #header .barbaraalvisi-logo--dark,
+body#manufacturer #header .barbaraalvisi-logo--dark,
+body#supplier #header .barbaraalvisi-logo--dark {
+  display: none !important;
+}
+
+body#category #header .barbaraalvisi-logo--light,
+body#search #header .barbaraalvisi-logo--light,
+body#prices-drop #header .barbaraalvisi-logo--light,
+body#new-products #header .barbaraalvisi-logo--light,
+body#best-sales #header .barbaraalvisi-logo--light,
+body#manufacturer #header .barbaraalvisi-logo--light,
+body#supplier #header .barbaraalvisi-logo--light {
   display: block !important;
+  filter: none !important;
 }
 
 #category #products .page-header,
@@ -8555,8 +8619,52 @@ body#registration .form-group {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
   text-align: center;
+}
+
+.barbaraalvisi-footer-newsletter-wrap > .barbaraalvisi-footer-newsletter,
+.barbaraalvisi-footer-newsletter-wrap > #blockEmailSubscription.barbaraalvisi-footer-newsletter {
+  margin-bottom: 0 !important;
+}
+
+.barbaraalvisi-footer-newsletter-wrap .barbaraalvisi-footer-newsletter-note {
+  margin-bottom: 0 !important;
+}
+
+.barbaraalvisi-footer .barbaraalvisi-footer-instagram {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  margin-top: 2.75rem;
+  margin-bottom: calc(2.75rem - 1.25rem);
+  color: #ffffff !important;
+  font-family: var(--font-sans);
+  font-size: var(--barbaraalvisi-text-sm);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-decoration: none !important;
+  text-transform: uppercase;
+}
+
+.barbaraalvisi-footer .barbaraalvisi-footer-instagram__icon {
+  display: block;
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
+}
+
+.barbaraalvisi-footer .barbaraalvisi-footer-instagram:hover,
+.barbaraalvisi-footer .barbaraalvisi-footer-instagram:focus-visible {
+  color: var(--barbaraalvisi-color-gold) !important;
+}
+
+@media (min-width: 992px) {
+  .barbaraalvisi-footer .barbaraalvisi-footer-instagram {
+    margin-bottom: calc(2.75rem - 0.5rem);
+  }
 }
 
 .barbaraalvisi-footer #block_myaccount_infos,
@@ -10205,11 +10313,15 @@ body#restricted-country .page-header h1 {
   text-align: center;
 }
 
-body#new-products #header,
-body#best-sales #header,
-body#prices-drop #header,
 body#stores #header {
   background: #ffffff !important;
+}
+
+body#new-products #header,
+body#best-sales #header,
+body#prices-drop #header {
+  background: var(--ba-cioccolato) !important;
+  background-color: var(--ba-cioccolato) !important;
 }
 
 body#stores .barbaraalvisi-stores-page-inner .store-item {
@@ -10232,7 +10344,8 @@ body#stores .barbaraalvisi-stores-page-inner .store-item h3 {
 
 body#manufacturer #header,
 body#manufacturers #header {
-  background: #ffffff !important;
+  background: var(--ba-cioccolato) !important;
+  background-color: var(--ba-cioccolato) !important;
 }
 
 .barbaraalvisi-brands-header {
@@ -14263,4 +14376,32 @@ body#contact .barbaraalvisi-file-upload__name {
 #product .barbaraalvisi-variant--unavailable .barbaraalvisi-variant-radio-label::after,
 #product .barbaraalvisi-variant--unavailable .barbaraalvisi-variant-size-label::after {
   content: none;
+}
+
+/* ==========================================================================
+   Barbaraalvisi v2.23.6 — spazio home vetrina/categorie + Abbigliamento statico
+   ========================================================================== */
+
+body#index .barbaraalvisi-home-modules > .barbaraalvisi-home-categories,
+#index .barbaraalvisi-home-modules > .barbaraalvisi-home-categories {
+  margin-top: 3.5rem !important;
+}
+
+@media (min-width: 768px) {
+  body#index .barbaraalvisi-home-modules > .barbaraalvisi-home-categories,
+  #index .barbaraalvisi-home-modules > .barbaraalvisi-home-categories {
+    margin-top: 5.5rem !important;
+  }
+}
+
+.barbaraalvisi-nav-drawer .barbaraalvisi-menu-link--static,
+#header .barbaraalvisi-nav-drawer .barbaraalvisi-menu-link--static {
+  cursor: default !important;
+  pointer-events: none;
+  text-decoration: none !important;
+}
+
+.barbaraalvisi-nav-drawer .barbaraalvisi-menu-link--static:hover,
+#header .barbaraalvisi-nav-drawer .barbaraalvisi-menu-link--static:hover {
+  opacity: 1;
 }

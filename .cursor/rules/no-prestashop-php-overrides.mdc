@@ -9,6 +9,8 @@ Il titolare del progetto è **contrario agli override PHP** su core/moduli Prest
 
 **L'AI non deve aggiungere nuovi file in `override/`** senza approvazione esplicita dell'utente.
 
+Questa regola **non basta da sola**: è **vietato** anche patchare JS/twig/CSS/moduli nativi PrestaShop (`src/`, `js/admin.js`, `ps_*`). Vedi `no-prestashop-core.mdc` — gli errori BO tipo `str2url` / favicon **non si risolvono nel core**.
+
 ## Stato attuale
 
 **0 override PHP** nel repo (cartella `override/` rimossa). Il deploy elimina ancora i file legacy sul server (`scripts/deploy.js` → `LEGACY_OVERRIDE_FILES`).

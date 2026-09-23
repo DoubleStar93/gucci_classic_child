@@ -144,3 +144,121 @@ body#index .barbaraalvisi-home-section--products[data-type="bestsellers"] .produ
     bottom: auto !important;
   }
 }
+
+/* Fascia newsletter in scorrimento — tra prodotti in vetrina e categorie */
+body#index .barbaraalvisi-home-modules > .barbaraalvisi-home-newsletter-marquee {
+  order: 3 !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 1.75rem 0 0 !important;
+  padding: 1.4rem 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-top: 1px solid #ececec !important;
+  border-bottom: 1px solid #ececec !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  color: var(--ba-nero) !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  text-align: left !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+}
+
+body#index .barbaraalvisi-home-newsletter-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: barbaraalvisi-newsletter-marquee 48s linear infinite;
+  will-change: transform;
+}
+
+body#index .barbaraalvisi-home-newsletter-marquee:hover .barbaraalvisi-home-newsletter-marquee__track,
+body#index .barbaraalvisi-home-newsletter-marquee:focus-visible .barbaraalvisi-home-newsletter-marquee__track {
+  animation-play-state: paused;
+}
+
+body#index .barbaraalvisi-home-newsletter-marquee__group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: baseline;
+}
+
+body#index .barbaraalvisi-home-newsletter-marquee__item {
+  display: inline-flex;
+  align-items: baseline;
+  flex-shrink: 0;
+  padding-right: 4rem;
+  white-space: nowrap;
+  font-family: var(--font-sans) !important;
+  font-size: 4.5rem;
+  font-weight: 400 !important;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-transform: none !important;
+  color: var(--ba-nero) !important;
+}
+
+body#index .barbaraalvisi-home-newsletter-marquee__lead {
+  font-weight: 700 !important;
+}
+
+body#index .barbaraalvisi-home-newsletter-marquee__rest {
+  font-weight: 400 !important;
+}
+
+body#index .barbaraalvisi-home-newsletter-marquee__emphasis {
+  font-style: italic !important;
+  font-weight: 400 !important;
+}
+
+body#index .barbaraalvisi-home-newsletter-marquee:focus-visible {
+  outline: 1px solid var(--ba-nero) !important;
+  outline-offset: -1px !important;
+}
+
+@keyframes barbaraalvisi-newsletter-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body#index .barbaraalvisi-home-newsletter-marquee__track {
+    animation: none;
+    width: 100%;
+    justify-content: center;
+  }
+
+  body#index .barbaraalvisi-home-newsletter-marquee__item[aria-hidden="true"],
+  body#index .barbaraalvisi-home-newsletter-marquee__group[aria-hidden="true"] {
+    display: none !important;
+  }
+
+  body#index .barbaraalvisi-home-newsletter-marquee__item {
+    padding-right: 0;
+  }
+}
+
+/* Spazio simmetrico: vetrina, fascia, categorie.
+   Il JS del tema sposta le categorie subito dopo l'hero: order 4 le tiene sotto la fascia. */
+body#index .barbaraalvisi-home-modules > .barbaraalvisi-home-categories {
+  order: 4 !important;
+  margin-top: 1.75rem !important;
+}
+
+@media (min-width: 768px) {
+  body#index .barbaraalvisi-home-modules > .barbaraalvisi-home-newsletter-marquee {
+    margin-top: 2.75rem !important;
+  }
+
+  body#index .barbaraalvisi-home-modules > .barbaraalvisi-home-categories {
+    margin-top: 2.75rem !important;
+  }
+}

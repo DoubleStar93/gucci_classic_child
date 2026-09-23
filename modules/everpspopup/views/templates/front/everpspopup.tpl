@@ -31,6 +31,7 @@
           padding: 1.25rem;
           background: rgba(26, 20, 18, 0.72);
           overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
         }
         #barbaraalvisi-everpopup-overlay.is-open {
           display: flex !important;
@@ -71,6 +72,33 @@
           line-height: 1.5;
           text-align: center;
           color: var(--ba-bordeaux, #6b2a28);
+        }
+        @media (max-width: 767px) {
+          #barbaraalvisi-everpopup-overlay {
+            align-items: flex-start !important;
+            padding: max(0.75rem, env(safe-area-inset-top, 0px)) 0.75rem max(0.75rem, env(safe-area-inset-bottom, 0px)) !important;
+          }
+          #everpspopup_block_center {
+            width: min(32rem, 100%) !important;
+            margin: 0 auto !important;
+          }
+          #everpspopup_block_center .barbaraalvisi-everpopup__panel {
+            width: 100% !important;
+            max-height: calc(100dvh - 1.5rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch;
+          }
+          #everpspopup_block_center .barbaraalvisi-everpopup__close {
+            position: sticky !important;
+            top: 0.35rem !important;
+            float: right !important;
+            margin: 0.35rem 0.35rem 0 0 !important;
+          }
+          #everpspopup_block_center .barbaraalvisi-everpopup__content,
+          #everpspopup_block_center .barbaraalvisi-everpopup__link-wrap,
+          #everpspopup_block_center .barbaraalvisi-everpopup__newsletter {
+            clear: both;
+          }
         }
       </style>
       {if $everpspopup->link}

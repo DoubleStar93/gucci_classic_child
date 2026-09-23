@@ -1,7 +1,7 @@
 /**
  * Barbara Alvisi — drawer menu, ricerca, contatti, accordion
  * Caricato manualmente dopo il bundle CCC (non usare assets/js/custom.js — PS lo include nel bundle).
- * cache-bust 2.8.0
+ * cache-bust 2.8.1
  */
 (() => {
   const syncBarbaraalvisiCustomerPrivacyField = () => {
@@ -490,6 +490,36 @@
 
   suppressEverpopupOnCheckoutCart();
   document.addEventListener('DOMContentLoaded', suppressEverpopupOnCheckoutCart, { once: true });
+
+  const openBarbaraalvisiNewsletterPopup = () => {
+    const overlay = document.getElementById('barbaraalvisi-everpopup-overlay');
+    if (!overlay) {
+      return;
+    }
+
+    overlay.removeAttribute('hidden');
+    overlay.setAttribute('aria-hidden', 'false');
+    overlay.classList.add('is-open');
+    overlay.style.display = 'flex';
+    document.body.classList.add('barbaraalvisi-everpopup-open');
+
+    const email = document.getElementById('everpspopupEmail');
+    if (email) {
+      window.setTimeout(() => {
+        email.focus();
+      }, 40);
+    }
+  };
+
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-barbaraalvisi-open-newsletter]');
+    if (!trigger) {
+      return;
+    }
+
+    event.preventDefault();
+    openBarbaraalvisiNewsletterPopup();
+  });
 
   const header = document.getElementById('header');
   const headerScrollThreshold = 32;

@@ -1,0 +1,32 @@
+---
+description: VIETATO toccare file core PrestaShop — i bug front/BO non si risolvono patchando src/, js/, moduli nativi
+alwaysApply: true
+---
+
+# Non toccare il core PrestaShop
+
+Il titolare è **categorico**: l’AI **non modifica file PrestaShop**. Non è un’ipotesi di ultima istanza. Se un errore in console *sembra* core (`str2url`, `ps_faviconnotificationbo`, TinyMCE, `admin.js`, JQMIGRATE), **non è lì il bug da “fixare”**.
+
+Nella storia di questo progetto i sintomi (JS/CSS vuoti, accordion morto, popup senza scheda, BO `window.str2url is not a function`) erano **cache di asset vuoti** (200 con body 0 + `Expires` 7 giorni) o rumore del BO 9. Patchare twig/JS/moduli nativi ha solo rotto il BO (TinyMCE) e ha richiesto restore.
+
+## Vietato (sul server e in locale, FTP incluso)
+
+- `src/PrestaShopBundle/**` (incluso `core_javascript.html.twig`, layout BO)
+- `js/**` del shop (`admin.js`, `tools.js`, `.htaccess` in `/js/`)
+- `classes/`, `controllers/`, `admin/`, `vendor/`, `app/config/**` (tranne `.env` del **repo**)
+- Tema padre `classic` e `themes/new-theme/`
+- Moduli **nativi** `ps_*` (es. `ps_faviconnotificationbo`)
+- Qualsiasi script in `tmp-remote/` che uploada i path sopra (`fix-bo-*`, `restore-original-bo`, cachebust twig, ecc.): **non eseguirli**
+
+Non “aggiungere un `&r=`”, non polyfill in twig core, non `typeof` nei moduli PS. Upgrade e restore li cancellano e il danno resta.
+
+## Cosa fare invece
+
+1. **Misurare l’asset**: `decodedBodySize`, body vuoto vs file pieno con `?v=` nuovo. File pieno + URL vecchio in cache = **non toccare il PHP/JS core**.
+2. Intervenire solo su **tema child** (`barbaraalvisi/` / `classic-gucci/`) o **moduli nostri** (`everpspopup`, `barbaraalvisi_homecategories`).
+3. Header `no-store` e bump `?v=` **solo** sui nostri CSS/JS (`themes/barbaraalvisi/assets/`, `modules/everpspopup/views/`).
+4. BO: JQMIGRATE = rumore PS 9, **non si toglie**. `str2url` / `ps_faviconnotificationbo`: **non patchare** `admin.js` né `ps_*`. Eventuale workaround solo in **moduli nostri** (`everpspopup` → `displayBackOfficeHeader`).
+
+## Eccezione
+
+Solo se l’utente scrive **esplicitamente** di modificare un path core elencato sopra. «Sistema la console BO» **non** è un’autorizzazione.

@@ -10,14 +10,28 @@
           {/if}
           <div class="barbaraalvisi-menu-row">
             {include file='_partials/barbaraalvisi-it-label.tpl' barbaraalvisiLabelIn=$node.label scope='parent'}
-            <a
-              class="barbaraalvisi-menu-link{if $depth >= 0} dropdown-item{/if}{if $depth === 1} dropdown-submenu{/if}"
-              href="{$node.url}"
-              data-depth="{$depth}"
-              {if $node.open_in_new_window} target="_blank" rel="noopener noreferrer"{/if}
-            >
-              {$barbaraalvisiLabelOut|escape:'htmlall':'UTF-8'}
-            </a>
+            {assign var='barbaraalvisiMenuLabelKey' value=$node.label|lower|trim}
+            {assign var='barbaraalvisiMenuIsAbbigliamento' value=false}
+            {if $node.page_identifier == 'category-3' || $barbaraalvisiMenuLabelKey == 'abbigliamento' || $barbaraalvisiMenuLabelKey == 'clothes' || $barbaraalvisiMenuLabelKey == 'clothing'}
+              {assign var='barbaraalvisiMenuIsAbbigliamento' value=true}
+            {/if}
+            {if $barbaraalvisiMenuIsAbbigliamento}
+              <span
+                class="barbaraalvisi-menu-link barbaraalvisi-menu-link--static{if $depth >= 0} dropdown-item{/if}{if $depth === 1} dropdown-submenu{/if}"
+                data-depth="{$depth}"
+              >
+                {$barbaraalvisiLabelOut|escape:'htmlall':'UTF-8'}
+              </span>
+            {else}
+              <a
+                class="barbaraalvisi-menu-link{if $depth >= 0} dropdown-item{/if}{if $depth === 1} dropdown-submenu{/if}"
+                href="{$node.url}"
+                data-depth="{$depth}"
+                {if $node.open_in_new_window} target="_blank" rel="noopener noreferrer"{/if}
+              >
+                {$barbaraalvisiLabelOut|escape:'htmlall':'UTF-8'}
+              </a>
+            {/if}
             {if $node.children|count}
               <button
                 type="button"

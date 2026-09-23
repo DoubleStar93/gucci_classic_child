@@ -1,0 +1,6 @@
+services:
+  everpspopup.bo_globals.listener:
+    class: EverpspopupBoGlobalsSubscriber
+    file: '%kernel.project_dir%/modules/everpspopup/src/EverpspopupBoGlobalsSubscriber.php'
+    tags:
+      - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: 32 }

@@ -54,9 +54,9 @@
     <div id="barbaraalvisi-pdp-panel-care" class="barbaraalvisi-pdp-accordion-panel" hidden>
       <div class="barbaraalvisi-pdp-accordion-content">
         {if $language.iso_code == 'it'}
-          <p>Per preservare la qualità del prodotto nel tempo, evitare il contatto con acqua, profumi, cosmetici e l&apos;esposizione prolungata a fonti di calore e luce diretta. Per evitare il danneggiamento delle fibre o dei tessuti seguire le istruzioni presenti nell&apos;etichetta del prodotto.</p>
+          <p>Per preservare la qualità del prodotto nel tempo, evitare il contatto con profumi, cosmetici e l&apos;esposizione prolungata a fonti di calore e luce diretta. Per evitare il danneggiamento delle fibre o dei tessuti seguire le istruzioni presenti nell&apos;etichetta del prodotto.</p>
         {else}
-          <p>{l s='To preserve product quality over time, avoid contact with water, perfumes, cosmetics and prolonged exposure to heat and direct light. To avoid damaging fibres or fabrics, follow the instructions on the product label.' d='Shop.Theme.Catalog'}</p>
+          <p>{l s='To preserve product quality over time, avoid contact with perfumes, cosmetics and prolonged exposure to heat and direct light. To avoid damaging fibres or fabrics, follow the instructions on the product label.' d='Shop.Theme.Catalog'}</p>
         {/if}
       </div>
     </div>

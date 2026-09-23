@@ -38,7 +38,7 @@ class Everpspopup extends Module
     {
         $this->name = 'everpspopup';
         $this->tab = 'administration';
-        $this->version = '5.6.16';
+        $this->version = '5.6.20';
         $this->author = 'Team Ever';
         $this->need_instance = 0;
         $this->bootstrap = true;
@@ -170,6 +170,8 @@ class Everpspopup extends Module
                 && $this->registerHook('header')
                 && $this->registerHook('displayShoppingCart')
                 && $this->registerHook('displayCartModalContent')
+                && $this->registerHook('displayBackOfficeHeader')
+                && $this->registerHook('actionAdminControllerSetMedia')
                 && $this->installModuleTab('AdminEverPsPopup', 'Ever Popup');
         }
     }
@@ -489,6 +491,107 @@ class Everpspopup extends Module
         if (!$this->isRegisteredInHook('displayCartModalContent')) {
             $this->registerHook('displayCartModalContent');
         }
+
+        $this->ensureBarbaraalvisiBoHeaderHook();
+    }
+
+    /**
+     * Single BO inject: window.* only (no var/let) so we never collide with
+     * ps_faviconnotificationbo.js. Guarded so Header/subscriber can coexist.
+     */
+    private function getBarbaraalvisiBoGlobalsHtml(): string
+    {
+        return '<script data-ba-ever-bo-globals="1">(function (w) {'
+            . 'if (w.__baEverBoGlobals) { return; }'
+            . 'w.__baEverBoGlobals = 1;'
+            . 'if (typeof w.str2url !== "function") {'
+            . 'w.str2url = function (str) {'
+            . 'if (!str) { return ""; }'
+            . 'str = String(str).toLowerCase();'
+            . 'str = str.replace(/[àáâãäå]/g, "a").replace(/[èéêë]/g, "e").replace(/[ìíîï]/g, "i");'
+            . 'str = str.replace(/[òóôõö]/g, "o").replace(/[ùúûü]/g, "u").replace(/ç/g, "c").replace(/ñ/g, "n");'
+            . 'return str.replace(/[^a-z0-9\\s-]/g, "").replace(/\\s+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");'
+            . '};}'
+            . 'if (typeof w.ps_faviconnotificationbo === "undefined") {'
+            . 'w.ps_faviconnotificationbo = { initialize: function () {} };'
+            . '}'
+            . '})(window);</script>';
+    }
+
+    public function hookDisplayBackOfficeHeader()
+    {
+        $this->ensureBarbaraalvisiBoHeaderHook();
+
+        return $this->getBarbaraalvisiBoGlobalsHtml();
+    }
+
+    public function hookDisplayBackOfficeTop()
+    {
+        return '';
+    }
+
+    public function hookDisplayBackOfficeFooter()
+    {
+        return '';
+    }
+
+    public function hookActionAdminControllerSetMedia()
+    {
+        if (empty($this->context->controller) || !method_exists($this->context->controller, 'addJS')) {
+            return;
+        }
+
+        $this->context->controller->addJS(
+            $this->_path . 'views/js/bo-globals.js?v=' . $this->version
+        );
+    }
+
+    private function ensureBarbaraalvisiBoHeaderHook(): void
+    {
+        if (!$this->isRegisteredInHook('displayBackOfficeHeader')) {
+            $this->registerHook('displayBackOfficeHeader');
+        }
+        if (!$this->isRegisteredInHook('actionAdminControllerSetMedia')) {
+            $this->registerHook('actionAdminControllerSetMedia');
+        }
+
+        // Legacy: remove duplicate Top/Footer injects that redeclared globals.
+        if ($this->isRegisteredInHook('displayBackOfficeTop')) {
+            $this->unregisterHook('displayBackOfficeTop');
+        }
+        if ($this->isRegisteredInHook('displayBackOfficeFooter')) {
+            $this->unregisterHook('displayBackOfficeFooter');
+        }
+
+        $idHook = (int) Hook::getIdByName('displayBackOfficeHeader');
+        if ($idHook < 1 || (int) $this->id < 1) {
+            return;
+        }
+
+        $idShop = (int) $this->context->shop->id;
+        $pos = (int) Db::getInstance()->getValue(
+            'SELECT `position` FROM `' . _DB_PREFIX_ . 'hook_module`
+             WHERE `id_module` = ' . (int) $this->id . '
+             AND `id_hook` = ' . $idHook . '
+             AND `id_shop` = ' . $idShop
+        );
+
+        if ($pos === 1) {
+            return;
+        }
+
+        Db::getInstance()->execute(
+            'UPDATE `' . _DB_PREFIX_ . 'hook_module` SET `position` = `position` + 1
+             WHERE `id_hook` = ' . $idHook . '
+             AND `id_shop` = ' . $idShop . '
+             AND `id_module` != ' . (int) $this->id
+        );
+        Db::getInstance()->execute(
+            'UPDATE `' . _DB_PREFIX_ . 'hook_module` SET `position` = 1
+             WHERE `id_module` = ' . (int) $this->id . '
+             AND `id_hook` = ' . $idHook . '
+             AND `id_shop` = ' . $idShop
+        );
     }
 
     public function hookDisplayAmpContent()

@@ -244,7 +244,7 @@ class BarbaraalvisiCartShipping
     }
 
     /**
-     * Soglia spedizione gratuita negozio: BO globale → BARBARAALVISI_FREE_SHIPPING_THRESHOLD → 150 €.
+     * Soglia spedizione gratuita negozio: BO globale → BARBARAALVISI_FREE_SHIPPING_THRESHOLD → 199 €.
      */
     public static function getStoreFreeShippingThreshold(): float
     {
@@ -258,7 +258,7 @@ class BarbaraalvisiCartShipping
             return $configured;
         }
 
-        return 150.0;
+        return 199.0;
     }
 
     /**

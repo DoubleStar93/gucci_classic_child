@@ -43,8 +43,14 @@
 
     <ul class="barbaraalvisi-contact-channels" role="list">
       {if isset($contact_infos.phone) && $contact_infos.phone}
+        {assign var=barbaraalvisi_phone_label value=$contact_infos.phone}
         {assign var=barbaraalvisi_phone_href value=$contact_infos.phone|regex_replace:'/[^0-9+]/':''}
         {assign var=barbaraalvisi_phone_wa value=$contact_infos.phone|regex_replace:'/[^0-9]/':''}
+      {else}
+        {assign var=barbaraalvisi_phone_label value='352 276 6033'}
+        {assign var=barbaraalvisi_phone_href value='+393522766033'}
+        {assign var=barbaraalvisi_phone_wa value='393522766033'}
+      {/if}
 
         <li class="barbaraalvisi-contact-channel">
           <a href="tel:{$barbaraalvisi_phone_href}" class="barbaraalvisi-contact-channel-link">
@@ -55,7 +61,7 @@
               <span class="barbaraalvisi-contact-channel-label">
                 {if $language.iso_code == 'it'}Telefono{else}{l s='Phone' d='Shop.Theme.Global'}{/if}
               </span>
-              <span class="barbaraalvisi-contact-channel-text">{$contact_infos.phone}</span>
+              <span class="barbaraalvisi-contact-channel-text">{$barbaraalvisi_phone_label}</span>
             </span>
           </a>
           <p class="barbaraalvisi-contact-channel-hours">
@@ -84,11 +90,14 @@
             {if $language.iso_code == 'it'}Dal lunedì alla domenica, 10:00–19:00 (CET).{else}{l s='Monday to Sunday from 10:00 a.m. to 7:00 p.m. (CET).' d='Shop.Theme.Global'}{/if}
           </p>
         </li>
-      {/if}
 
       {if isset($contact_infos.email) && $contact_infos.email && $display_email}
+        {assign var=barbaraalvisi_email_label value=$contact_infos.email}
+      {else}
+        {assign var=barbaraalvisi_email_label value='servizioclienti@barbaraalvisi.it'}
+      {/if}
         <li class="barbaraalvisi-contact-channel barbaraalvisi-contact-channel--email">
-          <a href="mailto:{$contact_infos.email|escape:'url'}" class="barbaraalvisi-contact-channel-link">
+          <a href="mailto:{$barbaraalvisi_email_label|escape:'htmlall':'UTF-8'}" class="barbaraalvisi-contact-channel-link">
             <span class="barbaraalvisi-contact-channel-icon-wrap" aria-hidden="true">
               <i class="material-icons barbaraalvisi-contact-channel-icon">mail_outline</i>
             </span>
@@ -96,14 +105,13 @@
               <span class="barbaraalvisi-contact-channel-label">
                 {if $language.iso_code == 'it'}E-mail{else}{l s='Email' d='Shop.Theme.Global'}{/if}
               </span>
-              <span class="barbaraalvisi-contact-channel-text barbaraalvisi-contact-channel-text--email">{$contact_infos.email}</span>
+              <span class="barbaraalvisi-contact-channel-text barbaraalvisi-contact-channel-text--email">{$barbaraalvisi_email_label|escape:'htmlall':'UTF-8'}</span>
             </span>
           </a>
           <p class="barbaraalvisi-contact-channel-hours">
             {if $language.iso_code == 'it'}Rispondiamo entro 24–48 ore lavorative.{else}{l s='We reply within 24–48 business hours.' d='Shop.Theme.Global'}{/if}
           </p>
         </li>
-      {/if}
 
       <li class="barbaraalvisi-contact-channel">
         <a href="{$urls.pages.contact}" class="barbaraalvisi-contact-channel-link">

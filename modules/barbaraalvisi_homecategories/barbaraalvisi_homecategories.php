@@ -12,7 +12,7 @@ class Barbaraalvisi_Homecategories extends Module
     {
         $this->name = 'barbaraalvisi_homecategories';
         $this->tab = 'front_office_features';
-        $this->version = '1.1.0';
+        $this->version = '1.2.0';
         $this->author = 'Anton';
         $this->need_instance = 0;
         $this->bootstrap = true;
@@ -50,6 +50,8 @@ class Barbaraalvisi_Homecategories extends Module
 
     public function hookActionFrontControllerSetVariables(array $params)
     {
+        $this->sortAccessoriesLikePanel();
+
         $nodes = $this->loadMenuNodes();
 
         if (isset($params['templateVars']) && is_array($params['templateVars'])) {
@@ -92,6 +94,70 @@ class Barbaraalvisi_Homecategories extends Module
         return $this->context->smarty->fetch(
             _PS_THEME_DIR_ . 'templates/_partials/barbaraalvisi-home-categories.tpl'
         );
+    }
+
+    /**
+     * La scheda ordina i correlati per nome. Il pannello li elenca
+     * come getAccessoriesLight, senza ORDER BY sul nome.
+     */
+    private function sortAccessoriesLikePanel(): void
+    {
+        $controller = $this->context->controller;
+        if (!$controller || $controller->php_self !== 'product') {
+            return;
+        }
+
+        $accessories = $this->context->smarty->getTemplateVars('accessories');
+        if (!is_array($accessories) || count($accessories) < 2) {
+            return;
+        }
+
+        $product = $this->context->smarty->getTemplateVars('product');
+        $idProduct = 0;
+        if (is_array($product) || $product instanceof ArrayAccess) {
+            $idProduct = (int) ($product['id_product'] ?? $product['id'] ?? 0);
+        }
+        if ($idProduct < 1) {
+            return;
+        }
+
+        $listed = Product::getAccessoriesLight((int) $this->context->language->id, $idProduct);
+        if (!is_array($listed) || !$listed) {
+            return;
+        }
+
+        $rank = [];
+        foreach ($listed as $index => $row) {
+            $rank[(int) $row['id_product']] = (int) $index;
+        }
+
+        usort($accessories, function ($left, $right) use ($rank) {
+            $leftId = $this->accessoryProductId($left);
+            $rightId = $this->accessoryProductId($right);
+            $leftRank = $rank[$leftId] ?? PHP_INT_MAX;
+            $rightRank = $rank[$rightId] ?? PHP_INT_MAX;
+
+            return $leftRank <=> $rightRank;
+        });
+
+        $this->context->smarty->assign('accessories', $accessories);
+    }
+
+    /**
+     * @param array<string, mixed>|ArrayAccess<string, mixed> $accessory
+     */
+    private function accessoryProductId($accessory): int
+    {
+        if (is_array($accessory) || $accessory instanceof ArrayAccess) {
+            if (!empty($accessory['id_product'])) {
+                return (int) $accessory['id_product'];
+            }
+            if (!empty($accessory['id'])) {
+                return (int) $accessory['id'];
+            }
+        }
+
+        return 0;
     }
 
     /**

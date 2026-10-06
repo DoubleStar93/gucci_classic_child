@@ -8,8 +8,12 @@
     {assign var='barbaraalvisiSectionTitle' value='Popular products'}
   {/if}
   <section class="featured-products barbaraalvisi-home-section barbaraalvisi-home-section--products clearfix" data-type="popularproducts">
-    <header class="barbaraalvisi-home-section__header">
-      <h2 class="barbaraalvisi-home-section__title products-section-title">{$barbaraalvisiSectionTitle}</h2>
+    <header class="barbaraalvisi-home-section__header{if $page.page_name == 'index'} barbaraalvisi-home-section__header--marquee{/if}">
+      {if $page.page_name == 'index'}
+        {include file='_partials/barbaraalvisi-home-madeinitaly-marquee.tpl'}
+      {else}
+        <h2 class="barbaraalvisi-home-section__title products-section-title">{$barbaraalvisiSectionTitle}</h2>
+      {/if}
     </header>
     <div class="products barbaraalvisi-plp-grid barbaraalvisi-product-grid" data-barbaraalvisi-product-grid>
       {foreach from=$products item="product" key="position"}

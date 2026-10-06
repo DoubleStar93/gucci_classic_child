@@ -17,7 +17,7 @@
       </div>
     {/if}
 
-    <form action="{$urls.current_url}" method="post">
+    <form action="{$urls.current_url}#blockEmailSubscription" method="post" data-barbaraalvisi-newsletter>
       <input type="hidden" name="blockHookName" value="displayFooter">
       <div class="barbaraalvisi-footer-newsletter-row">
         <input

@@ -58,6 +58,8 @@
               {include file='catalog/_partials/product-variants.tpl'}
             {/block}
 
+            {include file='catalog/_partials/barbaraalvisi-size-guide.tpl'}
+
             {block name='product_buy'}
               {block name='product_pack'}{/block}
               {block name='product_discounts'}{/block}

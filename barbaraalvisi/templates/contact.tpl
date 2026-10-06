@@ -24,6 +24,7 @@
           {l s='Contact us for assistance with orders, products or general enquiries.' d='Shop.Theme.Global'}
         {/if}
       </p>
+      {include file='_partials/barbaraalvisi-service-contacts.tpl' barbaraalvisiServiceContactsMod='page'}
     </header>
 
     <div class="barbaraalvisi-contact-form-wrap">

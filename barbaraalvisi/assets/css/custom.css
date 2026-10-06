@@ -1133,6 +1133,23 @@ body.barbaraalvisi-menu-open {
   display: none !important;
 }
 
+.barbaraalvisi-nav-drawer-footer .barbaraalvisi-drawer-instagram {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.55rem;
+  width: auto;
+  margin-top: 0.85rem;
+  margin-bottom: 0;
+}
+
+.barbaraalvisi-nav-drawer-footer .barbaraalvisi-drawer-instagram__icon {
+  display: block;
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
+}
+
 /* Override regole globali #header (12px uppercase) nei drawer */
 #header .barbaraalvisi-nav-drawer .barbaraalvisi-top-menu[data-depth="0"] > .barbaraalvisi-menu-item > .barbaraalvisi-menu-row .barbaraalvisi-menu-link {
   font-size: var(--barbaraalvisi-nav-category-text) !important;
@@ -14404,4 +14421,238 @@ body#index .barbaraalvisi-home-modules > .barbaraalvisi-home-categories,
 .barbaraalvisi-nav-drawer .barbaraalvisi-menu-link--static:hover,
 #header .barbaraalvisi-nav-drawer .barbaraalvisi-menu-link--static:hover {
   opacity: 1;
+}
+
+/* ==========================================================================
+   Servizio clienti — email e telefono (footer + pagina Contattaci)
+   ========================================================================== */
+
+.barbaraalvisi-service-contacts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+}
+
+.barbaraalvisi-service-contacts__link {
+  font-family: var(--font-sans, "Jost", sans-serif);
+  font-size: var(--barbaraalvisi-text-sm, 0.8125rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.45;
+  text-decoration: none !important;
+  text-transform: none;
+}
+
+.barbaraalvisi-footer .barbaraalvisi-service-contacts--footer {
+  margin-top: 1.75rem;
+}
+
+.barbaraalvisi-footer .barbaraalvisi-service-contacts--footer + .barbaraalvisi-footer-instagram {
+  margin-top: 1.75rem;
+}
+
+.barbaraalvisi-footer .barbaraalvisi-service-contacts--footer .barbaraalvisi-service-contacts__link {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.barbaraalvisi-footer .barbaraalvisi-service-contacts--footer .barbaraalvisi-service-contacts__link:hover,
+.barbaraalvisi-footer .barbaraalvisi-service-contacts--footer .barbaraalvisi-service-contacts__link:focus-visible {
+  color: var(--barbaraalvisi-color-gold, #c4a574) !important;
+}
+
+body#contact .barbaraalvisi-service-contacts--page {
+  margin-top: 1.35rem;
+}
+
+body#contact .barbaraalvisi-service-contacts--page .barbaraalvisi-service-contacts__link {
+  color: var(--ba-cioccolato, #3a2a24) !important;
+  font-size: var(--barbaraalvisi-text-base, 0.9375rem);
+}
+
+body#contact .barbaraalvisi-service-contacts--page .barbaraalvisi-service-contacts__link:hover,
+body#contact .barbaraalvisi-service-contacts--page .barbaraalvisi-service-contacts__link:focus-visible {
+  color: var(--ba-bordeaux, #6b2a28) !important;
+}
+
+/* ==========================================================================
+   Scheda prodotto — guida taglie
+   ========================================================================== */
+
+#product .barbaraalvisi-size-guide-open {
+  display: inline-flex;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ba-cioccolato, #3d2b22);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 0.28em;
+  cursor: pointer;
+}
+
+#product .barbaraalvisi-size-guide-open:hover,
+#product .barbaraalvisi-size-guide-open:focus-visible {
+  color: var(--ba-bordeaux, #6b2a28);
+}
+
+body.barbaraalvisi-size-guide-open {
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+}
+
+.barbaraalvisi-size-guide {
+  position: fixed;
+  inset: 0;
+  z-index: 10090;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.barbaraalvisi-size-guide[hidden] {
+  display: none;
+}
+
+.barbaraalvisi-size-guide__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 20, 18, 0.4);
+}
+
+.barbaraalvisi-size-guide__panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(46rem, 100%);
+  max-height: min(88vh, 52rem);
+  background: #ffffff;
+  color: var(--ba-cioccolato, #3d2b22);
+  box-shadow: none;
+}
+
+.barbaraalvisi-size-guide__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem 0.75rem;
+}
+
+.barbaraalvisi-size-guide__title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-transform: none;
+}
+
+.barbaraalvisi-size-guide__body {
+  overflow: auto;
+  padding: 0.25rem 1.5rem 1.75rem;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.barbaraalvisi-size-guide__body p {
+  margin: 0 0 0.85rem;
+}
+
+.barbaraalvisi-size-guide__section {
+  margin-top: 1.5rem;
+}
+
+.barbaraalvisi-size-guide__section h3 {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.barbaraalvisi-size-guide__note {
+  color: var(--ba-taupe, #9a8b7a);
+  font-size: 13px;
+}
+
+.barbaraalvisi-size-guide__table-wrap {
+  overflow-x: auto;
+  margin-top: 0.75rem;
+}
+
+.barbaraalvisi-size-guide__table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.barbaraalvisi-size-guide__table th,
+.barbaraalvisi-size-guide__table td {
+  padding: 0.55rem 0.45rem;
+  border-bottom: 1px solid #e5e5e5;
+  font-weight: 400;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.barbaraalvisi-size-guide__table thead th {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.barbaraalvisi-size-guide__download-row {
+  margin: 0.25rem 0 0.35rem;
+}
+
+.barbaraalvisi-size-guide__download {
+  color: var(--ba-cioccolato, #3d2b22);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 0.28em;
+}
+
+.barbaraalvisi-size-guide__download:hover,
+.barbaraalvisi-size-guide__download:focus-visible {
+  color: var(--ba-bordeaux, #6b2a28);
+}
+
+.barbaraalvisi-size-guide__figure {
+  display: block;
+  width: min(24rem, 100%);
+  height: auto;
+  max-height: none;
+  object-fit: contain;
+  margin: 1rem auto 0.5rem;
+}
+
+@media (max-width: 767px) {
+  .barbaraalvisi-size-guide {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .barbaraalvisi-size-guide__panel {
+    width: 100%;
+    max-height: 100%;
+  }
 }

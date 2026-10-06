@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sistemazioni — Barbara Alvisi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --panna: #f6f1e8;
+      --avorio: #faf6ef;
+      --sabbia: #e4d9c8;
+      --sabbia-2: #d9cfc0;
+      --taupe: #9a8b7a;
+      --cioccolato: #3d2b22;
+      --bordeaux: #6b2a28;
+      --bordeaux-dark: #541f1d;
+      --nero: #1a1412;
+      --oro: #c9a962;
+      --bronzo: #8f7348;
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --sans: "Jost", "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--panna);
+      color: var(--cioccolato);
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a { color: var(--bordeaux); text-underline-offset: 0.18em; }
+    a:hover { color: var(--bordeaux-dark); }
+
+    .wrap {
+      width: min(1120px, calc(100% - 2.5rem));
+      margin: 0 auto;
+    }
+
+    header.site {
+      padding: 1.25rem 0 0;
+    }
+    .brand {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid var(--sabbia-2);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--taupe);
+    }
+    .brand strong {
+      font-weight: 500;
+      color: var(--nero);
+    }
+
+    .hero {
+      padding: 3.2rem 0 2.2rem;
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 2.5rem;
+      align-items: end;
+    }
+    .kicker {
+      margin: 0 0 0.6rem;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--bronzo);
+    }
+    h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(3.2rem, 7vw, 5.4rem);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      color: var(--nero);
+    }
+    h1 em { font-style: italic; font-weight: 400; }
+    .lede {
+      margin: 1.1rem 0 0;
+      max-width: 38rem;
+      font-size: 1.05rem;
+    }
+    .note {
+      margin: 1rem 0 0;
+      padding-left: 0.9rem;
+      border-left: 1px solid var(--oro);
+      color: var(--cioccolato);
+      font-size: 0.95rem;
+    }
+
+    .counts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+    }
+    .count {
+      background: var(--avorio);
+      border: 1px solid var(--sabbia-2);
+      padding: 0.85rem 0.95rem 0.75rem;
+    }
+    .count b {
+      display: block;
+      font-family: var(--serif);
+      font-size: 2.1rem;
+      font-weight: 500;
+      line-height: 1;
+      color: var(--nero);
+    }
+    .count span {
+      display: block;
+      margin-top: 0.25rem;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--taupe);
+    }
+
+    nav.jump {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(246, 241, 232, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--sabbia-2);
+    }
+    nav.jump ul {
+      display: flex;
+      gap: 1.25rem;
+      list-style: none;
+      margin: 0;
+      padding: 0.75rem 0;
+      overflow-x: auto;
+    }
+    nav.jump a {
+      color: var(--cioccolato);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    nav.jump a:hover { color: var(--bordeaux); }
+
+    section { padding: 2.6rem 0; }
+    h2 {
+      margin: 0 0 0.4rem;
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(2rem, 4vw, 2.7rem);
+      line-height: 1;
+      color: var(--nero);
+    }
+    .section-intro {
+      margin: 0 0 1.4rem;
+      max-width: 40rem;
+      color: var(--cioccolato);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: 1.1rem;
+    }
+    .filters button {
+      appearance: none;
+      border: 1px solid var(--sabbia-2);
+      background: transparent;
+      color: var(--cioccolato);
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.7rem;
+      cursor: pointer;
+    }
+    .filters button[aria-pressed="true"] {
+      background: var(--nero);
+      border-color: var(--nero);
+      color: var(--avorio);
+    }
+
+    .board {
+      display: grid;
+      gap: 0.55rem;
+    }
+    .card {
+      display: grid;
+      grid-template-columns: 7.5rem 1fr auto;
+      gap: 0.8rem 1rem;
+      align-items: center;
+      padding: 0.85rem 1rem;
+      background: var(--avorio);
+      border: 1px solid transparent;
+      border-bottom: 1px solid var(--sabbia-2);
+    }
+    .card[hidden] { display: none; }
+    .card h3 {
+      margin: 0;
+      font-family: var(--sans);
+      font-weight: 400;
+      font-size: 1rem;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    .card p {
+      margin: 0.15rem 0 0;
+      color: var(--taupe);
+      font-size: 0.88rem;
+    }
+
+    .pill {
+      justify-self: start;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.28rem 0.45rem;
+      border: 1px solid currentColor;
+      line-height: 1.2;
+    }
+    .pill.fatto { color: var(--bordeaux); }
+    .pill.nonfatto { color: var(--nero); background: var(--sabbia); border-color: var(--sabbia); }
+    .pill.guida { color: var(--cioccolato); background: var(--avorio); }
+    .pill.materiale { color: var(--bronzo); }
+    .pill.preventivo { color: var(--nero); background: var(--oro); border-color: var(--oro); }
+    a.pill { text-decoration: none; }
+
+    .where {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      text-align: right;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.6rem;
+    }
+    .legend article {
+      padding: 0.9rem 0.85rem 1rem;
+      background: var(--avorio);
+      min-height: 7.5rem;
+    }
+    .legend h3 {
+      margin: 0.55rem 0 0.3rem;
+      font-family: var(--serif);
+      font-size: 1.45rem;
+      font-weight: 500;
+    }
+    .legend p { margin: 0; font-size: 0.88rem; color: var(--cioccolato); }
+
+    .day {
+      margin-top: 2.2rem;
+      padding-top: 1.4rem;
+      border-top: 1px solid var(--sabbia-2);
+    }
+    .day-label {
+      margin: 0 0 0.8rem;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--bronzo);
+    }
+    .entry {
+      display: grid;
+      grid-template-columns: 11rem 1fr;
+      gap: 1rem 1.5rem;
+      padding: 1.15rem 0;
+      border-top: 1px solid rgba(217, 207, 192, 0.7);
+    }
+    .entry:first-of-type { border-top: 0; padding-top: 0; }
+    .entry h3 {
+      margin: 0.35rem 0 0;
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 1.7rem;
+      line-height: 1.05;
+      color: var(--nero);
+    }
+    .entry .body p { margin: 0 0 0.7rem; }
+    .entry .body p:last-child { margin-bottom: 0; }
+    ul.clean, ol.clean { margin: 0.2rem 0 0.8rem; padding-left: 1.1rem; }
+    ul.clean li, ol.clean li { margin: 0.25rem 0; }
+    .path {
+      font-size: 0.92rem;
+      letter-spacing: 0.01em;
+    }
+    code {
+      font-family: var(--sans);
+      font-size: 0.92em;
+      background: var(--sabbia);
+      padding: 0.05em 0.35em;
+    }
+
+    .azioni {
+      background: var(--cioccolato);
+      color: var(--avorio);
+    }
+    .azioni h2 { color: var(--avorio); }
+    .azioni .section-intro { color: rgba(250, 246, 239, 0.78); }
+    .azioni-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.4rem 1.5rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .azioni-list li {
+      padding: 0.7rem 0;
+      border-top: 1px solid rgba(201, 169, 98, 0.35);
+      font-weight: 300;
+    }
+    .azioni a { color: var(--oro); }
+
+    footer.site {
+      padding: 1.4rem 0 2rem;
+      color: var(--taupe);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 800px) {
+      .hero, .legend, .azioni-list, .entry, .card {
+        grid-template-columns: 1fr;
+      }
+      .where { text-align: left; }
+      .hero { padding-top: 2rem; }
+      h1 { font-size: 3.1rem; }
+    }
+
+    @media print {
+      nav.jump, .filters { display: none; }
+      .card[hidden] { display: grid; }
+      body, .azioni, .card, .count, .legend article {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <div class="wrap brand">
+      <strong>Barbara Alvisi</strong>
+      <span>Stato delle sistemazioni · 5 ottobre 2026</span>
+    </div>
+  </header>
+
+  <div class="wrap hero">
+    <div>
+      <p class="kicker">barbaraalvisi.it</p>
+      <h1>Sistemazioni<br><em>e richieste</em></h1>
+      <p class="lede">Richieste dal 24 settembre al 2 ottobre 2026, e le sistemazioni già messe online il 5 ottobre.</p>
+      <p class="note">Ogni voce ha un solo stato: fatto, guida, non fatto, manca materiale, preventivo. Guida apre il procedimento qui sotto.</p>
+    </div>
+    <div class="counts" aria-label="Conteggi">
+      <div class="count"><b>13</b><span>Fatto</span></div>
+      <div class="count"><b>5</b><span>Guida</span></div>
+      <div class="count"><b>0</b><span>Non fatto</span></div>
+      <div class="count"><b>0</b><span>Manca materiale</span></div>
+      <div class="count"><b>2</b><span>Preventivo</span></div>
+    </div>
+  </div>
+
+  <nav class="jump" aria-label="Sezioni">
+    <div class="wrap">
+      <ul>
+        <li><a href="#legenda">Legenda</a></li>
+        <li><a href="#riepilogo">Riepilogo</a></li>
+        <li><a href="#fatto">Già fatto</a></li>
+        <li><a href="#cronologia">Cronologia</a></li>
+        <li><a href="#pannello">Cosa si può fare</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <section id="legenda">
+      <div class="wrap">
+        <h2>Come leggere lo stato</h2>
+        <p class="section-intro">Una voce, uno stato. Guida è un link: porta al procedimento, più sotto.</p>
+        <div class="legend">
+          <article>
+            <span class="pill fatto">Fatto</span>
+            <h3>Chiuso</h3>
+            <p>È online, oppure la risposta è già nel negozio e non resta nulla da costruire.</p>
+          </article>
+          <article>
+            <span class="pill guida">Guida</span>
+            <h3>Come si fa</h3>
+            <p>Non è codice del tema. Il link apre i passi, nel pannello o su Google.</p>
+          </article>
+          <article>
+            <span class="pill nonfatto">Non fatto</span>
+            <h3>Aperto</h3>
+            <p>Resta da fare. Tema, pannello o procedura: il materiale c’è.</p>
+          </article>
+          <article>
+            <span class="pill materiale">Manca materiale</span>
+            <h3>In attesa</h3>
+            <p>Manca il file, la foto o una decisione. Senza quello non si chiude.</p>
+          </article>
+          <article>
+            <span class="pill preventivo">Preventivo</span>
+            <h3>A prezzo</h3>
+            <p>C’è un prezzo. Non si inizia finché non si accetta.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="riepilogo">
+      <div class="wrap">
+        <h2>Riepilogo</h2>
+        <p class="section-intro">Venti voci. Il filtro mostra solo uno stato.</p>
+        <div class="filters" role="toolbar" aria-label="Filtra per stato">
+          <button type="button" data-filter="tutti" aria-pressed="true">Tutte</button>
+          <button type="button" data-filter="fatto" aria-pressed="false">Fatto</button>
+          <button type="button" data-filter="guida" aria-pressed="false">Guida</button>
+          <button type="button" data-filter="nonfatto" aria-pressed="false">Non fatto</button>
+          <button type="button" data-filter="materiale" aria-pressed="false">Manca materiale</button>
+          <button type="button" data-filter="preventivo" aria-pressed="false">Preventivo</button>
+        </div>
+        <div class="board" id="board">
+          <article class="card" data-status="fatto">
+            <span class="pill fatto">Fatto</span>
+            <div><h3>Email e telefono in footer e form contatti</h3><p>servizioclienti@barbaraalvisi.it · 352 276 6033</p></div>
+            <span class="where">Tema</span>
+          </article>
+          <article class="card" data-status="fatto">
+            <span class="pill fatto">Fatto</span>
+            <div><h3>Newsletter in home: restare sul modulo</h3><p>L’iscrizione non riporta più in alto sul banner.</p></div>
+            <span class="where">Tema</span>
+          </article>
+          <article class="card" data-status="fatto">
+            <span class="pill fatto">Fatto</span>
+            <div><h3>Spedizione 10 € / 15 € / gratis da 199 €</h3><p>Italia, estero, soglia sul corriere GLS.</p></div>
+            <span class="where">Negozio</span>
+          </article>
+          <article class="card" data-status="fatto">
+            <span class="pill fatto">Fatto</span>
+            <div><h3>Scritta in movimento più piccola sul telefono</h3><p>La fascia newsletter sul telefono è a 52 px. Le due scritte insieme sono un’altra voce.</p></div>
+            <span class="where">Tema</span>
+          </article>
+          <article class="card" data-status="fatto">
+            <span class="pill fatto">Fatto</span>
+            <div><h3>Tabella taglie in scheda prodotto</h3><p>Guida alle taglie in italiano e Size guide in inglese, sotto le taglie.</p></div>
+            <span class="where">Tema</span>
+          </article>
+          <article class="card" data-status="preventivo">
+            <span class="pill preventivo">Preventivo</span>
+            <div><h3>Chat WhatsApp</h3><p>20 €. Bottone fisso in pagina. Il link nel pannello Contatti c’è già.</p></div>
+            <span class="where">20 €</span>
+          </article>
+          <article class="card" data-status="guida">
+            <a class="pill guida" href="#guida-alert">Guida</a>
+            <div><h3>Avviso quando un capo torna disponibile</h3><p>Il cliente lascia l’email sulla taglia esaurita. La mail parte al riassortimento.</p></div>
+            <span class="where">Pannello</span>
+          </article>
+          <article class="card" data-status="guida">
+            <a class="pill guida" href="#guida-resi">Guida</a>
+            <div><h3>Pagina Rimborsi e resi nel footer</h3><p>Pagina nuova e voce nel footer. Il recesso non è il reso.</p></div>
+            <span class="where">Pannello</span>
+          </article>
+          <article class="card" data-status="fatto">
+            <span class="pill fatto">Fatto</span>
+            <div><h3>Elenco clienti e iscritti alla newsletter</h3><p>Gli elenchi ci sono già. <a href="#guida-clienti">Apri la guida</a></p></div>
+            <span class="where">Clienti / moduli</span>
+          </article>
+          <article class="card" data-status="guida">
+            <a class="pill guida" href="#guida-form-contatti">Guida</a>
+            <div><h3>Dove si modifica il form Contattaci</h3><p>Oggetti e email da Contatti. La frase e le etichette sono nel tema.</p></div>
+            <span class="where">Pannello</span>
+          </article>
+          <article class="card" data-status="guida">
+            <a class="pill guida" href="#guida-google">Guida</a>
+            <div><h3>Search Console, Merchant, sitemap</h3><p>Nessun abbonamento per essere trovati. La pubblicità in alto è un’altra cosa.</p></div>
+            <span class="where">Google</span>
+          </article>
+          <article class="card" data-status="fatto">
+            <span class="pill fatto">Fatto</span>
+            <div><h3>Procedura ordini e mail di conferma</h3><p>Il flusso c’è. La mail al cliente parte da sola. <a href="#guida-ordini">Apri la guida</a></p></div>
+            <span class="where">Ordini</span>
+          </article>
+          <article class="card" data-status="preventivo">
+            <span class="pill preventivo">Preventivo</span>
+            <div><h3>Brand World, galleria senza link</h3><p>60 €. 17 immagini vicine, senza link ai prodotti. I file non sono ancora nel tema.</p></div>
+            <span class="where">60 €</span>
+          </article>
+          <article class="card" data-status="fatto">
+            <span class="pill fatto">Fatto</span>
+            <div><h3>Sconto 10% al primo acquisto</h3><p>All’iscrizione arriva la mail con il codice BENVENUTOALVISI10.</p></div>
+            <span class="where">Mail</span>
+          </article>
+          <article class="card" data-status="fatto">
+            <span class="pill fatto">Fatto</span>
+            <div><h3>«Scopri la qualità del vero Made in Italy»</h3><p>Fascia al posto del titolo «Prodotti in vetrina».</p></div>
+            <span class="where">Home</span>
+          </article>
+          <article class="card" data-status="fatto">
+            <span class="pill fatto">Fatto</span>
+            <div><h3>Rimpicciolire entrambe le scritte</h3><p>Stessa misura: 52 px su desktop, 36 px sul telefono.</p></div>
+            <span class="where">Home</span>
+          </article>
+          <article class="card" data-status="fatto">
+            <span class="pill fatto">Fatto</span>
+            <div><h3>Mail di iscrizione</h3><p>Parte dallo shop. Brevo non serve. La newsletter si gestirà in futuro.</p></div>
+            <span class="where">Mail</span>
+          </article>
+          <article class="card" data-status="guida">
+            <a class="pill guida" href="#guida-testi-mail">Guida</a>
+            <div><h3>Testi delle mail</h3><p>Si modificano da Traduzioni, senza Brevo. Si possono cambiare anche dopo.</p></div>
+            <span class="where">Pannello</span>
+          </article>
+          <article class="card" data-status="fatto">
+            <span class="pill fatto">Fatto</span>
+            <div><h3>Immagine nella mail di benvenuto</h3><p>La foto è nella conferma e nel buono, in italiano e in inglese.</p></div>
+            <span class="where">Mail</span>
+          </article>
+          <article class="card" data-status="fatto">
+            <span class="pill fatto">Fatto</span>
+            <div><h3>Prodotti correlati nell’ordine impostato</h3><p>La scheda segue l’elenco accessori del pannello.</p></div>
+            <span class="where">Scheda</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="fatto">
+      <div class="wrap">
+        <h2>Già fatto</h2>
+        <p class="section-intro">Chiuso il 5 ottobre 2026 e verificato sul sito.</p>
+
+        <div class="day">
+          <p class="day-label">5 ottobre 2026</p>
+          <article class="entry">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Email e telefono</h3>
+              <div class="body">
+                <p><a href="mailto:servizioclienti@barbaraalvisi.it">servizioclienti@barbaraalvisi.it</a> e 352 276 6033 sono nel footer, sopra il modulo Contattaci, e nel pannello Contatti, con telefono e WhatsApp.</p>
+              </div>
+            </div>
+          </article>
+          <article class="entry">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Newsletter in home</h3>
+              <div class="body">
+                <p>Iscriversi dal footer non riporta in cima e non fa ripartire il banner. La conferma resta sul modulo.</p>
+              </div>
+            </div>
+          </article>
+          <article class="entry">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Spedizione</h3>
+              <div class="body">
+                <p>Corriere GLS. Prima l’Italia era a 9,50 € insieme alla Francia, e la soglia gratuita era 150 €.</p>
+                <ul class="clean">
+                  <li>Italia: 10 €</li>
+                  <li>Estero, paesi attivi fuori Italia (Francia e Stati Uniti): 15 €</li>
+                  <li>Gratis da 199 € di prodotti</li>
+                </ul>
+                <p>L’Italia ha una zona di spedizione propria, altrimenti nazionale ed estero restavano lo stesso prezzo.</p>
+              </div>
+            </div>
+          </article>
+          <article class="entry">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Scritta che scorre, solo telefono</h3>
+              <div class="body">
+                <p>La fascia newsletter e la riga Made in Italy hanno la stessa misura: 52 px su desktop e 36 px sul telefono.</p>
+              </div>
+            </div>
+          </article>
+          <article class="entry">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Guida alle taglie</h3>
+              <div class="body">
+                <p>In scheda prodotto, sotto le taglie. La lingua segue il sito. Nel pannello c’è anche il download del PDF.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="cronologia">
+      <div class="wrap">
+        <h2>Cronologia</h2>
+        <p class="section-intro">Nell’ordine in cui sono arrivate. Il 28 settembre è già nel blocco precedente.</p>
+
+        <div class="day">
+          <p class="day-label">24 settembre 2026</p>
+          <article class="entry">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Tabella taglie in scheda</h3>
+              <div class="body">
+                <p>Chiuso il 5 ottobre 2026. In scheda, sotto le taglie, «Guida alle taglie» in italiano e «Size guide» in inglese. Tabelle di abbigliamento, maglieria e conversione, più la figura per busto, vita e fianchi.</p>
+              </div>
+            </div>
+          </article>
+          <article class="entry">
+            <span class="pill preventivo">Preventivo</span>
+            <div>
+              <h3>Chat WhatsApp</h3>
+              <div class="body">
+                <p><strong>20 €</strong>. Il bottone fisso in pagina, visibile mentre si naviga. Oggi WhatsApp è solo una voce del pannello Contatti, sul 352 276 6033. Il link c’è già.</p>
+                <p>Un’immagine di riferimento, se viene fornita, serve per avvicinarsi all’esempio.</p>
+              </div>
+            </div>
+          </article>
+          <article class="entry" id="guida-alert">
+            <a class="pill guida" href="#guida-alert">Guida</a>
+            <div>
+              <h3>Capo esaurito, mail al ritorno</h3>
+              <div class="body">
+                <p>Guida da pannello. Non è una modifica del tema.</p>
+                <ol class="clean">
+                  <li>Moduli → Gestione moduli. Cercare <strong>Mail alerts</strong> (<code>ps_emailalerts</code>). Se manca, installarlo.</li>
+                  <li>Configura. Attivare l’avviso di disponibilità: il cliente lascia l’email sulla taglia esaurita.</li>
+                  <li>In scheda, su una taglia a quantità zero, deve comparire il campo email. Provare con un capo davvero esaurito.</li>
+                  <li>Quando quella taglia torna disponibile, la mail parte da sola.</li>
+                  <li>Il testo si cambia da Internazionale → Traduzioni → Traduzioni email.</li>
+                </ol>
+                <p>Lo stile del pulsante in scheda si tocca solo se stona.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="day">
+          <p class="day-label">25 settembre 2026</p>
+          <article class="entry" id="guida-resi">
+            <a class="pill guida" href="#guida-resi">Guida</a>
+            <div>
+              <h3>Rimborsi e resi nel footer</h3>
+              <div class="body">
+                <p>Guida da pannello. Il tema ha già lo stile delle pagine di testo.</p>
+                <ul class="clean">
+                  <li><strong>Recesso.</strong> Il cliente cambia idea entro 14 giorni e rimanda il capo, anche se non è difettoso.</li>
+                  <li><strong>Reso.</strong> Di solito un problema: difetto, capo sbagliato, cambio taglia concordato.</li>
+                </ul>
+                <p>Oggi il recesso sta dentro Termini e condizioni.</p>
+                <ol class="clean">
+                  <li>Design → Pagine. Nuova pagina <strong>Rimborsi e resi</strong>, in italiano e in inglese. Nel testo tenere distinti recesso e reso, e indicare servizioclienti@barbaraalvisi.it.</li>
+                  <li>Moduli → Elenco link (<code>ps_linklist</code>) → Configura. Aggiungere la pagina nel blocco del footer.</li>
+                  <li>Aprire il sito e controllare voce e pagina.</li>
+                </ol>
+              </div>
+            </div>
+          </article>
+          <article class="entry" id="guida-clienti">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Clienti e newsletter</h3>
+              <div class="body">
+                <p>Si consultano dal pannello, senza codice.</p>
+                <ul class="clean">
+                  <li class="path"><strong>Messaggi del form.</strong> Servizio clienti → Servizio clienti. Arrivano a servizioclienti@barbaraalvisi.it.</li>
+                  <li class="path"><strong>Clienti registrati.</strong> Clienti → Clienti. La spunta newsletter indica chi l’ha accettata in account.</li>
+                  <li class="path"><strong>Iscritti alla newsletter</strong>, anche senza account. Migliora → Moduli → Gestione moduli, cercare «Newsletter» (<code>ps_emailsubscription</code>) → Configura. Da lì si filtra e si esporta il CSV. La spunta «Attivato» disiscrive un nominativo.</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+          <article class="entry" id="guida-form-contatti">
+            <a class="pill guida" href="#guida-form-contatti">Guida</a>
+            <div>
+              <h3>Dove si modifica il form Contattaci</h3>
+              <div class="body">
+                <p>Due parti diverse.</p>
+                <p><strong>Dal pannello.</strong> Servizio clienti → Contatti.</p>
+                <ol class="clean">
+                  <li>Ogni riga è una voce del menu Oggetto nel form.</li>
+                  <li>Il titolo è il nome che vede il cliente. L’email è dove arriva quel tipo di messaggio: oggi servizioclienti@barbaraalvisi.it.</li>
+                  <li>Si aggiunge, si rinomina o si toglie una voce, poi si salva.</li>
+                  <li>Se resta una sola voce, il form non mostra il menu Oggetto: la scelta è già quella.</li>
+                </ol>
+                <p>I messaggi inviati si leggono in Servizio clienti → Servizio clienti.</p>
+                <p><strong>Nel tema, non nel pannello.</strong> La frase sotto il titolo («Scrivici per assistenza su ordini, prodotti o informazioni generali»), le etichette dei campi e il pulsante «Invia messaggio» sono scritte nella pagina. Per cambiarle serve un intervento sul tema.</p>
+              </div>
+            </div>
+          </article>
+          <article class="entry" id="guida-google">
+            <a class="pill guida" href="#guida-google">Guida</a>
+            <div>
+              <h3>Search Console, Merchant, sitemap</h3>
+              <div class="body">
+                <p>Guida. Nessun abbonamento per essere trovati. La pubblicità in alto è Google Ads, ed è un’altra cosa. Account: Brb.derwix@gmail.com.</p>
+                <p><strong>Sitemap.</strong> Moduli → Google sitemap (<code>gsitemap</code>) → Configura → genera la mappa. Di solito l’indirizzo è <code>https://barbaraalvisi.it/1_index_sitemap.xml</code>: aperto nel browser deve elencare le pagine.</p>
+                <p><strong>Search Console.</strong></p>
+                <ol class="clean">
+                  <li>Aprire Search Console con l’account sopra e aggiungere <code>https://barbaraalvisi.it</code>.</li>
+                  <li>Verificare la proprietà: record DNS su SiteGround, oppure un file o un tag sul sito.</li>
+                  <li>Aggiungere la sitemap generata prima.</li>
+                  <li>Dopo qualche giorno controllare le pagine indicizzate. Non mette il sito in prima posizione da solo.</li>
+                </ol>
+                <p><strong>Merchant Center.</strong> È gratuito ed è il catalogo per Google Shopping.</p>
+                <ol class="clean">
+                  <li>Aprire Merchant Center con lo stesso account, paese Italia, e verificare lo stesso sito.</li>
+                  <li>Collegare il catalogo. Nel tema non c’è un feed: serve il modulo Google di PrestaShop, oppure un file di prodotti letto a orari fissi.</li>
+                  <li>Sistemare gli avvisi su prezzo, disponibilità e immagini finché il catalogo non è rifiutato.</li>
+                </ol>
+              </div>
+            </div>
+          </article>
+          <article class="entry" id="guida-ordini">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Procedura ordini</h3>
+              <div class="body">
+                <ol class="clean">
+                  <li>Ordini → Ordini, aprire l’ordine.</li>
+                  <li>Lo stato parte da solo, in genere «Pagamento accettato» se il pagamento è andato a buon fine.</li>
+                  <li>Quando si spedisce, si aggiorna lo stato (per esempio «Spedito») e si inserisce il tracking, se c’è.</li>
+                  <li>Il cliente riceve da solo la mail di riepilogo e quelle legate al cambio stato, se la posta del negozio è configurata. Non si invia a mano ogni volta.</li>
+                </ol>
+                <p>Se una mail non parte, è la configurazione SMTP, non il tema.</p>
+              </div>
+            </div>
+          </article>
+          <article class="entry">
+            <span class="pill preventivo">Preventivo</span>
+            <div>
+              <h3>Brand World</h3>
+              <div class="body">
+                <p><strong>60 €</strong>. 17 immagini, vicine, più grandi di una galleria del telefono, senza link ai prodotti. Se un capo finisce, la pagina resta valida.</p>
+                <p>Nel tema questa pagina non c’è. Il prezzo è per la griglia, a materiale ricevuto: immagini e testo non sono nel progetto. I file non vanno collegati alle schede.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="day">
+          <p class="day-label">28 settembre 2026</p>
+          <article class="entry">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Spedizione e fascia sul telefono</h3>
+              <div class="body">
+                <p>10 € Italia, 15 € estero, gratis da 199 €: fatto. Le due scritte in home sono rimpicciolite, alla stessa misura.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="day">
+          <p class="day-label">29 settembre 2026</p>
+          <article class="entry">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Newsletter e sconto 10%</h3>
+              <div class="body">
+                <p>Chi si iscrive alla newsletter riceve la mail «Buono sconto newsletter», con il codice <strong>BENVENUTOALVISI10</strong>. È lo sconto del 10% sul primo acquisto.</p>
+                <p>La fascia in home («iscriviti e ricevi il 10% sul primo acquisto») corrisponde a questa mail.</p>
+              </div>
+            </div>
+          </article>
+          <article class="entry">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Made in Italy al posto di «Prodotti in vetrina»</h3>
+              <div class="body">
+                <p>Al posto del titolo fisso, in home scorre «Scopri la qualità del vero Made in Italy». In inglese: «Discover the quality of true Made in Italy».</p>
+              </div>
+            </div>
+          </article>
+          <article class="entry">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Rimpicciolire entrambe le scritte</h3>
+              <div class="body">
+                <p>La fascia newsletter e la riga Made in Italy hanno la stessa misura: 52 px su desktop e 36 px sul telefono.</p>
+              </div>
+            </div>
+          </article>
+          <article class="entry">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Mail dopo l’ordine</h3>
+              <div class="body">
+                <p>È automatica. Il negozio manda il riepilogo al cliente se l’SMTP è a posto. Non si compila ordine per ordine.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="day">
+          <p class="day-label">30 settembre 2026</p>
+          <article class="entry">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Mail di iscrizione</h3>
+              <div class="body">
+                <p>All’iscrizione la mail parte da PrestaShop. Brevo non serve.</p>
+                <p>La gestione della newsletter, liste e invii, si farà in futuro e non è una modifica del tema.</p>
+              </div>
+            </div>
+          </article>
+          <article class="entry" id="guida-testi-mail">
+            <a class="pill guida" href="#guida-testi-mail">Guida</a>
+            <div>
+              <h3>Testi delle mail</h3>
+              <div class="body">
+                <p>Si modificano dal pannello. Brevo non serve. Si possono cambiare anche dopo, quando il testo di oggi è ancora essenziale.</p>
+                <ol class="clean">
+                  <li>Internazionale → Traduzioni.</li>
+                  <li>Tipo: <strong>Traduzioni email</strong>.</li>
+                  <li>Scegliere il tema <strong>barbaraalvisi</strong> e la lingua, italiano o inglese.</li>
+                  <li>Aprire la mail: conferma newsletter, buono di benvenuto, oppure le mail dell’ordine e della spedizione.</li>
+                  <li>Modificare oggetto e testo, poi salvare. La mail successiva usa il testo nuovo.</li>
+                </ol>
+                <p>Le mail di iscrizione sono quelle con la foto. La verifica del link, se un giorno si attiva, è un’altra mail e non ha la foto.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="day">
+          <p class="day-label">1 ottobre 2026</p>
+          <article class="entry">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Immagine nella mail di benvenuto</h3>
+              <div class="body">
+                <p>La foto è nelle due mail che partono con l’iscrizione, conferma e buono, in italiano e in inglese. La mail di verifica del link resta solo testo.</p>
+                <p>I modelli sono nel tema, non nel modulo nativo.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="day">
+          <p class="day-label">2 ottobre 2026</p>
+          <article class="entry">
+            <span class="pill fatto">Fatto</span>
+            <div>
+              <h3>Prodotti correlati</h3>
+              <div class="body">
+                <p>«Potrebbe piacerti anche» segue l’ordine dell’elenco accessori nel pannello prodotto. Prima la pagina li metteva in ordine alfabetico. Il core non è stato modificato.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="azioni" id="pannello">
+      <div class="wrap">
+        <h2>Cosa si può fare</h2>
+        <p class="section-intro">Dal pannello, senza intervento sul tema.</p>
+        <ul class="azioni-list">
+          <li><a href="#guida-clienti">Leggere i messaggi del form in Servizio clienti</a></li>
+          <li><a href="#guida-form-contatti">Modificare oggetti e email del form Contattaci</a></li>
+          <li><a href="#guida-clienti">Vedere i clienti e gli iscritti alla newsletter, esportare il CSV, disiscrivere</a></li>
+          <li><a href="#guida-resi">Creare la pagina Resi e metterla nel footer</a></li>
+          <li><a href="#guida-ordini">Aprire un ordine e cambiarne lo stato</a></li>
+          <li><a href="#guida-ordini">Contare sulla mail automatica di conferma ordine e di spedizione</a></li>
+          <li><a href="#guida-testi-mail">Modificare i testi delle mail da Traduzioni</a></li>
+          <li><a href="#guida-alert">Attivare la mail quando un capo torna disponibile</a></li>
+          <li><a href="#guida-google">Collegare Search Console, sitemap e Merchant Center</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">Barbara Alvisi · stato delle sistemazioni · 5 ottobre 2026</div>
+  </footer>
+
+  <script>
+    (function () {
+      var buttons = document.querySelectorAll(".filters button");
+      var cards = document.querySelectorAll("#board .card");
+      buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          var filter = button.getAttribute("data-filter");
+          buttons.forEach(function (other) {
+            other.setAttribute("aria-pressed", other === button ? "true" : "false");
+          });
+          cards.forEach(function (card) {
+            var show = filter === "tutti" || card.getAttribute("data-status") === filter;
+            card.hidden = !show;
+          });
+        });
+      });
+    }());
+  </script>
+</body>
+</html>

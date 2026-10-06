@@ -1,7 +1,7 @@
 /**
  * Barbara Alvisi — drawer menu, ricerca, contatti, accordion
  * Caricato manualmente dopo il bundle CCC (non usare assets/js/custom.js — PS lo include nel bundle).
- * cache-bust 2.8.1
+ * cache-bust 2.8.3
  */
 (() => {
   const syncBarbaraalvisiCustomerPrivacyField = () => {
@@ -1149,6 +1149,89 @@
   if (accountBackdrop) {
     accountBackdrop.addEventListener('click', closeAccount);
   }
+
+  const portalBarbaraalvisiSizeGuide = () => {
+    const dialog = document.getElementById('barbaraalvisi-size-guide');
+    if (dialog instanceof HTMLElement && dialog.parentElement !== document.body) {
+      document.body.appendChild(dialog);
+    }
+  };
+
+  let barbaraalvisiSizeGuideScrollY = 0;
+  let barbaraalvisiSizeGuideOpener = null;
+
+  const openBarbaraalvisiSizeGuide = (opener) => {
+    const dialog = document.getElementById('barbaraalvisi-size-guide');
+    if (!(dialog instanceof HTMLElement) || !dialog.hidden) {
+      return;
+    }
+
+    portalBarbaraalvisiSizeGuide();
+    barbaraalvisiSizeGuideOpener = opener instanceof HTMLElement ? opener : null;
+    barbaraalvisiSizeGuideScrollY = window.scrollY;
+    dialog.hidden = false;
+    dialog.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('barbaraalvisi-size-guide-open');
+    document.body.style.top = `-${barbaraalvisiSizeGuideScrollY}px`;
+    if (opener instanceof HTMLElement) {
+      opener.setAttribute('aria-expanded', 'true');
+    }
+
+    const closeBtn = dialog.querySelector('.barbaraalvisi-panel-close');
+    if (closeBtn instanceof HTMLElement) {
+      closeBtn.focus();
+    }
+  };
+
+  const closeBarbaraalvisiSizeGuide = () => {
+    const dialog = document.getElementById('barbaraalvisi-size-guide');
+    if (!(dialog instanceof HTMLElement) || dialog.hidden) {
+      return;
+    }
+
+    dialog.hidden = true;
+    dialog.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('barbaraalvisi-size-guide-open');
+    document.body.style.top = '';
+    window.scrollTo(0, barbaraalvisiSizeGuideScrollY);
+    document.querySelectorAll('[data-barbaraalvisi-size-guide-open]').forEach((button) => {
+      button.setAttribute('aria-expanded', 'false');
+    });
+
+    if (barbaraalvisiSizeGuideOpener instanceof HTMLElement) {
+      barbaraalvisiSizeGuideOpener.focus();
+    }
+  };
+
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) {
+      return;
+    }
+
+    const openBtn = target.closest('[data-barbaraalvisi-size-guide-open]');
+    if (openBtn) {
+      event.preventDefault();
+      openBarbaraalvisiSizeGuide(openBtn);
+      return;
+    }
+
+    if (target.closest('[data-barbaraalvisi-size-guide-close]')) {
+      event.preventDefault();
+      closeBarbaraalvisiSizeGuide();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') {
+      return;
+    }
+
+    const dialog = document.getElementById('barbaraalvisi-size-guide');
+    if (dialog instanceof HTMLElement && !dialog.hidden) {
+      closeBarbaraalvisiSizeGuide();
+    }
+  });
 
   if (searchInput) {
     searchInput.addEventListener('input', () => {
@@ -2766,6 +2849,10 @@
       } else {
         block.prepend(feedback);
       }
+
+      if (typeof feedback.scrollIntoView === 'function') {
+        feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     };
 
     form.addEventListener('submit', (event) => {
@@ -2979,7 +3066,7 @@
         return;
       }
 
-      if (form.closest('#barbaraalvisi-everpopup-overlay')) {
+      if (form.closest('#barbaraalvisi-everpopup-overlay') || form.hasAttribute('data-barbaraalvisi-newsletter')) {
         return;
       }
 

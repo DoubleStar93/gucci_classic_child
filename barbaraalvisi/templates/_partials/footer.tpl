@@ -5,6 +5,8 @@
   <div class="barbaraalvisi-footer-inner">
     <section class="barbaraalvisi-footer-newsletter-wrap" aria-label="{l s='Newsletter' d='Shop.Theme.Global'}">
       {widget name='ps_emailsubscription'}
+      {include file='_partials/barbaraalvisi-service-contacts.tpl' barbaraalvisiServiceContactsMod='footer'}
+
       <a
         class="barbaraalvisi-footer-instagram"
         href="https://www.instagram.com/barbaraalvisiofficial"

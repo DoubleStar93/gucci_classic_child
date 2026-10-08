@@ -216,6 +216,7 @@ body#index .barbaraalvisi-home-newsletter-marquee__lead {
   font-weight: 700 !important;
 }
 
+body#index .barbaraalvisi-home-newsletter-marquee__sep,
 body#index .barbaraalvisi-home-newsletter-marquee__rest {
   font-weight: 400 !important;
 }
@@ -318,7 +319,7 @@ body#index .barbaraalvisi-home-madeinitaly-marquee__item {
   display: inline-flex;
   align-items: baseline;
   flex-shrink: 0;
-  padding-right: 3rem;
+  padding-right: 0;
   white-space: nowrap;
   font-family: var(--font-sans) !important;
   font-size: 3.25rem !important;
@@ -342,7 +343,7 @@ body#index .barbaraalvisi-home-madeinitaly-marquee__emphasis {
 
   body#index .barbaraalvisi-home-madeinitaly-marquee__item {
     font-size: 2.25rem !important;
-    padding-right: 1.75rem;
+    padding-right: 0;
   }
 }
 

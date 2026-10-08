@@ -17,7 +17,7 @@
       <span class="barbaraalvisi-home-madeinitaly-marquee__group"{if $smarty.section.barbaraalvisiMadeGroup.index != 0} aria-hidden="true"{/if}>
         {section name=barbaraalvisiMadeCopy loop=4}
           <span class="barbaraalvisi-home-madeinitaly-marquee__item"{if $smarty.section.barbaraalvisiMadeGroup.index != 0 || $smarty.section.barbaraalvisiMadeCopy.index != 0} aria-hidden="true"{/if}>
-            <span class="barbaraalvisi-home-madeinitaly-marquee__lead">{$barbaraalvisiMadeLead|escape:'htmlall':'UTF-8'}<em class="barbaraalvisi-home-madeinitaly-marquee__emphasis">{$barbaraalvisiMadeEmphasis|escape:'htmlall':'UTF-8'}</em></span>
+            <span class="barbaraalvisi-home-madeinitaly-marquee__lead">{$barbaraalvisiMadeLead|escape:'htmlall':'UTF-8'}<em class="barbaraalvisi-home-madeinitaly-marquee__emphasis">{$barbaraalvisiMadeEmphasis|escape:'htmlall':'UTF-8'}</em>&nbsp;-&nbsp;</span>
           </span>
         {/section}
       </span>

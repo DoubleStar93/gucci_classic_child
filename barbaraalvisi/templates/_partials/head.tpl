@@ -131,7 +131,7 @@
 
 {* Dopo il bundle CCC — unica sorgente token/tipografia (custom.css) *}
 {block name='stylesheets' append}
-  <link rel="stylesheet" href="{$urls.base_url}themes/barbaraalvisi/assets/css/custom.css?v=2.27.1" type="text/css" media="all">
+  <link rel="stylesheet" href="{$urls.base_url}themes/barbaraalvisi/assets/css/custom.css?v=2.27.3" type="text/css" media="all">
   <link rel="stylesheet" href="{$urls.base_url}themes/barbaraalvisi/assets/css/home-overrides.css?v=1.1.5" type="text/css" media="all">
 {/block}
 

@@ -19,7 +19,7 @@
     'locale' => 'en-US',
     'cookie_key' => 'ukqcC9bksKaqvLu3nZufVVS9jqhZLZDH0RzRbvisriIrDp67MJvnqW6MA4D7PyP9',
     'cookie_iv' => 'ZKfVS2SM6oa8XhNkeYOuW6KqF9Ecmrj3',
-    'use_debug_toolbar' => true,
+    'use_debug_toolbar' => false,
     'new_cookie_key' => 'def00000caf8fc6351fd4648d633fb1f879044d696f1601aafb91f3cb1cb0746cae90a2999d330c3721c69152524e238ac98903c4f503981630b0e3f1f524d9a22e12989',
     'api_public_key' => '-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwHWhyUaFmdBB9s/EEVIp

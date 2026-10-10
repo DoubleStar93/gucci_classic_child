@@ -1,0 +1,13 @@
+ 
+
+{shop_url}
+
+Salve,
+
+Grazie per esserti iscritto alla nostra newsletter. Clicca sul seguente collegamento per confermare la richiesta:
+{verif_url}
+
+[{shop_name}]({shop_url})
+Powered by [PrestaShop](https://www.prestashop-project.org/)
+Barbara Alvisi
+https://barbaraalvisi.it/themes/barbaraalvisi/assets/img/newsletter/benvenuto.jpg

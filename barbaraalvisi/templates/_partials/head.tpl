@@ -4,11 +4,6 @@
  *}
 {extends file='parent:_partials/head.tpl'}
 
-{* Staging: blocca indicizzazione su tutte le pagine *}
-{block name='head_seo' prepend}
-  <meta name="robots" content="noindex, nofollow" />
-{/block}
-
 {block name='head_seo_title'}
   {if isset($language) && $language.iso_code == 'it'}
     {if $page.page_name == 'cms' && isset($cms.meta_title)}
@@ -25,7 +20,6 @@
     {elseif $page.page_name == 'order-confirmation'}Conferma ordine
     {elseif $page.page_name == 'cart' && $language.iso_code == 'it'}Carrello
     {elseif $page.page_name == 'checkout' && $language.iso_code == 'it'}Cassa
-    {elseif $page.page_name == 'index'}Home
     {elseif $page.page_name == 'category' && isset($category.name)}
       {include file='_partials/barbaraalvisi-it-label.tpl' barbaraalvisiLabelIn=$category.name scope='parent'}
       {$barbaraalvisiLabelOut|escape:'htmlall':'UTF-8'}

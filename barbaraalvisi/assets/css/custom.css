@@ -7005,9 +7005,9 @@ body#cms.sitemap h1 {
   margin-bottom: 1rem !important;
 }
 
-/* Titolo pagina già in .page-header — nascondi duplicato nel body CMS */
-body#cms .barbaraalvisi-cms-page-inner > h1:first-child,
-body#cms .barbaraalvisi-cms-page-inner > h2:first-child {
+/* Titolo pagina già in .page-header — nascondi solo l'h1 duplicato.
+   Il primo h2 è contenuto editoriale (es. «La nostra storia, la mia passione»). */
+body#cms .barbaraalvisi-cms-page-inner > h1:first-child {
   display: none !important;
 }
 
@@ -8262,6 +8262,33 @@ body#cms:not(.sitemap) .page-header {
   line-height: var(--barbaraalvisi-type-leading-loose);
   color: #666666;
   margin-bottom: 1rem;
+}
+
+/* Il testo CMS arriva spesso da Word con margin-bottom:0cm in linea,
+   e strong è forzato a 400 dal reset globale: grassetto e a-capo spariscono. */
+body#cms .barbaraalvisi-cms-page-inner p,
+body#cms .barbaraalvisi-cms-page .page-cms p {
+  margin-bottom: 1.15rem !important;
+}
+
+body#cms .barbaraalvisi-cms-page-inner p:empty {
+  min-height: 1.15rem;
+  margin: 0 !important;
+}
+
+body#cms .barbaraalvisi-cms-page-inner strong,
+body#cms .barbaraalvisi-cms-page-inner b {
+  font-weight: 600;
+}
+
+body#cms .barbaraalvisi-cms-page-inner p:has(img) {
+  margin-top: 1.5rem !important;
+}
+
+body#cms .barbaraalvisi-cms-page-inner img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: top;
 }
 
 .barbaraalvisi-cms-page .cms-page h2,

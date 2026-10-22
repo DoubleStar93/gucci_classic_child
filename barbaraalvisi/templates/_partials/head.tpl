@@ -112,11 +112,13 @@
   </style>
 {/block}
 
-{block name='head_icons' prepend}
+{block name='head_icons'}
   <link rel="preload" as="image" href="{$urls.base_url}themes/barbaraalvisi/assets/img/brand/charger.png" type="image/png">
+  <link rel="icon" type="image/png" sizes="192x192" href="{$urls.base_url}themes/barbaraalvisi/assets/img/brand/favicon/favicon-192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="{$urls.base_url}themes/barbaraalvisi/assets/img/brand/favicon/favicon-512.png">
   <link rel="icon" type="image/png" sizes="32x32" href="{$urls.base_url}themes/barbaraalvisi/assets/img/brand/favicon/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="{$urls.base_url}themes/barbaraalvisi/assets/img/brand/favicon/favicon-16.png">
+  <link rel="icon" type="image/x-icon" href="{$urls.base_url}themes/barbaraalvisi/assets/img/brand/favicon/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="{$urls.base_url}themes/barbaraalvisi/assets/img/brand/favicon/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -125,7 +127,7 @@
 
 {* Dopo il bundle CCC — unica sorgente token/tipografia (custom.css) *}
 {block name='stylesheets' append}
-  <link rel="stylesheet" href="{$urls.base_url}themes/barbaraalvisi/assets/css/custom.css?v=2.27.6" type="text/css" media="all">
+  <link rel="stylesheet" href="{$urls.base_url}themes/barbaraalvisi/assets/css/custom.css?v=2.27.7" type="text/css" media="all">
   <link rel="stylesheet" href="{$urls.base_url}themes/barbaraalvisi/assets/css/home-overrides.css?v=1.1.5" type="text/css" media="all">
 {/block}
 

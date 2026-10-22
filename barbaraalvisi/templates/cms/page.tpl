@@ -19,4 +19,27 @@
       {/block}
     </div>
   </section>
+  {literal}
+  <script>
+    (function () {
+      var images = document.querySelectorAll('.barbaraalvisi-cms-page-inner img[width][height]');
+      images.forEach(function (img) {
+        if (img.closest('.barbaraalvisi-cms-img')) {
+          return;
+        }
+        var width = parseFloat(img.getAttribute('width'));
+        var height = parseFloat(img.getAttribute('height'));
+        if (!width || !height) {
+          return;
+        }
+        var frame = document.createElement('span');
+        frame.className = 'barbaraalvisi-cms-img';
+        frame.style.width = width + 'px';
+        frame.style.aspectRatio = width + ' / ' + height;
+        img.parentNode.insertBefore(frame, img);
+        frame.appendChild(img);
+      });
+    }());
+  </script>
+  {/literal}
 {/block}

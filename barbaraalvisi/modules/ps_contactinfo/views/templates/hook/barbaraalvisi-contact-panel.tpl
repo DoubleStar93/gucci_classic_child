@@ -64,9 +64,6 @@
               <span class="barbaraalvisi-contact-channel-text">{$barbaraalvisi_phone_label}</span>
             </span>
           </a>
-          <p class="barbaraalvisi-contact-channel-hours">
-            {if $language.iso_code == 'it'}Dal lunedì alla domenica, 10:00–19:00 (CET).{else}{l s='Monday to Sunday from 10:00 a.m. to 7:00 p.m. (CET).' d='Shop.Theme.Global'}{/if}
-          </p>
         </li>
 
         <li class="barbaraalvisi-contact-channel">
@@ -86,9 +83,6 @@
               </span>
             </span>
           </a>
-          <p class="barbaraalvisi-contact-channel-hours">
-            {if $language.iso_code == 'it'}Dal lunedì alla domenica, 10:00–19:00 (CET).{else}{l s='Monday to Sunday from 10:00 a.m. to 7:00 p.m. (CET).' d='Shop.Theme.Global'}{/if}
-          </p>
         </li>
 
       {if isset($contact_infos.email) && $contact_infos.email && $display_email}

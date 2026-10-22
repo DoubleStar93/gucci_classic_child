@@ -8285,19 +8285,21 @@ body#cms .barbaraalvisi-cms-page-inner p:has(img) {
   margin-top: 1.5rem !important;
 }
 
-body#cms .barbaraalvisi-cms-page-inner img {
+body#cms .barbaraalvisi-cms-img {
+  display: inline-block;
   max-width: 100%;
   vertical-align: top;
-  object-fit: cover;
-  object-position: center;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Le misure width/height dell'editor vincono sul formato reale del file. */
-body#cms .barbaraalvisi-cms-page-inner img[width][height] {
-  width: attr(width px);
-  max-width: 100%;
-  height: auto;
-  aspect-ratio: attr(width number) / attr(height number);
+body#cms .barbaraalvisi-cms-img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
   object-fit: cover;
   object-position: center;
 }

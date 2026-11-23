@@ -73,7 +73,7 @@ class Barbaraalvisi_Homecategories extends Module
 
             if (class_exists('BarbaraalvisiHomeCategories', false)) {
                 try {
-                    $categories = BarbaraalvisiHomeCategories::getTopCategories($this->context, 4);
+                    $categories = BarbaraalvisiHomeCategories::getTopCategories($this->context);
                 } catch (Exception $exception) {
                     PrestaShopLogger::addLog(
                         'barbaraalvisi_homecategories: ' . $exception->getMessage(),

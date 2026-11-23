@@ -1,5 +1,5 @@
 {**
- * Barbara Alvisi — griglia 4 categorie (stile card prodotto)
+ * Barbara Alvisi — griglia categorie homepage (stile card prodotto)
  * Dati: modulo barbaraalvisi_homecategories (hook displayHome) → $barbaraalvisi_home_top_categories
  *}
 {assign var='barbaraalvisiHasHomeCategories' value=!empty($barbaraalvisi_home_top_categories) && $barbaraalvisi_home_top_categories|count}

@@ -19,9 +19,12 @@ class BarbaraalvisiHomeCategories
     ];
 
     /**
+     * Categorie foglia attive con almeno un prodotto.
+     * $limit 0 = tutte; un valore positivo tronca alle prime N (per numero prodotti).
+     *
      * @return array<int, array<string, mixed>>
      */
-    public static function getTopCategories(Context $context, int $limit = 4): array
+    public static function getTopCategories(Context $context, int $limit = 0): array
     {
         $idLang = (int) $context->language->id;
         $idShop = (int) $context->shop->id;
@@ -29,7 +32,7 @@ class BarbaraalvisiHomeCategories
         $homeCategoryId = (int) Configuration::get('PS_HOME_CATEGORY');
         $exclude = array_unique(array_filter([$rootCategoryId, $homeCategoryId]));
 
-        if ($limit <= 0) {
+        if ($limit < 0) {
             return [];
         }
 
@@ -65,7 +68,9 @@ class BarbaraalvisiHomeCategories
         $sql->groupBy('c.`id_category`');
         $sql->having('nb_products > 0');
         $sql->orderBy('nb_products DESC');
-        $sql->limit($limit);
+        if ($limit > 0) {
+            $sql->limit($limit);
+        }
 
         $rows = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
         if (!$rows) {

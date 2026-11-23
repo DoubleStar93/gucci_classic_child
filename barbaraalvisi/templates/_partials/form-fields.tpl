@@ -1,10 +1,10 @@
 {**
- * Barbara Alvisi — campi form (checkbox IT su checkout/account)
+ * Barbara Alvisi — campi form (privacy checkout allineata al consenso GDPR)
  *}
 {extends file='parent:_partials/form-fields.tpl'}
 
 {block name='form_field'}
-  {if $language.iso_code == 'it' && $field.name == 'customer_privacy' && (($page.page_name|default:'') == 'checkout' || ($smarty.get.controller|default:'') == 'order')}
+  {if $field.name == 'customer_privacy' && (($page.page_name|default:'') == 'checkout' || ($smarty.get.controller|default:'') == 'order')}
     <input
       type="hidden"
       name="customer_privacy"
@@ -22,7 +22,7 @@
 {/block}
 
 {block name='form_field_item_checkbox'}
-  {if $language.iso_code == 'it' && $field.name == 'customer_privacy' && (($page.page_name|default:'') == 'checkout' || ($smarty.get.controller|default:'') == 'order')}
+  {if $field.name == 'customer_privacy' && (($page.page_name|default:'') == 'checkout' || ($smarty.get.controller|default:'') == 'order')}
     {* Campo mirror: vedi blocco form_field *}
   {else}
   <div class="col-md-{$field.width|default:12} form-group{if $field.required} required{/if}">

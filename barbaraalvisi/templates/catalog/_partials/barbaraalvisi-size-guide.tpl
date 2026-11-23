@@ -11,6 +11,21 @@
   {if $language.iso_code == 'it'}Guida alle taglie{else}Size guide{/if}
 </button>
 
+{if $language.iso_code == 'it'}
+  {capture assign='barbaraalvisiSizeHelpText'}Ciao, sono indecisa sulla taglia di {$product.name}. Potete aiutarmi?{/capture}
+{else}
+  {capture assign='barbaraalvisiSizeHelpText'}Hi, I'm unsure about the size of {$product.name}. Can you help me?{/capture}
+{/if}
+<p class="barbaraalvisi-size-help">
+  {if $language.iso_code == 'it'}Indecisa sulla taglia?{else}Unsure about the size?{/if}
+  <a
+    class="barbaraalvisi-size-help__link"
+    href="https://wa.me/393522766033?text={$barbaraalvisiSizeHelpText|escape:'url'}"
+    target="_blank"
+    rel="noopener noreferrer"
+  >{if $language.iso_code == 'it'}Contattaci{else}Contact us{/if}</a>
+</p>
+
 <div
   id="barbaraalvisi-size-guide"
   class="barbaraalvisi-size-guide"

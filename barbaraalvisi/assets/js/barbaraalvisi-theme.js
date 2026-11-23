@@ -146,7 +146,9 @@
     }
 
     const consentGroup = consentCheckbox.closest('.form-group');
-    const consentMessage = 'Seleziona questa casella per accettare i termini e condizioni e continuare.';
+    const consentMessage = (document.documentElement.lang || '').toLowerCase().startsWith('it')
+      ? 'Seleziona questa casella per accettare i termini e condizioni e continuare.'
+      : 'Please tick this box to accept the terms and conditions and continue.';
 
     const syncConsentValidity = () => {
       syncBarbaraalvisiCustomerPrivacyField();
@@ -312,20 +314,6 @@
       confirmButton.classList.toggle('disabled', !accepted);
     };
 
-    const markTermsInvalid = () => {
-      Array.from(document.querySelectorAll('#conditions-to-approve input[type="checkbox"]')).forEach((checkbox) => {
-        const group = checkbox.closest('.form-group, li, .condition-label');
-        if (!checkbox.checked) {
-          group?.classList.add('barbaraalvisi-form-group--invalid');
-          checkbox.setCustomValidity('Accetta i termini per continuare.');
-          checkbox.reportValidity();
-        } else {
-          group?.classList.remove('barbaraalvisi-form-group--invalid');
-          checkbox.setCustomValidity('');
-        }
-      });
-    };
-
     document.querySelectorAll('#conditions-to-approve input[type="checkbox"]').forEach((checkbox) => {
       checkbox.addEventListener('change', () => {
         if (checkbox.checked) {
@@ -334,15 +322,153 @@
           checkbox.setCustomValidity('');
         }
         syncTermsButtonState();
+        syncPayLaterAvailability();
         if (window.jQuery) {
           window.jQuery(checkbox).trigger('change');
         }
       });
     });
 
+    let payLaterSdkPromise = null;
+    let payLaterMountTimer = null;
+    let payLaterMountAttempts = 0;
+
+    const ensureSinglePayLaterButton = () => {
+      if (window.BNPL?.__baSingleButton || typeof window.BNPL?.initButton !== 'function') {
+        return;
+      }
+
+      const originalInit = window.BNPL.initButton;
+      const originalSetColor = window.BNPL.setColor;
+      if (typeof originalSetColor === 'function') {
+        window.BNPL.setColor = function () {
+          return originalSetColor.call(window.BNPL, 'black');
+        };
+      }
+
+      window.BNPL.initButton = function () {
+        if (window.__baPayLaterPainted) {
+          return undefined;
+        }
+
+        window.__baPayLaterPainted = true;
+        if (typeof originalSetColor === 'function') {
+          originalSetColor.call(window.BNPL, 'black');
+        }
+
+        try {
+          return originalInit.call(window.BNPL);
+        } catch {
+          window.__baPayLaterPainted = false;
+          return undefined;
+        }
+      };
+      window.BNPL.__baSingleButton = true;
+    };
+
+    const loadPayLaterSdk = () => {
+      if (typeof window.totPaypalBnplSdkButtons?.Buttons === 'function') {
+        return Promise.resolve(window.totPaypalBnplSdkButtons);
+      }
+
+      if (payLaterSdkPromise) {
+        return payLaterSdkPromise;
+      }
+
+      const current = document.querySelector('script[data-namespace="totPaypalBnplSdkButtons"]');
+      if (!current?.src) {
+        return Promise.resolve(null);
+      }
+
+      payLaterSdkPromise = new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = current.src;
+        script.async = true;
+        script.setAttribute('data-namespace', 'baPaypalPaylater');
+        script.onload = () => resolve(window.baPaypalPaylater || null);
+        script.onerror = () => resolve(null);
+        document.body.appendChild(script);
+      });
+
+      return payLaterSdkPromise;
+    };
+
+    const syncPayLaterAvailability = () => {
+      const selected = document.querySelector('input[name="payment-option"]:checked');
+      const isPayLater = selected?.dataset.moduleName === 'paypal_bnpl';
+      document.getElementById('payment-confirmation')?.classList.toggle(
+        'barbaraalvisi-payment-confirmation--bnpl',
+        Boolean(isPayLater)
+      );
+
+      const box = document.querySelector('#checkout-payment-step [paypal-bnpl-button-container]');
+      if (!box) {
+        return;
+      }
+
+      const ready = !isPayLater || haveTermsBeenAccepted();
+      box.style.pointerEvents = ready ? '' : 'none';
+      box.style.opacity = ready ? '' : '0.45';
+    };
+
+    const mountPayLaterButton = async () => {
+      const box = document.querySelector('#checkout-payment-step [paypal-bnpl-button-container]');
+      if (!box || typeof window.BNPL?.initButton !== 'function') {
+        if (payLaterMountAttempts < 20) {
+          payLaterMountAttempts += 1;
+          window.clearTimeout(payLaterMountTimer);
+          payLaterMountTimer = window.setTimeout(mountPayLaterButton, 250);
+        }
+        syncPayLaterAvailability();
+        return;
+      }
+
+      ensureSinglePayLaterButton();
+
+      if (!window.__baPayLaterPainted) {
+        const sdk = await loadPayLaterSdk();
+        if (
+          sdk?.Buttons
+          && window.totPaypalBnplSdkButtons
+          && typeof window.totPaypalBnplSdkButtons.Buttons !== 'function'
+        ) {
+          window.totPaypalBnplSdkButtons.Buttons = sdk.Buttons;
+        }
+
+        if (typeof window.totPaypalBnplSdkButtons?.Buttons !== 'function') {
+          if (payLaterMountAttempts < 20) {
+            payLaterMountAttempts += 1;
+            window.clearTimeout(payLaterMountTimer);
+            payLaterMountTimer = window.setTimeout(mountPayLaterButton, 250);
+          }
+          syncPayLaterAvailability();
+          return;
+        }
+
+        payLaterMountAttempts = 0;
+        box.querySelectorAll('.paypal-buttons, iframe').forEach((node) => node.remove());
+        box.style.width = '100%';
+        window.__baPayLaterPainted = false;
+        window.BNPL.initButton();
+      }
+
+      box.querySelectorAll('.paypal-buttons').forEach((button, index) => {
+        if (index > 0) {
+          button.remove();
+        }
+      });
+
+      syncPayLaterAvailability();
+    };
+
     document.addEventListener('change', (event) => {
       if (event.target.matches('input[name="payment-option"]')) {
         syncTermsButtonState();
+        mountPayLaterButton();
+      }
+
+      if (event.target.matches('#conditions-to-approve input[type="checkbox"]')) {
+        syncPayLaterAvailability();
       }
     }, true);
 
@@ -415,7 +541,7 @@
       }
 
       const rogueSubmit = event.target.closest(
-        '.js-payment-option-form button[type="submit"], .js-payment-option-form input[type="submit"], .additional-information button[type="submit"], .additional-information input[type="submit"]'
+        '.js-payment-option-form button[id^="pay-with-"], .js-payment-option-form input[id^="pay-with-"]'
       );
 
       if (!rogueSubmit || !paymentStep.contains(rogueSubmit)) {
@@ -425,12 +551,14 @@
       event.preventDefault();
       event.stopPropagation();
       event.stopImmediatePropagation();
-      markTermsInvalid();
     }, true);
 
     if (typeof prestashop !== 'undefined' && prestashop.on) {
       prestashop.on('changedCheckoutStep', () => {
-        window.requestAnimationFrame(syncTermsButtonState);
+        window.requestAnimationFrame(() => {
+          syncTermsButtonState();
+          mountPayLaterButton();
+        });
       });
       prestashop.on('orderConfirmationErrors', clearPaymentSubmitLock);
       prestashop.on('handleError', clearPaymentSubmitLock);
@@ -443,6 +571,7 @@
     });
 
     syncTermsButtonState();
+    mountPayLaterButton();
   };
 
   const bootBarbaraalvisiCheckoutPayment = () => {

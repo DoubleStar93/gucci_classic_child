@@ -337,8 +337,8 @@ summary:focus-visible,
 .btn-primary,
 .btn-secondary,
 .btn-touch,
-button[type="submit"]:not(.barbaraalvisi-footer-submit):not([hidden]),
-input[type="submit"]:not(.barbaraalvisi-footer-submit):not([hidden]) {
+button[type="submit"]:not(.barbaraalvisi-footer-submit):not([hidden]):not([id^="pay-with-"]),
+input[type="submit"]:not(.barbaraalvisi-footer-submit):not([hidden]):not([id^="pay-with-"]) {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -9405,17 +9405,15 @@ body#checkout #conditions-to-approve {
   line-height: 1.6;
 }
 
-/* Bonifico / pagamenti offline — solo i submit fantasma restano invisibili (il form serve a PS) */
+/* Bonifico: il submit segnaposto resta invisibile. Il pulsante vero (Paga in 3 rate / widget PayPal) no. */
 body#checkout .barbaraalvisi-page-loader {
   display: none !important;
 }
 
-body#checkout .js-payment-option-form button[type="submit"],
-body#checkout .js-payment-option-form input[type="submit"],
+body#checkout .js-payment-option-form button[id^="pay-with-"],
+body#checkout .js-payment-option-form input[id^="pay-with-"],
 body#checkout .payment-option button.ps-hidden,
-body#checkout .payment-options .ps-not-shown-by-js,
-body#checkout .additional-information button[type="submit"],
-body#checkout .additional-information input[type="submit"] {
+body#checkout .payment-options .ps-not-shown-by-js {
   display: none !important;
   visibility: hidden !important;
   position: absolute !important;
@@ -9430,16 +9428,99 @@ body#checkout .additional-information input[type="submit"] {
   clip: rect(0, 0, 0, 0) !important;
 }
 
-body#checkout .js-payment-option-form {
-  position: absolute;
-  width: 1px;
-  height: 1px;
+body#checkout .js-payment-option-form,
+body#checkout .payment-binary,
+body#checkout .js-payment-binary {
+  position: static;
+  width: auto;
+  height: auto;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
   border: 0;
+}
+
+body#checkout #checkout-payment-step .additional-information .alert,
+body#checkout #checkout-payment-step .payment-binary .alert,
+body#checkout #checkout-payment-step .js-payment-binary .alert,
+body#checkout #checkout-payment-step .js-payment-option-form .alert {
+  margin: 0 0 0.75rem !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: #666666 !important;
+  box-shadow: none !important;
+  font-size: var(--barbaraalvisi-type-ui) !important;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  text-align: left;
+}
+
+body#checkout .js-payment-option-form button[type="submit"]:not([id^="pay-with-"]),
+body#checkout .js-payment-option-form input[type="submit"]:not([id^="pay-with-"]),
+body#checkout .additional-information button[type="submit"],
+body#checkout .additional-information input[type="submit"],
+body#checkout .payment-binary button[type="submit"],
+body#checkout .payment-binary input[type="submit"],
+body#checkout .js-payment-binary button[type="submit"],
+body#checkout .js-payment-binary input[type="submit"] {
+  display: inline-flex !important;
+  visibility: visible !important;
+  position: static !important;
+  width: 100%;
+  max-width: 24rem;
+  height: auto !important;
+  margin: 0.75rem 0 0;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  overflow: visible !important;
+  clip: auto !important;
+}
+
+body#checkout .js-payment-option-form button[type="submit"]:disabled,
+body#checkout .additional-information button[type="submit"]:disabled,
+body#checkout .payment-binary button[type="submit"]:disabled,
+body#checkout .js-payment-binary button[type="submit"]:disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed;
+}
+
+body#checkout #checkout-payment-step [data-container-bnpl] {
+  align-items: stretch;
+  width: 100%;
+  max-width: 24rem;
+  margin: 0.85rem 0 0.15rem;
+}
+
+body#checkout #checkout-payment-step [paypal-bnpl-button-container] {
+  display: block;
+  width: 100%;
+  min-height: 45px;
+}
+
+body#checkout #checkout-payment-step [paypal-bnpl-button-container] .paypal-buttons {
+  width: 100% !important;
+  min-height: 45px;
+  margin: 0;
+}
+
+body#checkout #checkout-payment-step [paypal-bnpl-button-container] .paypal-buttons ~ .paypal-buttons {
+  display: none !important;
+}
+
+body#checkout .payment-option .paypal-marks {
+  display: none !important;
+}
+
+body#checkout #checkout-payment-step [paypal-wrong-button-message] {
+  display: none !important;
+}
+
+body#checkout #payment-confirmation.barbaraalvisi-payment-confirmation--bnpl {
+  display: none !important;
 }
 
 body#checkout .additional-information a,
@@ -14588,7 +14669,7 @@ body#contact .barbaraalvisi-service-contacts--page .barbaraalvisi-service-contac
 
 #product .barbaraalvisi-size-guide-open {
   display: inline-flex;
-  margin: 0 0 1.25rem;
+  margin: 0 0 0.65rem;
   padding: 0;
   border: 0;
   background: transparent;
@@ -14607,6 +14688,36 @@ body#contact .barbaraalvisi-service-contacts--page .barbaraalvisi-service-contac
 #product .barbaraalvisi-size-guide-open:hover,
 #product .barbaraalvisi-size-guide-open:focus-visible {
   color: var(--ba-bordeaux, #6b2a28);
+}
+
+#product .barbaraalvisi-size-help {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #666666;
+}
+
+#product .barbaraalvisi-size-help__link {
+  margin-left: 0.28em;
+  color: #111111 !important;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: underline !important;
+  text-underline-offset: 0.22em;
+  opacity: 1;
+}
+
+#product .barbaraalvisi-size-help__link:hover,
+#product .barbaraalvisi-size-help__link:focus-visible {
+  color: var(--ba-bordeaux, #6b2a28) !important;
+  text-decoration: underline !important;
+  opacity: 1;
 }
 
 body.barbaraalvisi-size-guide-open {

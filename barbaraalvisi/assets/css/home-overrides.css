@@ -105,11 +105,12 @@ body#index .barbaraalvisi-home-section--products[data-type="bestsellers"] .produ
 
   body#index .barbaraalvisi-home-hero-slider .barbaraalvisi-pdp-gallery-slide.is-active .barbaraalvisi-pdp-gallery-image {
     flex: 0 0 auto !important;
-    width: auto !important;
-    height: auto !important;
-    max-width: 100% !important;
-    max-height: var(--barbaraalvisi-pdp-gallery-height) !important;
-    object-fit: contain !important;
+    width: 100% !important;
+    height: var(--barbaraalvisi-pdp-gallery-height) !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    object-position: center center !important;
   }
 
   body#index .barbaraalvisi-home-hero-slider .barbaraalvisi-home-hero-caption {
@@ -142,6 +143,43 @@ body#index .barbaraalvisi-home-section--products[data-type="bestsellers"] .produ
   body#index .barbaraalvisi-home-hero-slider .barbaraalvisi-pdp-gallery-controls {
     top: calc(var(--barbaraalvisi-pdp-gallery-height) - 3.25rem) !important;
     bottom: auto !important;
+  }
+
+  /* Cover categoria — solo la foto in cima, riempie il riquadro */
+  body#category .barbaraalvisi-plp-hero .barbaraalvisi-home-hero-slider {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    overflow: visible !important;
+  }
+
+  body#category .barbaraalvisi-plp-hero .barbaraalvisi-pdp-gallery-viewport {
+    height: auto !important;
+    min-height: var(--barbaraalvisi-pdp-gallery-height) !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body#category .barbaraalvisi-plp-hero .barbaraalvisi-pdp-gallery-slide.is-active {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: var(--barbaraalvisi-pdp-gallery-height) !important;
+    max-height: none !important;
+    overflow: hidden !important;
+  }
+
+  body#category .barbaraalvisi-plp-hero .barbaraalvisi-pdp-gallery-slide.is-active .barbaraalvisi-pdp-gallery-image {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: var(--barbaraalvisi-pdp-gallery-height) !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    object-position: center center !important;
   }
 }
 
@@ -347,6 +385,61 @@ body#index .barbaraalvisi-home-madeinitaly-marquee__emphasis {
   }
 }
 
+/* Griglia categorie: aria tra le righe. Su desktop la griglia è a 8 tracce
+   e ogni card ne occupa 2, così resta larga un quarto come prima.
+   L'ultima riga incompleta viene centrata senza cambiare la misura. */
+body#index .barbaraalvisi-home-categories.barbaraalvisi-home-section--products > .products.barbaraalvisi-home-categories-grid {
+  row-gap: 0.75rem !important;
+  column-gap: 0 !important;
+}
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+  body#index .barbaraalvisi-home-categories.barbaraalvisi-home-section--products > .products.barbaraalvisi-home-categories-grid:has(> :nth-child(odd):last-child) > :last-child {
+    grid-column: 1 / -1;
+    width: 50% !important;
+    max-width: 50% !important;
+    justify-self: center;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+@media (min-width: 992px) {
+  body#index .barbaraalvisi-home-categories.barbaraalvisi-home-section--products > .products.barbaraalvisi-home-categories-grid {
+    row-gap: 1.25rem !important;
+    column-gap: 0 !important;
+    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+  }
+
+  body#index .barbaraalvisi-home-categories.barbaraalvisi-home-section--products > .products.barbaraalvisi-home-categories-grid > .barbaraalvisi-home-category-card {
+    grid-column: span 2;
+  }
+
+  body#index .barbaraalvisi-home-categories.barbaraalvisi-home-section--products > .products.barbaraalvisi-home-categories-grid:has(> :nth-child(4n + 1):last-child) > :last-child {
+    grid-column: 4 / span 2 !important;
+  }
+
+  body#index .barbaraalvisi-home-categories.barbaraalvisi-home-section--products > .products.barbaraalvisi-home-categories-grid:has(> :nth-child(4n + 2):last-child) > :nth-last-child(2) {
+    grid-column: 3 / span 2 !important;
+  }
+
+  body#index .barbaraalvisi-home-categories.barbaraalvisi-home-section--products > .products.barbaraalvisi-home-categories-grid:has(> :nth-child(4n + 2):last-child) > :last-child {
+    grid-column: 5 / span 2 !important;
+  }
+
+  body#index .barbaraalvisi-home-categories.barbaraalvisi-home-section--products > .products.barbaraalvisi-home-categories-grid:has(> :nth-child(4n + 3):last-child) > :nth-last-child(3) {
+    grid-column: 2 / span 2 !important;
+  }
+
+  body#index .barbaraalvisi-home-categories.barbaraalvisi-home-section--products > .products.barbaraalvisi-home-categories-grid:has(> :nth-child(4n + 3):last-child) > :nth-last-child(2) {
+    grid-column: 4 / span 2 !important;
+  }
+
+  body#index .barbaraalvisi-home-categories.barbaraalvisi-home-section--products > .products.barbaraalvisi-home-categories-grid:has(> :nth-child(4n + 3):last-child) > :last-child {
+    grid-column: 6 / span 2 !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   body#index .barbaraalvisi-home-madeinitaly-marquee__track {
     animation: none;
@@ -361,5 +454,41 @@ body#index .barbaraalvisi-home-madeinitaly-marquee__emphasis {
 
   body#index .barbaraalvisi-home-madeinitaly-marquee__item {
     padding-right: 0;
+  }
+}
+
+/* Hero homepage e cover categoria — desktop/tablet: riquadro 16/9, foto intera */
+@media (min-width: 768px) {
+  body#index .barbaraalvisi-home-hero-slider.barbaraalvisi-pdp-gallery,
+  body#index .barbaraalvisi-home-hero-slider,
+  body#category .barbaraalvisi-plp-hero .barbaraalvisi-home-hero-slider {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 16 / 9 !important;
+    overflow: hidden !important;
+  }
+
+  body#index .barbaraalvisi-home-hero-slider .barbaraalvisi-pdp-gallery-viewport,
+  body#index .barbaraalvisi-home-hero-slider .barbaraalvisi-pdp-gallery-slide,
+  body#category .barbaraalvisi-plp-hero .barbaraalvisi-pdp-gallery-viewport,
+  body#category .barbaraalvisi-plp-hero .barbaraalvisi-pdp-gallery-slide {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  body#index .barbaraalvisi-home-hero-slider .barbaraalvisi-pdp-gallery-image,
+  body#index .barbaraalvisi-home-hero-slider picture img,
+  body#category .barbaraalvisi-plp-hero .barbaraalvisi-pdp-gallery-image,
+  body#category .barbaraalvisi-plp-hero picture img {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    object-position: center center !important;
   }
 }
